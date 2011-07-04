@@ -1,0 +1,24 @@
+# Define constants
+# OK, now we start
+- ML: &ML 1  # max linear velocity
+  MA: &MA 1  # max angular velocity
+  MF: &MF 2  # max force
+  MASS: &MASS 1  # robot mass  
+  id:   d_R1_rb_v
+  desc: 'Rigid body on R1, controlled in velocity.'
+  code: [vehicles_dynamics.EuclideanVel, {ndim: 1, max_velocity: [*ML]} ]
+- id:   d_R2_rb_v
+  desc: 'Rigid body on R2, controlled in velocity.'
+  code: [vehicles_dynamics.EuclideanVel, {ndim: 2, max_velocity: [*ML, *ML]}]
+- id:   d_R3_rb_v
+  desc: 'Rigid body on R2, controlled in velocity.'
+  code: [vehicles_dynamics.EuclideanVel, {ndim: 3, max_velocity: [*ML, *ML, *ML]} ]
+- id:   d_R1_rb_f
+  desc: 'Rigid body on R1, controlled in force.'
+  code: [vehicles_dynamics.EuclideanForce, {ndim: 1, max_force: [*MF], mass: *MASS} ]
+- id: d_R2_rb_f
+  desc: 'Rigid body on R2, controlled in force.'
+  code: [vehicles_dynamics.EuclideanForce, {ndim: 2, max_force: [*MF,*MF], mass: *MASS} ]
+- id  : d_R3_rb_f
+  desc: 'Rigid body on R2, controlled in force.'
+  code: [vehicles_dynamics.EuclideanForce, {ndim: 3, max_force: [*MF,*MF,*MF], mass: *MASS} ]
