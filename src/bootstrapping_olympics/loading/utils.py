@@ -1,5 +1,5 @@
 from contracts.main import contract, check
-import collections
+#import collections
 
 
 @contract(code_spec='seq[2]')
@@ -16,8 +16,12 @@ def instantiate_spec(code_spec):
 
 #    if not isinstance(collections.Callable, function):
 #        raise Exception('Cannot call %r (%s)' % (function_name, function))
-
-    return function(**parameters)
+    try:
+        return function(**parameters)
+    except TypeError as e:
+        msg = ('Could not instantiate [%r, %s]:\n\t%s' % 
+               (function_name, parameters, e))
+        raise Exception(msg) 
     
 
 @contract(name='str')
@@ -27,12 +31,10 @@ def import_name(name):
     
         Note that "name" might be "module.module.name" as well.
     '''
-    
-    # Let's try 
-    
     try:     
         return __import__(name, fromlist=['dummy'])
     except ImportError as e:
+        # split in (module, name) if we can
         if '.' in name:
             tokens = name.split('.')
             field = tokens[-1]
