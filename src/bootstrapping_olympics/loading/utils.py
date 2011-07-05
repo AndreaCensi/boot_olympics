@@ -11,7 +11,9 @@ def instantiate_spec(code_spec):
     parameters = code_spec[1]
     check('str', function_name)
     check('dict', parameters)
+    return instantiate(function_name, parameters)
     
+def instantiate(function_name, parameters):
     function = import_name(function_name)
 
 #    if not isinstance(collections.Callable, function):

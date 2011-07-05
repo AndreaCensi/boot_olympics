@@ -1,0 +1,5 @@
+float32[] commands
+float64 timestamp
+string sender
+---
+bool result
