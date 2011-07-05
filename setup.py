@@ -13,8 +13,6 @@ description = """"""
 long_description = description  
 
 setup(name='BootstrappingOlympics',
-      author="Andrea Censi",
-      author_email="andrea@cds.caltech.edu",
       url='',
       
       description=description,

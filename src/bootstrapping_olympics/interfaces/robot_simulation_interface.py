@@ -5,12 +5,12 @@ from collections import namedtuple
 class RobotSimulationInterface:
     ''' This is the basic class for robot simulators. '''
     
-    def __init__(self, observations_dtype, commands_spec,
+    def __init__(self, observations_shape, commands_spec,
                  id_robot='unknown-robot',
                  id_sensors='unknown-sensors',
                  id_actuators='unknown-actuators'):
         # TODO: document commands_spec
-        self.observations_dtype = observations_dtype
+        self.observations_shape = observations_shape
         self.commands_spec = commands_spec
         
         self.timestamp = 1000
@@ -83,19 +83,15 @@ class RobotSimulationInterface:
         # compute and store observations
         sensel_values = self.compute_observations()
         fields = {
-                  'timestamp': self.timestamp,
-                  'counter': self.counter,
-                  'id_episode': self.id_episode,
-                  'id_environment': self.id_environment,
-                  'sensel_values': sensel_values,
-                  'commands': self.last_commands,
-                  'commands_source': self.last_commands_source
+          'timestamp': self.timestamp,
+          'counter': self.counter,
+          'id_episode': self.id_episode,
+          'id_environment': self.id_environment,
+          'sensel_values': sensel_values,
+          'commands': self.last_commands,
+          'commands_source': self.last_commands_source
         }
         # TODO: remember state
         self.last_observations = RobotSimulationInterface.Observations(**fields)
         self.counter += 1
-    
-    def get_last_commands(self):
-        pass
-    
-        
+     

@@ -2,16 +2,26 @@
 import roslib; roslib.load_manifest('bootstrapping_adapter')
 import rospy
 import time
-from bootstrapping_adapter.srv import BootstrappingCommands
+from bootstrapping_adapter.srv import (BootstrappingCommands,
+                                       BootstrappingCommandsResponse)
 from bootstrapping_adapter.msg import BootstrappingObservations
 from bootstrapping_olympics.loading import instantiate_spec
 from collections import namedtuple
 
-class State:
+class Global:
+    # Global variables -- a bit clumsy
     robot = None
+    dt = 0.1
+    publish = False
     
 def commands_request(req):
-    rospy.loginfo('Received request: %s' % req)
+    commands = req.commands
+    sender = req.sender
+    Global.robot.apply_commands(commands=commands,
+                                dt=Global.dt,
+                                commands_source=sender)
+    Global.publish = True
+    return BootstrappingCommandsResponse(True)
 
 def publish_observations(robot, publisher):
     obs = robot.get_observations()
@@ -19,6 +29,7 @@ def publish_observations(robot, publisher):
     fields = {
         'timestamp': obs.timestamp,
         'sensel_values': obs.sensel_values,
+        'sensel_shape': obs.sensel_values.shape,
         'commands': obs.commands,
         'commands_source': obs.commands_source,
         
@@ -29,6 +40,7 @@ def publish_observations(robot, publisher):
         'id_robot': robot.id_robot,
         'id_actuators': robot.id_actuators,
         'id_sensors': robot.id_sensors,
+        'commands_spec': robot.commands_spec.__repr__(),
         'type': 'sim'
     }
     msg = BootstrappingObservations(**fields)
@@ -40,20 +52,22 @@ def robot_adapter():
     params = rospy.get_param('~')
     rospy.loginfo('My params: %s' % params)
     
+    Global.dt = params.get('dt', 0.1)
+    
     if not 'code' in params:
         raise Exception('No "code" to run specified.')
     code = params['code']
     
     rospy.loginfo('Using code = %r' % code)
     try:
-        State.robot = instantiate_spec(code)
+        Global.robot = instantiate_spec(code)
     except Exception as e:
         raise Exception('Could not instantiate agent: %s' % e)
     
     publisher = rospy.Publisher('~observations', BootstrappingObservations)
     
     # Reset simulation
-    State.robot.next_episode()
+    Global.robot.next_episode()
     
     # Start service
     service = rospy.Service('~commands',
@@ -64,9 +78,16 @@ def robot_adapter():
     maximum_interval = 2
     while not rospy.is_shutdown():
         now = time.time()
-        if now > last_observations_sent + maximum_interval: 
-            publish_observations(State.robot, publisher)
+        publish = False
+        if Global.publish:
+            Global.publish = False
+            publish = True
+        if now > last_observations_sent + maximum_interval:
             last_observations_sent = now
+            publish = True
+        if publish: 
+            publish_observations(Global.robot, publisher)
+            
         rospy.sleep(0.01)
 
     

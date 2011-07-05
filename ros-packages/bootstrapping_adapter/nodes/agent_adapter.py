@@ -6,13 +6,24 @@ from bootstrapping_adapter.srv import BootstrappingCommands
 from bootstrapping_adapter.msg import BootstrappingObservations
 from bootstrapping_olympics.loading import instantiate_spec
 
-class Storage:
+class Global:
+    # Global variables -- a bit clumsy
     observations = None
-
+    agent = None
+    set_commands = None
+    
 def handle_observations(resp):
-    Storage.observations = resp
+    Global.observations = resp
     rospy.loginfo('Received observations: %s' % resp)
 
+def event_loop(observations):
+    sensel_values = observations.sensel_values
+    Global.agent.process_observations(sensel_values)
+    commands = Global.agent.choose_commands()
+    sender = '%s' % Global.agent.__class__.__name__
+    Global.set_commands(commands=commands, sender=sender,
+                        timestamp=observations.timestamp)
+    
 def agent_adapter():   
     rospy.init_node('agent_adapter')
     rospy.loginfo('agent_adapter started')
@@ -26,35 +37,43 @@ def agent_adapter():
     
     rospy.loginfo('Using code = %r' % code)
     try:
-        agent = instantiate_spec(code)
+        Global.agent = instantiate_spec(code)
         # TODO: check right class
     except Exception as e:
         raise Exception('Could not instantiate agent: %s' % e)
 
-    rospy.loginfo('agent instantiated: %s' % agent)
+    rospy.loginfo('agent instantiated: %s' % Global.agent)
     
     # Wait until the robot is connected
     result = rospy.wait_for_service('commands')
     rospy.loginfo('Connected to robot.')
-    set_commands = rospy.ServiceProxy('commands', BootstrappingCommands)
+    Global.set_commands = rospy.ServiceProxy('commands', BootstrappingCommands)
     # Subscribe to the observations
-    rospy.Subscriber('observations', BootstrappingObservations, handle_observations)
+    subscriber = rospy.Subscriber('observations', BootstrappingObservations,
+                     handle_observations)
     
     # Read one observation
     rospy.loginfo('Waiting for one observation')
     while not rospy.is_shutdown():
-        if Storage.observations is not None:
+        if Global.observations is not None:
             break
         rospy.sleep(0.1)
+    # Close this subscriber
+    subscriber.unregister()
     
     rospy.loginfo('Obtained one observation')
-    ob = Storage.observations
+    ob = Global.observations
+    sensel_shape = tuple(ob.sensel_shape) # XXX
+    commands_spec = eval(ob.commands_spec)
+    Global.agent.init(sensel_shape, commands_spec)
+    
     rospy.loginfo('Here it is: %s' % ob)
     
-    while not rospy.is_shutdown():
-        str = "hello world %s" % rospy.get_time()
-        rospy.loginfo(str)
-        rospy.sleep(10.0)
+    # Subscribe to the observations
+    subscriber = rospy.Subscriber('observations',
+                                  BootstrappingObservations,
+                                  event_loop)
+    rospy.spin()
     
 if __name__ == '__main__':
     try:

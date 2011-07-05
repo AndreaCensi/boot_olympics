@@ -1,9 +1,7 @@
-from abc import abstractmethod
-
 class AgentInterface:
     ''' 
         This is the interface that the agents must implement.
-        Note that
+        
     '''
     
     def perform_task(self, task):
@@ -15,14 +13,19 @@ class AgentInterface:
         '''
         return False
     
-    def init(self):
+    def init(self, num_sensels, commands_spec):
         ''' 
             Called when the observations and commands shape are available,
             so that the agent can initialize its data structures.
+            
+            :param:num_sensels: Number of sensels produced.
+            :param:commands_spec: A vector with the bounds for the commands.
+            
+                A list of tuples (lower, upper).
+                For example: [(-1,+1), (0,1)] indicates that there are two
+                commands, one is bounded between -1 and +1, and the other is
+                bounded between 0 and 1.
         '''
-        pass
-    
-    def shutdown(self):
         pass
     
     
@@ -37,27 +40,22 @@ class AgentInterface:
     def choose_commands(self):
         ''' Chooses commands to be generated; must return a sequence of numbers or array. '''
         pass
-    
-    def get_state(self):
-        ''' Return the state for the agent so that it can be saved. '''
-        pass
-    
-    def set_state(self, state):
-        ''' Load the given state (obtained by 'get_state'). '''
-        pass
-    
-class Agent(AgentInterface):
-    
-    def get_observations_shape(self):
-        pass
-    
-    def get_commands_spec(self):
-        pass
-    
-    def info(self, msg):
-        ''' Logs something. '''
-    
-    def debug(self, msg):
-        ''' Logs something. '''
-    
-        
+#    
+#    def get_state(self):
+#        ''' Return the state for the agent so that it can be saved. '''
+#        pass
+#    
+#    def set_state(self, state):
+#        ''' Load the given state (obtained by 'get_state'). '''
+#        pass
+#    
+#    def info(self, msg):
+#        ''' Logs something. '''
+#    
+#    def debug(self, msg):
+#        ''' Logs something. '''
+#    
+#        
+#    def shutdown(self):
+#        pass
+#    
