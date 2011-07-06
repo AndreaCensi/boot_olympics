@@ -1,0 +1,8 @@
+- id: random_agent
+  desc: A simple random agent
+  ros:
+      - sim/agent_adapter.py
+      - code:
+          - bootstrapping_olympics.examples.RandomAgent
+          - num_sensels: 4 
+            num_commands: 1 

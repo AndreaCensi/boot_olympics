@@ -1,0 +1,14 @@
+<package>
+  <description brief="bootstrapping_messages">
+
+     bootstrapping_messages
+
+  </description>
+  <author>Andrea Censi</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/bootstrapping_messages</url>
+
+</package>
+
+

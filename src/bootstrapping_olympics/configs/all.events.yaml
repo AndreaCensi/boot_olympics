@@ -1,0 +1,9 @@
+- id: all
+  tasks: *
+  robots: *
+  agents: *
+  # 
+  # - id: bo1 
+  #   tasks: [task1, task2, task3]
+  #   robots: [robot1, robot2, robot3]
+  #   agents: [agent1, agent2]

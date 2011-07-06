@@ -1,0 +1,16 @@
+- id: random_1_4
+  desc: simple omnidirectional robot
+  ros:
+      - bootstrapping_adapter/robot_adapter.py
+      - code:
+          - bootstrapping_olympics.examples.RandomRobot
+          - num_sensels: 4 
+            num_commands: 1
+
+- id: vsim_one
+  desc: sime 
+  ros:
+      - bootstrapping_adapter/robot_adapter.py
+      - code:
+          - simple_vehicles.Load
+          - id_robot: robot
