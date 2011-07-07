@@ -1,0 +1,28 @@
+
+<launch>
+    <group ns="mio" clear_params="true">
+        <!-- Robot node -->
+
+        <node  pkg="bootstrapping_adapter" 
+              name="my_robot" 
+              type="robot_adapter.py"   > 
+			<rosparam param='code'>- bootstrapping_olympics.examples.RandomRobot
+- {num_commands: 1, num_sensels: 4}
+</rosparam> 
+
+        </node>
+    
+        <!-- Agent node -->
+
+        <node  pkg="bootstrapping_adapter" 
+              name="my_agent" 
+              type="agent_adapter.py"   > 
+			<rosparam param='code'>- bootstrapping_olympics.examples.RandomAgent
+- {}
+</rosparam> 
+			<remap from="commands" to="my_robot/commands"/>
+			<remap from="observations" to="my_robot/observations"/>
+        </node>
+    
+    </group>
+</launch>

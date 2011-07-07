@@ -16,5 +16,8 @@ class RandomRobot(RobotSimulationInterface):
     def compute_observations(self):
         return np.random.randn(self.num_sensels)    
 
-    def simulate_system(self, commands, dt):
+    def simulate(self, commands, dt):
+        pass
+    
+    def new_episode(self):
         pass

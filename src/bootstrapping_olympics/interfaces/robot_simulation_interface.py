@@ -72,7 +72,7 @@ class RobotSimulationInterface:
         
     def apply_commands(self, commands, dt, commands_source='unknown'):
         # Simulate the system
-        self.simulate_system(commands, dt)
+        self.simulate(commands, dt)
         self.last_commands = commands
         self.last_commands_source = commands_source
         # Update counters

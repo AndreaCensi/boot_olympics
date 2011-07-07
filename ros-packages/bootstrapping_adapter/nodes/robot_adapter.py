@@ -67,7 +67,7 @@ def robot_adapter():
     publisher = rospy.Publisher('~observations', BootstrappingObservations)
     
     # Reset simulation
-    Global.robot.next_episode()
+    Global.robot.new_episode()
     
     # Start service
     service = rospy.Service('~commands',

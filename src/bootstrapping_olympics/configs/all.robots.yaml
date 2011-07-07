@@ -7,13 +7,13 @@
           - num_sensels: 4 
             num_commands: 1
 
-- id: vsim_one
+- id: d_SE2_car_v-cam360-box10
   desc: sime 
   ros-node:
       - bootstrapping_adapter/robot_adapter.py
       - code:
-          - simple_vehicles.Load
-          - id_robot: robot
+          - simple_vehicles.VehicleSimulation
+          - id_vehicle: d_SE2_car_v-cam360
             id_world: box10
   # observations-filters:
   #     - ros-node: 
