@@ -25,6 +25,8 @@ def main():
                       help=".launch file")
     parser.add_option("-n", "--namespace", dest="namespace",
                       help="ROS namespace", default='test00')
+    parser.add_option("-b", "--bag", dest="bag",
+                      help="rosbag filename")
     (options, args) = parser.parse_args()
 
     if args: 
@@ -39,17 +41,18 @@ def main():
     load_configuration(options.directory)
     
     create_launch(options.agent, options.robot, options.output,
-                  namespace=options.namespace)
+                  namespace=options.namespace,
+                  bag=options.bag)
     
     
-def create_launch(id_agent, id_robot, output, namespace):
+def create_launch(id_agent, id_robot, output, namespace, bag):
     
-    xml = create_launch_xml(id_agent, id_robot, namespace)
+    xml = create_launch_xml(id_agent, id_robot, namespace, bag)
     logger.info('Writing to file %r.' % output)
     with open(output, 'w') as f:
         f.write(xml)
     
-def create_launch_xml(id_agent, id_robot, namespace):
+def create_launch_xml(id_agent, id_robot, namespace, bag=None):
     if not id_robot in Configuration.robots:
         msg = ('Robot ID %r not known.\nI know %s' % 
                 (id_robot, Configuration.robots.keys()))
@@ -69,6 +72,13 @@ def create_launch_xml(id_agent, id_robot, namespace):
                                            'observations': 'my_robot/observations',
                                            'commands': 'my_robot/commands',
                                     })
+    if bag is not None:
+        node_bag = create_ros_node_xml('record', ['rosbag/record', {}],
+                                        args="-a -o %s" % bag,
+                                        output="screen")
+    else:
+        node_bag = ""
+    
     
     template = """
 <launch>
@@ -77,26 +87,30 @@ def create_launch_xml(id_agent, id_robot, namespace):
 ${node_robot}
         <!-- Agent node -->
 ${node_agent}
+${node_bag}
     </group>
 </launch>
 """ 
     final = Template(template).substitute(node_robot=node_robot,
                 node_agent=node_agent,
-                namespace=namespace)
+                namespace=namespace,
+                node_bag=node_bag)
     return final
 
 
-def create_ros_node_xml(node_name, ros_node, remap):
+def create_ros_node_xml(node_name, ros_node, remap=None, args=None, output=None):
     
     package_name, node_type, params = parse_yaml_ros_node_spec(ros_node)
     
     xml_params = create_params_xml(params)
-    xml_remap = create_remaps_xml(remap)
+    xml_remap = create_remaps_xml(remap) if remap else ""
      
     template = """
         <node  pkg="${package_name}" 
               name="${node_name}" 
-              type="${node_type}"   > 
+              type="${node_type}"   
+              ${args}
+              ${output}> 
 ${xml_params} 
 ${xml_remap}
         </node>
@@ -107,7 +121,9 @@ ${xml_remap}
                 node_name=node_name,
                 node_type=node_type,
                 xml_remap=xml_remap,
-                xml_params=xml_params)
+                xml_params=xml_params,
+                args="args='%s'" % args if args else "",
+                output="output='%s'" % output if output else "",)
     return final
 
 def create_params_xml(params):
