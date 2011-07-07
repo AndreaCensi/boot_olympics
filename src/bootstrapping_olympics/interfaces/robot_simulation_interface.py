@@ -1,4 +1,3 @@
-import numpy
 from abc import abstractmethod
 from collections import namedtuple
 
