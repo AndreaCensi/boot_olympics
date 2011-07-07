@@ -51,7 +51,8 @@ def robot_adapter():
     
     params = rospy.get_param('~')
     rospy.loginfo('My params: %s' % params)
-    
+
+
     Global.dt = params.get('dt', 0.1)
     
     if not 'code' in params:
@@ -64,7 +65,7 @@ def robot_adapter():
     except Exception as e:
         raise Exception('Could not instantiate agent: %s' % e)
     
-    publisher = rospy.Publisher('~observations', BootstrappingObservations)
+    publisher = rospy.Publisher('~observations', BootstrappingObservations, latch = True)
     
     # Reset simulation
     Global.robot.new_episode()

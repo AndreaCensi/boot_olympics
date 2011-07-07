@@ -17,13 +17,15 @@ def handle_observations(resp):
     rospy.loginfo('Received observations: %s' % resp)
 
 def event_loop(observations):
+    #if observations.counter % 100 == 0:	
+     #   rospy.loginfo('Event loop at counter %s' % observations.counter)
     sensel_values = observations.sensel_values
     Global.agent.process_observations(sensel_values)
     commands = Global.agent.choose_commands()
     sender = '%s' % Global.agent.__class__.__name__
     Global.set_commands(commands=commands, sender=sender,
-                        timestamp=observations.timestamp)
-    
+                        timestamp=observations.timestamp)    
+
 def agent_adapter():   
     rospy.init_node('agent_adapter')
     rospy.loginfo('agent_adapter started')
@@ -34,11 +36,14 @@ def agent_adapter():
     if not 'code' in params:
         raise Exception('No "code" to run specified.')
     code = params['code']
-    
+        
+
     rospy.loginfo('Using code = %r' % code)
     try:
-        Global.agent = instantiate_spec(code)
-        # TODO: check right class
+	#code_input = [code[0], {}]
+        #Global.agent = instantiate_spec(code_input)
+	Global.agent = instantiate_spec(code)        
+	# TODO: check right class
     except Exception as e:
         raise Exception('Could not instantiate agent: %s' % e)
 
@@ -65,7 +70,7 @@ def agent_adapter():
     ob = Global.observations
     sensel_shape = tuple(ob.sensel_shape) # XXX
     commands_spec = eval(ob.commands_spec)
-    Global.agent.init(sensel_shape, commands_spec)
+    Global.agent.init(sensel_shape, commands_spec, code[1])
     
     rospy.loginfo('Here it is: %s' % ob)
     
