@@ -6,14 +6,14 @@
               name="my_robot" type="robot_adapter.py" output="screen">
               
               <rosparam param="code">
-                  [bootstrapping_olympics.examples.RandomRobot,
+                  [bootstrapping_olympics.examples.SimpleRobot,
                    {num_sensels: 4, num_commands: 1}]
               </rosparam>
         </node>
 
     <node pkg="bootstrapping_adapter" name="my_agent" type="agent_adapter.py" output="screen">
               <rosparam param="code">
-                  [bootstrapping_olympics.examples.RandomAgent, {}]
+                  [bootstrapping_olympics.examples.SimpleAgent, {beta: 0.5}]
               </rosparam>
         
         <remap from="observations" to="my_robot/observations" />
