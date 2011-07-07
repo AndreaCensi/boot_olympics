@@ -4,6 +4,8 @@ class AgentInterface:
         
     '''
     
+    
+    
     def perform_task(self, task):
         ''' 
             Asks the agent to perform a task. 

@@ -1,0 +1,36 @@
+<launch>
+    <group ns="test00" clear_params="true">
+        
+ 
+        <node pkg="bootstrapping_adapter" 
+              name="my_robot" type="robot_adapter.py">
+              
+              <rosparam param="code">
+                  [bootstrapping_olympics.examples.RandomRobot,
+                   {num_sensels: 4, num_commands: 1}]
+              </rosparam>
+        </node>
+
+		<node pkg="bootstrapping_adapter"
+			  name="filter"  type="commands_filter_adapter.py">
+
+              <rosparam param="code">
+                  [bootstrapping_olympics.examples.RandomPermutation,
+                   {seed: 42}]
+              </rosparam>		
+              	  
+              <remap from="original_commands" to="my_robot/commands" />
+		</node>
+	
+	    <node pkg="bootstrapping_adapter" name="my_agent" type="agent_adapter.py">
+	              <rosparam param="code">
+	                  [bootstrapping_olympics.examples.RandomAgent, {}]
+	              </rosparam>
+	        
+	        <remap from="observations" to="my_robot/observations" />
+	        <remap from="commands"     to="filter/commands" />        
+	    </node>
+    
+    </group>
+     
+</launch>

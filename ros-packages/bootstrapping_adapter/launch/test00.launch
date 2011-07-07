@@ -1,6 +1,7 @@
 <launch>
     <group ns="test00" clear_params="true">
         
+ 
         <node pkg="bootstrapping_adapter" 
               name="my_robot" type="robot_adapter.py">
               
