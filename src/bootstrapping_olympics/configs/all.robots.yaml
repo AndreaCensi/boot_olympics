@@ -1,6 +1,6 @@
 - id: random_1_4
   desc: simple omnidirectional robot
-  ros:
+  ros-node:
       - bootstrapping_adapter/robot_adapter.py
       - code:
           - bootstrapping_olympics.examples.RandomRobot
@@ -9,8 +9,12 @@
 
 - id: vsim_one
   desc: sime 
-  ros:
+  ros-node:
       - bootstrapping_adapter/robot_adapter.py
       - code:
           - simple_vehicles.Load
           - id_robot: robot
+            id_world: box10
+  # observations-filters:
+  #     - ros-node: 
+  #         - andrea

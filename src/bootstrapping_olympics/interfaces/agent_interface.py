@@ -1,10 +1,13 @@
+from abc import ABCMeta
+
+# TODO: add abstract methods
+
 class AgentInterface:
+    __metaclass__ = ABCMeta
+    
     ''' 
         This is the interface that the agents must implement.
-        
     '''
-    
-    
     
     def perform_task(self, task):
         ''' 

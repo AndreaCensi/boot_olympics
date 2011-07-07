@@ -1,8 +1,10 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from collections import namedtuple
 
 class RobotSimulationInterface:
     ''' This is the basic class for robot simulators. '''
+    
+    __metaclass__ = ABCMeta
     
     def __init__(self, observations_shape, commands_spec,
                  id_robot='unknown-robot',
@@ -23,7 +25,8 @@ class RobotSimulationInterface:
         self.last_commands_source = None
         self.last_observations = None 
           
-    def next_episode(self):
+    @abstractmethod
+    def new_episode(self):
         ''' 
             Changes the simulation to the next episode. 
         
@@ -35,7 +38,7 @@ class RobotSimulationInterface:
         self.id_environment = 'id-episode-not-set'
 
     @abstractmethod
-    def simulate_system(self, commands, dt):
+    def simulate(self, commands, dt):
         ''' Simulate system for dt. '''
         pass
     

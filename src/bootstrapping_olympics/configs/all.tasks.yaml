@@ -1,6 +1,6 @@
 - id: Task1
   desc: A visual servoing task
-  ros: 
+  ros-node: 
      - sim/Andrea.py
      - param1: 1
        param2: 2

@@ -1,6 +1,6 @@
 - id: random_agent
   desc: A simple random agent
-  ros:
+  ros-node:
       - sim/agent_adapter.py
       - code:
           - bootstrapping_olympics.examples.RandomAgent

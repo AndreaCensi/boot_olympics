@@ -1,6 +1,7 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 
 class FilterInterface:
+    __metaclass__ = ABCMeta
     
     @abstractmethod
     def process(self, data):
