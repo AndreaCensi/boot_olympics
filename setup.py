@@ -5,15 +5,11 @@ version = "0.1"
 
 description = """""" 
 
-#def read(fname):
-#    return open(os.path.join(os.path.dirname(__file__), fname)).read()
-#    
-#long_description = read('README.rst')
     
 long_description = description  
 
 setup(name='BootstrappingOlympics',
-      url='',
+      url='http://github.com/AndreaCensi/boot_olympics/',
       
       description=description,
       long_description=long_description,
