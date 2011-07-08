@@ -13,12 +13,15 @@
 
     <node pkg="bootstrapping_adapter" name="my_agent" type="agent_adapter.py" output="screen">
               <rosparam param="code">
-                  [magnus_experiments.SimpleAgent, {beta: 0.1, M: 10}]
+                  [magnus_experiments.SimpleAgent, {beta: 0.1}]
               </rosparam>
         
         <remap from="observations" to="my_robot/observations" />
         <remap from="commands"     to="my_robot/commands" />        
     </node>
+
+    #I don't know how to set a generic pathname, "~/bagfiles/" didn't work.
+    <node pkg="rosbag" type="rosbag" name="rosbag" args="record -a -o /home/magnus/bagfiles/" />
     
     </group>
     
