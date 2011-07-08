@@ -1,0 +1,12 @@
+
+
+
+
+This creates a .launch file for connecting an agent to a robot:
+
+	boot_olympics_create_launch_agent_robot -a AGENT -r ROBOT -o FILE [-b BAG]
+
+
+This creates all possible launch files:		
+	
+	boot_olympics_create_launch_all -o `rospack find boot_olympics_launch`/launch
