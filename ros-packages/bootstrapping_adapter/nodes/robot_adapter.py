@@ -2,11 +2,13 @@
 import roslib; roslib.load_manifest('bootstrapping_adapter')
 import rospy
 import time
+from collections import namedtuple
+
 from bootstrapping_adapter.srv import (BootstrappingCommands,
                                        BootstrappingCommandsResponse)
 from bootstrapping_adapter.msg import BootstrappingObservations
 from bootstrapping_olympics.loading import instantiate_spec
-from collections import namedtuple
+import numpy as np
 
 class Global:
     # Global variables -- a bit clumsy
@@ -15,7 +17,7 @@ class Global:
     publish = False
     
 def commands_request(req):
-    commands = req.commands
+    commands = np.array(req.commands)
     sender = req.sender
     Global.robot.apply_commands(commands=commands,
                                 dt=Global.dt,
@@ -54,6 +56,7 @@ def robot_adapter():
 
 
     Global.dt = params.get('dt', 0.1)
+    sleep = params.get('sleep', 0.1)
     
     if not 'code' in params:
         raise Exception('No "code" to run specified.')
@@ -65,7 +68,7 @@ def robot_adapter():
     except Exception as e:
         raise Exception('Could not instantiate agent: %s' % e)
     
-    publisher = rospy.Publisher('~observations', BootstrappingObservations, latch = True)
+    publisher = rospy.Publisher('~observations', BootstrappingObservations, latch=True)
     
     # Reset simulation
     Global.robot.new_episode()
@@ -89,7 +92,7 @@ def robot_adapter():
         if publish: 
             publish_observations(Global.robot, publisher)
             
-        rospy.sleep(0.01)
+        rospy.sleep(sleep)
 
     
 if __name__ == '__main__':

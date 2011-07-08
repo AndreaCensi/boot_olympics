@@ -1,6 +1,6 @@
 
 <launch>
-    <group ns="mio" clear_params="true">
+    <group ns="mio2" clear_params="true">
         <!-- Robot node -->
 
         <node  pkg="bootstrapping_adapter" 
@@ -29,14 +29,5 @@
         </node>
     
 
-        <node  pkg="rosbag" 
-              name="record" 
-              type="record"   
-              args='-a -o /home/andrea/my.bag'
-              output='screen'> 
- 
-
-        </node>
-    
     </group>
 </launch>

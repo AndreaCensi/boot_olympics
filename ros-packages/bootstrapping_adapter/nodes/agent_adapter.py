@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import roslib; roslib.load_manifest('bootstrapping_adapter')
 import rospy
+import numpy as np
 
 from bootstrapping_adapter.srv import BootstrappingCommands
 from bootstrapping_adapter.msg import BootstrappingObservations
@@ -14,14 +15,14 @@ class Global:
     
 def handle_observations(resp):
     Global.observations = resp
-    rospy.loginfo('Received observations: %s' % resp)
-
+   
 def event_loop(observations):
     #if observations.counter % 100 == 0:	
      #   rospy.loginfo('Event loop at counter %s' % observations.counter)
-    sensel_values = observations.sensel_values
+    sensel_values = np.array(observations.sensel_values)
     Global.agent.process_observations(sensel_values)
     commands = Global.agent.choose_commands()
+    # TODO: check commands is compatible with commands_spec
     sender = '%s' % Global.agent.__class__.__name__
     Global.set_commands(commands=commands, sender=sender,
                         timestamp=observations.timestamp)    
@@ -37,13 +38,10 @@ def agent_adapter():
         raise Exception('No "code" to run specified.')
     code = params['code']
         
-
     rospy.loginfo('Using code = %r' % code)
     try:
-	#code_input = [code[0], {}]
-        #Global.agent = instantiate_spec(code_input)
-	Global.agent = instantiate_spec(code)        
-	# TODO: check right class
+        Global.agent = instantiate_spec(code)        
+        # TODO: check right class
     except Exception as e:
         raise Exception('Could not instantiate agent: %s' % e)
 
@@ -70,9 +68,9 @@ def agent_adapter():
     ob = Global.observations
     sensel_shape = tuple(ob.sensel_shape) # XXX
     commands_spec = eval(ob.commands_spec)
-    Global.agent.init(sensel_shape, commands_spec, code[1])
+    Global.agent.init(sensel_shape, commands_spec)
     
-    rospy.loginfo('Here it is: %s' % ob)
+    # rospy.loginfo('Here it is: %s' % ob)
     
     # Subscribe to the observations
     subscriber = rospy.Subscriber('observations',

@@ -1,5 +1,6 @@
 from ..interfaces import AgentInterface
-import numpy as np
+
+from ..interfaces.commands_utils import random_commands
 
 class RandomAgent(AgentInterface):
     
@@ -7,12 +8,15 @@ class RandomAgent(AgentInterface):
         return False
         
     def init(self, sensels_shape, commands_spec):
-        self.num_commands = len(commands_spec)
+        self.commands_spec = commands_spec
     
     def process_observations(self, observations):
         pass
     
     def choose_commands(self):
-        return np.random.rand(self.num_commands)    
-
+        return random_commands(commands_spec=self.commands_spec)
+    
+    def __repr__(self):
+        return "RandomAgent"
+    
     

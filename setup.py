@@ -45,6 +45,8 @@ setup(name='BootstrappingOlympics',
                 'bootstrapping_olympics.loading.print_config:main',
            'boot_olympics_create_launch_agent_robot = '
                 'bootstrapping_olympics.ros_scripts.create_launch_agent_robot:main',
+            'boot_olympics_create_launch_all = '
+                'bootstrapping_olympics.ros_scripts.create_launch_all:main',
 
         ]
       }          

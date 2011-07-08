@@ -52,7 +52,7 @@ def create_launch(id_agent, id_robot, output, namespace, bag):
     with open(output, 'w') as f:
         f.write(xml)
     
-def create_launch_xml(id_agent, id_robot, namespace, bag=None):
+def create_launch_xml(id_agent, id_robot, namespace, bag=None, output=None):
     if not id_robot in Configuration.robots:
         msg = ('Robot ID %r not known.\nI know %s' % 
                 (id_robot, Configuration.robots.keys()))
@@ -66,16 +66,17 @@ def create_launch_xml(id_agent, id_robot, namespace, bag=None):
     agent = Configuration.agents[id_agent]
     robot = Configuration.robots[id_robot]
     
-    node_robot = create_ros_node_xml('my_robot', robot['ros-node'], remap={})
+    node_robot = create_ros_node_xml('my_robot', robot['ros-node'], remap={},
+                                     output=output)
     node_agent = create_ros_node_xml('my_agent', agent['ros-node'],
                                      remap={
                                            'observations': 'my_robot/observations',
                                            'commands': 'my_robot/commands',
-                                    })
+                                    }, output=output)
     if bag is not None:
         node_bag = create_ros_node_xml('record', ['rosbag/record', {}],
                                         args="-a -o %s" % bag,
-                                        output="screen")
+                                        output=output)
     else:
         node_bag = ""
     

@@ -5,3 +5,11 @@
       - code:
           - bootstrapping_olympics.examples.RandomAgent
           - {}
+          
+- id: magnus_random_agent
+  desc: "Magnus' random agent"
+  ros-node:
+      - bootstrapping_adapter/agent_adapter.py
+      - code:
+          - magnus_experiments.SimpleAgent
+          - beta: 3

@@ -1,5 +1,6 @@
 from abc import abstractmethod, ABCMeta
 from collections import namedtuple
+from contracts.main import contract
 
 class RobotSimulationInterface:
     ''' This is the basic class for robot simulators. '''
@@ -70,6 +71,7 @@ class RobotSimulationInterface:
             self.compute_and_store_observations()
         return self.last_observations
         
+    @contract(commands='array[K]', dt='>0', commands_source='str')
     def apply_commands(self, commands, dt, commands_source='unknown'):
         # Simulate the system
         self.simulate(commands, dt)

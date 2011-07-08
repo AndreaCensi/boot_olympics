@@ -8,13 +8,25 @@
             num_commands: 1
 
 - id: d_SE2_car_v-cam360-box10
-  desc: sime 
+  desc: TOWRITE 
   ros-node:
       - bootstrapping_adapter/robot_adapter.py
       - code:
           - simple_vehicles.VehicleSimulation
           - id_vehicle: d_SE2_car_v-cam360
             id_world: box10
+
+- id: d_SE2_rb_v-rf360-box10
+  desc: TOWRITE 
+  ros-node:
+      - bootstrapping_adapter/robot_adapter.py
+      - code:
+          - simple_vehicles.VehicleSimulation
+          - id_vehicle: d_SE2_rb_v-rf360
+            id_world: box10
+            
+            
+            
   # observations-filters:
   #     - ros-node: 
   #         - andrea
