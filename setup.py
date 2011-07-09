@@ -30,7 +30,7 @@ setup(name='BootstrappingOlympics',
       
       package_dir={'':'src'},
       packages=find_packages('src'),
-      install_requires=[ 'PyVehiclesDynamics', 'PyYAML'],
+      install_requires=[ 'PyYAML'],
       tests_require=['nose'],
       entry_points={
          'console_scripts': [
