@@ -12,7 +12,7 @@
   ros-node:
       - bootstrapping_adapter/robot_adapter.py
       - code:
-          - simple_vehicles.VehicleSimulation
+          - vehicles_ros.ROSVehicleSimulation
           - id_vehicle: d_SE2_car_v-cam360
             id_world: box10
 
@@ -21,7 +21,7 @@
   ros-node:
       - bootstrapping_adapter/robot_adapter.py
       - code:
-          - simple_vehicles.VehicleSimulation
+          - vehicles_ros.ROSVehicleSimulation
           - id_vehicle: d_SE2_rb_v-rf360
             id_world: box10
             

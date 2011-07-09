@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import roslib; roslib.load_manifest('bootstrapping_adapter')
-import rospy
+import rospy, traceback
 import time
 from collections import namedtuple
 
@@ -58,6 +58,7 @@ def robot_adapter():
     Global.dt = params.get('dt', 0.1)
     sleep = params.get('sleep', 0.1)
     
+    # TODO: check code is in the right format
     if not 'code' in params:
         raise Exception('No "code" to run specified.')
     code = params['code']
@@ -66,7 +67,12 @@ def robot_adapter():
     try:
         Global.robot = instantiate_spec(code)
     except Exception as e:
-        raise Exception('Could not instantiate agent: %s' % e)
+        msg = 'Could not instantiate robot code, using:\n'
+        msg += ' class name: %s\n' % code[0]
+        msg += ' parameters: %s\n' % code[1]
+        msg += '\nThe following is the error given:\n' 
+        msg += '%s' % traceback.format_exc()
+        raise Exception(msg)
     
     publisher = rospy.Publisher('~observations', BootstrappingObservations, latch=True)
     

@@ -1,6 +1,5 @@
-from contracts.main import contract, check
-#import collections
-
+from contracts import contract, check
+from . import logger
 
 @contract(code_spec='seq[2]')
 def instantiate_spec(code_spec):
@@ -15,15 +14,14 @@ def instantiate_spec(code_spec):
     
 def instantiate(function_name, parameters):
     function = import_name(function_name)
-
-#    if not isinstance(collections.Callable, function):
-#        raise Exception('Cannot call %r (%s)' % (function_name, function))
     try:
         return function(**parameters)
     except TypeError as e:
         msg = ('Could not instantiate [%r, %s]:\n\t%s' % 
                (function_name, parameters, e))
-        raise Exception(msg) 
+        logger.error(msg)
+        #raise Exception(msg)
+        raise 
     
 
 @contract(name='str')

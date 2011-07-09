@@ -1,4 +1,4 @@
-from simple_vehicles.loading.utils import load_configuration_entries
+from . import load_configuration_entries
 from bootstrapping_olympics import logger
 
 class Configuration:

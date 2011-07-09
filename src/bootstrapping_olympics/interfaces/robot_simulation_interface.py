@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABCMeta
 from collections import namedtuple
-from contracts.main import contract
+from contracts import contract
 
 class RobotSimulationInterface:
     ''' This is the basic class for robot simulators. '''
