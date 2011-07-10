@@ -43,6 +43,8 @@ setup(name='BootstrappingOlympics',
                 'bootstrapping_olympics.ros_scripts.create_launch_agent_robot:main',
             'boot_olympics_create_launch_all = '
                 'bootstrapping_olympics.ros_scripts.create_launch_all:main',
+            'boot_gui = '
+                'boot_gui.boot_gui:main',
 
         ]
       }          
