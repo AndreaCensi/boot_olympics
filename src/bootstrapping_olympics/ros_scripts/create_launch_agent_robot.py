@@ -1,9 +1,6 @@
 import logging
-from optparse import OptionParser
-from string import Template
-from contracts import contract
-from ..loading import load_configuration, Configuration
-from bootstrapping_olympics.loading.yaml_ros_node_spec import parse_yaml_ros_node_spec
+from optparse import OptionParser 
+from ..loading import load_configuration
 import yaml
 from bootstrapping_olympics.ros_scripts.launch_xml import create_launch_xml
 

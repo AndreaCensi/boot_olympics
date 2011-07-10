@@ -32,7 +32,6 @@ def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir):
     if not os.path.exists(output):
         os.makedirs(dirname)
         
-        
     with open(output, 'w') as f:
         f.write(xml)
     
