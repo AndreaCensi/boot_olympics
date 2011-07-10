@@ -1,0 +1,14 @@
+<package>
+  <description brief="boot_olympics_launch">
+
+     boot_olympics_launch
+
+  </description>
+  <author>Andrea Censi</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/boot_olympics_launch</url>
+
+</package>
+
+

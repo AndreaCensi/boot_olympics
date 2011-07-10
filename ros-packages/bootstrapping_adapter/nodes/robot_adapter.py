@@ -56,7 +56,7 @@ def robot_adapter():
 
 
     Global.dt = params.get('dt', 0.1)
-    sleep = params.get('sleep', 0.1)
+    sleep = params.get('sleep', 0.0)
     
     # TODO: check code is in the right format
     if not 'code' in params:

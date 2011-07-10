@@ -1,8 +1,11 @@
-from bootstrapping_olympics.ros_scripts.launch_xml import create_launch_xml
 from . import logger
-from bootstrapping_olympics.loading.load_all import Configuration
+from bootstrapping_olympics.loading.load_all import Configuration as  BOConf
+from bootstrapping_olympics.ros_scripts.launch_xml import create_launch_xml
+from vehicles.configuration.instance_all import dereference_vehicle_spec
+from vehicles.configuration.load_all import Configuration
 import os
 import shutil
+from pprint import pformat
 
 def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir):
     logger.info('Creating launch for %s %s %s.' % (id_agent, id_vehicle, id_world))
@@ -10,9 +13,15 @@ def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir):
     # We have to create a new 'robot'
     id_robot = 'sim-%s-%s' % (id_agent, id_vehicle)
     
+    vehicle = dict(**Configuration.vehicles[id_vehicle])
+    dereference_vehicle_spec(vehicle)
+    world = Configuration.worlds[id_world]
+    
     simulation_code = ['vehicles_ros.ROSVehicleSimulation',
-                       {'id_vehicle': id_vehicle,
-                        'id_world': id_world}]
+                       {'vehicle': vehicle,
+                        'world': world}]
+    
+    print('Simulation_code:\n%s' % pformat(simulation_code))
     
     robot = {
              'id': id_robot,
@@ -21,7 +30,7 @@ def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir):
                           {'code': simulation_code } ]
     }
     
-    Configuration.robots[id_robot] = robot
+    BOConf.robots[id_robot] = robot
     
     xml = create_launch_xml(id_agent, id_robot, namespace='boot_olympics', bag=None)
     
@@ -29,7 +38,7 @@ def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir):
     output = os.path.join(output_dir, 'boot_gui_gen/vsim/%s' % basename)
     logger.info('Writing to file %r.' % output)
     dirname = os.path.dirname(output)
-    if not os.path.exists(output):
+    if not os.path.exists(dirname):
         os.makedirs(dirname)
         
     with open(output, 'w') as f:
