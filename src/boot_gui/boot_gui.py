@@ -1,17 +1,17 @@
 from . import logger
-from .boot_gui_mdi import *
+from .boot_gui_mdi import ConfigFrame, MainFrame
 from .boot_gui_run import create_vehicles_launch
 from bootstrapping_olympics.loading.load_all import (Configuration as BOConf,
     load_configuration as BO_load_all)
-from vehicles.configuration.load_all import (Configuration as VConf,
-    load_configuration as V_load_all)
-from wxPython.wx import wxMDIParentFrame #@UnresolvedImport
+from vehicles import (VehiclesConfiguration as VConf,
+    load_configuration as V_load_all, check_valid_world_config,
+    check_valid_vehicle_config)
+
+from wx import MDIParentFrame #@UnresolvedImport
 import os
 import subprocess
 import wx
 import yaml
-from vehicles.configuration.checks import check_valid_world_config, \
-    check_valid_vehicle_config
 
 
 
@@ -24,12 +24,13 @@ def fill_combobox(widget, choices):
     
 class MyConfigFrame(ConfigFrame):
     def __init__(self, parent, choices, label, is_valid_config, id_custom):
+        ConfigFrame.__init__(self, parent)
+        
         self.id_custom = id_custom
         self.editing_custom = False
         self.parent = parent
         self.choices = choices
         self.label = label
-        ConfigFrame.__init__(self, parent)
         self.ordered = sorted(list(choices.keys()))
         fill_combobox(self.bg_choice, self.ordered)
         
@@ -92,6 +93,8 @@ class MyConfigFrame(ConfigFrame):
 #            self.bg_config.SetForegroundColour(wx.Colour(50, 0, 0)) #@UndefinedVariable
             self.bg_config_status.SetLabel('Cannot parse YAML:\n%s' % e)
             self.bg_config_status.SetForegroundColour(wx.Colour(100, 0, 0)) #@UndefinedVariable
+            self.bg_config_status.Layout()
+            self.Layout()
             return
         try:
             if not 'id' in parsed:
@@ -101,12 +104,16 @@ class MyConfigFrame(ConfigFrame):
 #            self.bg_config.SetForegroundColour(wx.Colour(100, 50, 0)) #@UndefinedVariable
             self.bg_config_status.SetLabel('Valid YAML, but invalid conf:\n%s' % e)
             self.bg_config_status.SetForegroundColour(wx.Colour(100, 50, 0)) #@UndefinedVariable
+            self.bg_config_status.Layout()
+            self.Layout()
             return
         
         self.bg_config.SetForegroundColour(wx.Colour(0, 0, 0)) #@UndefinedVariable
         self.bg_config_status.SetForegroundColour(wx.Colour(0, 0, 0)) #@UndefinedVariable
             
-        self.bg_config_status.SetLabel('Good configuration.')
+        self.bg_config_status.SetLabel('Good configuration.' + ' ' * 20)
+        self.bg_config_status.Layout()
+        self.Layout()
         parsed['id'] = self.id_custom
         parsed['filename'] = 'custom_entry'
         self.choices[self.id_custom] = parsed 
@@ -135,10 +142,10 @@ def valid_agent_config(x):
         raise Exception('Must be a dictionary, not a %s.' % x.__class__.__name__)
     return True
 
-class Parent(wxMDIParentFrame):
+class Parent(MDIParentFrame):
 
     def __init__(self):
-        wxMDIParentFrame.__init__(self, None, -1,
+        MDIParentFrame.__init__(self, None, -1,
                                   "Bootstrapping GUI", size=(1024, 500))
 
         try:
@@ -146,7 +153,7 @@ class Parent(wxMDIParentFrame):
             output_dir = subprocess.check_output(cmds).strip() #@UndefinedVariable
         except:
             logger.warning('Could not find package using rospack.')
-            output_dir = os.curdir
+            output_dir = '/Users/andrea/scm/boot11_env/src/bootstrapping_olympics/ros-packages/boot_olympics_launch'
         logger.info('Using output dir:\n%s' % output_dir)
         
 
@@ -166,6 +173,13 @@ class Parent(wxMDIParentFrame):
                                       is_valid_config=valid_agent_config,
                                       id_custom='custom_agent')
         
+        csize = (800, 400)
+        
+        self.c_agent.SetSize(csize)
+        self.c_world.SetSize(csize)
+        self.c_vehicle.SetSize(csize)
+        self.SetSize((800, 500))
+        
         def run():
             id_vehicle = self.c_vehicle.get_selection()
             id_agent = self.c_agent.get_selection()
@@ -184,6 +198,7 @@ class Parent(wxMDIParentFrame):
         
     def fill_choices(self):
         pass
+    
     
 def main():
     BO_load_all()

@@ -7,8 +7,6 @@ import wx
 # begin wxGlade: extracode
 # end wxGlade
 
-
-
 class MainFrame(wx.MDIChildFrame):
     def __init__(self, *args, **kwds):
         # begin wxGlade: MainFrame.__init__
@@ -17,8 +15,8 @@ class MainFrame(wx.MDIChildFrame):
         self.panel_1 = wx.Panel(self, -1, style=wx.SIMPLE_BORDER)
         self.bg_type = wx.RadioBox(self.panel_1, -1, "Type", choices=["Vehicles simulation", "Landroids", "Logged data"], majorDimension=0, style=wx.RA_SPECIFY_ROWS)
         self.bg_save_bag = wx.CheckBox(self.panel_1, -1, "Save bag file")
-        self.bg_output_dir = wx.TextCtrl(self.panel_1, -1, "")
-        self.bg_button_run = wx.Button(self.panel_1, -1, "Create .launch")
+        self.bg_button_run = wx.Button(self.panel_1, -1, "Create .launch for ROS execution")
+        self.bg_button_py = wx.Button(self.panel_1, -1, "Create .py for local execution")
 
         self.__set_properties()
         self.__do_layout()
@@ -40,8 +38,8 @@ class MainFrame(wx.MDIChildFrame):
         sizer_2 = wx.BoxSizer(wx.VERTICAL)
         sizer_2.Add(self.bg_type, 0, 0, 0)
         sizer_2.Add(self.bg_save_bag, 0, 0, 0)
-        sizer_2.Add(self.bg_output_dir, 0, wx.EXPAND, 0)
         sizer_2.Add(self.bg_button_run, 0, 0, 0)
+        sizer_2.Add(self.bg_button_py, 0, 0, 0)
         self.panel_1.SetSizer(sizer_2)
         sizer_1.Add(self.panel_1, 2, wx.EXPAND, 0)
         self.SetSizer(sizer_1)
@@ -62,19 +60,17 @@ class ConfigFrame(wx.MDIChildFrame):
         kwds["style"] = wx.DEFAULT_FRAME_STYLE
         wx.MDIChildFrame.__init__(self, *args, **kwds)
         self.panel_2 = wx.Panel(self, -1)
-        self.bg_choice_old = wx.ComboBox(self.panel_2, -1, choices=[], style=wx.CB_DROPDOWN)
         self.bg_choice = wx.Choice(self.panel_2, -1, choices=[])
         self.bg_save = wx.Button(self.panel_2, wx.ID_SAVE, "")
         self.bg_desc = wx.StaticText(self.panel_2, -1, "Description\n\n\n\n\n\n")
         self.sizer_4_staticbox = wx.StaticBox(self.panel_2, -1, "")
         self.panel_3 = wx.Panel(self, -1)
         self.bg_config = wx.TextCtrl(self.panel_3, -1, "This is \na  multiline configuration\n\nek\n", style=wx.TE_PROCESS_ENTER|wx.TE_MULTILINE|wx.TE_LINEWRAP|wx.TE_WORDWRAP|wx.NO_BORDER)
-        self.bg_config_status = wx.StaticText(self.panel_3, -1, "bg_config_status")
+        self.bg_config_status = wx.StaticText(self.panel_3, -1, "This is the minimum size for this widget more more\n\none two")
 
         self.__set_properties()
         self.__do_layout()
 
-        self.Bind(wx.EVT_COMBOBOX, self.h_choice_changed, self.bg_choice_old)
         self.Bind(wx.EVT_CHOICE, self.h_choice_changed, self.bg_choice)
         self.Bind(wx.EVT_BUTTON, self.h_save_pressed, self.bg_save)
         self.Bind(wx.EVT_TEXT, self.h_text, self.bg_config)
@@ -83,6 +79,7 @@ class ConfigFrame(wx.MDIChildFrame):
     def __set_properties(self):
         # begin wxGlade: ConfigFrame.__set_properties
         self.SetTitle("frame_2")
+        self.bg_save.Enable(False)
         self.bg_config.SetForegroundColour(wx.Colour(0, 0, 1))
         # end wxGlade
 
@@ -93,7 +90,6 @@ class ConfigFrame(wx.MDIChildFrame):
         self.sizer_4_staticbox.Lower()
         sizer_4 = wx.StaticBoxSizer(self.sizer_4_staticbox, wx.VERTICAL)
         sizer_6 = wx.BoxSizer(wx.HORIZONTAL)
-        sizer_4.Add(self.bg_choice_old, 0, wx.EXPAND, 0)
         sizer_4.Add(self.bg_choice, 0, wx.EXPAND, 0)
         sizer_6.Add(self.bg_save, 0, 0, 0)
         sizer_6.Add((20, 20), 0, 0, 0)
@@ -107,6 +103,7 @@ class ConfigFrame(wx.MDIChildFrame):
         sizer_3.Add(self.panel_3, 1, wx.EXPAND, 0)
         self.SetSizer(sizer_3)
         sizer_3.Fit(self)
+        sizer_3.SetSizeHints(self)
         self.Layout()
         # end wxGlade
 
