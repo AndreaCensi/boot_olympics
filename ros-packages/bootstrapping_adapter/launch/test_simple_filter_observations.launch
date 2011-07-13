@@ -1,0 +1,40 @@
+<launch>
+    <group ns="test00" clear_params="true">
+        
+ 
+        <node pkg="bootstrapping_adapter" 
+              name="my_robot" type="robot_adapter.py" output="screen">
+              
+              <rosparam param="code">
+                  [magnus_experiments.SimpleRobot,
+                   {num_sensels: 4, num_commands: 1, rfs: 0, noise: 0}]
+              </rosparam>
+        </node>
+
+    <node pkg="bootstrapping_adapter"
+			  name="my_filter"  type="observation_filter_adapter.py" output="screen">
+
+              <rosparam param="code">
+                  [magnus_experiments.SimplePermutation,
+                   {seed: 2}]
+              </rosparam>		
+              	  
+              <remap from="source" to="my_robot/observations" />
+		</node>
+
+    <node pkg="bootstrapping_adapter" name="my_agent" type="agent_adapter.py" output="screen">
+              <rosparam param="code">
+                  [magnus_experiments.SimpleAgent, {beta: 0.1}]
+              </rosparam>
+        
+        <remap from="observations" to="my_filter/observations" />
+        <remap from="commands"     to="my_robot/commands" />        
+    </node>
+
+    #I don't know how to set a generic pathname, "~/bagfiles/" didn't work.
+    <node pkg="rosbag" type="rosbag" name="rosbag" args="record -a -o /home/magnus/SURF/bagfiles/" />
+    
+    </group>
+    
+    <!-- <rosparam command="dump" file="after.yaml"/> -->
+</launch>
