@@ -1,0 +1,50 @@
+<launch>
+
+    <machine name="ldr" address="ldr13" ros-root="/opt/gumros/diamondback/ros/" default="never" user="root"
+      ros-package-path="/home/root/ldr_magnus:/opt/gumros/diamondback/laser_drivers/hokuyo_node:/opt/gumros/diamondback/common:/opt/gumros/diamondback/common_msgs:/opt/gumros/diamondback/driver_common:/opt/gumros/diamondback/diagnostics_monitors:/opt/gumros/diamondback/diagnostics:/opt/gumros/diamondback/eros:/opt/gumros/diamondback/ros_comm:/home/root/landroid_package">
+
+        <env name="ROS_MASTER_URI" value="http://bentobox:11311/" />
+        <env name="PATH" value="/usr/bin:/" />
+
+    </machine>
+
+
+    <group ns="test00">
+        <node pkg="ldr_test" name="tracks" type="tracks.py" output="screen" machine="ldr" />
+        
+        <node pkg="landroid_package" name="ir_sensors"  type="ir_sensors.py" output="screen" machine="ldr" />
+
+        <node pkg="landroid_hokuyo" name="hokuyo" type="hokuyo.py" output="screen">
+                <rosparam param="host">
+                        "ldr13"
+                </rosparam>
+        </node>
+
+        <node pkg="bootstrapping_adapter"
+              name="my_robot" type="robot_adapter.py" output="screen">
+
+                <rosparam param="code">
+                    [magnus_experiments.Landroid,
+                        {}]
+                </rosparam>
+        
+                <remap from="laser" to="hokuyo/scan" />
+                <remap from="track_input" to="tracks/track_input" />
+                             
+        </node>
+    
+        <node pkg="bootstrapping_adapter" name="my_agent" type="agent_adapter.py" output="screen">
+                <rosparam param="code">
+                    [magnus_experiments.SimpleAgent, {beta: 5}]
+                </rosparam>
+
+                <remap from="observations" to="my_robot/observations" />
+                <remap from="commands"     to="my_robot/commands" />
+        </node>
+
+
+    </group>
+
+    <!-- <rosparam command="dump" file="after.yaml"/> -->
+</launch>
+
