@@ -10,8 +10,8 @@
   <url>http://ros.org/wiki/bootstrapping_adapter</url>
   <depend package="std_msgs"/>
   <depend package="rospy"/>
-  <depend package="visualization_msgs"/>
-  <depend package="tf"/>
+  <!--<depend package="visualization_msgs"/>
+  <depend package="tf"/>-->
 
 </package>
 

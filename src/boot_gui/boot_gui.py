@@ -8,7 +8,7 @@ from vehicles import (VehiclesConfiguration as VConf,
     check_valid_vehicle_config)
 
 from wx import MDIParentFrame #@UnresolvedImport
-import os
+
 import subprocess
 import wx
 import yaml

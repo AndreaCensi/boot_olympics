@@ -1,10 +1,7 @@
 import logging
 from optparse import OptionParser 
 from ..loading import load_configuration
-import yaml
 from bootstrapping_olympics.ros_scripts.launch_xml import create_launch_xml
-
-
 
 logging.basicConfig();
 logger = logging.getLogger("create_launch")

@@ -2,7 +2,7 @@ from abc import abstractmethod, ABCMeta
 from collections import namedtuple
 from contracts import contract
 
-class RobotSimulationInterface:
+class RobotInterface:
     ''' This is the basic class for robot simulators. '''
     
     __metaclass__ = ABCMeta
@@ -39,12 +39,11 @@ class RobotSimulationInterface:
         self.id_environment = 'id-episode-not-set'
 
     @abstractmethod
-    def simulate(self, commands, dt):
-        ''' Simulate system for dt. '''
+    def set_commands(self, commands):
         pass
     
     @abstractmethod
-    def compute_observations(self):
+    def get_observations(self):
         ''' Get observations. Must return a numpy array.'''
         pass
     
@@ -65,19 +64,20 @@ class RobotSimulationInterface:
                               'timestamp counter id_episode id_environment sensel_values '
                               'commands commands_source')
    
-    def get_observations(self):
+    def get_observations_wrap(self):
         ''' Returns an Observations structure with lots of metadata. '''
         if self.last_observations is None:
             self.compute_and_store_observations()
         return self.last_observations
         
-    @contract(commands='array[K]', dt='>0', commands_source='str')
-    def apply_commands(self, commands, dt, commands_source='unknown'):
+    @contract(commands='array[K]')
+    def set_commands_wrap(self, commands, commands_source):
         # Simulate the system
-        self.simulate(commands, dt)
+        self.set_commands(commands)
         self.last_commands = commands
         self.last_commands_source = commands_source
         # Update counters
+        dt = 0.1 # XXX: 
         self.timestamp += dt
         self.counter += 1 
         # Compute new observations 
@@ -85,7 +85,7 @@ class RobotSimulationInterface:
         
     def compute_and_store_observations(self):
         # compute and store observations
-        sensel_values = self.compute_observations()
+        sensel_values = self.get_observations()
         fields = {
           'timestamp': self.timestamp,
           'counter': self.counter,
@@ -96,6 +96,6 @@ class RobotSimulationInterface:
           'commands_source': self.last_commands_source
         }
         # TODO: remember state
-        self.last_observations = RobotSimulationInterface.Observations(**fields)
+        self.last_observations = RobotInterface.Observations(**fields)
         self.counter += 1
      

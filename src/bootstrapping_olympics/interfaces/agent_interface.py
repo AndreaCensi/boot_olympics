@@ -45,6 +45,15 @@ class AgentInterface:
     def choose_commands(self):
         ''' Chooses commands to be generated; must return a sequence of numbers or array. '''
         pass
+    
+    
+    def publish(self, publisher):
+        ''' 
+            Publish debug information. ``publisher`` is an instance 
+            of the class PublisherInterface. 
+        '''
+            
+        
 #    
 #    def get_state(self):
 #        ''' Return the state for the agent so that it can be saved. '''

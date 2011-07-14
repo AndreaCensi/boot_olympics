@@ -8,25 +8,24 @@ from bootstrapping_adapter.srv import (BootstrappingCommands,
                                        BootstrappingCommandsResponse)
 from bootstrapping_adapter.msg import BootstrappingObservations
 from bootstrapping_olympics.loading import instantiate_spec
+
 import numpy as np
 
 class Global:
     # Global variables -- a bit clumsy
-    robot = None
-    dt = 0.1
+    robot = None 
     publish = False
     
 def commands_request(req):
     commands = np.array(req.commands)
     sender = req.sender
-    Global.robot.apply_commands(commands=commands,
-                                dt=Global.dt,
+    Global.robot.set_commands_wrap(commands=commands,
                                 commands_source=sender)
     Global.publish = True
     return BootstrappingCommandsResponse(True)
 
 def publish_observations(robot, publisher):
-    obs = robot.get_observations()
+    obs = robot.get_observations_wrap()
     
     fields = {
         'timestamp': obs.timestamp,
