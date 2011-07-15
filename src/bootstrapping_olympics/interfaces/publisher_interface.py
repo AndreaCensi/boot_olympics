@@ -30,3 +30,11 @@ class Publisher:
                 p.publish_text('status', 'I am ok')
         '''
     
+    def plot(self, name):
+        pass
+    
+#    with pub.publish_plot(name='y_stats') as pylab:
+#            pylab.plot(Ey, label='E(y)')
+#            pylab.plot(y_max, label='y_max')
+#            pylab.plot(y_min, label='y_min')
+#            pylab.legend()

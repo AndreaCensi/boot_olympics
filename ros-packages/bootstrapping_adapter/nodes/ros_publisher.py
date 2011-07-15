@@ -1,11 +1,11 @@
 from contracts import contract
-from reprep import scale, posneg
+from reprep import scale, posneg, Report
 from bootstrapping_olympics import Publisher
 from ros import sensor_msgs
 import rospy
 from sensor_msgs.msg import Image #@UnresolvedImport
 import numpy as np
-
+from contextlib import contextmanager
 
 class ROSPublisher(Publisher):
     ''' 
@@ -19,13 +19,14 @@ class ROSPublisher(Publisher):
             Publisher.FILTER_POSNEG: posneg,
         }
         
-        self.ros_publishers = {}
+        self.ros_publishers = {} 
          
     def publish_array(self, name, value):
         pass
     
     @contract(name='str', value='array')
-    def publish_array_as_image(self, name, value, filter, filter_params):
+    def publish_array_as_image(self, name, value,
+                               filter=Publisher.FILTER_POSNEG, filter_params={}):
         if not filter in self.filters:
             msg = 'Unknown filter %r; I know %s' % (filter, self.filters.keys())
             raise Exception(msg)
@@ -48,6 +49,15 @@ class ROSPublisher(Publisher):
             
                 p.publish_text('status', 'I am ok')
         '''
+        
+    @contextmanager
+    def plot(self, name, **args):
+        r = Report()
+        a = r.data_pylab('plot', **args)
+        # XXX: better way?
+        yield a.__enter__()
+        a.__exit__(None, None, None)
+        print r.children
     
 
 def numpy_to_imgmsg(image, stamp=None):

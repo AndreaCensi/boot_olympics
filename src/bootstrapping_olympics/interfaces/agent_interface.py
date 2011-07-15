@@ -52,26 +52,19 @@ class AgentInterface:
             Publish debug information. ``publisher`` is an instance 
             of the class PublisherInterface. 
         '''
-            
         
-#    
-#    def get_state(self):
-#        ''' Return the state for the agent so that it can be saved. '''
-#        pass
-#    
-#    def set_state(self, state):
-#        ''' Load the given state (obtained by 'get_state'). '''
-#        pass
-#    
-#    def info(self, msg):
-#        ''' Logs something. '''
-#    
-#    def debug(self, msg):
-#        ''' Logs something. '''
-#    
-#        
-#    def shutdown(self):
-#        pass
-#    
-
+    def get_state(self):
+        ''' Return the state for the agent so that it can be saved. '''
+        pass
+    
+    def set_state(self, state):
+        ''' Load the given state (obtained by 'get_state'). '''
+        pass
+    
+    def info(self, msg):
+        ''' Logs something. '''
+        if AgentInterface.logger is not None:
+            AgentInterface.logger.info(msg)
+             
+    logger = None
 
