@@ -65,7 +65,7 @@ class ConfigFrame(wx.MDIChildFrame):
         self.bg_desc = wx.StaticText(self.panel_2, -1, "Description\n\n\n\n\n\n")
         self.sizer_4_staticbox = wx.StaticBox(self.panel_2, -1, "")
         self.panel_3 = wx.Panel(self, -1)
-        self.bg_config = wx.TextCtrl(self.panel_3, -1, "This is \na  multiline configuration\n\nek\n", style=wx.TE_PROCESS_ENTER|wx.TE_MULTILINE|wx.TE_LINEWRAP|wx.TE_WORDWRAP|wx.NO_BORDER)
+        self.bg_config = wx.TextCtrl(self.panel_3, -1, "This is \na  multiline configuration\n\nek\n", style=wx.TE_PROCESS_ENTER | wx.TE_MULTILINE | wx.TE_LINEWRAP | wx.TE_WORDWRAP | wx.NO_BORDER)
         self.bg_config_status = wx.StaticText(self.panel_3, -1, "This is the minimum size for this widget more more\n\none two")
 
         self.__set_properties()

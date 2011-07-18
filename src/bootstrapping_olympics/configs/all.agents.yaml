@@ -13,3 +13,12 @@
       - code:
           - magnus_experiments.SimpleAgent
           - beta: 3
+          
+   
+- id: compute_y_stats
+  desc: "Magnus' random agent"
+  ros-node:
+      - bootstrapping_adapter/agent_adapter.py
+      - code:
+          - boot_agents.EstStats
+          - beta: 3
