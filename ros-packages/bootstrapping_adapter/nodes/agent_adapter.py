@@ -5,7 +5,7 @@ import numpy as np
 
 from bootstrapping_adapter.srv import BootstrappingCommands
 from bootstrapping_adapter.msg import BootstrappingObservations
-from bootstrapping_olympics.loading import instantiate_spec
+from bootstrapping_olympics.loading import instantiate_spec, check_valid_code_spec
 from ros_publisher import ROSPublisher
 
 class Global:
@@ -13,8 +13,9 @@ class Global:
     observations = None
     agent = None
     set_commands = None
-    ros_publisher = ROSPublisher()
+    ros_publisher = None
     publish_interval = None
+    publish = False
     count = 0
     
 def handle_observations(resp):
@@ -27,7 +28,7 @@ def event_loop(observations):
     Global.agent.process_observations(sensel_values)
     commands = Global.agent.choose_commands()
     
-    if Global.count % Global.publish_interval == 0:
+    if Global.publish and Global.count % Global.publish_interval == 0:
         Global.agent.publish(Global.ros_publisher)
     Global.count += 1
     
@@ -43,14 +44,18 @@ def agent_adapter():
     params = rospy.get_param('~')
     rospy.loginfo('My params: %s' % params)
     
-    Global.publish_interval = params.get('publish_interval', 50)
+    Global.publish_interval = params.get('publish_interval', 0)
+    Global.publish = Global.publish_interval > 0 
     Global.count = 0
+    if Global.publish:
+         Global.ros_publisher = ROSPublisher()
     
     if not 'code' in params:
         raise Exception('No "code" to run specified.')
     code = params['code']
-        
     rospy.loginfo('Using code = %r' % code)
+    check_valid_code_spec(code)
+
     try:
         Global.agent = instantiate_spec(code)        
         # TODO: check right class

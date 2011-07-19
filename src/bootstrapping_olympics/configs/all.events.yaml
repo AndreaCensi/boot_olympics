@@ -1,8 +1,8 @@
 - id: all
   desc: 'All tasks, robots, and agents.'
-  tasks: '*'
-  robots: '*'
-  agents: '*'
+  tasks: ['*']
+  robots: ['*']
+  agents: ['*']
   # 
   # - id: bo1 
   #   tasks: [task1, task2, task3]

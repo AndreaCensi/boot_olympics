@@ -180,19 +180,26 @@ class Parent(MDIParentFrame):
         self.c_vehicle.SetSize(csize)
         self.SetSize((800, 500))
         
-        def run():
+        def run(log_level, viz_level, pub_interval):
             id_vehicle = self.c_vehicle.get_selection()
             id_agent = self.c_agent.get_selection()
             id_world = self.c_world.get_selection()
-
+            pub_interval = {0: 0, 1: 100, 2: 1000}[pub_interval]
             create_vehicles_launch(id_agent=id_agent,
                                id_vehicle=id_vehicle,
                                id_world=id_world,
-                               output_dir=output_dir)
+                               output_dir=output_dir,
+                               log_level=log_level,
+                               viz_level=viz_level,
+                               publish_interval=pub_interval)
 
         class MyMain(MainFrame):
             def h_button_run(self, event=None):
-                run()
+                log_level = self.bg_logging.GetSelection()
+                viz_level = self.bg_visualization.GetSelection()
+                pub_interval = self.bg_publish.GetSelection()
+                run(log_level, viz_level, pub_interval)
+                
         self.main = MyMain(self)
         self.main.Show(True)
         

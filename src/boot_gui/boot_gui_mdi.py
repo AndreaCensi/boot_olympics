@@ -14,7 +14,9 @@ class MainFrame(wx.MDIChildFrame):
         wx.MDIChildFrame.__init__(self, *args, **kwds)
         self.panel_1 = wx.Panel(self, -1, style=wx.SIMPLE_BORDER)
         self.bg_type = wx.RadioBox(self.panel_1, -1, "Type", choices=["Vehicles simulation", "Landroids", "Logged data"], majorDimension=0, style=wx.RA_SPECIFY_ROWS)
-        self.bg_save_bag = wx.CheckBox(self.panel_1, -1, "Save bag file")
+        self.bg_logging = wx.Choice(self.panel_1, -1, choices=["log nothing", "log essential data  (not implemented)", "log everything"])
+        self.bg_visualization = wx.Choice(self.panel_1, -1, choices=["No visualization", "Minimal (world geometry and robot)", "Medium (+sensels as image)", "Fancy (sensor data)"])
+        self.bg_publish = wx.Choice(self.panel_1, -1, choices=["Do not publish agent information", "Publish rarely", "Publish often"])
         self.bg_button_run = wx.Button(self.panel_1, -1, "Create .launch for ROS execution")
         self.bg_button_py = wx.Button(self.panel_1, -1, "Create .py for local execution")
 
@@ -29,7 +31,9 @@ class MainFrame(wx.MDIChildFrame):
         self.SetTitle("Bootstrapping GUI")
         self.bg_type.Enable(False)
         self.bg_type.SetSelection(0)
-        self.bg_save_bag.Enable(False)
+        self.bg_logging.SetSelection(2)
+        self.bg_visualization.SetSelection(3)
+        self.bg_publish.SetSelection(1)
         # end wxGlade
 
     def __do_layout(self):
@@ -37,7 +41,9 @@ class MainFrame(wx.MDIChildFrame):
         sizer_1 = wx.BoxSizer(wx.VERTICAL)
         sizer_2 = wx.BoxSizer(wx.VERTICAL)
         sizer_2.Add(self.bg_type, 0, 0, 0)
-        sizer_2.Add(self.bg_save_bag, 0, 0, 0)
+        sizer_2.Add(self.bg_logging, 0, 0, 0)
+        sizer_2.Add(self.bg_visualization, 0, 0, 0)
+        sizer_2.Add(self.bg_publish, 0, 0, 0)
         sizer_2.Add(self.bg_button_run, 0, 0, 0)
         sizer_2.Add(self.bg_button_py, 0, 0, 0)
         self.panel_1.SetSizer(sizer_2)
@@ -65,7 +71,7 @@ class ConfigFrame(wx.MDIChildFrame):
         self.bg_desc = wx.StaticText(self.panel_2, -1, "Description\n\n\n\n\n\n")
         self.sizer_4_staticbox = wx.StaticBox(self.panel_2, -1, "")
         self.panel_3 = wx.Panel(self, -1)
-        self.bg_config = wx.TextCtrl(self.panel_3, -1, "This is \na  multiline configuration\n\nek\n", style=wx.TE_PROCESS_ENTER | wx.TE_MULTILINE | wx.TE_LINEWRAP | wx.TE_WORDWRAP | wx.NO_BORDER)
+        self.bg_config = wx.TextCtrl(self.panel_3, -1, "This is \na  multiline configuration\n\nek\n", style=wx.TE_PROCESS_ENTER|wx.TE_MULTILINE|wx.TE_LINEWRAP|wx.TE_WORDWRAP|wx.NO_BORDER)
         self.bg_config_status = wx.StaticText(self.panel_3, -1, "This is the minimum size for this widget more more\n\none two")
 
         self.__set_properties()
@@ -98,7 +104,7 @@ class ConfigFrame(wx.MDIChildFrame):
         self.panel_2.SetSizer(sizer_4)
         sizer_3.Add(self.panel_2, 1, wx.EXPAND, 0)
         sizer_7.Add(self.bg_config, 0, wx.EXPAND, 0)
-        sizer_7.Add(self.bg_config_status, 0, wx.EXPAND, 0)
+        sizer_7.Add(self.bg_config_status, 0, wx.EXPAND|wx.SHAPED, 0)
         self.panel_3.SetSizer(sizer_7)
         sizer_3.Add(self.panel_3, 1, wx.EXPAND, 0)
         self.SetSizer(sizer_3)
