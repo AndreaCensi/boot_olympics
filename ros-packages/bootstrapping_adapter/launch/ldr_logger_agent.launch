@@ -34,40 +34,18 @@
                              
         </node>
 
-        <node pkg="bootstrapping_adapter"
-			  name="my_obs_filter"  type="observation_filter_adapter.py" output="screen">
-
-              <rosparam param="code">
-                  [magnus_experiments.ObservationsFilter,
-                   {seed: 2}]
-              </rosparam>		
-              	  
-              <remap from="source" to="my_robot/observations" />
-		</node>
-
-        <node pkg="bootstrapping_adapter"
-			  name="my_commands_filter"  type="commands_filter_adapter.py" output="screen">
-
-              <rosparam param="code">
-                  [magnus_experiments.CommandsFilter,
-                   {seed: 2}]
-              </rosparam>		
-              	  
-              <remap from="commands" to="my_robot/commands" />
-		</node>
-
 
     
         <node pkg="bootstrapping_adapter" name="my_agent" type="agent_adapter.py" output="screen">
                 <rosparam param="code">
-                    [magnus_experiments.AgentFaultDetection, {beta: 5}]
+                    [magnus_experiments.LoggerAgent, {beta: 5}]
                 </rosparam>
 
-                <remap from="observations" to="my_obs_filter/observations" />
-                <remap from="commands"     to="my_commands_filter/commands" />
+                <remap from="observations" to="my_robot/observations" />
+                <remap from="commands"     to="my_robot/commands" />
         </node>
 
-        <node pkg="rosbag" type="rosbag" name="rosbag" args="record -a -o /home/magnus/bagfiles/fault_detection-" />
+        <node pkg="rosbag" type="rosbag" name="rosbag" args="record -a -o /home/magnus/bagfiles/logger" />
 
     </group>
 
