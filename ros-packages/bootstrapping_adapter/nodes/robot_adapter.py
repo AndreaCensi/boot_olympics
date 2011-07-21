@@ -7,7 +7,7 @@ from collections import namedtuple
 from bootstrapping_adapter.srv import (BootstrappingCommands,
                                        BootstrappingCommandsResponse)
 from bootstrapping_adapter.msg import BootstrappingObservations
-from bootstrapping_olympics.loading import instantiate_spec
+from bootstrapping_olympics.loading import instantiate_spec, check_valid_code_spec
 
 import numpy as np
 
@@ -61,8 +61,8 @@ def robot_adapter():
     if not 'code' in params:
         raise Exception('No "code" to run specified.')
     code = params['code']
-    
     rospy.loginfo('Using code = %r' % code)
+    check_valid_code_spec(code)
     try:
         Global.robot = instantiate_spec(code)
     except Exception as e:

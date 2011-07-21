@@ -29,7 +29,7 @@ def observation_filter_adapter():
         Global.random_filter = instantiate_spec(code)        
         # TODO: check right class
     except Exception as e:
-        raise Exception('Could not instantiate agent: %s' % e)
+        raise Exception('Could not instantiate filter: %s' % e)
 
     rospy.loginfo('Random filter instantiated: %s' % Global.random_filter)
 

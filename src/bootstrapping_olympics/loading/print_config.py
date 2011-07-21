@@ -1,10 +1,9 @@
+from . import load_configuration, Configuration
 from optparse import OptionParser
 from reprep import Report
-import os
 import logging
-from bootstrapping_olympics.loading.load_all import load_configuration, \
-    Configuration
-from bootstrapping_olympics.loading.natsort import natsort, natsorted
+import os
+from .natsort import natsorted
 
 logging.basicConfig();
 logger = logging.getLogger("print_config")
@@ -45,12 +44,12 @@ def print_configuration(directory, outdir):
         
     tasks = Configuration.tasks
     r = Report('tasks')
-    create_generic_table(r, 'configuration', tasks, ['desc', 'ros-node'])
+    create_generic_table(r, 'configuration', tasks, ['desc', 'code'])
     write_report(r)
     
     agents = Configuration.agents
-    r = Report('dynamics')
-    create_generic_table(r, 'configuration', agents, ['desc', 'ros-node'])
+    r = Report('agents')
+    create_generic_table(r, 'configuration', agents, ['desc', 'code'])
     write_report(r)
     
     robots = Configuration.robots

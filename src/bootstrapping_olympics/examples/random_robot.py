@@ -1,7 +1,7 @@
-from ..interfaces import RobotSimulationInterface
+from ..interfaces import RobotInterface
 import numpy as np
 
-class RandomRobot(RobotSimulationInterface):
+class RandomRobot(RobotInterface):
     ''' This is a random robot generating Gaussian noise,
         and ignores any command given. '''
     
@@ -9,7 +9,7 @@ class RandomRobot(RobotSimulationInterface):
         self.num_sensels = num_sensels
         observations_shape = [num_sensels]
         commands_spec = [(-1, +1)] * num_commands
-        RobotSimulationInterface.__init__(self,
+        RobotInterface.__init__(self,
                                           observations_shape,
                                           commands_spec)
         
