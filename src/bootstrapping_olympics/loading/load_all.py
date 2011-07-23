@@ -2,14 +2,16 @@ from . import check_valid_ros_node_spec, logger
 from vehicles.configuration import (wrap_check, check_generic_code_desc,
     check_necessary, load_configuration_entries)
 
-class Configuration:
+class BootOlympicsConfig:
     tasks = {}
     robots = {}
     agents = {}
     events = {}
 
+# TODO: deprecated
+Configuration = BootOlympicsConfig
 
-def load_configuration(directory=None,
+def load_boot_olympics_config(directory=None,
                        pattern_tasks='*.tasks.yaml',
                        pattern_robots='*.robots.yaml',
                        pattern_agents='*.agents.yaml',
@@ -62,7 +64,10 @@ def load_configuration(directory=None,
     logger.debug('Found %5d robots.' % len(Configuration.robots))
     logger.debug('Found %5d agents.' % len(Configuration.agents))
     logger.debug('Found %5d events.' % len(Configuration.events))
-             
+
+# TODO: deprecated             
+load_configuration = load_boot_olympics_config
+
 # TODO: unit tests         
 def check_valid_event_config(x):
     necessary = [('id', str),

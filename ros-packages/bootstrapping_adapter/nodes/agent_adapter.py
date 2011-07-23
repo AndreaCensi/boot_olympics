@@ -22,8 +22,6 @@ def handle_observations(resp):
     Global.observations = resp
    
 def event_loop(observations):
-    #if observations.counter % 100 == 0:	
-     #   rospy.loginfo('Event loop at counter %s' % observations.counter)
     sensel_values = np.array(observations.sensel_values)
     Global.agent.process_observations(sensel_values)
     commands = Global.agent.choose_commands()

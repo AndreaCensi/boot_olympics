@@ -5,21 +5,10 @@ import yaml
 
 def create_launch_xml(agent_ros_node, robot_ros_node, namespace, bag=None, output=None):
     check_valid_ros_node_spec(agent_ros_node)
-    check_valid_ros_node_spec(robot_ros_node)
-#    if not id_robot in Configuration.robots:
-#        msg = ('Robot ID %r not known.\nI know %s' % 
-#                (id_robot, Configuration.robots.keys()))
-#        raise Exception(msg)
-#    
-#    if not id_agent in Configuration.agents:
-#        msg = ('Agent ID %r not known.\nI know %s' % 
-#                (id_agent, Configuration.agents.keys()))
-#        raise Exception(msg)
-#
-#    agent = Configuration.agents[id_agent]
-#    robot = Configuration.robots[id_robot]
-#    
-    node_robot = create_ros_node_xml('my_robot', robot_ros_node, remap={},
+    check_valid_ros_node_spec(robot_ros_node)  
+    node_robot = create_ros_node_xml('my_robot',
+                                     robot_ros_node,
+                                     remap={},
                                      output=output)
     node_agent = create_ros_node_xml('my_agent', agent_ros_node,
                                      remap={

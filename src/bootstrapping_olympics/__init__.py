@@ -1,7 +1,8 @@
 import logging
 
 logging.basicConfig();
-logger = logging.getLogger("boot_olympics")
+
+logger = logging.getLogger("BootOlympics")
 logger.setLevel(logging.DEBUG)
 
 

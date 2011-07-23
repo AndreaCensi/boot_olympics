@@ -3,12 +3,6 @@
   code:
       - bootstrapping_olympics.examples.RandomAgent
       - {}
-
-  # ros-node:
-  #     - bootstrapping_adapter/agent_adapter.py
-  #     - code:
-  #         - bootstrapping_olympics.examples.RandomAgent
-  #         - {}
           
 - id: magnus_random_agent
   desc: "Magnus' random agent"
@@ -16,7 +10,6 @@
       - magnus_experiments.SimpleAgent
       - beta: 3
           
-   
 - id: compute_y_stats
   desc: "Estimate stats"
   code:

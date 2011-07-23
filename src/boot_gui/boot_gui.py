@@ -1,14 +1,12 @@
 from . import logger
 from .boot_gui_mdi import ConfigFrame, MainFrame
 from .boot_gui_run import create_vehicles_launch
-from bootstrapping_olympics.loading.load_all import (Configuration as BOConf,
+from bootstrapping_olympics.loading import (Configuration as BOConf,
     load_configuration as BO_load_all)
 from vehicles import (VehiclesConfiguration as VConf,
     load_configuration as V_load_all, check_valid_world_config,
     check_valid_vehicle_config)
-
 from wx import MDIParentFrame #@UnresolvedImport
-
 import subprocess
 import wx
 import yaml

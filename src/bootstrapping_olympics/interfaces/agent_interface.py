@@ -1,6 +1,5 @@
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 
-# TODO: add abstract methods
 
 class AgentInterface:
     __metaclass__ = ABCMeta
@@ -53,13 +52,15 @@ class AgentInterface:
             of the class PublisherInterface. 
         '''
         
+    @abstractmethod
     def get_state(self):
         ''' Return the state for the agent so that it can be saved. '''
-        pass
+        
     
+    @abstractmethod
     def set_state(self, state):
         ''' Load the given state (obtained by 'get_state'). '''
-        pass
+        
     
     def info(self, msg):
         ''' Logs something. '''

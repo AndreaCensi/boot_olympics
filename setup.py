@@ -45,6 +45,8 @@ setup(name='BootstrappingOlympics',
                 'bootstrapping_olympics.ros_scripts.create_launch_all:main',
             'boot_gui = '
                 'boot_gui.boot_gui:main',
+            'boot_learn = '
+                'bootstrapping_olympics.ros_scripts.log_learn.main:main',
 
         ]
       }          
