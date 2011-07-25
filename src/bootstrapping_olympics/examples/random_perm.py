@@ -11,9 +11,9 @@ class RandomPermutation(FilterInterface):
         if self.permutation is None:
             n = len(sensel_values)
             np.random.seed(self.seed)
-            self.permutation = random_permutation()
+            self.permutation = random_permutation(n)
         
-        new_values = sensel_values[self.permutation]
+        return sensel_values[self.permutation]
             
 
 def random_permutation(n):

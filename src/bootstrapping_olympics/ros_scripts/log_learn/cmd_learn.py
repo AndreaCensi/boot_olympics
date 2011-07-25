@@ -1,30 +1,43 @@
-from . import LearningState, LearningStateDB, bag_get_index_object, logger
+from . import (LearningState, LearningStateDB, bag_get_index_object, logger,
+    expand_environment, isodate)
 from ...loading import BootOlympicsConfig, instantiate_spec
+from bootstrapping_olympics.ros_scripts.log_learn.reprep_publisher import (
+    ReprepPublisher)
 from optparse import OptionParser
 from pprint import pformat
+from string import Template
 import numpy as np
+import os
+from . import InAWhile
+from bootstrapping_olympics.ros_scripts.ros_conversions import ROS2Python
 
-usage = """
-    learn  --agent <AGENT> --robot <ROBOT> [--reset]
-    
-"""
+
+
 def cmd_learn_log(main_options, argv):
-    parser = OptionParser(usage=usage)
+    '''Runs the learning for a given agent and log. ''' 
+    parser = OptionParser(usage=cmd_learn_log.short_usage)
     parser.disable_interspersed_args()
     parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
     parser.add_option("-r", "--robot", dest='robot', help="Robot ID")
     parser.add_option("--reset", default=False, action='store_true',
                       help="Do not use cached state.")
+    parser.add_option("-p", "--publish", dest='publish_interval', type='float',
+                      default=None,
+                      help="Publish debug information every N cycles.")
+    parser.add_option("-o", dest='publish_dir',
+                      default="~/boot-learn-out/${id_agent}-${id_robot}-${date}",
+                      help="Directory to store debug information [%default]")
+    
     (options, args) = parser.parse_args(argv)
     
     if options.agent is None:
-        msg = 'Please provide agent ID with --agent'
+        msg = 'Please provide agent ID with --agent.'
         logger.error(msg)
         return -1
     id_agent = options.agent
 
     if options.robot is None:
-        msg = 'Please provide robot ID with --robot'
+        msg = 'Please provide robot ID with --robot.'
         logger.error(msg)
         return -1
     id_robot = options.robot
@@ -63,8 +76,7 @@ def cmd_learn_log(main_options, argv):
             raise
         
     else:
-        state = LearningState(id_robot=id_robot, id_agent=id_agent,
-                              id_episodes=set(), agent_state=None)
+        state = LearningState(id_robot=id_robot, id_agent=id_agent)
         
         # Finding shape
         for ob0 in robots[id_robot][0].read():
@@ -76,25 +88,121 @@ def cmd_learn_log(main_options, argv):
                     (sensel_shape, commands_spec))
         agent.init(sensel_shape, commands_spec)
 
+    agent.logger = logger # TODO: create one for agent
+    
+    if options.publish_interval is not None:
+        pd_template = expand_environment(options.publish_dir)
+        date = isodate()
+        date = state.id_state
+        vars = dict(id_agent=id_agent, id_robot=id_robot, date=date)
+        try:
+            pd = Template(pd_template).substitute(vars)
+        except KeyError as e:
+            msg = ('Error while substituting in string %r. Key %s not found: '
+                   'available keys are %s.' % (pd_template, e, vars.keys()))
+            raise Exception(msg)
+        logger.info('Writing output to directory %r.' % pd)
+        publish_agent_output(state, agent, pd)
+        
     # TODO: progress bar
-            
+    num_episodes_total = 0
+    num_episodes_remaining = 0
+    num_observations_total = 0
+    num_observations_remaining = 0
+    for stream in robots[id_robot]:
+        # Check if all learned
+        num_episodes_total += len(stream.id_episodes)
+        num_observations_total += stream.num_observations
+        to_learn = stream.id_episodes.difference(state.id_episodes)
+        if to_learn:
+            num_episodes_remaining += len(to_learn)
+            num_observations_remaining += stream.num_observations 
+    
+    template = '%20s: %7d episodes, %7d observations.'
+    logger.info(template % ('total', num_episodes_total, num_observations_total))
+    logger.info(template % ('already learned',
+                            len(state.id_episodes),
+                            state.num_observations)) 
+    logger.info(template % ('remaining',
+                            num_episodes_remaining,
+                            num_observations_remaining))
+
+    tracker = InAWhile(5)
+    ros2python = ROS2Python()
     for stream in robots[id_robot]:
         # Check if all learned
         to_learn = stream.id_episodes.difference(state.id_episodes)
         if not to_learn:
-            logger.info('Stream %s already completely learned.' % stream)
+            #logger.info('Stream %s already completely learned.' % stream)
             continue
         else:
-            logger.info('Learning %s' % to_learn)
-        
-        for observations in stream.read(only_episodes=to_learn):
-            sensel_values = np.array(observations.sensel_values)
-            agent.process_observations(sensel_values)
+            #logger.debug('Learning %s' % to_learn)
+            pass
+            
+        cur_stream_observations = 0
+        for ros_obs in stream.read(only_episodes=to_learn):
+            obs = ros2python.convert(ros_obs)
+            if obs is None: # repeated message
+                continue
+            
+            state.num_observations += 1
+            cur_stream_observations += 1
+            
+            if tracker.its_time():
+                progress = 100 * float(state.num_observations) / num_observations_total
+                progress_log = 100 * float(cur_stream_observations) / stream.num_observations
+                estimated = np.NaN
+                msg = ('overall %.2f%% (log %3d%%) (eps: %4d/%d, obs: %4d/%d); '
+                       '%5.1f fps; remain ~%.1f minutes' % 
+                       (progress, progress_log, len(state.id_episodes), num_episodes_total,
+                        state.num_observations, num_observations_total,
+                        tracker.fps(), estimated))
+                logger.info(msg)
+
+            
+            agent.process_observations(obs)
+            
+            if options.publish_interval is not None:
+                if 0 == state.num_observations % options.publish_interval:
+                    publish_agent_output(state, agent, pd)
         
         state.id_episodes.update(to_learn)
         # Saving agent state
         state.agent_state = agent.get_state() 
         db.set_state(state=state, **key)
+
         
+
+once = False   
+
+def publish_agent_output(state, agent, pd):
+    rid = ('%s-%s-%s-%07d' % (state.id_agent, state.id_robot,
+                            state.id_state, state.num_observations))
+    publisher = ReprepPublisher(rid)
+    agent.publish(publisher)
+    filename = os.path.join(pd, '%s.html' % rid)
+    global once
+    if not once:
+        once = True
+        logger.info('Writing to %r.' % filename)
+    else:
+        #logger.debug('Writing to [...]/%s .' % os.path.basename(filename))
+        pass
+    report = publisher.r
     
+    stats = ("Num episodes: %s\nNum observations: %s" % 
+             (len(state.id_episodes), state.num_observations))
+    report.text('learning statistics', stats)
+    rd = os.path.join(pd, 'images')
+    report.to_html(filename, resources_dir=rd)
+    
+    last = os.path.join(pd, 'last.html')
+    if os.path.exists(last):
+        os.unlink(last)
+    os.link(filename, last)
+    
+cmd_learn_log.short_usage = ('learn-log -a <AGENT> -r <ROBOT> '
+                             ' [--reset] [--publish interval]')
+    
+
     

@@ -1,5 +1,6 @@
 from contracts import contract, check
 from . import logger
+import traceback
 
 @contract(code_spec='seq[2]')
 def instantiate_spec(code_spec):
@@ -44,6 +45,7 @@ def import_name(name):
                 module = __import__(module_name, fromlist=['dummy'])
             except ImportError as e:
                 msg = 'Cannot load %r (tried also with %r): %s.' % (name, module_name, e)
+                msg += '\n' + traceback.format_exc()
                 raise Exception(msg)
             
             if not field in module.__dict__:

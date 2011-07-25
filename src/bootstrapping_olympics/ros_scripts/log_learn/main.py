@@ -1,4 +1,4 @@
-from . import cmd_list_logs, cmd_list_states, logger, cmd_learn_log
+from . import cmd_list_logs, cmd_list_states, logger, cmd_learn_log, cmd_list_agents
 from ...loading.load_all import load_boot_olympics_config
 from optparse import OptionParser
 import sys
@@ -6,39 +6,40 @@ import traceback
 
 commands = {
     'list-logs': cmd_list_logs,
+    'list-agents': cmd_list_agents,
     'list-states': cmd_list_states,
     'learn-log': cmd_learn_log,
 }
 
+# TODO: make decorators
+
+commands_list = "\n".join([ '  %-15s  %s\n  %-15s  Usage: %s' % 
+                           (cmd, f.__doc__, '', f.short_usage) 
+                 for cmd, f in commands.items()])
 
 usage = """
-    boot_log_learn --agent id_agent --robot id_robot
+
+    boot_learn [options]  <command>  [command options]
     
-    
-    List all log files:
-    
-        boot_log_learn [options] list-logs
-        
-    List all agent states: 
-    
-        boot_log_learn [options] list-states
-        
-    Learn all for an agent 
-"""
+Available commands:
+
+%s
+
+Use: `boot_learn  <command> -h' to get more information about that command.  
+""" % commands_list
 
 def boot_log_learn(args):
     parser = OptionParser(usage=usage)
     parser.disable_interspersed_args()
     parser.add_option("-c", dest='conf_directory',
                       help="Configuration directory [%default].")
-    parser.add_option("-l", dest='log_directory', default="~/.ros/log",
+    parser.add_option("-l", dest='log_directory',
+                      default="~/.ros/log",
                       help="Log directory [%default].")
-    parser.add_option("-s", dest='state_directory', default='~/boot_learning_states/',
+    parser.add_option("-s", dest='state_directory',
+                      default='~/boot_learning_states/',
                       help="State directory [%default].")
     (options, args) = parser.parse_args()
-#
-#    if options.output is None:
-#        raise Exception('Please pass --output.')
     
     if not args:
         msg = 'Please supply command. Available: %s' % ", ".join(commands.keys())

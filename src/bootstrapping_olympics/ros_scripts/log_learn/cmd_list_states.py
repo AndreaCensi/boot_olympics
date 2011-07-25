@@ -3,22 +3,12 @@ from optparse import OptionParser
 from bootstrapping_olympics.ros_scripts.log_learn.learning_state import LearningStateDB
 from contracts.interface import describe_value
 
-usage = """
-    
-    
-    list-stats      Shows a summary of the states present in DB. 
-    list-stats -v   Actually loads the state and describes it.
-    
-
-"""
 def cmd_list_states(main_options, argv):
-    parser = OptionParser(usage=usage)
+    '''Shows a summary of the states present in DB. '''
+    parser = OptionParser(usage=cmd_list_states.short_usage)
     parser.disable_interspersed_args()
     parser.add_option("-v", dest='verbose', default=False, action='store_true',
-                      help="Show more verbose output.")
-#    parser.add_option("-s", "--streams", dest='display_streams', action='store_true',
-#                      default=False,
-#                      help="Displays all streams [%default].")
+                      help="Show more verbose output.") 
     (options, args) = parser.parse_args(argv)    
     
     if args:
@@ -40,4 +30,7 @@ def cmd_list_states(main_options, argv):
             logger.info('  # episodes: %s' % len(state.id_episodes))
             logger.info('      object: %s' % describe_value(state.agent_state))
             
+    return 0
+
+cmd_list_states.short_usage = 'list-states [-v]'
     

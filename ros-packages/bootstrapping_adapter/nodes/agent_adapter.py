@@ -6,6 +6,7 @@ import numpy as np
 from bootstrapping_adapter.srv import BootstrappingCommands
 from bootstrapping_adapter.msg import BootstrappingObservations
 from bootstrapping_olympics.loading import instantiate_spec, check_valid_code_spec
+from bootstrapping_olympics import AgentInterface
 from ros_publisher import ROSPublisher
 
 class Global:
@@ -54,6 +55,13 @@ def agent_adapter():
     rospy.loginfo('Using code = %r' % code)
     check_valid_code_spec(code)
 
+    class ROSLogger:
+        @staticmethod
+        def info(s):
+            rospy.loginfo(s)
+    
+    AgentInterface.logger = ROSLogger
+    
     try:
         Global.agent = instantiate_spec(code)        
         # TODO: check right class

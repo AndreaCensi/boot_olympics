@@ -2,6 +2,8 @@ from contracts import contract
 import shelve
 import os
 from . import logger
+from . import isodate
+from . import expand_environment
 
 class LearningState(object):
     ''' 
@@ -10,17 +12,20 @@ class LearningState(object):
     '''
     
     @contract(id_agent='str', id_robot='str')
-    def __init__(self, id_agent, id_robot, id_episodes, agent_state):
+    def __init__(self, id_agent, id_robot):
         self.id_agent = id_agent
         self.id_robot = id_robot
-        self.id_episodes = id_episodes
-        self.agent_state = agent_state
+        self.id_episodes = set()
+        self.num_observations = 0
+        self.agent_state = None
+        
+        self.id_state = isodate() 
         
 # TODO: expand user
 
 class LearningStateDB():
     def __init__(self, datadir):
-        self.datadir = datadir
+        datadir = expand_environment(datadir)
         if not os.path.exists(datadir):
             os.makedirs(datadir)
         dbfile = os.path.join(datadir, 'agent_states.db')

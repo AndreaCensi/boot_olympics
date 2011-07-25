@@ -2,11 +2,56 @@ from abc import ABCMeta, abstractmethod
 
 
 class AgentInterface:
+    ''' 
+    
+This is the interface that the agents must implement.
+
+The following is a list of conventions that we use.    
+
+Initialization
+--------------
+
+(TOWRITE/TODO)
+
+Processing the observations
+---------------------------
+
+The function ``process_observations()`` is given an instance
+of the class Observations, which contains many info other than
+the raw sensel values. 
+
+Logging stuff
+-------------
+
+Use the function ``self.info(msg)`` to log stuff.
+Do not use ``rospy.loginfo`` or ``print``: the agents implementation s
+hould be independent of ROS.
+
+
+Saving the state
+----------------
+
+Implement the functions ``set_state()`` and ``get_state()``. 
+``get_state()`` can return anything which is Pickable. 
+``set_state()`` will be given whatever ``get_state()`` returned.
+
+
+Publishing information
+----------------------
+
+Implement the function ``publish()`` to output information, such
+as graphs, statistics, etc. The function is given an instance of the 
+class Publisher, whose implementation is hidden.
+
+During a ROS simulation, Publisher will be a ROSPublisher that 
+will publish the data as ROS topics which can be subscribed by RViz.
+
+During offline learning, the data will be written to HTML files.
+
+    '''
+
     __metaclass__ = ABCMeta
     
-    ''' 
-        This is the interface that the agents must implement.
-    '''
     
     def perform_task(self, task):
         ''' 
@@ -17,6 +62,7 @@ class AgentInterface:
         '''
         return False
     
+    @abstractmethod
     def init(self, num_sensels, commands_spec):
         ''' 
             Called when the observations and commands shape are available,
@@ -32,12 +78,12 @@ class AgentInterface:
         '''
         pass
     
-    
+    @abstractmethod
     def process_observations(self, observations):
         '''
             Process new observations.
             
-            :param:observations: a Numpy array containing the sensels values.
+            :param:observations: a structure of type Observations
         '''
         pass
     
@@ -69,3 +115,13 @@ class AgentInterface:
              
     logger = None
 
+    def __str__(self):
+        return 'Agent(%s)' % self.__class__.__name__
+    
+    
+    def get_state_vars(self, state_vars):
+        return dict((x, self.__dict__[x]) for x in state_vars)
+    
+    def set_state_vars(self, state, state_vars):
+        for v in state_vars:
+            self.__dict__[v] = state[v]

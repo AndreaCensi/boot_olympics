@@ -3,8 +3,7 @@ from collections import defaultdict
 from vehicles.configuration.config_utils import locate_files
 import os
 import shelve
-from . import BootStream
-# XXX: remove from here
+from . import BootStream 
 
 
 def bag_get_index_object(directory):
@@ -32,9 +31,7 @@ def bag_get_index_object(directory):
             bag_files = s['bag_files']
             robots = defaultdict(lambda:[])
             for file, topics in bag_files.items():
-                for topic, stream in topics.items():
-#                    if not stream.id_robot in s['robots']:
-#                        s['robots'][stream.id_robot] = []
+                for stream in topics.values():
                     robots[stream.id_robot].append(stream)
             s['robots'] = dict(**robots)
             s.close()
@@ -51,8 +48,8 @@ def bag_get_index_object(directory):
         s = shelve.open(index_file, writeback=True) 
         assert 'bag_files' in s
         assert 'robots' in s
-        r = s['bag_files'] #try loading
-        r = s['robots'] #try loading 
+        x = s['bag_files'] #try loading from disk @UnusedVariable
+        x = s['robots'] #try loading from disk @UnusedVariable
     except:
         logger.error('Index file corrupted; try deleting %r.' % (index_file))
         raise

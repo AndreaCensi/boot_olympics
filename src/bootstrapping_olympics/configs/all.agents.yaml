@@ -4,10 +4,10 @@
       - bootstrapping_olympics.examples.RandomAgent
       - {}
           
-- id: magnus_random_agent
-  desc: "Magnus' random agent"
+- id: bds_agent
+  desc: "BDS agents"
   code:
-      - magnus_experiments.SimpleAgent
+      - magnus_experiments.BDSAgent
       - beta: 3
           
 - id: compute_y_stats
