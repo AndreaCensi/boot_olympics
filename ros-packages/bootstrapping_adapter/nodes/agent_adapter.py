@@ -8,6 +8,7 @@ from bootstrapping_adapter.msg import BootstrappingObservations
 from bootstrapping_olympics.loading import instantiate_spec, check_valid_code_spec
 from bootstrapping_olympics import AgentInterface
 from ros_publisher import ROSPublisher
+from bootstrapping_olympics.ros_scripts.ros_conversions import ROS2Python
 
 class Global:
     # Global variables -- a bit clumsy
@@ -18,23 +19,31 @@ class Global:
     publish_interval = None
     publish = False
     count = 0
+    ros2python = ROS2Python()
     
 def handle_observations(resp):
     Global.observations = resp
    
 def event_loop(observations):
-    sensel_values = np.array(observations.sensel_values)
-    Global.agent.process_observations(sensel_values)
+    obs = Global.ros2python.convert(observations, filter_doubles=True)
+#    rospy.loginfo(' observation (%s %s %s)' % 
+#                      (obs.time, obs.id_episode, obs.counter))
+    if obs is not None: # possibly repeated
+        Global.agent.process_observations(obs)
+    else:
+        pass
+        #rospy.loginfo('Detected double observation (%s %s %s)' % 
+        #              (observations.timestamp, observations.id_episode, observations.counter))
     commands = Global.agent.choose_commands()
     
     if Global.publish and Global.count % Global.publish_interval == 0:
         Global.agent.publish(Global.ros_publisher)
-    Global.count += 1
-    
+        Global.count += 1
+
     # TODO: check commands is compatible with commands_spec
     sender = '%s' % Global.agent.__class__.__name__
     Global.set_commands(commands=commands, sender=sender,
-                        timestamp=observations.timestamp)    
+                timestamp=observations.timestamp)    
 
 def agent_adapter():   
     rospy.init_node('agent_adapter')

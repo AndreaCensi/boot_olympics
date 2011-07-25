@@ -6,13 +6,16 @@ class ROS2Python():
     def __init__(self):
         self.last = None
         
-    def convert(self, ros_obs):
+    def convert(self, ros_obs, filter_doubles=True):
         ''' Returns None if the same message is repeated. '''
 #        print('found: %s %s %s' % 
 #              (ros_obs.id_episode, ros_obs.counter, ros_obs.timestamp))
-#        
-        if self.last is not None and self.last.counter == ros_obs.counter:
-            return None
+#
+        if filter_doubles:
+            if self.last is not None and self.last.counter == ros_obs.counter:
+                #print('Same observations: %s %s' % 
+                #      (ros_obs.id_episode, ros_obs.counter))
+                return None
         
         obs = Observations()
         obs.time = ros_obs.timestamp
@@ -27,7 +30,9 @@ class ROS2Python():
             obs.dt = obs.time - self.last.time
             obs.episode_changed = obs.id_episode != self.last.id_episode
             if not obs.episode_changed:
-                assert obs.dt > 0
+                assert obs.dt >= 0
+                if filter_doubles:
+                    assert obs.dt > 0
         else:
             obs.dt = 0.01
             obs.episode_changed = True

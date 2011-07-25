@@ -10,8 +10,7 @@ import numpy as np
 import os
 from . import InAWhile
 from bootstrapping_olympics.ros_scripts.ros_conversions import ROS2Python
-from bootstrapping_olympics.interfaces.agent_interface import AgentInterface
-
+from bootstrapping_olympics.interfaces import AgentInterface
 
 
 def cmd_learn_log(main_options, argv):
@@ -169,15 +168,30 @@ def cmd_learn_log(main_options, argv):
             if options.publish_interval is not None:
                 if 0 == state.num_observations % options.publish_interval:
                     publish_agent_output(state, agent, pd)
-        
+                    
+
+        #if ExceptHook.called: break
         state.id_episodes.update(to_learn)
         # Saving agent state
-        state.agent_state = agent.get_state() 
-        db.set_state(state=state, **key)
-
+        state.agent_state = agent.get_state()
         
+        def save_state(): 
+            db.set_state(state=state, **key)
+        try_until_done(save_state)
 
-once = False   
+    logger.info('Exiting gracefully.')
+    return 0
+
+once = False
+
+def try_until_done(function): 
+    while True:
+        try:
+            function()
+            break
+        except KeyboardInterrupt:
+            logger.info('Caught CTRL-C, retrying.')
+            continue   
 
 def publish_agent_output(state, agent, pd):
     rid = ('%s-%s-%s-%07d' % (state.id_agent, state.id_robot,

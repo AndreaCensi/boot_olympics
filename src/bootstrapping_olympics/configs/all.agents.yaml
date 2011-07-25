@@ -15,3 +15,9 @@
   code:
       - boot_agents.EstStats
       - beta: 3
+      
+- id: diffeo_agent_dev
+  desc: "Dev. version"
+  code:
+      - boot_agents.DiffeoAgent
+      - rate: 0

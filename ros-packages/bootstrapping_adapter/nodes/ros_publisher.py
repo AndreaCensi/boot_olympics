@@ -21,11 +21,11 @@ class ROSPublisher(Publisher):
         
         self.ros_publishers = {} 
          
-    def publish_array(self, name, value):
+    def array(self, name, value):
         pass
     
     @contract(name='str', value='array')
-    def publish_array_as_image(self, name, value,
+    def array_as_image(self, name, value,
                                filter=Publisher.FILTER_POSNEG, filter_params={}):
         if not filter in self.filters:
             msg = 'Unknown filter %r; I know %s' % (filter, self.filters.keys())
@@ -41,7 +41,7 @@ class ROSPublisher(Publisher):
 
 
     @contract(name='str', text='str')
-    def publish_text(self, name, text):
+    def text(self, name, text):
         ''' 
             Publishes a text object.
 
