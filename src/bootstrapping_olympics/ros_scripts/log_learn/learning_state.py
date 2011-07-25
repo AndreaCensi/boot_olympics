@@ -30,7 +30,7 @@ class LearningStateDB():
             os.makedirs(datadir)
         dbfile = os.path.join(datadir, 'agent_states.db')
         logger.debug('Loading database in %r.' % dbfile)
-        self.s = shelve.open(dbfile, writeback=True)
+        self.s = shelve.open(dbfile, protocol=2, writeback=True)
         if not 'states' in self.s:
             logger.info('Created empty database.')
             self.s['states'] = {}

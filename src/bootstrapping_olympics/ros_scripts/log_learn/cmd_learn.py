@@ -10,6 +10,7 @@ import numpy as np
 import os
 from . import InAWhile
 from bootstrapping_olympics.ros_scripts.ros_conversions import ROS2Python
+from bootstrapping_olympics.interfaces.agent_interface import AgentInterface
 
 
 
@@ -29,6 +30,9 @@ def cmd_learn_log(main_options, argv):
                       help="Directory to store debug information [%default]")
     
     (options, args) = parser.parse_args(argv)
+    if args:
+        logger.error('Spurious arguments: %s' % args)
+        return -1
     
     if options.agent is None:
         msg = 'Please provide agent ID with --agent.'
@@ -88,7 +92,7 @@ def cmd_learn_log(main_options, argv):
                     (sensel_shape, commands_spec))
         agent.init(sensel_shape, commands_spec)
 
-    agent.logger = logger # TODO: create one for agent
+    AgentInterface.logger = logger # TODO: create one for agent
     
     if options.publish_interval is not None:
         pd_template = expand_environment(options.publish_dir)
@@ -179,6 +183,12 @@ def publish_agent_output(state, agent, pd):
     rid = ('%s-%s-%s-%07d' % (state.id_agent, state.id_robot,
                             state.id_state, state.num_observations))
     publisher = ReprepPublisher(rid)
+    report = publisher.r
+    
+    stats = ("Num episodes: %s\nNum observations: %s" % 
+             (len(state.id_episodes), state.num_observations))
+    report.text('learning statistics', stats)
+
     agent.publish(publisher)
     filename = os.path.join(pd, '%s.html' % rid)
     global once
@@ -188,11 +198,6 @@ def publish_agent_output(state, agent, pd):
     else:
         #logger.debug('Writing to [...]/%s .' % os.path.basename(filename))
         pass
-    report = publisher.r
-    
-    stats = ("Num episodes: %s\nNum observations: %s" % 
-             (len(state.id_episodes), state.num_observations))
-    report.text('learning statistics', stats)
     rd = os.path.join(pd, 'images')
     report.to_html(filename, resources_dir=rd)
     

@@ -26,7 +26,7 @@ def bag_get_index_object(directory):
         if os.path.exists(index_file):
             os.unlink(index_file)
         try:
-            s = shelve.open(index_file, writeback=True)
+            s = shelve.open(index_file, protocol=2, writeback=True)
             reindex(s, directory)
             bag_files = s['bag_files']
             robots = defaultdict(lambda:[])
