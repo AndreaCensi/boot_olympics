@@ -1,6 +1,7 @@
 from abc import abstractmethod, ABCMeta
 from collections import namedtuple
 from contracts import contract
+from time import time
 
 class RobotInterface:
     ''' This is the basic class for robot simulators. '''
@@ -15,13 +16,13 @@ class RobotInterface:
         self.observations_shape = observations_shape
         self.commands_spec = commands_spec
         
-        self.timestamp = 1000
+        self.timestamp = 0
         self.counter = 0
         self.id_robot = id_robot
         self.id_sensors = id_sensors
         self.id_actuators = id_actuators
         self.id_episode = "id-episode-not-set"
-        self.id_environment = "id-environment-not-set"      
+        self.id_environment = 'id_environment_not_set'      
         self.last_commands = None
         self.last_commands_source = None
         self.last_observations = None 
@@ -36,7 +37,7 @@ class RobotInterface:
             Should set the attributes ``id_episode`` and ``id_environment``.
         '''
         self.id_episode = 'id-episode-not-set'
-        self.id_environment = 'id-episode-not-set'
+        self.id_environment = 'id_environment_not_set'
 
     @abstractmethod
     def set_commands(self, commands):
@@ -85,7 +86,9 @@ class RobotInterface:
         
     def compute_and_store_observations(self):
         # compute and store observations
-        sensel_values = self.get_observations()
+        time_sensel_tuple = self.get_observations()
+        self.timestamp = time_sensel_tuple[0]
+        sensel_values = time_sensel_tuple[1]        
         fields = {
           'timestamp': self.timestamp,
           'counter': self.counter,

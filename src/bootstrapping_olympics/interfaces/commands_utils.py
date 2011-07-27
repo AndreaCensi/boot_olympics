@@ -12,3 +12,14 @@ def random_command(command_spec):
         
 def random_commands(commands_spec):
     return np.array([random_command(x) for x in commands_spec])
+
+def canonical_command(command_spec):
+    i = np.random.randint(3)
+    if i == 2:
+        return 0
+    else:
+        return command_spec[i]        
+
+def canonical_commands(commands_spec):
+    return np.array([canonical_command(x) for x in commands_spec])
+

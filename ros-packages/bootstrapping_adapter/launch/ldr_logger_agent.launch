@@ -8,7 +8,7 @@
 
     </machine>
 
-
+    <arg name="environment" default="Steele lab" />
 
     <group ns="test00">
         <node pkg="ldr_test" name="tracks" type="tracks.py" output="screen" machine="ldr" />
@@ -21,14 +21,20 @@
                 </rosparam>
         </node>
 
+
         <node pkg="bootstrapping_adapter"
               name="my_robot" type="robot_adapter.py" output="screen">
+
 
                 <rosparam param="code">
                     [magnus_experiments.Landroid,
                         {}]
                 </rosparam>
-        
+
+                <rosparam param="env">
+                    "$(arg environment)"
+                </rosparam>
+
                 <remap from="laser" to="hokuyo/scan" />
                 <remap from="track_input" to="track_input" />
                              
