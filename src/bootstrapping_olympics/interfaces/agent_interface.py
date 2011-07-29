@@ -124,4 +124,8 @@ During offline learning, the data will be written to HTML files.
     
     def set_state_vars(self, state, state_vars):
         for v in state_vars:
-            self.__dict__[v] = state[v]
+            if v not in state:
+                self.info('Warning, no variable %r found in state vars, setting none.' % v)
+                self.__dict__[v] = None
+            else:
+                self.__dict__[v] = state[v]

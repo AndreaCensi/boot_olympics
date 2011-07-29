@@ -1,6 +1,7 @@
 from bootstrapping_olympics.interfaces.publisher_interface import Publisher
 from reprep import Report
 from contextlib import contextmanager
+from contracts import contract
 
 class ReprepPublisher(Publisher):
     ''' 
@@ -10,21 +11,37 @@ class ReprepPublisher(Publisher):
     
     def __init__(self, rid):
         self.r = Report(rid)
-        self.f = self.r.figure(cols=3)
-        
+        self.subs = {}
+    
+    @contract(name='str|tuple[=2]')
+    def get_sub(self, name):
+        if isinstance(name, str):
+            subname = 'default'
+            resname = name
+        elif isinstance(name, tuple):
+            subname = name[0]
+            resname = name[1]
+        if not subname in self.subs:
+            self.subs[subname] = self.r.figure(subname, cols=4)
+        return self.subs[subname], resname
+    
     def array(self, name, value):
-        self.r.data(name, value)
+        f, name = self.get_sub(name)
+        f.data(name, value)
         
     def array_as_image(self, name, value, filter='posneg', filter_params={}):
-        self.r.data(name, value).display(filter, **filter_params)
-        self.r.last().add_to(self.f)
+        f, name = self.get_sub(name)
+        f.data(name, value).display(filter, **filter_params)
+        f.last().add_to(f) # XXX
         
     def text(self, name, value):
-        self.r.text(name, value)
+        f, name = self.get_sub(name)
+        f.text(name, value)
         
     @contextmanager
     def plot(self, name, **args):
-        with self.r.data_pylab(name, **args) as pylab:
+        f, name = self.get_sub(name)
+        with f.data_pylab(name, **args) as pylab:
             yield pylab
-        self.r.last().add_to(self.f)
+        f.last().add_to(f)
         

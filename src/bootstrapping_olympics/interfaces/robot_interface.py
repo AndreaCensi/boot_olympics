@@ -1,7 +1,6 @@
 from abc import abstractmethod, ABCMeta
 from collections import namedtuple
 from contracts import contract
-from time import time
 
 class RobotInterface:
     ''' This is the basic class for robot simulators. '''

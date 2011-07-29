@@ -4,7 +4,7 @@ class BootStream(object):
     ''' This is the structure used in the .bag index. '''
     
     def __init__(self, id_robot, id_episodes, timestamp, length,
-                 num_observations, bag_file, topic):
+                 num_observations, bag_file, topic, sensels_shape, commands_spec):
         self.id_robot = id_robot
         self.id_episodes = id_episodes
         self.timestamp = timestamp
@@ -13,10 +13,14 @@ class BootStream(object):
         self.bag_file = bag_file
         self.topic = topic
         self.short_file = os.path.splitext(os.path.basename(bag_file))[0]
-        
+        self.sensels_shape = sensels_shape
+        self.commands_spec = commands_spec
+
     def __str__(self):
-        return 'BootStream(%s,%s,%s)' % (self.short_file,
-                                         self.id_robot, self.length)
+        return 'BootStream(%s,%s,T=%s,y=%s,u=%s)' % (self.short_file,
+                                         self.id_robot, self.length,
+                                         self.sensels_shape,
+                                         self.commands_spec)
 
     def read(self, only_episodes=None):
         from ros import rosbag #@UnresolvedImport

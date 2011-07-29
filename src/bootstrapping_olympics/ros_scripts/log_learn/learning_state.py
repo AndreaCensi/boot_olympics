@@ -49,3 +49,4 @@ class LearningStateDB():
     def set_state(self, id_agent, id_robot, state):
         ''' Sets the learning state for the given combination. '''
         self.s['states'][(id_agent, id_robot)] = state
+        self.s.sync()

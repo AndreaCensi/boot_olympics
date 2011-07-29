@@ -30,9 +30,25 @@ def bag_get_index_object(directory):
             reindex(s, directory)
             bag_files = s['bag_files']
             robots = defaultdict(lambda:[])
+            robot2spec = {}
             for file, topics in bag_files.items():
                 for stream in topics.values():
-                    robots[stream.id_robot].append(stream)
+                    id_robot = stream.id_robot
+                    spec = (stream.sensels_shape, stream.commands_spec)
+                    if not id_robot in robot2spec:
+                        robot2spec[id_robot] = spec
+                    else:
+                        if spec != robot2spec[id_robot]:
+                            msg = 'Warning! You got your logs mixed up. \n'
+                            msg += ('Problem spec in:\n\t%r\nis\n\t%r\n' % 
+                                   (stream, spec))
+                            msg += ('and this is different from:\n\t%r\n'
+                                   'found in e.g.,:\n\t%r' % 
+                                   (robot2spec[id_robot], robots[id_robot][0]))
+                            msg += '\nI will skip this stream.'
+                            logger.error(msg)
+                            continue
+                    robots[id_robot].append(stream)
             s['robots'] = dict(**robots)
             s.close()
         except:
@@ -90,6 +106,8 @@ def bag_get_bootstrapping_stream(bag_file):
             id_episodes = set([])
             timestamp = None
             num = 0
+            sensels_shape = None
+            commands_shape = None
             for topic, msg, t in bag.read_messages(topics=[topic]):
                 if timestamp is None:
                     timestamp = t
@@ -99,6 +117,9 @@ def bag_get_bootstrapping_stream(bag_file):
                 if id_episode == 'id-episode-not-set':
                     id_episode = os.path.basename(bag_file)
                 id_episodes.add(id_episode)
+                commands_spec = msg.commands_spec 
+                sensels_shape = msg.sensel_shape # TODO: check coherence
+                
                 num += 1
             length = (t - timestamp)
             length = float(int(length.to_sec()))
@@ -109,7 +130,9 @@ def bag_get_bootstrapping_stream(bag_file):
                                         length=length,
                                         num_observations=num,
                                         bag_file=bag_file,
-                                        topic=topic)
+                                        topic=topic,
+                                        sensels_shape=sensels_shape,
+                                        commands_spec=commands_spec)
 
     bag.close()
     return streams

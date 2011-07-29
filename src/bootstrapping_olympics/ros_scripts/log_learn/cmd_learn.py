@@ -60,6 +60,8 @@ def cmd_learn_log(main_options, argv):
         logger.error(msg)
         return -3
     
+    AgentInterface.logger = logger # TODO: create one for agent
+    
     agent_spec = BootOlympicsConfig.agents[options.agent]
     
     logger.info('Instancing agent spec:\n%s' % pformat(agent_spec))
@@ -91,21 +93,31 @@ def cmd_learn_log(main_options, argv):
                     (sensel_shape, commands_spec))
         agent.init(sensel_shape, commands_spec)
 
-    AgentInterface.logger = logger # TODO: create one for agent
     
+    def substitute(template, vars):
+        try:
+            return Template(pd_template).substitute(vars)
+        except KeyError as e:
+            msg = ('Error while substituting in string %r. Key %s not found: '
+                   'available keys are %s.' % (pd_template, e, vars.keys()))
+            raise Exception(msg)
+        
     if options.publish_interval is not None:
         pd_template = expand_environment(options.publish_dir)
         date = isodate()
         date = state.id_state
         vars = dict(id_agent=id_agent, id_robot=id_robot, date=date)
-        try:
-            pd = Template(pd_template).substitute(vars)
-        except KeyError as e:
-            msg = ('Error while substituting in string %r. Key %s not found: '
-                   'available keys are %s.' % (pd_template, e, vars.keys()))
-            raise Exception(msg)
+        pd = substitute(pd_template, vars)
         logger.info('Writing output to directory %r.' % pd)
         publish_agent_output(state, agent, pd)
+        
+        vars['date'] = 'last'
+        pd_last = substitute(pd_template, vars)
+        logger.info('Also available as %s' % pd_last)
+        if os.path.exists(pd_last):
+            os.unlink(pd_last)
+        os.symlink(pd, pd_last)
+     
         
     # TODO: progress bar
     num_episodes_total = 0

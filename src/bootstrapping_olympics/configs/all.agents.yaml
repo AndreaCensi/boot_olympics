@@ -20,4 +20,11 @@
   desc: "Dev. version"
   code:
       - boot_agents.DiffeoAgent
-      - rate: 0
+      - rate: 1
+      
+      
+- id: bds_agent_dev
+  desc: "Dev. version"
+  code:
+      - boot_agents.BDSAgent
+      - beta: 1
