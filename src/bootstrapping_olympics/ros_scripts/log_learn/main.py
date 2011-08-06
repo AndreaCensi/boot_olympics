@@ -61,6 +61,7 @@ def boot_log_learn(args):
 def main():
     try:
         ret = boot_log_learn(sys.argv[1:])
+        logger.debug('Graceful exit with return code %d.' % ret)
         sys.exit(ret)
     except Exception as e:
         logger.error(str(e))

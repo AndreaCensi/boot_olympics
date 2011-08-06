@@ -21,10 +21,23 @@
   code:
       - boot_agents.DiffeoAgent
       - rate: 1
-      
+
+
+- id: diffeo_agent_2d_dev
+  desc: "Dev. version"
+  code:
+      - boot_agents.DiffeoAgent2D
+      - rate: 1
       
 - id: bds_agent_dev
   desc: "Dev. version"
   code:
       - boot_agents.BDSAgent
+      - beta: 1
+      
+
+- id: embed_dev
+  desc: "Dev. version"
+  code:
+      - boot_agents.Embed
       - beta: 1

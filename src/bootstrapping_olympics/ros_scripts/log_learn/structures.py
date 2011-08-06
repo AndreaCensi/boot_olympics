@@ -1,7 +1,7 @@
 import os
 
 class BootStream(object):
-    ''' This is the structure used in the .bag index. '''
+    ''' This class represents the structure used in the .bag index. '''
     
     def __init__(self, id_robot, id_episodes, timestamp, length,
                  num_observations, bag_file, topic, sensels_shape, commands_spec):
@@ -22,7 +22,7 @@ class BootStream(object):
                                          self.sensels_shape,
                                          self.commands_spec)
 
-    def read(self, only_episodes=None):
+    def read(self, only_episodes=False): # TODO: implement
         from ros import rosbag #@UnresolvedImport
         bag = rosbag.Bag(self.bag_file)
         warned = False
@@ -34,13 +34,6 @@ class BootStream(object):
                         warned = True
                         print('Changing id_episode to %s' % self.short_file)
                     observations.id_episode = self.short_file
-                # FIXME: hack, if the log time is invalid, add
-#                if observations.timestamp == 1000:
-#                    if not warned:
-#                        warned = True
-#                        print('Warning, fixing timestamp for log file %r' % 
-#                              self.bag_file)
-#                    observations.timestamp = t.to_sec()
                 # TODO: implmement only_episodes
                 yield observations
         except:

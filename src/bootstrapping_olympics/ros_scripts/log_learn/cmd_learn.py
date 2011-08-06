@@ -24,11 +24,14 @@ def cmd_learn_log(main_options, argv):
     parser.add_option("-p", "--publish", dest='publish_interval', type='float',
                       default=None,
                       help="Publish debug information every N cycles.")
+    parser.add_option("--once", default=False, action='store_true',
+                      help="Just plot the published information once and exit.")
     parser.add_option("-o", dest='publish_dir',
                       default="~/boot-learn-out/${id_agent}-${id_robot}-${date}",
                       help="Directory to store debug information [%default]")
     
     (options, args) = parser.parse_args(argv)
+    
     if args:
         logger.error('Spurious arguments: %s' % args)
         return -1
@@ -37,6 +40,7 @@ def cmd_learn_log(main_options, argv):
         msg = 'Please provide agent ID with --agent.'
         logger.error(msg)
         return -1
+    
     id_agent = options.agent
 
     if options.robot is None:
@@ -44,6 +48,7 @@ def cmd_learn_log(main_options, argv):
         logger.error(msg)
         return -1
     id_robot = options.robot
+    
     
     index = bag_get_index_object(main_options.log_directory)
     robots = index['robots']
@@ -62,46 +67,17 @@ def cmd_learn_log(main_options, argv):
     
     AgentInterface.logger = logger # TODO: create one for agent
     
-    agent_spec = BootOlympicsConfig.agents[options.agent]
+    agent_spec = BootOlympicsConfig.agents[id_agent]
+       
     
-    logger.info('Instancing agent spec:\n%s' % pformat(agent_spec))
-    
-    agent = instantiate_spec(agent_spec['code'])   
-    
-    db = LearningStateDB(main_options.state_directory)
-    key = dict(id_robot=id_robot, id_agent=id_agent)
-    if not options.reset and db.has_state(**key):
-        logger.info('Using previous learned state.')
-        state = db.get_state(**key)
-        logger.info('State after learning %d episodes.' % len(state.id_episodes))
-        try:
-            agent.set_state(state.agent_state)
-        except:
-            logger.error('Could not set agent to previous state.')
-            raise
-        
-    else:
-        state = LearningState(id_robot=id_robot, id_agent=id_agent)
-        
-        # Finding shape
-        for ob0 in robots[id_robot][0].read():
-            break
-        
-        sensel_shape = tuple(ob0.sensel_shape) # XXX
-        commands_spec = eval(ob0.commands_spec)
-        logger.info('Agent init Sensels: %s  commands: %s' % 
-                    (sensel_shape, commands_spec))
-        agent.init(sensel_shape, commands_spec)
+    agent, state = load_agent_and_state(
+                    agent_spec=agent_spec, id_agent=id_agent, id_robot=id_robot,
+                       state_db_directory=main_options.state_directory,
+                       log_directory=main_options.log_directory,
+                       reset_state=options.reset)
 
-    
-    def substitute(template, vars):
-        try:
-            return Template(pd_template).substitute(vars)
-        except KeyError as e:
-            msg = ('Error while substituting in string %r. Key %s not found: '
-                   'available keys are %s.' % (pd_template, e, vars.keys()))
-            raise Exception(msg)
-        
+    db = LearningStateDB(main_options.state_directory)
+
     if options.publish_interval is not None:
         pd_template = expand_environment(options.publish_dir)
         date = isodate()
@@ -117,7 +93,11 @@ def cmd_learn_log(main_options, argv):
         if os.path.exists(pd_last):
             os.unlink(pd_last)
         os.symlink(pd, pd_last)
-     
+    
+    if options.once:
+        logger.info('As requested, exiting after publishing information.')
+        return 0
+    
         
     # TODO: progress bar
     num_episodes_total = 0
@@ -142,6 +122,8 @@ def cmd_learn_log(main_options, argv):
                             num_episodes_remaining,
                             num_observations_remaining))
 
+
+
     tracker = InAWhile(5)
     ros2python = ROS2Python()
     for stream in robots[id_robot]:
@@ -150,9 +132,6 @@ def cmd_learn_log(main_options, argv):
         if not to_learn:
             #logger.info('Stream %s already completely learned.' % stream)
             continue
-        else:
-            #logger.debug('Learning %s' % to_learn)
-            pass
             
         cur_stream_observations = 0
         for ros_obs in stream.read(only_episodes=to_learn):
@@ -173,7 +152,6 @@ def cmd_learn_log(main_options, argv):
                         state.num_observations, num_observations_total,
                         tracker.fps(), estimated))
                 logger.info(msg)
-
             
             agent.process_observations(obs)
             
@@ -181,14 +159,12 @@ def cmd_learn_log(main_options, argv):
                 if 0 == state.num_observations % options.publish_interval:
                     publish_agent_output(state, agent, pd)
                     
-
-        #if ExceptHook.called: break
         state.id_episodes.update(to_learn)
         # Saving agent state
         state.agent_state = agent.get_state()
         
         def save_state(): 
-            db.set_state(state=state, **key)
+            db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
         try_until_done(save_state)
 
     logger.info('Exiting gracefully.')
@@ -236,4 +212,51 @@ cmd_learn_log.short_usage = ('learn-log -a <AGENT> -r <ROBOT> '
                              ' [--reset] [--publish interval]')
     
 
+def substitute(template, vars):
+    ''' Wrapper around Template.substitute for better error display. '''
+    try:
+        return Template(template).substitute(vars)
+    except KeyError as e:
+        msg = ('Error while substituting in string %r. Key %s not found: '
+               'available keys are %s.' % (template, e, vars.keys()))
+        raise Exception(msg)
     
+
+def load_agent_and_state(agent_spec, id_agent, id_robot,
+                         state_db_directory, log_directory, reset_state=False):
+    ''' Load the agent, loading the agent state from the state_db directory.
+        If the state is not available, then it initializes anew. The
+        problem spec (sensel shape, commands shape) is loaded from the logs in log_directory. 
+        
+        Returns tuple agent, state.
+    '''
+    logger.info('Instancing agent spec:\n%s' % pformat(agent_spec))
+    agent = instantiate_spec(agent_spec['code'])    
+    db = LearningStateDB(state_db_directory)
+    key = dict(id_robot=id_robot, id_agent=id_agent)
+    if not reset_state and db.has_state(**key):
+        logger.info('Using previous learned state.')
+        state = db.get_state(**key)
+        logger.info('State after learning %d episodes.' % len(state.id_episodes))
+        try:
+            agent.set_state(state.agent_state)
+        except:
+            logger.error('Could not set agent to previous state.')
+            raise 
+    else:
+        state = LearningState(id_robot=id_robot, id_agent=id_agent)
+        
+        # Finding shape
+        index = bag_get_index_object(log_directory)
+        robots = index['robots']
+        for ob0 in robots[id_robot][0].read():
+            break
+        
+        sensel_shape = tuple(ob0.sensel_shape) # XXX
+        commands_spec = eval(ob0.commands_spec)
+        logger.info('Agent init Sensels: %s  commands: %s' % 
+                    (sensel_shape, commands_spec))
+        agent.init(sensel_shape, commands_spec)
+
+    return agent, state
+
