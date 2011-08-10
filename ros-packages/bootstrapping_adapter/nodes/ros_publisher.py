@@ -70,6 +70,7 @@ class ROSPublisher(Publisher):
     def text(self, name, text):
         name = normalize(name)
 
+        rospy.loginfo('Function text() not implemented')
         # XXX: TODO:
         pass
     
@@ -85,6 +86,7 @@ class ROSPublisher(Publisher):
         a.__exit__(None, None, None)
 #        print r.children
         # XXX: TODO
+        rospy.loginfo('Function plot() not implemented')
 
 def numpy_to_imgmsg(image, stamp=None):
     import sensor_msgs #@UnresolvedImport
