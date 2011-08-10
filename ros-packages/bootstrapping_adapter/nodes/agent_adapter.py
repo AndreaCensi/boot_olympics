@@ -36,8 +36,9 @@ def event_loop(observations):
     commands = Global.agent.choose_commands()
     
     if Global.publish and Global.count % Global.publish_interval == 0:
+        logger.info('Publishing agent information (count: %s)' % Global.count)
         Global.agent.publish(Global.ros_publisher)
-        Global.count += 1
+    Global.count += 1
 
     # TODO: check commands is compatible with commands_spec
     sender = '%s' % Global.agent.__class__.__name__

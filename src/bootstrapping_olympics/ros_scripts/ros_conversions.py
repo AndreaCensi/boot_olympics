@@ -45,18 +45,18 @@ class ROS2Python():
         
         if self.last is not None:
             obs.dt = obs.time - self.last.time
-            if obs.dt < 0:
-                logger.error('Out of order? previous time: %s current: %s dt: %s' % 
-                             (self.last.time, obs.time, obs.dt))
-                self.last = obs
-                self.last_ros_obs = ros_obs
-                return None
+           
             obs.episode_changed = obs.id_episode != self.last.id_episode
             if not obs.episode_changed:
                 assert obs.dt >= 0
+                if obs.dt < 0:
+                    logger.error('Out of order? previous time: %s current: %s dt: %s' % 
+                                 (self.last.time, obs.time, obs.dt))
+                    self.last = obs
+                    self.last_ros_obs = ros_obs
+                    return None
                 if filter_doubles:
                     assert obs.dt > 0
-                     
                 
                 if obs.dt > 0.2:
                     logger.info('Skipping %s due to strange dt %s .' % 
