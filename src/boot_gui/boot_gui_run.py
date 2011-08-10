@@ -22,8 +22,6 @@ def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir,
                         'world': world,
                         'viz_level': viz_level}]
     
-#    print('Simulation_code:\n%s' % pformat(simulation_code))
-#    
     robot_node = ['bootstrapping_adapter/robot_adapter.py',
                           {'code': simulation_code } ]
     
@@ -31,6 +29,7 @@ def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir,
     check_valid_agent_config(agent)
     agent_node = ['bootstrapping_adapter/agent_adapter.py',
                           {'code': agent['code'],
+                           'id_agent': id_agent,
                            'publish_interval': publish_interval } ]
     
     if log_level > 0:

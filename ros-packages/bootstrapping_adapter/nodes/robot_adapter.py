@@ -2,13 +2,14 @@
 import roslib; roslib.load_manifest('bootstrapping_adapter')
 import rospy, traceback
 import time
+from pprint import pformat
 from collections import namedtuple
 
 from bootstrapping_adapter.srv import (BootstrappingCommands,
                                        BootstrappingCommandsResponse)
 from bootstrapping_adapter.msg import BootstrappingObservations
 from bootstrapping_olympics.loading import instantiate_spec, check_valid_code_spec
-
+import sys
 import numpy as np
 
 class Global:
@@ -51,27 +52,31 @@ def robot_adapter():
     rospy.init_node('robot_adapter')
     
     params = rospy.get_param('~')
-    rospy.loginfo('My params: %s' % params)
+    
+    rospy.loginfo('My params:\n%s' % pformat(params))
+
+    required = ['code']
+    for req in required:
+        if not req in params:
+            msg = 'Necessary parameter %r not given.' % req
+            msg += '\nGiven configuration:\n%s' % pformat(params)
+            raise Exception(msg)
 
 
     Global.dt = params.get('dt', 0.1)
     sleep = params.get('sleep', 0.0)
     
-    # TODO: check code is in the right format
-    if not 'code' in params:
-        raise Exception('No "code" to run specified.')
     code = params['code']
-    rospy.loginfo('Using code = %r' % code)
+    rospy.loginfo('Using code: %s' % pformat(code))
     check_valid_code_spec(code)
     try:
         Global.robot = instantiate_spec(code)
-    except Exception as e:
+    except:
         msg = 'Could not instantiate robot code, using:\n'
         msg += ' class name: %s\n' % code[0]
         msg += ' parameters: %s\n' % code[1]
-        msg += '\nThe following is the error given:\n' 
-        msg += '%s' % traceback.format_exc()
-        raise Exception(msg)
+        rospy.logerr(msg)
+        raise
     
     publisher = rospy.Publisher('~observations', BootstrappingObservations, latch=True)
     
@@ -79,8 +84,7 @@ def robot_adapter():
     Global.robot.new_episode()
     
     # Start service
-    service = rospy.Service('~commands',
-                BootstrappingCommands, commands_request)
+    service = rospy.Service('~commands', BootstrappingCommands, commands_request)
 
     # Broadcast observations anyway every few seconds
     last_observations_sent = 0
@@ -99,8 +103,15 @@ def robot_adapter():
             
         rospy.sleep(sleep)
 
-    
+
 if __name__ == '__main__':
     try:
         robot_adapter()
-    except rospy.ROSInterruptException: pass
+        sys.exit(0)
+    except rospy.ROSInterruptException: 
+        sys.exit(0)
+    except Exception as e:
+        rospy.logerr('Robot adapter terminated due to an exception:\n%s'
+                       % traceback.format_exc())
+        sys.exit(-1)
+

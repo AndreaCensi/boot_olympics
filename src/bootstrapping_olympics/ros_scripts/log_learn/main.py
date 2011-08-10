@@ -3,6 +3,7 @@ from ...loading.load_all import load_boot_olympics_config
 from optparse import OptionParser
 import sys
 import traceback
+from bootstrapping_olympics.ros_scripts.log_learn.learning_state import LearningStateDB
 
 commands = {
     'list-logs': cmd_list_logs,
@@ -15,7 +16,7 @@ commands = {
 
 commands_list = "\n".join([ '  %-15s  %s\n  %-15s  Usage: %s' % 
                            (cmd, f.__doc__, '', f.short_usage) 
-                 for cmd, f in commands.items()])
+                           for cmd, f in commands.items()])
 
 usage = """
 
@@ -37,7 +38,7 @@ def boot_log_learn(args):
                       default="~/.ros/log",
                       help="Log directory [%default].")
     parser.add_option("-s", dest='state_directory',
-                      default='~/boot_learning_states/',
+                      default=LearningStateDB.DEFAULT_DIR,
                       help="State directory [%default].")
     (options, args) = parser.parse_args()
     

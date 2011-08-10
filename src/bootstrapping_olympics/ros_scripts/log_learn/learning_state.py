@@ -20,10 +20,11 @@ class LearningState(object):
         self.agent_state = None
         
         self.id_state = isodate() 
-        
-# TODO: expand user
+         
 
-class LearningStateDB():
+class LearningStateDB(object):
+    DEFAULT_DIR = '~/boot_learning_states/'
+    
     def __init__(self, datadir):
         datadir = expand_environment(datadir)
         if not os.path.exists(datadir):

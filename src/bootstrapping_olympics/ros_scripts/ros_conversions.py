@@ -6,13 +6,14 @@ class ROS2Python():
     ''' 
         This class takes converts a BootstrappingObservations ROS structure
         into an Observation type object. It also makes some consistency
-        checks, marks different episodes, etc. The idea is that the
-        data that comes out of this will not need any other checks 
-        by the agents. 
+        checks, marks different episodes, discards repeated observations, etc. 
+        The idea is that the data that comes out of this will not need any 
+        other check by the agents. 
     '''
     
-    def __init__(self):
+    def __init__(self, spec):
         self.last = None
+        self.spec = spec
         
     def convert(self, ros_obs, filter_doubles=True):
         ''' Returns None if the same message is repeated. '''
@@ -29,28 +30,27 @@ class ROS2Python():
         obs.commands_source = ros_obs.commands_source
         obs.counter = ros_obs.counter
         obs.id_episode = ros_obs.id_episode
+        # obs.dt is useless
         
-        
-        current_data_description = ('[%s#%s at %s (dt: %s)]' % 
-                                    (obs.id_episode, obs.counter, obs.time, obs.dt))
-                
-        if self.last is not None:
-            # check that some things are conserved
-            sensel_shape = obs.sensel_values.shape
-            sensel_shape_required = self.last.sensel_values.shape
-            if sensel_shape != sensel_shape_required:
-                logger.info('Skipping %s because observations shape is %s instead of %s.' % 
-                            (current_data_description, sensel_shape, sensel_shape_required))
-                return None
+        current_data_description = ('[%s#%s at %s]' % 
+                                    (obs.id_episode, obs.counter, obs.time))
 
-            commands_shape = obs.commands.shape
-            commands_shape_required = self.last.commands.shape
-            if commands_shape != commands_shape_required:
-                logger.info('Skipping %s because commands shape is %s instead of %s.' % 
-                            (current_data_description, commands_shape, commands_shape_required))
-                return None
-            
+        try:
+            self.spec.check_compatible_commands_values(ros_obs.commands)
+            self.spec.check_compatible_sensels_values(ros_obs.sensel_values)
+        except Exception as e:
+            logger.error('%s: Skipping invalid data.' % current_data_description)
+            logger.error(e)
+            return None
+        
+        if self.last is not None:
             obs.dt = obs.time - self.last.time
+            if obs.dt < 0:
+                logger.error('Out of order? previous time: %s current: %s dt: %s' % 
+                             (self.last.time, obs.time, obs.dt))
+                self.last = obs
+                self.last_ros_obs = ros_obs
+                return None
             obs.episode_changed = obs.id_episode != self.last.id_episode
             if not obs.episode_changed:
                 assert obs.dt >= 0

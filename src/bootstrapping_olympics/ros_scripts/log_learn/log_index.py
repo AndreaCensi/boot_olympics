@@ -4,6 +4,7 @@ from vehicles.configuration.config_utils import locate_files
 import os
 import shelve
 from . import BootStream 
+from bootstrapping_olympics.interfaces import BootSpec 
 
 
 def bag_get_index_object(directory):
@@ -34,16 +35,15 @@ def bag_get_index_object(directory):
             for file, topics in bag_files.items():
                 for stream in topics.values():
                     id_robot = stream.id_robot
-                    spec = (stream.sensels_shape, stream.commands_spec)
                     if not id_robot in robot2spec:
-                        robot2spec[id_robot] = spec
+                        robot2spec[id_robot] = stream.spec
                     else:
-                        if spec != robot2spec[id_robot]:
+                        if str(stream.spec) != str(robot2spec[id_robot]):
                             msg = 'Warning! You got your logs mixed up. \n'
-                            msg += ('Problem spec in:\n\t%r\nis\n\t%r\n' % 
-                                   (stream, spec))
-                            msg += ('and this is different from:\n\t%r\n'
-                                   'found in e.g.,:\n\t%r' % 
+                            msg += ('Problem spec in:\n\t%s\nis\n\t%s\n' % 
+                                   (stream, stream.spec))
+                            msg += ('and this is different from:\n\t%s\n'
+                                   'found in e.g.,:\n\t%s' % 
                                    (robot2spec[id_robot], robots[id_robot][0]))
                             msg += '\nI will skip this stream.'
                             logger.error(msg)
@@ -106,8 +106,7 @@ def bag_get_bootstrapping_stream(bag_file):
             id_episodes = set([])
             timestamp = None
             num = 0
-            sensels_shape = None
-            commands_shape = None
+            spec = None
             for topic, msg, t in bag.read_messages(topics=[topic]):
                 if timestamp is None:
                     timestamp = t
@@ -117,8 +116,15 @@ def bag_get_bootstrapping_stream(bag_file):
                 if id_episode == 'id-episode-not-set':
                     id_episode = os.path.basename(bag_file)
                 id_episodes.add(id_episode)
-                commands_spec = msg.commands_spec 
-                sensels_shape = msg.sensel_shape # TODO: check coherence
+                if spec is None:
+                    spec = BootSpec.from_ros_structure(msg)
+                
+                try:
+                    spec.check_compatible_commands_values(msg.commands)
+                    spec.check_compatible_sensels_values(msg.sensel_values)
+                except Exception as e:
+                    logger.error('Invalid data at #%d:%s' % (num, t))
+                    logger.error(e)
                 
                 num += 1
             length = (t - timestamp)
@@ -131,8 +137,7 @@ def bag_get_bootstrapping_stream(bag_file):
                                         num_observations=num,
                                         bag_file=bag_file,
                                         topic=topic,
-                                        sensels_shape=sensels_shape,
-                                        commands_spec=commands_spec)
+                                        spec=spec)
 
     bag.close()
     return streams

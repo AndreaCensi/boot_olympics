@@ -29,12 +29,19 @@ def cmd_list_logs(main_options, argv):
     logger.info('In total, there are %d robots:' % len(robots))
     for robot, streams in robots.items():
         logger.info('- robot %r has %d streams.' % (robot, len(streams)))
+        if streams:
+            logger.info('  spec: %s' % streams[0].spec)
+            total_length = 0
+            for stream in streams:
+                total_length += stream.length
+            logger.info('  total length: %.1f minutes' % (total_length / 60.0))
         
         if options.display_logs:
             for stream in streams:
-                logger.info('- %5d min %s' % (stream.length,
-                                          os.path.relpath(stream.bag_file,
-                                                          main_options.log_directory)))
+                logger.info('- %5ds %s' % (stream.length,
+                                os.path.relpath(stream.bag_file,
+                                                main_options.log_directory)))
+            
 
     if options.display_streams:
         for bag_file, streams in bag_files.items():
@@ -47,7 +54,7 @@ def cmd_list_logs(main_options, argv):
 
     return 0
 
-cmd_list_logs.short_usage = 'list-logs [-v]'
+cmd_list_logs.short_usage = 'list-logs [-v] [-vv]'
 
     
 

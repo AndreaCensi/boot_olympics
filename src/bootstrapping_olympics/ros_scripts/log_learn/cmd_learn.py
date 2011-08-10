@@ -71,10 +71,12 @@ def cmd_learn_log(main_options, argv):
        
     
     agent, state = load_agent_and_state(
-                    agent_spec=agent_spec, id_agent=id_agent, id_robot=id_robot,
-                       state_db_directory=main_options.state_directory,
-                       log_directory=main_options.log_directory,
-                       reset_state=options.reset)
+                    agent_spec=agent_spec,
+                    id_agent=id_agent,
+                    id_robot=id_robot,
+                    state_db_directory=main_options.state_directory,
+                    log_directory=main_options.log_directory,
+                    reset_state=options.reset)
 
     db = LearningStateDB(main_options.state_directory)
 
@@ -122,10 +124,7 @@ def cmd_learn_log(main_options, argv):
                             num_episodes_remaining,
                             num_observations_remaining))
 
-
-
     tracker = InAWhile(5)
-    ros2python = ROS2Python()
     for stream in robots[id_robot]:
         # Check if all learned
         to_learn = stream.id_episodes.difference(state.id_episodes)
@@ -134,6 +133,7 @@ def cmd_learn_log(main_options, argv):
             continue
             
         cur_stream_observations = 0
+        ros2python = ROS2Python(stream.spec)
         for ros_obs in stream.read(only_episodes=to_learn):
             obs = ros2python.convert(ros_obs)
             if obs is None: # repeated message

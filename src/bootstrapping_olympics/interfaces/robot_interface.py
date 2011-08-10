@@ -1,6 +1,7 @@
 from abc import abstractmethod, ABCMeta
 from collections import namedtuple
 from contracts import contract
+from contracts.main import check
 
 class RobotInterface:
     ''' This is the basic class for robot simulators. '''
@@ -15,7 +16,6 @@ class RobotInterface:
         self.observations_shape = observations_shape
         self.commands_spec = commands_spec
         
-        self.timestamp = 0
         self.counter = 0
         self.id_robot = id_robot
         self.id_sensors = id_sensors
@@ -44,12 +44,10 @@ class RobotInterface:
     
     @abstractmethod
     def get_observations(self):
-        ''' Get observations. Must return a numpy array.'''
+        ''' Get observations. Must return a tuple of two elements:
+            ``(timestamp, sensels)`` respectively a float and a numpy array. '''
         pass
     
-    #
-    # Do not replace the following methods.
-    #
     def get_state(self):
         ''' Return the state so that it can be saved. '''
         pass
@@ -59,6 +57,9 @@ class RobotInterface:
         pass
     
     
+    #
+    # Do not replace the following methods.
+    #
     # This is the data structure returned by get_last_observations()
     Observations = namedtuple('Observations',
                               'timestamp counter id_episode id_environment sensel_values '
@@ -76,9 +77,6 @@ class RobotInterface:
         self.set_commands(commands)
         self.last_commands = commands
         self.last_commands_source = commands_source
-        # Update counters
-        dt = 0.1 # XXX: 
-        self.timestamp += dt
         self.counter += 1 
         # Compute new observations 
         self.compute_and_store_observations()
@@ -86,10 +84,12 @@ class RobotInterface:
     def compute_and_store_observations(self):
         # compute and store observations
         time_sensel_tuple = self.get_observations()
-        self.timestamp = time_sensel_tuple[0]
-        sensel_values = time_sensel_tuple[1]        
+        check('tuple(float, array)', time_sensel_tuple)
+        
+        timestamp, sensel_values = time_sensel_tuple
+        
         fields = {
-          'timestamp': self.timestamp,
+          'timestamp': timestamp,
           'counter': self.counter,
           'id_episode': self.id_episode,
           'id_environment': self.id_environment,
