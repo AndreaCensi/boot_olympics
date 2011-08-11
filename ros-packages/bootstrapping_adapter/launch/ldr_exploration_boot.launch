@@ -1,0 +1,78 @@
+<launch>
+
+    <machine name="ldr" address="ldr13" ros-root="/opt/gumros/diamondback/ros/" default="never" user="root"
+      ros-package-path="/home/root/ldr_magnus:/opt/gumros/diamondback/laser_drivers/hokuyo_node:/opt/gumros/diamondback/common:/opt/gumros/diamondback/common_msgs:/opt/gumros/diamondback/driver_common:/opt/gumros/diamondback/diagnostics_monitors:/opt/gumros/diamondback/diagnostics:/opt/gumros/diamondback/eros:/opt/gumros/diamondback/ros_comm:/home/root/landroid_package">
+
+        <env name="ROS_MASTER_URI" value="http://bentobox:11311/" />
+        <env name="PATH" value="/usr/bin:/" />
+
+    </machine>
+
+    <arg name="environment" default="Steele lab" />
+
+    <group ns="test00">
+
+        <node pkg="landroid_package" name="ir_sensors"  type="ir_sensors.py" output="screen" machine="ldr" />
+        
+        <node pkg="ldr_test" name="tracks" type="tracks.py" output="screen" machine="ldr" />
+
+        <node pkg="landroid_hokuyo" name="hokuyo" type="hokuyo.py" >
+                <rosparam param="host">
+                        "ldr13"
+                </rosparam>
+        </node>
+
+        <node pkg="bootstrapping_adapter"
+              name="landroid" type="robot_adapter.py" output="screen">
+
+
+                <rosparam param="code">
+                    [magnus_experiments.Landroid,
+                        {}]
+                </rosparam>
+
+                <rosparam param="env">
+                    "$(arg environment)"
+                </rosparam>
+
+                <remap from="laser" to="hokuyo/scan" />
+                <remap from="track_input" to="commands_sink" />
+                             
+        </node>
+
+        <node pkg="bootstrapping_adapter" name="bds_boot_agent" type="agent_adapter.py" output="screen">
+                <rosparam param="code">
+                    [magnus_experiments.BDSAgentFaultDetection, {beta: 5}]
+                </rosparam>
+                
+                <rosparam>
+                    id_agent: "bds_agent_refined_fault_detection"
+                    publish_interval: 2               
+                </rosparam>
+
+                <remap from="observations" to="landroid/observations" />
+                <remap from="commands"     to="landroid/commands" />
+        </node>
+
+        <node pkg="ldr_test" name="glue" type="glue.py" output="screen">
+
+                <remap from="fault_array" to="bds_boot_agent/fault_array" />                   
+                <remap from="commands" to="track_input" />                 
+                <remap from="laser" to="hokuyo/scan" />
+        </node>        
+
+
+        <node pkg="ldr_test" name="exploration_agent" type="exploration_agent.py" output="screen">
+            <remap from="laser" to="glue/scan" />
+            <remap from="track_input" to="track_input" />
+        </node>
+
+
+    
+        
+
+    </group>
+
+    <!-- <rosparam command="dump" file="after.yaml"/> -->
+</launch>
+
