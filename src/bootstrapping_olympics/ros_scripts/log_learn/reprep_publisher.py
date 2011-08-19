@@ -4,11 +4,7 @@ from contextlib import contextmanager
 from contracts import contract
 
 class ReprepPublisher(Publisher):
-    ''' 
-        This is the interface that the agents can use to publish
-        debug information. 
-    '''
-    
+   
     def __init__(self, rid):
         self.r = Report(rid)
         self.subs = {}
@@ -28,10 +24,13 @@ class ReprepPublisher(Publisher):
     def array(self, name, value):
         f, name = self.get_sub(name)
         f.data(name, value)
-        
+
     def array_as_image(self, name, value, filter='posneg', filter_params={}):
         f, name = self.get_sub(name)
-        f.data(name, value).display(filter, **filter_params)
+        if len(value.shape) == 3 and value.shape[2] == 3: # try image
+            f.data_rgb(name, value)
+        else:
+            f.data(name, value).display(filter, **filter_params)
         f.last().add_to(f) # XXX
         
     def text(self, name, value):

@@ -27,6 +27,7 @@ def commands_request(req):
 
 def publish_observations(robot, publisher):
     obs = robot.get_observations_wrap()
+    # XXX: this will give empty commands at the beginning
     
     fields = {
         'timestamp': obs.timestamp,

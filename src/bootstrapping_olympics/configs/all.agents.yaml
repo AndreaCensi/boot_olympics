@@ -4,6 +4,15 @@
       - bootstrapping_olympics.examples.RandomAgent
       - {}
           
+          
+- id: exp_switcher_1
+  desc: Switches randomly between commands with an exponential switching time.
+  code:
+      - boot_agents.ExpSwitcher
+      - beta: 1
+          
+          
+          
 - id: bds_agent
   desc: "BDS agents"
   code:
@@ -24,11 +33,56 @@
 
 
 - id: diffeo_agent_2d_dev
-  desc: "Dev. version"
+  desc: "Dev. version (real)"
   code:
-      - boot_agents.DiffeoAgent2D
+      - boot_agents.DiffeoAgent2Db
       - rate: 1
-      
+        delta: 0.29
+        pcres: 50
+        ratios: [0.15, 0.03]
+# o.25
+
+
+- id: diffeo_agent_2d_ldr13
+  desc: "Dev. version (real)"
+  code:
+      - boot_agents.DiffeoAgent2Db
+      - rate: 1
+        delta: 0.19
+        pcres: 90
+        yres: 90
+        ratios: [0.35, 0.1]
+        
+- id: diffeo_agent_2d_veh
+  desc: "Dev. version (synthetic)"
+  code:
+      - boot_agents.DiffeoAgent2Db
+      - rate: 1
+        delta: 0.15
+        pcres: 90
+        yres: 90
+        # the first is yres 
+        ratios: [0.1, 0.1]
+        
+- id: diffeo_agent_2d_veh2
+  desc: "larger"
+  code:
+      - boot_agents.DiffeoAgent2Db
+      - rate: 1
+        delta: 0.35
+        pcres: 90
+        yres: 90
+        # the first is yres 
+        ratios: [0.18, 0.13]
+        
+- id: exp_switcher_1_canonical
+  desc: "Exponential switcher, canonical commands."
+  code:
+      - boot_agents.ExpSwitcherCanonical
+      - beta: 1
+
+
+# o.25
 - id: bds_agent_dev
   desc: "Dev. version"
   code:

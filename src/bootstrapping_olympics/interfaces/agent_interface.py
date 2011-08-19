@@ -97,16 +97,17 @@ During offline learning, the data will be written to HTML files.
             Publish debug information. ``publisher`` is an instance 
             of the class PublisherInterface. 
         '''
-        
-    @abstractmethod
+    
+    def state_vars(self):
+        return self.__dict__.keys()
+
     def get_state(self):
         ''' Return the state for the agent so that it can be saved. '''
-        
+        return self.get_state_vars(self.state_vars())
     
-    @abstractmethod
     def set_state(self, state):
         ''' Load the given state (obtained by 'get_state'). '''
-        
+        return self.set_state_vars(state, self.state_vars())
     
     def info(self, msg):
         ''' Logs something. '''

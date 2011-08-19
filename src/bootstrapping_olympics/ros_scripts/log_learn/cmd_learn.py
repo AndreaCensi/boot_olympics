@@ -124,6 +124,8 @@ def cmd_learn_log(main_options, argv):
                             num_episodes_remaining,
                             num_observations_remaining))
 
+    tracker_save = InAWhile(120)
+    
     tracker = InAWhile(5)
     for stream in robots[id_robot]:
         # Check if all learned
@@ -153,6 +155,11 @@ def cmd_learn_log(main_options, argv):
                         tracker.fps(), estimated))
                 logger.info(msg)
             
+            if tracker_save.its_time():
+                # note: episodes not updated
+                state.agent_state = agent.get_state()
+                db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
+    
             agent.process_observations(obs)
             
             if options.publish_interval is not None:
@@ -162,10 +169,10 @@ def cmd_learn_log(main_options, argv):
         state.id_episodes.update(to_learn)
         # Saving agent state
         state.agent_state = agent.get_state()
+        db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
+#        def save_state(): 
         
-        def save_state(): 
-            db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
-        try_until_done(save_state)
+#        try_until_done(save_state)
 
     logger.info('Exiting gracefully.')
     return 0

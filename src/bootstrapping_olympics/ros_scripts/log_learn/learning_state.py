@@ -1,9 +1,7 @@
+from . import expand_environment, isodate, logger
+from .filesystem_storage import StorageFilesystem
 from contracts import contract
-import shelve
 import os
-from . import logger
-from . import isodate
-from . import expand_environment
 
 class LearningState(object):
     ''' 
@@ -21,6 +19,10 @@ class LearningState(object):
         
         self.id_state = isodate() 
          
+def key2tuple(key):
+    return tuple(",".split(key))
+def tuple2key(t):
+    return ",".join(t)
 
 class LearningStateDB(object):
     DEFAULT_DIR = '~/boot_learning_states/'
@@ -29,25 +31,25 @@ class LearningStateDB(object):
         datadir = expand_environment(datadir)
         if not os.path.exists(datadir):
             os.makedirs(datadir)
-        dbfile = os.path.join(datadir, 'agent_states.db')
-        logger.debug('Loading database in %r.' % dbfile)
-        self.s = shelve.open(dbfile, protocol=2, writeback=True)
-        if not 'states' in self.s:
-            logger.info('Created empty database.')
-            self.s['states'] = {}
+            
+        dbdir = os.path.join(datadir, 'agent_states')
+        logger.debug('Using dir %r as directory.' % dbdir)
+        self.storage = StorageFilesystem(dbdir)
         
     def list_states(self):
-        return self.s['states'].keys()
+        return [ key2tuple(x) for x in  self.storage.keys()]
         
     def has_state(self, id_agent, id_robot):
         ''' Returns true if the learning state is already present. '''
-        return (id_agent, id_robot) in self.s['states']
+        key = tuple2key((id_agent, id_robot))
+        return  key in list(self.storage.keys())
     
     def get_state(self, id_agent, id_robot):
         ''' Returns the learning state for the given combination. '''
-        return self.s['states'][(id_agent, id_robot)]
-    
+        key = tuple2key((id_agent, id_robot))
+        return self.storage.get(key)
+
     def set_state(self, id_agent, id_robot, state):
         ''' Sets the learning state for the given combination. '''
-        self.s['states'][(id_agent, id_robot)] = state
-        self.s.sync()
+        key = tuple2key((id_agent, id_robot))
+        return self.storage.set(key, state)

@@ -1,5 +1,6 @@
 from contracts import contract
 from abc import ABCMeta, abstractmethod
+from contextlib import contextmanager
 
 class Publisher:
     ''' 
@@ -54,3 +55,30 @@ class Publisher:
                     pylab.legend()
         ''' 
     
+    def section(self, section_name):
+        return Section(self, section_name)
+
+class Section():
+    def __init__(self, other, prefix):
+        self.other = other
+        self.prefix = prefix
+    def concat(self, name):
+        base = [self.prefix]
+        if isinstance(name, str):
+            base.append(name)
+        else:
+            base.extend(name)
+        return "-".join(base)
+    def array(self, name, *args):
+        return self.other.array(self.concat(name), *args)
+    def array_as_image(self, name, *args, **kwargs):
+        return self.other.array_as_image(self.concat(name), *args, **kwargs)
+    def text(self, name, text):
+        return self.other.text(self.concat(name), text)
+    @contextmanager
+    def plot(self, name, **args):
+        with self.other.plot(self.concat(name), **args) as pylab:
+            yield pylab
+    def section(self, section_name):
+        return Section(self, section_name)
+
