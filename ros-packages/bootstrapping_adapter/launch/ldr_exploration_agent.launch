@@ -1,0 +1,34 @@
+<launch>
+
+    <machine name="ldr" address="ldr13" ros-root="/opt/gumros/diamondback/ros/" default="never" user="root"
+      ros-package-path="/home/root/ldr_magnus:/opt/gumros/diamondback/laser_drivers/hokuyo_node:/opt/gumros/diamondback/common:/opt/gumros/diamondback/common_msgs:/opt/gumros/diamondback/driver_common:/opt/gumros/diamondback/diagnostics_monitors:/opt/gumros/diamondback/diagnostics:/opt/gumros/diamondback/eros:/opt/gumros/diamondback/ros_comm:/home/root/landroid_package">
+
+        <env name="ROS_MASTER_URI" value="http://bentobox:11311/" />
+        <env name="PATH" value="/usr/bin:/" />
+
+    </machine>
+
+    <group ns="test00">
+        
+        <node pkg="ldr_test" name="tracks" type="tracks.py" output="screen" machine="ldr" />
+        
+        <node pkg="landroid_hokuyo" name="hokuyo" type="hokuyo.py" >
+                <rosparam param="host">
+                        "ldr13"
+                </rosparam>
+        </node>
+
+        <node pkg="ldr_test" name="exploration_agent" type="exploration_agent.py" output="screen">
+            <remap from="laser" to="hokuyo/scan" />
+            <remap from="track_input" to="track_input" />
+        </node>
+
+
+    
+        
+
+    </group>
+
+    <!-- <rosparam command="dump" file="after.yaml"/> -->
+</launch>
+
