@@ -49,9 +49,20 @@
       - boot_agents.DiffeoAgent2Db
       - rate: 1
         delta: 0.19
-        pcres: 90
         yres: 90
-        ratios: [0.35, 0.1]
+        pcres: 180
+        ratios: [0.35, 0.05]
+
+- id: diffeo_agent_2d_ldr13_2
+  desc: "Dev. version (real) (larger)"
+  code:
+      - boot_agents.DiffeoAgent2Db
+      - rate: 1
+        delta: 0.19
+        yres: 90
+        pcres: 180
+        ratios: [0.4, 0.05]
+
         
 - id: diffeo_agent_2d_veh
   desc: "Dev. version (synthetic)"
@@ -88,6 +99,7 @@
   code:
       - boot_agents.BDSAgent
       - beta: 1
+        change_fraction: 0.5
 
 - id: embed_dev
   desc: "Dev. version"

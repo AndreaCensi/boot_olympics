@@ -1,14 +1,15 @@
-import os, time 
-import cPickle as pickle
 from glob import glob
-from os.path import  splitext, basename
-from StringIO import StringIO 
+from os.path import splitext, basename
+import cPickle as pickle
+import os
+import time
 
-
+# XXX: remove this junk
 PRINT_STATS = True
 def print_stats(method, key, length, duration):
     print("stats: %10s  %8d bytes  %.2fs %s" % (method, length, duration, key))
 
+__all__ = ['StorageFilesystem']
 
 class StorageFilesystem:
     checked_existence = False
@@ -22,16 +23,12 @@ class StorageFilesystem:
         filename = self.filename_for_key(key)
         try:
             start = time.time()
-            file = open(filename, 'rb')
-            content = file.read()
-            file.close()
-            # print "R %s len %d" % (key, len(content))
-            sio = StringIO(content)
-            state = pickle.load(sio)
+            with open(filename, 'rb') as file:
+                state = pickle.load(file)
             
             duration = time.time() - start
             if PRINT_STATS:
-                length = len(content)
+                length = 0
                 print_stats('get    ', key, length, duration)
             return state
         except Exception as e:
@@ -45,28 +42,46 @@ class StorageFilesystem:
                 os.makedirs(self.basepath)
             
         filename = self.filename_for_key(key)
+        filename_new = filename + '.tmp'
+        filename_old = filename + '.old'
+        if os.path.exists(filename_new):
+            print('Warning; tmp file %r exists (write not succeeded)' % filename_new)
+            os.unlink(filename_new)
+
+        if os.path.exists(filename_old):
+            print('Warning; tmp file %r exists (write not succeeded)' % filename_old)
+            os.unlink(filename_old)
+
         start = time.time()
-        
-        sio = StringIO()
         try:
-            pickle.dump(value, sio, pickle.HIGHEST_PROTOCOL)
+            with open(filename_new, 'wb') as f:
+                pickle.dump(value, f, pickle.HIGHEST_PROTOCOL)
         except Exception as e:
             raise Exception('Cannot set key %s: cannot pickle object '
                     'of class %s: %s' % (key, value.__class__.__name__, e))
         
-        content = sio.getvalue()
-        with open(filename, 'wb') as f:
-            f.write(content)
-
+        if os.path.exists(filename):
+            # if we have an old version
+            os.rename(filename, filename_old)
+            os.rename(filename_new, filename)
+            os.unlink(filename_old)
+        else:
+            # no previous file, just rename
+            os.rename(filename_new, filename)
+        
+        assert os.path.exists(filename)
+        assert not os.path.exists(filename_new)
+        assert not os.path.exists(filename_old)
+            
         duration = time.time() - start
-        if PRINT_STATS:
-            length = len(content)
+        if PRINT_STATS: 
+            length = 0
             print_stats('    set', key, length, duration)
     
     def delete(self, key):
         filename = self.filename_for_key(key)
-        assert os.path.exists(filename), \
-            'I expected path %s to exist before deleting' % filename
+        if not os.path.exists(filename):
+            raise ValueError('I expected path %s to exist before deleting' % filename)
         os.remove(filename)
         
     def exists(self, key):  

@@ -3,6 +3,7 @@ from ...loading.load_all import load_boot_olympics_config
 from optparse import OptionParser
 import sys
 import traceback
+# XXX:
 from bootstrapping_olympics.ros_scripts.log_learn.learning_state import LearningStateDB
 
 commands = {

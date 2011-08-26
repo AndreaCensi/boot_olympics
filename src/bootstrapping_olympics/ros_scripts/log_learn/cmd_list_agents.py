@@ -3,6 +3,8 @@ from optparse import OptionParser
 from bootstrapping_olympics.loading.load_all import BootOlympicsConfig
 from pprint import pformat
 
+__all__ = ['cmd_list_agents']
+
 def cmd_list_agents(main_options, argv):
     '''Shows a summary of the agents in the configuration. '''
     parser = OptionParser(usage=cmd_list_agents.short_usage)

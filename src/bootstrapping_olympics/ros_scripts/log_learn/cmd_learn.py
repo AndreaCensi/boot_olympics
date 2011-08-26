@@ -1,17 +1,15 @@
-from . import (LearningState, LearningStateDB, bag_get_index_object, logger,
-    expand_environment, isodate)
+from . import (ReprepPublisher, LearningState, LearningStateDB,
+    bag_get_index_object, logger, expand_environment, isodate, InAWhile)
+from ...interfaces import AgentInterface
 from ...loading import BootOlympicsConfig, instantiate_spec
-from bootstrapping_olympics.ros_scripts.log_learn.reprep_publisher import (
-    ReprepPublisher)
+from ..ros_conversions import ROS2Python
 from optparse import OptionParser
 from pprint import pformat
 from string import Template
 import numpy as np
 import os
-from . import InAWhile
-from bootstrapping_olympics.ros_scripts.ros_conversions import ROS2Python
-from bootstrapping_olympics.interfaces import AgentInterface
 
+__all__ = ['cmd_learn_log']
 
 def cmd_learn_log(main_options, argv):
     '''Runs the learning for a given agent and log. ''' 
@@ -29,6 +27,11 @@ def cmd_learn_log(main_options, argv):
     parser.add_option("-o", dest='publish_dir',
                       default="~/boot-learn-out/${id_agent}-${id_robot}-${date}",
                       help="Directory to store debug information [%default]")
+    
+    parser.add_option("--interval_save", type='int', default=300,
+                      help="Interval for saving state (seconds) [%default]")
+    parser.add_option("--interval_print", type='int', default=5,
+                      help="Interval for printing stats (seconds) [%default]")
     
     (options, args) = parser.parse_args(argv)
     
@@ -124,9 +127,9 @@ def cmd_learn_log(main_options, argv):
                             num_episodes_remaining,
                             num_observations_remaining))
 
-    tracker_save = InAWhile(120)
+    tracker_save = InAWhile(options.interval_save)
     
-    tracker = InAWhile(5)
+    tracker = InAWhile(options.interval_print)
     for stream in robots[id_robot]:
         # Check if all learned
         to_learn = stream.id_episodes.difference(state.id_episodes)
@@ -169,10 +172,7 @@ def cmd_learn_log(main_options, argv):
         state.id_episodes.update(to_learn)
         # Saving agent state
         state.agent_state = agent.get_state()
-        db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
-#        def save_state(): 
-        
-#        try_until_done(save_state)
+        db.set_state(state=state, id_robot=id_robot, id_agent=id_agent) 
 
     logger.info('Exiting gracefully.')
     return 0
@@ -241,6 +241,20 @@ def load_agent_and_state(agent_spec, id_agent, id_robot,
     agent = instantiate_spec(agent_spec['code'])    
     db = LearningStateDB(state_db_directory)
     key = dict(id_robot=id_robot, id_agent=id_agent)
+    
+    # XXX: I'm not sure this is the right order
+    
+    # Finding shape
+    index = bag_get_index_object(log_directory)
+    robots = index['robots']
+    for ob0 in robots[id_robot][0].read():
+        break
+    sensel_shape = tuple(ob0.sensel_shape) # XXX
+    commands_spec = eval(ob0.commands_spec)
+    logger.info('Agent init Sensels: %s  commands: %s' % 
+                (sensel_shape, commands_spec))
+    agent.init(sensel_shape, commands_spec)
+
     if not reset_state and db.has_state(**key):
         logger.info('Using previous learned state.')
         state = db.get_state(**key)
@@ -252,18 +266,6 @@ def load_agent_and_state(agent_spec, id_agent, id_robot,
             raise 
     else:
         state = LearningState(id_robot=id_robot, id_agent=id_agent)
-        
-        # Finding shape
-        index = bag_get_index_object(log_directory)
-        robots = index['robots']
-        for ob0 in robots[id_robot][0].read():
-            break
-        
-        sensel_shape = tuple(ob0.sensel_shape) # XXX
-        commands_spec = eval(ob0.commands_spec)
-        logger.info('Agent init Sensels: %s  commands: %s' % 
-                    (sensel_shape, commands_spec))
-        agent.init(sensel_shape, commands_spec)
 
     return agent, state
 

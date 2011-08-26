@@ -1,6 +1,5 @@
-import numpy as np
-from bootstrapping_olympics.interfaces.structures import Observations
-from bootstrapping_olympics import logger
+from .. import logger, np
+from ..interfaces import Observations
 
 class ROS2Python():
     ''' 

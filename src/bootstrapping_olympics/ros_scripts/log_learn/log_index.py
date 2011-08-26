@@ -1,11 +1,9 @@
-from . import logger
+from . import BootStream, logger
+from ...interfaces import BootSpec
 from collections import defaultdict
-from vehicles.configuration.config_utils import locate_files
+from vehicles.configuration.config_utils import locate_files # FIXME: should not depend
 import os
 import shelve
-from . import BootStream 
-from bootstrapping_olympics.interfaces import BootSpec 
-
 
 def bag_get_index_object(directory):
     index_dir = os.path.join(directory, '.log_learn_indices')

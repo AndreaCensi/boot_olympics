@@ -2,7 +2,8 @@ from . import logger
 from optparse import OptionParser 
 import os 
 from . import bag_get_index_object
- 
+
+__all__ = ['cmd_list_logs']
 
 def cmd_list_logs(main_options, argv):
     '''Shows information about every log. '''

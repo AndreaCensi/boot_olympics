@@ -1,12 +1,18 @@
-from bootstrapping_olympics.interfaces.publisher_interface import Publisher
+from bootstrapping_olympics.interfaces import Publisher
 from reprep import Report
 from contextlib import contextmanager
 from contracts import contract
 
+__all__ = ['ReprepPublisher']
+
 class ReprepPublisher(Publisher):
    
-    def __init__(self, rid):
-        self.r = Report(rid)
+    def __init__(self, rid=None, report=None):
+        # TODO: clear up this interface
+        if report is None:
+            self.r = Report(rid)
+        else:
+            self.r = report
         self.subs = {}
     
     @contract(name='str|tuple[=2]')
@@ -44,3 +50,7 @@ class ReprepPublisher(Publisher):
             yield pylab
         f.last().add_to(f)
         
+    def section(self, section_name):
+        child = self.r.node(section_name)
+        return ReprepPublisher(report=child)
+

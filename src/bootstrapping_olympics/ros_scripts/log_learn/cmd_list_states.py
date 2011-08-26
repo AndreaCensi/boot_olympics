@@ -1,7 +1,8 @@
-from . import logger
-from optparse import OptionParser 
-from bootstrapping_olympics.ros_scripts.log_learn.learning_state import LearningStateDB
-from contracts.interface import describe_value
+from . import LearningStateDB, logger
+from contracts.interface import describe_value # XXX
+from optparse import OptionParser
+
+__all__ = ['cmd_list_states']
 
 def cmd_list_states(main_options, argv):
     '''Shows a summary of the states present in DB. '''

@@ -1,5 +1,7 @@
 import os
 
+__all__ = ['BootStream']
+
 class BootStream(object):
     ''' This class represents the structure used in the .bag index. '''
     

@@ -130,3 +130,6 @@ During offline learning, the data will be written to HTML files.
                 self.__dict__[v] = None
             else:
                 self.__dict__[v] = state[v]
+        self.info('State loaded: %s' % state_vars)
+
+

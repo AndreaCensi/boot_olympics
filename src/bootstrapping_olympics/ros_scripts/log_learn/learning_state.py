@@ -1,7 +1,8 @@
-from . import expand_environment, isodate, logger
-from .filesystem_storage import StorageFilesystem
+from . import StorageFilesystem, expand_environment, isodate, logger
 from contracts import contract
 import os
+
+__all__ = ['LearningState', 'LearningStateDB']
 
 class LearningState(object):
     ''' 

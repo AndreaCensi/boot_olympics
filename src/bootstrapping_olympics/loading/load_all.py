@@ -1,4 +1,5 @@
 from . import check_valid_ros_node_spec, logger
+# FIXME: remove dependency
 from vehicles.configuration import (wrap_check, check_generic_code_desc,
     check_necessary, load_configuration_entries)
 
