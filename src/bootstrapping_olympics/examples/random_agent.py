@@ -2,6 +2,8 @@ from ..interfaces import AgentInterface
 
 from ..interfaces.commands_utils import random_commands
 
+__all__ = ['RandomAgent']
+
 class RandomAgent(AgentInterface):
     
     def perform_task(self, task):

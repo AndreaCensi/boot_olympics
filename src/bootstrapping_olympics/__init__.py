@@ -9,5 +9,5 @@ logger.setLevel(logging.DEBUG)
 import numpy as np
 from contracts import contract
 
-#from .interfaces import *
-
+from .interfaces import *
+# XXX: all the others? but must be careful

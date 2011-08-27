@@ -1,6 +1,7 @@
 from bootstrapping_olympics.interfaces.observations_filter_interface import  FilterInterface
 import numpy as np
 
+# XXX: to finish
 class RandomPermutation(FilterInterface):
 
     def __init__(self, seed):

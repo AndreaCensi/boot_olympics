@@ -1,5 +1,5 @@
 from .. import logger
-from vehicles.configuration import check_valid_code_spec
+from vehicles.configuration import check_valid_code_spec # XXX: remove dependency
 
 
 from .utils import *

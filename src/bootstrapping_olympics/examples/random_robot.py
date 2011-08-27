@@ -1,6 +1,8 @@
 from ..interfaces import RobotInterface
 import numpy as np
 
+__all__ = ['RandomRobot']
+
 class RandomRobot(RobotInterface):
     ''' This is a random robot generating Gaussian noise,
         and ignores any command given. '''

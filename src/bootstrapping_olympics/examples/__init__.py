@@ -1,2 +1,2 @@
-from .random_agent import RandomAgent
-from .random_robot import RandomRobot
+from .random_agent import *
+from .random_robot import *
