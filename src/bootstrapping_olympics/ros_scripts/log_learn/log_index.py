@@ -4,6 +4,7 @@ from collections import defaultdict
 from vehicles.configuration.config_utils import locate_files # FIXME: should not depend
 import os
 import shelve
+import pickle
 
 def bag_get_index_object(directory):
     index_dir = os.path.join(directory, '.log_learn_indices')
@@ -77,7 +78,7 @@ def reindex(s, directory):
     s['bag_files'] = {}
     for i, bag_file in enumerate(bags):
         logger.debug('%4d/%d: %s' % (i + 1 , len(bags), bag_file))
-        streams = bag_get_bootstrapping_stream(bag_file)
+        streams = bag_get_bootstrapping_stream_cached(bag_file)
         if streams:
             for topic, content in streams.items():
                 logger.debug('%s: %s' % (topic, content))
@@ -85,6 +86,14 @@ def reindex(s, directory):
         else:
             logger.info('  No bootstrapping data found. ')   
 
+def bag_get_bootstrapping_stream_cached(bag_file):
+    cache = bag_file + '.cache'
+    if os.path.exists(cache):
+        return pickle.load(open(cache))
+    res = bag_get_bootstrapping_stream(bag_file)
+    with open(cache, 'wb') as f:
+        pickle.dump(res, f, protocol=pickle.HIGHEST_PROTOCOL)
+    return res
 
 def bag_get_bootstrapping_stream(bag_file):
     ''' 
@@ -119,7 +128,7 @@ def bag_get_bootstrapping_stream(bag_file):
                 
                 try:
                     spec.check_compatible_commands_values(msg.commands)
-                    spec.check_compatible_sensels_values(msg.sensel_values)
+                    spec.check_compatible_raw_sensels_values(msg.sensel_values)
                 except Exception as e:
                     logger.error('Invalid data at #%d:%s' % (num, t))
                     logger.error(e)

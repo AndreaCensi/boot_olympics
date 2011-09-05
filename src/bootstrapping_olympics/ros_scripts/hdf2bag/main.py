@@ -18,13 +18,8 @@ Creates a .bag file.
 def hdf2bag(pargs):
     parser = OptionParser(usage=usage)
     parser.disable_interspersed_args()
-#    parser.add_option("--id_robot", help="ID robot.")
-#    parser.add_option("--id_actuators", help="ID actuators")
-#    parser.add_option("--id_sensors", help="ID sensors")
-#    parser.add_option("--id_environment", help="ID environment")
-#    parser.add_option("--commands_spec", help="commands_spec (string)")
-    
-    (options, args) = parser.parse_args(pargs)
+
+    (options, args) = parser.parse_args(pargs) #@UnusedVariable
     
     if len(args) != 1:
         msg = 'I expect only one filename.'
@@ -54,7 +49,7 @@ def hdf2bag(pargs):
 # TODO: use generic function
 def main():
     try:
-        ret = hdf2bag(sys.argv[1:])
+        hdf2bag(sys.argv[1:])
         sys.exit(0)
     except Exception as e:
         logger.error(str(e))

@@ -18,10 +18,23 @@ class BootSpec:
     def __eq__(self, other):
         return ((self.sensels_shape == other.sensels_shape) and 
                 (self.commands_spec == other.commands_spec))
+     
+    def reshape_raw_sensels(self, raw):
+        ''' Transforms the raw 1D sensels in ROS messages to
+            a correctly shaped array.
+        '''
+        return np.array(raw, dtype='float32').reshape(self.sensels_shape)
+        
+    def check_compatible_raw_sensels_values(self, sensels):
+        if len(sensels) != self.num_sensels:
+            msg = ('Raw sensels incompatible with spec %s: expected len %s, got %s.' % 
+                   (self, self.num_sensels, len(sensels)))
+            raise Exception(msg)
         
     def check_compatible_sensels_values(self, sensels):
         ''' Returns true if the given sensels (numpy array) 
             is compatible with this sensorimotor cascade. '''
+        # XXX: this is wasteful
         sensels = np.array(sensels)
         ok_shape = self.sensels_shape == sensels.shape
         if not ok_shape:
@@ -36,7 +49,6 @@ class BootSpec:
             msg = ('Commands incompatible with spec %s: expected %d commands, got %d. %s' % 
                    (self, self.num_commands, commands.size, self.commands_spec))
             raise Exception(msg)
-        
     
     @staticmethod
     def check_valid_commands_spec(commands_spec):

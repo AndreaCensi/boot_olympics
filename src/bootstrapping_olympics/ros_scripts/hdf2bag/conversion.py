@@ -1,6 +1,5 @@
-from procgraph import simple_block, register_model_spec, COMPULSORY, TIMESTAMP
+from procgraph import register_model_spec, Block
 import numpy as np
-from procgraph.core.block import Block
 
 register_model_spec('''
 --- model hdf2bag_conversion

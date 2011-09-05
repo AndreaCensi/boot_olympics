@@ -87,13 +87,13 @@ def cmd_learn_log(main_options, argv):
         pd_template = expand_environment(options.publish_dir)
         date = isodate()
         date = state.id_state
-        vars = dict(id_agent=id_agent, id_robot=id_robot, date=date)
-        pd = substitute(pd_template, vars)
+        variables = dict(id_agent=id_agent, id_robot=id_robot, date=date)
+        pd = substitute(pd_template, variables)
         logger.info('Writing output to directory %r.' % pd)
         publish_agent_output(state, agent, pd)
         
         vars['date'] = 'last'
-        pd_last = substitute(pd_template, vars)
+        pd_last = substitute(pd_template, variables)
         logger.info('Also available as %s' % pd_last)
         if os.path.exists(pd_last):
             os.unlink(pd_last)
@@ -219,13 +219,13 @@ cmd_learn_log.short_usage = ('learn-log -a <AGENT> -r <ROBOT> '
                              ' [--reset] [--publish interval]')
     
 
-def substitute(template, vars):
+def substitute(template, variables):
     ''' Wrapper around Template.substitute for better error display. '''
     try:
-        return Template(template).substitute(vars)
+        return Template(template).substitute(variables)
     except KeyError as e:
         msg = ('Error while substituting in string %r. Key %s not found: '
-               'available keys are %s.' % (template, e, vars.keys()))
+               'available keys are %s.' % (template, e, variables.keys()))
         raise Exception(msg)
     
 
