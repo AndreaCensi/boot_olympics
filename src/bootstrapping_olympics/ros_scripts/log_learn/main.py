@@ -4,7 +4,7 @@ from optparse import OptionParser
 import sys
 import traceback
 # XXX:
-from bootstrapping_olympics.ros_scripts.log_learn.learning_state import LearningStateDB
+from .learning_state import LearningStateDB
 
 commands = {
     'list-logs': cmd_list_logs,

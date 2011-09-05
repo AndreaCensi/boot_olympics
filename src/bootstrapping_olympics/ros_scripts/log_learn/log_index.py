@@ -30,7 +30,7 @@ def bag_get_index_object(directory):
             bag_files = s['bag_files']
             robots = defaultdict(lambda:[])
             robot2spec = {}
-            for file, topics in bag_files.items():
+            for _, topics in bag_files.items():
                 for stream in topics.values():
                     id_robot = stream.id_robot
                     if not id_robot in robot2spec:
@@ -57,7 +57,7 @@ def bag_get_index_object(directory):
     else:
         logger.debug('Using cached index %r.' % index_file)
         
-    assert os.path.exists(index_file)
+    #assert os.path.exists(index_file)
     try:
         s = shelve.open(index_file, writeback=True) 
         assert 'bag_files' in s
