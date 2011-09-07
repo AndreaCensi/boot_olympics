@@ -1,4 +1,4 @@
-from procgraph import register_model_spec, Block
+from procgraph import BadInput, register_model_spec, Block
 import numpy as np
 
 register_model_spec('''
@@ -18,7 +18,7 @@ import procgraph_ros
 |log:hdfread file=$hdf|
 
 #log.y --> |info|
-#log.u --> |info|
+#log.u --> |print|
 
 log.y[y], log.u[u] -> |r:raw2boot| -> observations -> |bagwrite file=$bag| 
 
@@ -53,6 +53,10 @@ class Raw2Boot(Block):
         
         u = self.input.u
         y = self.input.y
+        
+        if (np.abs(u) > 1e6).any(): # XXX: threshold
+            raise BadInput('Values too big: %s' % u, self, 'u')
+        
         timestamp = self.get_input_timestamp(0)
         
         from bootstrapping_adapter.msg import BootstrappingObservations #@UnresolvedImport

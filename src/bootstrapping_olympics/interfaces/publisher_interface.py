@@ -2,6 +2,8 @@ from contracts import contract
 from abc import ABCMeta, abstractmethod
 from contextlib import contextmanager
 
+# TODO: add caption to all of these
+
 class Publisher:
     ''' 
         This is the interface that the agents can use to publish
@@ -21,7 +23,8 @@ class Publisher:
     
     @abstractmethod
     @contract(name='str', value='array')
-    def array_as_image(self, name, value, filter='posneg', filter_params={}):
+    def array_as_image(self, name, value,
+                       filter='posneg', filter_params={}): #@ReservedAssignment
         ''' 
             Publishes an array as a false-color image. 
             ``filter`` is the name of a filter.

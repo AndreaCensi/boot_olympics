@@ -1,7 +1,6 @@
-from . import logger
-from optparse import OptionParser 
-import os 
-from . import bag_get_index_object
+from . import bag_get_index_object, logger
+from optparse import OptionParser
+import os
 
 __all__ = ['cmd_list_logs']
 

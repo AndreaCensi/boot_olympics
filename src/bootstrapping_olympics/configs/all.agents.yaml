@@ -4,13 +4,11 @@
       - bootstrapping_olympics.examples.RandomAgent
       - {}
           
-          
 - id: exp_switcher_1
   desc: Switches randomly between commands with an exponential switching time.
   code:
       - boot_agents.ExpSwitcher
       - beta: 1
-          
           
 - id: bds_agent
   desc: "BDS agents"
@@ -123,4 +121,26 @@
   code:
       - magnus_experiments.BDSAgentFaultDetection
       - beta: 3
+
+# -------------
+- id: bgds_agent_dev
+  desc: "Dev. version"
+  code:
+      - boot_agents.BGDSAgent
+      - beta: 1
+        skip: 1
+        scales: [1.0]
+        # scales: [0.0, 1.0, 4.0]
+        
+- id: icra12-bgds_agent
+  desc: "Dev. version"
+  code:
+      - boot_agents.BGDSAgent
+      - beta: 1
+        skip: 1
+        fixed_dt: 1
+        scales: [1.0]
+        # scales: [0.0, 1.0, 4.0]
+        
+
       

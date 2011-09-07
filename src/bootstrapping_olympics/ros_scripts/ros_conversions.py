@@ -10,9 +10,10 @@ class ROS2Python():
         other check by the agents. 
     '''
     
-    def __init__(self, spec):
+    def __init__(self, spec, max_dt=1):
         self.last = None
         self.spec = spec
+        self.max_dt = max_dt
         
     def convert(self, ros_obs, filter_doubles=True):
         ''' Returns None if the same message is repeated. '''
@@ -65,7 +66,7 @@ class ROS2Python():
                         return None
                     
                 
-                if obs.dt > 0.2:
+                if obs.dt > self.max_dt:
                     logger.info('Skipping %s due to strange dt %s .' % 
                                 (current_data_description, obs.dt))
             else:

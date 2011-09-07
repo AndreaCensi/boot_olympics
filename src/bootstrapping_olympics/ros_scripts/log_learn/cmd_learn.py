@@ -83,7 +83,16 @@ def cmd_learn_log(main_options, argv):
 
     db = LearningStateDB(main_options.state_directory)
 
-    if options.publish_interval is not None:
+    if True:
+        from matplotlib import rc
+#        rc('font', **{'family':'sans-serif', 'sans-serif':['Helvetica']})
+        ## for Palatino and other serif fonts use:
+        rc('font', **{'family':'serif', 'serif':['Times', 'Times New Roman', 'Palatino'],
+                       'size': 9.0})
+#        rc('text', usetex=True)
+        
+
+    if options.publish_interval is not None or options.once:
         pd_template = expand_environment(options.publish_dir)
         date = isodate()
         date = state.id_state
@@ -92,7 +101,7 @@ def cmd_learn_log(main_options, argv):
         logger.info('Writing output to directory %r.' % pd)
         publish_agent_output(state, agent, pd)
         
-        vars['date'] = 'last'
+        variables['date'] = 'last'
         pd_last = substitute(pd_template, variables)
         logger.info('Also available as %s' % pd_last)
         if os.path.exists(pd_last):
@@ -119,7 +128,9 @@ def cmd_learn_log(main_options, argv):
             num_observations_remaining += stream.num_observations 
     
     template = '%20s: %7d episodes, %7d observations.'
-    logger.info(template % ('total', num_episodes_total, num_observations_total))
+    logger.info(template % ('total',
+                            num_episodes_total,
+                            num_observations_total))
     logger.info(template % ('already learned',
                             len(state.id_episodes),
                             state.num_observations)) 
@@ -130,7 +141,10 @@ def cmd_learn_log(main_options, argv):
     tracker_save = InAWhile(options.interval_save)
     
     tracker = InAWhile(options.interval_print)
-    for stream in robots[id_robot]:
+    streams = robots[id_robot]
+    # sort by ID (date)
+    streams = sorted(streams, key=lambda x: list(x.id_episodes)[0])
+    for stream in streams: 
         # Check if all learned
         to_learn = stream.id_episodes.difference(state.id_episodes)
         if not to_learn:
@@ -174,7 +188,6 @@ def cmd_learn_log(main_options, argv):
         state.agent_state = agent.get_state()
         db.set_state(state=state, id_robot=id_robot, id_agent=id_agent) 
 
-    logger.info('Exiting gracefully.')
     return 0
 
 once = False
@@ -197,6 +210,8 @@ def publish_agent_output(state, agent, pd):
     stats = ("Num episodes: %s\nNum observations: %s" % 
              (len(state.id_episodes), state.num_observations))
     report.text('learning statistics', stats)
+    
+    report.text('report_date', isodate())
 
     agent.publish(publisher)
     filename = os.path.join(pd, '%s.html' % rid)

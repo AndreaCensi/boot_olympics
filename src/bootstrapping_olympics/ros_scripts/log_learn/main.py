@@ -3,6 +3,7 @@ from ...loading.load_all import load_boot_olympics_config
 from optparse import OptionParser
 import sys
 import traceback
+import numpy as np
 # XXX:
 from .learning_state import LearningStateDB
 
@@ -31,6 +32,8 @@ Use: `boot_learn  <command> -h' to get more information about that command.
 """ % commands_list
 
 def boot_log_learn(args):
+    np.seterr(all='raise')
+                 
     parser = OptionParser(usage=usage)
     parser.disable_interspersed_args()
     parser.add_option("-c", dest='conf_directory',

@@ -5,7 +5,7 @@ import os
 import time
 
 # XXX: remove this junk
-PRINT_STATS = True
+PRINT_STATS = False
 def print_stats(method, key, length, duration):
     print("stats: %10s  %8d bytes  %.2fs %s" % (method, length, duration, key))
 
@@ -23,8 +23,8 @@ class StorageFilesystem:
         filename = self.filename_for_key(key)
         try:
             start = time.time()
-            with open(filename, 'rb') as file:
-                state = pickle.load(file)
+            with open(filename, 'rb') as f:
+                state = pickle.load(f)
             
             duration = time.time() - start
             if PRINT_STATS:
@@ -35,7 +35,7 @@ class StorageFilesystem:
             msg = "Could not unpickle file %r: %s" % (filename, e)
             raise Exception(msg) 
         
-    def set(self, key, value):
+    def set(self, key, value): #@ReservedAssignment
         if not StorageFilesystem.checked_existence:
             StorageFilesystem.checked_existence = True
             if not os.path.exists(self.basepath):

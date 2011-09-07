@@ -42,13 +42,26 @@ class BootSpec:
                    (self, self.sensels_shape, sensels.shape))
             raise Exception(msg)
         
-    def check_compatible_commands_values(self, commands):
-        commands = np.array(commands)
+    def check_compatible_commands_values(self, commands0):
+        commands = np.array(commands0)
         ok_shape = commands.size == self.num_commands
         if not ok_shape:
             msg = ('Commands incompatible with spec %s: expected %d commands, got %d. %s' % 
                    (self, self.num_commands, commands.size, self.commands_spec))
             raise Exception(msg)
+        
+        for i in range(self.num_commands):
+            u_i = commands[i]
+            bounds = self.commands_spec[i]
+            if isinstance(bounds, tuple):
+                umin, umax = bounds
+                if not umin <= u_i <= umax:
+                    msg = ('Invalid value u[%d]=%d not in [%s,%s] in u=%s' % 
+                           (i, u_i, umin, umax, commands0))
+                    raise Exception(msg)
+            else:
+                # TODO: not implemented yet
+                pass
     
     @staticmethod
     def check_valid_commands_spec(commands_spec):

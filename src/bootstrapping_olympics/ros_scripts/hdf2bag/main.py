@@ -27,7 +27,7 @@ def hdf2bag(pargs):
     
 
     basedir = args[0]
-    global_config_file = os.path.join(basedir, 'hdf2bag.yaml')
+    global_config_file = os.path.join(basedir, 'robot_info.yaml')
     if not os.path.exists(global_config_file):
         raise Exception('Configuration file %r not found.' % global_config_file)
     

@@ -25,17 +25,16 @@ class Observations:
         self.id_episode = None
         self.episode_changed = None #
         
-        
-class ProblemSpec:
-
-    ''' This is the structure passed to an agent's init(). '''
-    def __init__(self):
-        self.sensels_shape = None
-        self.commands_spec = None
-        self.id_robot = None
-        self.id_actuators = None  
-        self.id_sensors = None
-        self.id_environment = None
-        self.type = None # one of "sim", "real", "log"
-
-
+#        
+#class ProblemSpec:
+#
+#    ''' This is the structure passed to an agent's init(). '''
+#    def __init__(self):
+#        self.sensels_shape = None
+#        self.commands_spec = None
+#        self.id_robot = None
+#        self.id_actuators = None  
+#        self.id_sensors = None
+#        self.id_environment = None
+#        self.type = None # one of "sim", "real", "log"
+#
