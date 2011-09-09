@@ -3,6 +3,7 @@ from os.path import splitext, basename
 import cPickle as pickle
 import os
 import time
+from . import logger
 
 # XXX: remove this junk
 PRINT_STATS = False
@@ -45,11 +46,13 @@ class StorageFilesystem:
         filename_new = filename + '.tmp'
         filename_old = filename + '.old'
         if os.path.exists(filename_new):
-            print('Warning; tmp file %r exists (write not succeeded)' % filename_new)
+            # print('Warning; tmp file %r exists (write not succeeded)' 
+            # % filename_new)
             os.unlink(filename_new)
 
         if os.path.exists(filename_old):
-            print('Warning; tmp file %r exists (write not succeeded)' % filename_old)
+            #print('Warning; tmp file %r exists (write not succeeded)' 
+            # % filename_old)
             os.unlink(filename_old)
 
         start = time.time()
@@ -57,8 +60,10 @@ class StorageFilesystem:
             with open(filename_new, 'wb') as f:
                 pickle.dump(value, f, pickle.HIGHEST_PROTOCOL)
         except Exception as e:
-            raise Exception('Cannot set key %s: cannot pickle object '
+            msg = ('Cannot set key %s: cannot pickle object '
                     'of class %s: %s' % (key, value.__class__.__name__, e))
+            logger.error(msg)
+            raise
         
         if os.path.exists(filename):
             # if we have an old version
@@ -81,7 +86,8 @@ class StorageFilesystem:
     def delete(self, key):
         filename = self.filename_for_key(key)
         if not os.path.exists(filename):
-            raise ValueError('I expected path %s to exist before deleting' % filename)
+            msg = 'I expected path %s to exist before deleting' % filename
+            raise ValueError(msg)
         os.remove(filename)
         
     def exists(self, key):  

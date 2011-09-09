@@ -41,7 +41,7 @@
 
 
 - id: diffeo_agent_2d_ldr13
-  desc: "Dev. version (real)"
+  desc: "Dev. version (real); note: add double rejection"
   code:
       - boot_agents.DiffeoAgent2Db
       - rate: 1
@@ -51,7 +51,7 @@
         ratios: [0.35, 0.05]
 
 - id: diffeo_agent_2d_ldr13_2
-  desc: "Dev. version (real) (larger)"
+  desc: "Dev. version (real) (larger); note: add double rejection"
   code:
       - boot_agents.DiffeoAgent2Db
       - rate: 1
@@ -141,6 +141,46 @@
         fixed_dt: 1
         scales: [1.0]
         # scales: [0.0, 1.0, 4.0]
+
+- id: icra12-diffeo_agent_2d-er1-video0
+  desc: ""
+  code:
+      - boot_agents.DiffeoAgent2Db
+      - rate: 1 # Exploration (not used)
+        delta: 0.15
+        #delta: 0
+        # pcres: 90
+        match_method: continuous
+        # yres: 90
+        yres: 45
+        # the first is yres 
+        ratios: [0.1, 0.1]
         
 
+- id: icra12-diffeo_agent_2d-er1-video0_b
+  desc: ""
+  code:
+      - boot_agents.DiffeoAgent2Db
+      - rate: 1 # Exploration (not used)
+        delta: 0.5
+        #delta: 0
+        # pcres: 90
+        match_method: continuous
+        # yres: 90
+        # yres: 45
+        # the first is yres 
+        ratios: [0.05, 0.20]
+
+- id: icra12-diffeo_agent_2d-er1-video0_c
+  desc: ""
+  code:
+      - boot_agents.DiffeoAgent2Db
+      - rate: 1 # Exploration (not used)
+        delta: 0.5
+        resize_method: PIL
+        match_method: continuous
+        resolution: [120, 160]
+        ratios: [0.05, 0.20]
+
+      
       
