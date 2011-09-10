@@ -6,7 +6,7 @@ import os
 import shelve
 import pickle
 
-def bag_get_index_object(directory):
+def bag_get_index_object(directory, ignore_cache=False):
     index_dir = os.path.join(directory, '.log_learn_indices')
     if not os.path.exists(index_dir):
         os.makedirs(index_dir)
@@ -17,6 +17,9 @@ def bag_get_index_object(directory):
     
     if not os.path.exists(index_file):
         logger.debug('Index file not existing -- will create.')
+        needs_recreate = True
+    elif ignore_cache:
+        logger.debug('Ignoring existing cache')
         needs_recreate = True
     elif os.path.getmtime(directory) > os.path.getmtime(index_file):
         logger.debug('Index file existing, but new logs added.')
