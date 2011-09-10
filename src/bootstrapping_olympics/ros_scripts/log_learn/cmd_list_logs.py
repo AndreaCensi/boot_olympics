@@ -9,6 +9,9 @@ def cmd_list_logs(main_options, argv):
     
     parser = OptionParser(usage=cmd_list_logs.short_usage)
     parser.disable_interspersed_args()
+    parser.add_option("-R", dest='refresh', action='store_true',
+                      default=False,
+                      help="Ignores global cache.")
     parser.add_option("-v", dest='display_logs', action='store_true',
                       default=False,
                       help="Displays all logs.")
@@ -21,7 +24,8 @@ def cmd_list_logs(main_options, argv):
         logger.error('Spurious args (%s)' % args)
         return -2 
     
-    index = bag_get_index_object(main_options.log_directory)
+    index = bag_get_index_object(main_options.log_directory,
+                                 ignore_cache=options.refresh)
     bag_files = index['bag_files']
     robots = index['robots']
     logger.info('Index contains %d bag files with boot data.' % len(bag_files))
@@ -32,10 +36,16 @@ def cmd_list_logs(main_options, argv):
         if streams:
             logger.info('  spec: %s' % streams[0].spec)
             total_length = 0
+            total_obs = 0
+            total_episodes = 0
             for stream in streams:
                 total_length += stream.length
-            logger.info('  total length: %.1f minutes' % (total_length / 60.0))
-        
+                total_obs += stream.num_observations
+                total_episodes += len(stream.id_episodes)
+            logger.info('    total length: %.1f minutes' % (total_length / 60.0))
+            logger.info('  total episodes: %d' % (total_episodes))
+            logger.info('   total samples: %d' % (total_obs))
+         
         if options.display_logs:
             for stream in streams:
                 logger.info('- %5ds %s' % (stream.length,

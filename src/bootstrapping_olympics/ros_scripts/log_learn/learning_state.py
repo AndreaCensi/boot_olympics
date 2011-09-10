@@ -21,7 +21,7 @@ class LearningState(object):
         self.id_state = isodate() 
          
 def key2tuple(key):
-    return tuple(",".split(key))
+    return tuple(key.split(","))
 def tuple2key(t):
     return ",".join(t)
 
