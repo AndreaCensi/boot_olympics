@@ -1,6 +1,7 @@
-from . import StorageFilesystem, expand_environment, isodate, logger
+from . import StorageFilesystem, logger
 from contracts import contract
 import os
+from bootstrapping_olympics.utils import isodate, expand_environment
 
 __all__ = ['LearningState', 'LearningStateDB']
 
@@ -26,7 +27,7 @@ def tuple2key(t):
     return ",".join(t)
 
 class LearningStateDB(object):
-    DEFAULT_DIR = '~/boot_learning_states/'
+    DEFAULT_DIR = '~/boot_learning_states/' # TODO: move in constants
     
     def __init__(self, datadir):
         datadir = expand_environment(datadir)

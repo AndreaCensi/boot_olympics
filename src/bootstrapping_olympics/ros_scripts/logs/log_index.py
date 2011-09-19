@@ -1,10 +1,10 @@
 from . import BootStream, logger
 from ...interfaces import BootSpec
 from collections import defaultdict
-from vehicles.configuration.config_utils import locate_files # FIXME: should not depend
 import os
 import shelve
 import pickle
+from conf_tools import locate_files
 
 def bag_get_index_object(directory, ignore_cache=False):
     index_dir = os.path.join(directory, '.log_learn_indices')

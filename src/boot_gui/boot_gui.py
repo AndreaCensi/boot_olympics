@@ -1,15 +1,14 @@
 from . import logger
 from .boot_gui_mdi import ConfigFrame, MainFrame
 from .boot_gui_run import create_vehicles_launch
-from bootstrapping_olympics.loading import (Configuration as BOConf,
-    load_configuration as BO_load_all)
-from vehicles import (VehiclesConfiguration as VConf,
-    load_configuration as V_load_all, check_valid_world_config,
-    check_valid_vehicle_config)
+from bootstrapping_olympics import BootOlympicsConfig
+from vehicles import (check_valid_world_config, check_valid_vehicle_config,
+    VehiclesConfig)
 from wx import MDIParentFrame #@UnresolvedImport
 import subprocess
 import wx
 import yaml
+
 
 
 
@@ -156,17 +155,17 @@ class Parent(MDIParentFrame):
         
 
         self.c_vehicle = MyConfigFrame(self,
-                                      choices=VConf.vehicles,
+                                      choices=VehiclesConfig.vehicles,
                                       label='Vehicles',
                                       is_valid_config=check_valid_vehicle_config,
                                       id_custom='custom_vehicle')
         self.c_world = MyConfigFrame(self,
-                                      choices=VConf.worlds,
+                                      choices=VehiclesConfig.worlds,
                                       label='Worlds',
                                       is_valid_config=check_valid_world_config,
                                       id_custom='custom_world')
         self.c_agent = MyConfigFrame(self,
-                                      choices=BOConf.agents,
+                                      choices=BootOlympicsConfig.agents,
                                       label='Agent',
                                       is_valid_config=valid_agent_config,
                                       id_custom='custom_agent')
@@ -206,8 +205,9 @@ class Parent(MDIParentFrame):
     
     
 def main():
-    BO_load_all()
-    V_load_all()
+    BootOlympicsConfig.load()
+    VehiclesConfig.load()
+
     app = wx.PySimpleApp(0) #@UndefinedVariable
     wx.InitAllImageHandlers() #@UndefinedVariable
     frame_1 = Parent()

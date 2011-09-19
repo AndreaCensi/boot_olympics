@@ -1,4 +1,4 @@
-from ...interfaces import Publisher
+from ..interfaces import Publisher
 from reprep import Report
 from contextlib import contextmanager
 from contracts import contract

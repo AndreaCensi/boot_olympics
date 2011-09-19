@@ -1,9 +1,13 @@
-from bootstrapping_olympics.loading import (check_valid_ros_node_spec,
-    parse_yaml_ros_node_spec)
+
+#from bootstrapping_olympics.configuration import (check_valid_ros_node_spec,
+#    parse_yaml_ros_node_spec)
 from string import Template
 import yaml
+from ..configuration.yaml_ros_node_spec import check_valid_ros_node_spec, \
+    parse_yaml_ros_node_spec
 
-def create_launch_xml(agent_ros_node, robot_ros_node, namespace, bag=None, output=None):
+def create_launch_xml(agent_ros_node, robot_ros_node, namespace, bag=None,
+                      output=None):
     check_valid_ros_node_spec(agent_ros_node)
     check_valid_ros_node_spec(robot_ros_node)  
     node_robot = create_ros_node_xml('my_robot',
@@ -12,7 +16,7 @@ def create_launch_xml(agent_ros_node, robot_ros_node, namespace, bag=None, outpu
                                      output=output)
     node_agent = create_ros_node_xml('my_agent', agent_ros_node,
                                      remap={
-                                           'observations': 'my_robot/observations',
+                                        'observations': 'my_robot/observations',
                                            'commands': 'my_robot/commands',
                                     }, output=output)
     if bag is not None:
@@ -34,10 +38,10 @@ ${node_bag}
     </group>
 </launch>""" 
     final = Template(template).substitute(
-                node_robot=indent(node_robot, ' '*8),
-                node_agent=indent(node_agent, ' '*8),
+                node_robot=indent(node_robot, ' ' * 8),
+                node_agent=indent(node_agent, ' ' * 8),
                 namespace=namespace,
-                node_bag=indent(node_bag, ' '*8))
+                node_bag=indent(node_bag, ' ' * 8))
     return final
 
 
@@ -56,8 +60,8 @@ ${xml_remap}
                 package_name=package_name,
                 node_name=node_name,
                 node_type=node_type,
-                xml_remap=indent(xml_remap, ' '*4),
-                xml_params=indent(xml_params, ' '*4),
+                xml_remap=indent(xml_remap, ' ' * 4),
+                xml_params=indent(xml_params, ' ' * 4),
                 args="args='%s'" % args if args else "",
                 output="output='%s'" % output if output else "",)
     return final

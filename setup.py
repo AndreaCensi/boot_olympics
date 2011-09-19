@@ -30,12 +30,12 @@ setup(name='BootstrappingOlympics',
       
       package_dir={'':'src'},
       packages=find_packages('src'),
-      install_requires=[ 'PyYAML'],
+      install_requires=[ 'PyYAML', 'RepRep', 'PyContracts', 'ConfTools'],
       tests_require=['nose'],
       entry_points={
          'console_scripts': [
            'boot_olympics_print_config = '
-                'bootstrapping_olympics.loading.print_config:main',
+                'bootstrapping_olympics.programs.print_config:main',
            'boot_olympics_create_launch_agent_robot = '
                 'bootstrapping_olympics.ros_scripts.create_launch_agent_robot:main',
             'boot_olympics_create_launch_all = '

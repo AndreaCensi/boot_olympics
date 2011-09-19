@@ -1,11 +1,11 @@
 from . import cmd_list_logs, cmd_list_states, logger, cmd_learn_log, cmd_list_agents
-from ...loading.load_all import load_boot_olympics_config
 from optparse import OptionParser
 import sys
 import traceback
 import numpy as np
 # XXX:
-from .learning_state import LearningStateDB
+from ..agent_states import LearningStateDB
+from bootstrapping_olympics.configuration.master import BootOlympicsConfig
 
 commands = {
     'list-logs': cmd_list_logs,
@@ -14,7 +14,6 @@ commands = {
     'learn-log': cmd_learn_log,
 }
 
-# TODO: make decorators
 
 commands_list = "\n".join([ '  %-15s  %s\n  %-15s  Usage: %s' % 
                            (cmd, f.__doc__, '', f.short_usage) 
@@ -48,26 +47,24 @@ def boot_log_learn(args):
     
     if not args:
         msg = 'Please supply command. Available: %s' % ", ".join(commands.keys())
-        logger.error(msg)
-        return -2
+        raise Exception(msg)
     
     cmd = args[0]
     cmd_options = args[1:]
     
     if not cmd in commands:
-        msg = 'Unknown command %r. Available: %s.' % (cmd, ", ".join(commands.keys()))
-        logger.error(msg)
-        return -3
+        msg = ('Unknown command %r. Available: %s.' % 
+               (cmd, ", ".join(commands.keys())))
+        raise Exception(msg)
     
-    load_boot_olympics_config(options.conf_directory)
+    BootOlympicsConfig.load(options.conf_directory)
      
     return commands[cmd](options, cmd_options)
     
 def main():
     try:
-        ret = boot_log_learn(sys.argv[1:])
-        logger.debug('Graceful exit with return code %d.' % ret)
-        sys.exit(ret)
+        boot_log_learn(sys.argv[1:])
+        sys.exit(0)
     except Exception as e:
         logger.error(str(e))
         logger.error(traceback.format_exc())

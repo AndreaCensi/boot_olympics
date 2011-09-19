@@ -1,9 +1,10 @@
+from . import logger
 from glob import glob
 from os.path import splitext, basename
-import cPickle as pickle
 import os
+import pickle
 import time
-from . import logger
+#import cPickle as pickle
 
 # XXX: remove this junk
 PRINT_STATS = False
@@ -34,7 +35,8 @@ class StorageFilesystem:
             return state
         except Exception as e:
             msg = "Could not unpickle file %r: %s" % (filename, e)
-            raise Exception(msg) 
+            logger.error(msg)
+            raise 
         
     def set(self, key, value): #@ReservedAssignment
         if not StorageFilesystem.checked_existence:

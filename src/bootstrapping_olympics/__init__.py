@@ -1,6 +1,4 @@
-import logging
-
-logging.basicConfig();
+import logging;  logging.basicConfig()
 
 logger = logging.getLogger("BootOlympics")
 logger.setLevel(logging.DEBUG)
@@ -10,4 +8,4 @@ import numpy as np
 from contracts import contract
 
 from .interfaces import *
-# XXX: all the others? but must be careful
+from .configuration import BootOlympicsConfig

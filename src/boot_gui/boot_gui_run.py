@@ -1,10 +1,10 @@
 from . import logger
-from bootstrapping_olympics.loading import (Configuration as  BOConf,
-    check_valid_agent_config)
+from bootstrapping_olympics import (BootOlympicsConfig)
 from bootstrapping_olympics.ros_scripts import create_launch_xml
-from vehicles.configuration import Configuration, dereference_vehicle_spec
+from vehicles.configuration import VehiclesConfig, dereference_vehicle_spec
 import os
 import shutil
+from bootstrapping_olympics.configuration.agents import check_valid_agent_config
 
 def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir,
                            log_level=0, viz_level=0, publish_interval=0):
@@ -13,9 +13,9 @@ def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir,
     # We have to create a new 'robot'
     id_robot = 'sim-%s-%s' % (id_agent, id_vehicle)
     
-    vehicle = dict(**Configuration.vehicles[id_vehicle])
+    vehicle = dict(**VehiclesConfig.vehicles[id_vehicle])
     dereference_vehicle_spec(vehicle)
-    world = Configuration.worlds[id_world]
+    world = VehiclesConfig.worlds[id_world]
     
     simulation_code = ['vehicles_ros.ROSVehicleSimulation',
                        {'vehicle': vehicle,
@@ -25,7 +25,7 @@ def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir,
     robot_node = ['bootstrapping_adapter/robot_adapter.py',
                           {'code': simulation_code } ]
     
-    agent = BOConf.agents[id_agent]
+    agent = BootOlympicsConfig.agents[id_agent]
     check_valid_agent_config(agent)
     agent_node = ['bootstrapping_adapter/agent_adapter.py',
                           {'code': agent['code'],

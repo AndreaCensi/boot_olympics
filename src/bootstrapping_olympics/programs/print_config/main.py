@@ -1,13 +1,10 @@
-from . import load_configuration, Configuration
+from . import logger
+from .natsort import natsorted
+from bootstrapping_olympics import BootOlympicsConfig
 from optparse import OptionParser
 from reprep import Report
-import logging
 import os
-from .natsort import natsorted
 
-logging.basicConfig();
-logger = logging.getLogger("print_config")
-logger.setLevel(logging.DEBUG)
 
 
 usage = """
@@ -33,8 +30,9 @@ def main():
     
     print_configuration(options.directory, options.outdir)
     
+
 def print_configuration(directory, outdir):
-    load_configuration(directory)
+    BootOlympicsConfig.load(directory)
      
     def write_report(r):
         out = os.path.join(outdir, '%s.html' % r.id)
@@ -42,22 +40,22 @@ def print_configuration(directory, outdir):
         logger.info('Writing to %r' % out)
         r.to_html(out, resources_dir=rd)
         
-    tasks = Configuration.tasks
+    tasks = BootOlympicsConfig.tasks
     r = Report('tasks')
     create_generic_table(r, 'configuration', tasks, ['desc', 'code'])
     write_report(r)
     
-    agents = Configuration.agents
+    agents = BootOlympicsConfig.agents
     r = Report('agents')
     create_generic_table(r, 'configuration', agents, ['desc', 'code'])
     write_report(r)
     
-    robots = Configuration.robots
+    robots = BootOlympicsConfig.robots
     r = Report('robots')
     create_generic_table(r, 'configuration', robots, ['desc', 'ros-node'])
     write_report(r)
     
-    events = Configuration.events
+    events = BootOlympicsConfig.events
     r = Report('events')
     create_generic_table(r, 'configuration', events,
                          ['desc', 'tasks', 'agents', 'robots'])

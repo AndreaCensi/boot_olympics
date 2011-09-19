@@ -22,14 +22,14 @@ def natcasecmp(a, b):
     "Natural string comparison, ignores case."
     return natcmp(a.lower(), b.lower())
 
-def natsort(seq, cmp=natcmp):
+def natsort(seq, compare=natcmp):
     "In-place natural string sort."
-    seq.sort(cmp)
+    seq.sort(compare)
     
-def natsorted(seq, cmp=natcmp):
+def natsorted(seq, compare=natcmp):
     "Returns a copy of seq, sorted by natural string sort."
     # convert set -> list
     temp = list(seq)
-    natsort(temp, cmp)
+    natsort(temp, compare)
     return temp
 

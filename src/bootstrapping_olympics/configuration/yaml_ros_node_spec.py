@@ -1,4 +1,4 @@
-from vehicles.configuration import BadConfig
+from conf_tools import BadConfig
 
 def check_valid_ros_node_spec(x):
     if not isinstance(x, list):

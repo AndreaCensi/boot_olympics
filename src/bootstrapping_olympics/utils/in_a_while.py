@@ -1,18 +1,4 @@
-import os
-import datetime
 import time
-
-def expand_environment(s):
-    ''' Expands ~ and ${ENV} in the string. '''
-    s = os.path.expandvars(s)
-    s = os.path.expanduser(s)
-    return s
-
-def isodate():
-    now = datetime.datetime.now()
-    date = now.isoformat('-')[:16]
-    return date
-
 
 class InAWhile:
     

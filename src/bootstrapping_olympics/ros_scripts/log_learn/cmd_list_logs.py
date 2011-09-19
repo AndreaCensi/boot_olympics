@@ -1,4 +1,6 @@
-from . import bag_get_index_object, logger
+from ..logs import bag_get_index_object
+
+from . import  logger
 from optparse import OptionParser
 import os
 

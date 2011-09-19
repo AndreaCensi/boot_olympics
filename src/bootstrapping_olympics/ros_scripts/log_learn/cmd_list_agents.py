@@ -1,6 +1,6 @@
 from . import logger
 from optparse import OptionParser 
-from bootstrapping_olympics.loading.load_all import BootOlympicsConfig
+from bootstrapping_olympics import BootOlympicsConfig
 from pprint import pformat
 
 __all__ = ['cmd_list_agents']

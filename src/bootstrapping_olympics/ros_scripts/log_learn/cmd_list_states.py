@@ -1,5 +1,6 @@
-from . import LearningStateDB, logger
-from contracts.interface import describe_value # XXX
+from . import  logger
+from ..agent_states import LearningStateDB
+from contracts import describe_value 
 from optparse import OptionParser
 
 __all__ = ['cmd_list_states']

@@ -1,13 +1,19 @@
-from . import (ReprepPublisher, LearningState, LearningStateDB,
-    bag_get_index_object, logger, expand_environment, isodate, InAWhile)
+from ..agent_states import (LearningState, LearningStateDB)
+from . import logger
 from ...interfaces import AgentInterface
-from ...loading import BootOlympicsConfig, instantiate_spec
+from ...configuration import BootOlympicsConfig
 from ..ros_conversions import ROS2Python
 from optparse import OptionParser
 from pprint import pformat
 from string import Template
 import numpy as np
 import os
+from ...display import ReprepPublisher
+from conf_tools import instantiate_spec
+from ...utils import isodate
+from ...utils import expand_environment
+from bootstrapping_olympics.ros_scripts.logs.log_index import bag_get_index_object
+from bootstrapping_olympics.utils.in_a_while import InAWhile
 
 __all__ = ['cmd_learn_log']
 
@@ -253,7 +259,7 @@ def load_agent_and_state(agent_spec, id_agent, id_robot,
         Returns tuple agent, state.
     '''
     logger.info('Instancing agent spec:\n%s' % pformat(agent_spec))
-    agent = instantiate_spec(agent_spec['code'])    
+    agent = instantiate_spec(agent_spec['code']) # XXX    
     db = LearningStateDB(state_db_directory)
     key = dict(id_robot=id_robot, id_agent=id_agent)
     

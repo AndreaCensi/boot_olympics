@@ -1,10 +1,4 @@
-from .col_logging import *
-from .filesystem_storage import *
-from .misc_utils import *
-from .structures import *
-from .learning_state import *
-from .log_index import *
-from .reprep_publisher import *
+from .. import logger
 
 from .cmd_learn import *
 from .cmd_list_logs import *
