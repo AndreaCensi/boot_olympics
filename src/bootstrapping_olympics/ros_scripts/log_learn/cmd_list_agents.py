@@ -14,8 +14,9 @@ def cmd_list_agents(main_options, argv):
     (options, args) = parser.parse_args(argv)    
     
     if args: 
-        logger.error('Spurious args (%s)' % args)
-        return -2 
+        msg = ('Spurious args (%s)' % args)
+        raise Exception(msg)
+     
     agents = BootOlympicsConfig.agents
     which = BootOlympicsConfig.agents.keys() # TODO: selection
     
@@ -30,8 +31,7 @@ def cmd_list_agents(main_options, argv):
             logger.info(pformat(agent_spec))
     else:
         logger.info('Use "-v" to see more information.')
-        
-    return 0
+         
 
 cmd_list_agents.short_usage = 'list-agents [-v]'
     

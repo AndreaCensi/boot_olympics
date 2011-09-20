@@ -1,7 +1,7 @@
 from . import StorageFilesystem, logger
+from ...utils import isodate, expand_environment
 from contracts import contract
 import os
-from bootstrapping_olympics.utils import isodate, expand_environment
 
 __all__ = ['LearningState', 'LearningStateDB']
 
@@ -25,6 +25,8 @@ def key2tuple(key):
     return tuple(key.split(","))
 def tuple2key(t):
     return ",".join(t)
+def isakey(t):
+    return ',' in t
 
 class LearningStateDB(object):
     DEFAULT_DIR = '~/boot_learning_states/' # TODO: move in constants
@@ -39,7 +41,8 @@ class LearningStateDB(object):
         self.storage = StorageFilesystem(dbdir)
         
     def list_states(self):
-        return [ key2tuple(x) for x in  self.storage.keys()]
+#        logger.debug('Keys: %s' % [ key2tuple(x) for x in  self.storage.keys()])
+        return [ key2tuple(x) for x in  self.storage.keys() if isakey(x)]
         
     def has_state(self, id_agent, id_robot):
         ''' Returns true if the learning state is already present. '''

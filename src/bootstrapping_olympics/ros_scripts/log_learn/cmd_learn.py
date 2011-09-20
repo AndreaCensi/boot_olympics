@@ -1,19 +1,16 @@
-from ..agent_states import (LearningState, LearningStateDB)
 from . import logger
-from ...interfaces import AgentInterface
 from ...configuration import BootOlympicsConfig
-from ..ros_conversions import ROS2Python
+from ...display import ReprepPublisher
+from ...interfaces import AgentInterface
+from ...utils import InAWhile, expand_environment, isodate
+from ..agent_states import LearningState, LearningStateDB
+from ..logs import LogIndex
+from conf_tools import instantiate_spec
 from optparse import OptionParser
 from pprint import pformat
 from string import Template
 import numpy as np
 import os
-from ...display import ReprepPublisher
-from conf_tools import instantiate_spec
-from ...utils import isodate
-from ...utils import expand_environment
-from bootstrapping_olympics.ros_scripts.logs.log_index import bag_get_index_object
-from bootstrapping_olympics.utils.in_a_while import InAWhile
 
 __all__ = ['cmd_learn_log']
 
@@ -30,7 +27,7 @@ def cmd_learn_log(main_options, argv):
                       help="Publish debug information every N cycles.")
     parser.add_option("--once", default=False, action='store_true',
                       help="Just plot the published information once and exit.")
-    parser.add_option("-o", dest='publish_dir',
+    parser.add_option("-o", dest='publish_dir', # XXX: use pattern
                       default="~/boot-learn-out/${id_agent}-${id_robot}-${date}",
                       help="Directory to store debug information [%default]")
     
@@ -42,37 +39,35 @@ def cmd_learn_log(main_options, argv):
     (options, args) = parser.parse_args(argv)
     
     if args:
-        logger.error('Spurious arguments: %s' % args)
-        return -1
+        raise Exception('Spurious arguments: %s' % args)
     
     if options.agent is None:
         msg = 'Please provide agent ID with --agent.'
-        logger.error(msg)
-        return -1
+        raise Exception(msg)
+        
     
     id_agent = options.agent
 
     if options.robot is None:
         msg = 'Please provide robot ID with --robot.'
-        logger.error(msg)
-        return -1
+        raise Exception(msg)
+        
     id_robot = options.robot
+        
+    index = LogIndex()
+    index.index(main_options.log_directory)
     
-    
-    index = bag_get_index_object(main_options.log_directory)
-    robots = index['robots']
-    
-    if not id_robot in robots:
+    if not id_robot in index.robot2streams:
         msg = ('No log for robot %r found. I know: %s.' 
-               % (id_robot, ", ".join(robots.keys())))
-        logger.error(msg)
-        return -3
+               % (id_robot, ", ".join(index.robot2streams.keys())))
+        raise Exception(msg)
+        
 
     if not id_agent in BootOlympicsConfig.agents:
         msg = ('Agent %r not found in configuration. I know: %s.' 
                % (options.agent, ", ".join(BootOlympicsConfig.agents.keys())))
-        logger.error(msg)
-        return -3
+        raise Exception(msg)
+        
     
     AgentInterface.logger = logger # TODO: create one for agent
     
@@ -93,7 +88,8 @@ def cmd_learn_log(main_options, argv):
         from matplotlib import rc
 #        rc('font', **{'family':'sans-serif', 'sans-serif':['Helvetica']})
         ## for Palatino and other serif fonts use:
-        rc('font', **{'family':'serif', 'serif':['Times', 'Times New Roman', 'Palatino'],
+        rc('font', **{'family':'serif', 'serif':['Times', 'Times New Roman',
+                                                 'Palatino'],
                        'size': 9.0})
 #        rc('text', usetex=True)
         
@@ -119,12 +115,13 @@ def cmd_learn_log(main_options, argv):
         return 0
     
         
+    streams = index.robot2streams[id_robot]
     # TODO: progress bar
     num_episodes_total = 0
     num_episodes_remaining = 0
     num_observations_total = 0
     num_observations_remaining = 0
-    for stream in robots[id_robot]:
+    for stream in streams:
         # Check if all learned
         num_episodes_total += len(stream.id_episodes)
         num_observations_total += stream.num_observations
@@ -147,9 +144,7 @@ def cmd_learn_log(main_options, argv):
     tracker_save = InAWhile(options.interval_save)
     
     tracker = InAWhile(options.interval_print)
-    streams = robots[id_robot]
-    # sort by ID (date)
-    streams = sorted(streams, key=lambda x: list(x.id_episodes)[0])
+
     for stream in streams: 
         # Check if all learned
         to_learn = stream.id_episodes.difference(state.id_episodes)
@@ -158,22 +153,22 @@ def cmd_learn_log(main_options, argv):
             continue
             
         cur_stream_observations = 0
-        ros2python = ROS2Python(stream.spec)
-        for ros_obs in stream.read(only_episodes=to_learn):
-            obs = ros2python.convert(ros_obs)
-            if obs is None: # repeated message
-                continue
+        for obs in stream.read(only_episodes=to_learn):
+            
             
             state.num_observations += 1
             cur_stream_observations += 1
             
             if tracker.its_time():
-                progress = 100 * float(state.num_observations) / num_observations_total
-                progress_log = 100 * float(cur_stream_observations) / stream.num_observations
+                progress = 100 * (float(state.num_observations) / 
+                                  num_observations_total)
+                progress_log = 100 * (float(cur_stream_observations) / 
+                                      stream.num_observations)
                 estimated = np.NaN
                 msg = ('overall %.2f%% (log %3d%%) (eps: %4d/%d, obs: %4d/%d); '
                        '%5.1f fps; remain ~%.1f minutes' % 
-                       (progress, progress_log, len(state.id_episodes), num_episodes_total,
+                       (progress, progress_log, len(state.id_episodes),
+                         num_episodes_total,
                         state.num_observations, num_observations_total,
                         tracker.fps(), estimated))
                 logger.info(msg)
@@ -194,7 +189,6 @@ def cmd_learn_log(main_options, argv):
         state.agent_state = agent.get_state()
         db.set_state(state=state, id_robot=id_robot, id_agent=id_agent) 
 
-    return 0
 
 once = False
 
@@ -254,7 +248,8 @@ def load_agent_and_state(agent_spec, id_agent, id_robot,
                          state_db_directory, log_directory, reset_state=False):
     ''' Load the agent, loading the agent state from the state_db directory.
         If the state is not available, then it initializes anew. The
-        problem spec (sensel shape, commands shape) is loaded from the logs in log_directory. 
+        problem spec (sensel shape, commands shape) is loaded from the 
+        logs in log_directory. 
         
         Returns tuple agent, state.
     '''
@@ -264,28 +259,29 @@ def load_agent_and_state(agent_spec, id_agent, id_robot,
     key = dict(id_robot=id_robot, id_agent=id_agent)
     
     # XXX: I'm not sure this is the right order
+    # XXX: not sure the smartest thing to do:
     
-    # Finding shape
-    index = bag_get_index_object(log_directory)
-    robots = index['robots']
-    for ob0 in robots[id_robot][0].read():
-        break
-    sensel_shape = tuple(ob0.sensel_shape) # XXX
-    commands_spec = eval(ob0.commands_spec)
+    index = LogIndex()
+    index.index(log_directory)
+    spec = index.robot2streams[id_robot][0].spec
+    sensel_shape = spec.sensels_shape
+    commands_spec = spec.commands_spec
     logger.info('Agent init Sensels: %s  commands: %s' % 
                 (sensel_shape, commands_spec))
-    agent.init(sensel_shape, commands_spec)
+    agent.init(sensel_shape, commands_spec) # XXX: put new initialization
 
     if not reset_state and db.has_state(**key):
         logger.info('Using previous learned state.')
         state = db.get_state(**key)
-        logger.info('State after learning %d episodes.' % len(state.id_episodes))
+        logger.info('State after learning %d episodes.' % 
+                    len(state.id_episodes))
         try:
             agent.set_state(state.agent_state)
         except:
             logger.error('Could not set agent to previous state.')
             raise 
     else:
+        logger.info('No previous learned state found.')
         state = LearningState(id_robot=id_robot, id_agent=id_agent)
 
     return agent, state

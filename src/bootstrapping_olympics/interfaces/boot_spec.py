@@ -1,5 +1,11 @@
 import numpy as np
-from contracts.main import check
+from contracts import check
+
+# Types: 
+#  float
+#  float ra
+#  binary
+#  alphabet
 
 class BootSpec:
     ''' 

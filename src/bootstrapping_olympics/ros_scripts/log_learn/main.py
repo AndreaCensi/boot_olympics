@@ -5,7 +5,7 @@ import traceback
 import numpy as np
 # XXX:
 from ..agent_states import LearningStateDB
-from bootstrapping_olympics.configuration.master import BootOlympicsConfig
+from ...configuration import BootOlympicsConfig
 
 commands = {
     'list-logs': cmd_list_logs,

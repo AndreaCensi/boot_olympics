@@ -1,6 +1,5 @@
-from ..logs import bag_get_index_object
-
-from . import  logger
+from . import logger
+from ..logs import LogIndex
 from optparse import OptionParser
 import os
 
@@ -23,17 +22,19 @@ def cmd_list_logs(main_options, argv):
     (options, args) = parser.parse_args(argv)
     
     if args: 
-        logger.error('Spurious args (%s)' % args)
-        return -2 
+        raise Exception('Spurious args (%s)' % args)
+        
+    index = LogIndex()
+    index.index(main_options.log_directory,
+                ignore_cache=options.refresh)
     
-    index = bag_get_index_object(main_options.log_directory,
-                                 ignore_cache=options.refresh)
-    bag_files = index['bag_files']
-    robots = index['robots']
-    logger.info('Index contains %d bag files with boot data.' % len(bag_files))
     
-    logger.info('In total, there are %d robots:' % len(robots))
-    for robot, streams in robots.items():
+    logger.info('Index contains %d bag files with boot data.' % 
+                len(index.file2streams))
+    logger.info('In total, there are %d robots:' 
+                % len(index.robot2streams))
+    
+    for robot, streams in index.robot2streams.items():
         logger.info('- robot %r has %d streams.' % (robot, len(streams)))
         if streams:
             logger.info('  spec: %s' % streams[0].spec)
@@ -44,7 +45,8 @@ def cmd_list_logs(main_options, argv):
                 total_length += stream.length
                 total_obs += stream.num_observations
                 total_episodes += len(stream.id_episodes)
-            logger.info('    total length: %.1f minutes' % (total_length / 60.0))
+            logger.info('    total length: %.1f minutes' % 
+                        (total_length / 60.0))
             logger.info('  total episodes: %d' % (total_episodes))
             logger.info('   total samples: %d' % (total_obs))
          
@@ -54,21 +56,17 @@ def cmd_list_logs(main_options, argv):
                                 os.path.relpath(stream.bag_file,
                                                 main_options.log_directory)))
             
-
     if options.display_streams:
-        for bag_file, streams in bag_files.items():
+        for filename, streams in index.file2streams.items():
             if streams:
-                logger.info('%s' % os.path.relpath(bag_file, main_options.log_directory))
+                logger.info('%s' % os.path.relpath(filename,
+                                                   main_options.log_directory))
                 for topic, content in streams.items():
                     logger.info('%s: %s' % (topic, content))
             else:
                 logger.info('  No bootstrapping data found. ') 
-
-    return 0
-
+ 
 cmd_list_logs.short_usage = 'list-logs [-v] [-vv]'
-
-    
 
 
     

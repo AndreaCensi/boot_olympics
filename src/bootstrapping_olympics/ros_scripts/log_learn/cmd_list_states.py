@@ -14,7 +14,7 @@ def cmd_list_states(main_options, argv):
     (options, args) = parser.parse_args(argv)    
     
     if args:
-        raise Exception('Spurious args' % args)
+        raise Exception('Spurious args: %s' % args)
     
     db = LearningStateDB(main_options.state_directory)
     
@@ -25,14 +25,17 @@ def cmd_list_states(main_options, argv):
         logger.info('Found %d combinations in DB.' % len(combinations))
         
     for id_agent, id_robot in combinations:
-        logger.info('- Found state for agent: %s, robot: %s' % (id_agent, id_robot))
+        logger.info('- Found state a: %-35s  r: %-25s' % (id_agent, id_robot))
         
         if options.verbose:
-            state = db.get_state(id_robot=id_robot, id_agent=id_agent)
-            logger.info('  # episodes: %s' % len(state.id_episodes))
-            logger.info('      object: %s' % describe_value(state.agent_state))
-            
-    return 0
-
+            try:
+                state = db.get_state(id_robot=id_robot, id_agent=id_agent)
+                logger.info('  # episodes: %s' % len(state.id_episodes))
+                logger.info('      object: %s' % describe_value(state.agent_state))
+            except Exception as e:
+                logger.error('  (could not load state: %s) ' % e)
+             
+    if not options.verbose:
+        logger.debug('Use -v for more information.')
 cmd_list_states.short_usage = 'list-states [-v]'
     
