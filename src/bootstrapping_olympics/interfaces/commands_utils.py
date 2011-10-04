@@ -1,5 +1,6 @@
 import numpy as np
 
+# FIXME: this does not work anymore
 def random_command(command_spec):
     if isinstance(command_spec, tuple):
         lower, upper = command_spec

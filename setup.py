@@ -40,12 +40,14 @@ setup(name='BootstrappingOlympics',
                 'bootstrapping_olympics.ros_scripts.create_launch_agent_robot:main',
             'boot_olympics_create_launch_all = '
                 'bootstrapping_olympics.ros_scripts.create_launch_all:main',
-            'boot_gui = '
+            'boot_olympics_gui = '
                 'boot_gui.boot_gui:main',
-            'boot_learn = '
+            'boot_olympics_learn = '
                 'bootstrapping_olympics.ros_scripts.log_learn.main:main',
-            'boot_hdf2bag = '
+            'boot_olympics_hdf2bag = '
                 'bootstrapping_olympics.ros_scripts.hdf2bag.main:main',
+            'boot_olympics_rosbag2h5 = '
+                'bootstrapping_olympics.programs.rosbag2h5.main:main',
 
         ]
       }          

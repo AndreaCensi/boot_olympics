@@ -1,4 +1,5 @@
 import logging;  logging.basicConfig()
+from conf_tools.utils import col_logging # colored logging
 
 logger = logging.getLogger("BootOlympics")
 logger.setLevel(logging.DEBUG)

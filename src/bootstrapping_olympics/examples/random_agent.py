@@ -6,9 +6,7 @@ __all__ = ['RandomAgent']
 
 class RandomAgent(AgentInterface):
     
-    def perform_task(self, task):
-        return False
-        
+
     def init(self, sensels_shape, commands_spec):
         self.commands_spec = commands_spec
     

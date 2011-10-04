@@ -6,6 +6,7 @@ import numpy as np
 # XXX:
 from ..agent_states import LearningStateDB
 from ...configuration import BootOlympicsConfig
+from bootstrapping_olympics.utils.scripts_utils import wrap_script_entry_point
 
 commands = {
     'list-logs': cmd_list_logs,
@@ -61,14 +62,9 @@ def boot_log_learn(args):
      
     return commands[cmd](options, cmd_options)
     
-def main():
-    try:
-        boot_log_learn(sys.argv[1:])
-        sys.exit(0)
-    except Exception as e:
-        logger.error(str(e))
-        logger.error(traceback.format_exc())
-        sys.exit(-2) 
-    
+
+def main(): 
+    wrap_script_entry_point(boot_log_learn, logger)
+
 if __name__ == '__main__':
     main()

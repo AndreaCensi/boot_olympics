@@ -1,5 +1,5 @@
 import os
-from bootstrapping_olympics.ros_scripts.logs.logs_format import LogsFormat
+from . import LogsFormat
 
 __all__ = ['BootStream']
 
@@ -13,9 +13,10 @@ class BootStream(object):
         self.timestamp = timestamp
         self.length = length
         self.num_observations = num_observations
+        self.spec = spec
+
         self.bag_file = bag_file
         self.topic = topic
-        self.spec = spec
 
         # Visualization only
         self.short_file = os.path.splitext(os.path.basename(bag_file))[0]

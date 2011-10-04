@@ -4,6 +4,7 @@ from bootstrapping_olympics import BootOlympicsConfig
 from optparse import OptionParser
 from reprep import Report
 import os
+from bootstrapping_olympics.utils.scripts_utils import wrap_script_entry_point
 
 
 
@@ -15,7 +16,7 @@ usage = """
 """ 
 
 
-def main():
+def boot_olympics_print_config():
     parser = OptionParser()
     parser.add_option("-o", "--outdir", dest='outdir',
                       help="Output directory")
@@ -77,6 +78,10 @@ def create_generic_table(r, nid, name2entry, cols, caption=None):
     else: 
         logger.warn('warn', 'Empty %r table' % nid)    
     
+
+
+def main(): 
+    wrap_script_entry_point(boot_olympics_print_config, logger)
+
 if __name__ == '__main__':
     main()
-

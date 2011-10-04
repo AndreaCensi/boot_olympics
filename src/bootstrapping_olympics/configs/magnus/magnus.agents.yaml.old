@@ -1,0 +1,24 @@
+
+- id: bds_agent
+  desc: "BDS agents"
+  code:
+      - magnus_experiments.BDSAgent
+      - beta: 3
+          
+- id: max_ir
+  desc: "Max IR"
+  code:
+      - magnus_experiments.MaxIRAgent
+      - beta: 3
+
+- id: bds_agent_refined
+  desc: "BDS Agent + convolution"
+  code:
+      - magnus_experiments.BDSAgentRefined
+      - beta: 3
+
+- id: bds_agent_refined_fault_detection
+  desc: "BDS Agent + convolution + fault detection"
+  code:
+      - magnus_experiments.BDSAgentFaultDetection
+      - beta: 3

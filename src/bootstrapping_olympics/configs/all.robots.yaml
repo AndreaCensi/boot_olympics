@@ -1,32 +1,30 @@
 - id: random_1_4
-  desc: simple omnidirectional robot
-  ros-node:
-      - bootstrapping_adapter/robot_adapter.py
-      - code:
-          - bootstrapping_olympics.examples.RandomRobot
-          - num_sensels: 4 
-            num_commands: 1
+  desc: random robot
+  code:
+  - bootstrapping_olympics.examples.RandomRobot
+  - num_sensels: 4 
+    num_commands: 1
 
-- id: d_SE2_car_v-cam360-box10
-  desc: TOWRITE 
-  ros-node:
-      - bootstrapping_adapter/robot_adapter.py
-      - code:
-          - vehicles_ros.ROSVehicleSimulation
-          - id_vehicle: d_SE2_car_v-cam360
-            id_world: box10
+# - id: random_1_4
+  # desc: random robot
+  # ros-node:
+  #     - bootstrapping_adapter/robot_adapter.py
+  #     - code:
+  #         - bootstrapping_olympics.examples.RandomRobot
+  #         - num_sensels: 4 
+  #           num_commands: 1
 
-- id: d_SE2_rb_v-rf360-box10
-  desc: TOWRITE 
-  ros-node:
-      - bootstrapping_adapter/robot_adapter.py
-      - code:
-          - vehicles_ros.ROSVehicleSimulation
-          - id_vehicle: d_SE2_rb_v-rf360
-            id_world: box10
-            
-            
-            
-  # observations-filters:
-  #     - ros-node: 
-  #         - andrea
+# - id: d_SE2_car_v-cam360-box10
+#   desc: TOWRITE 
+#   code:
+#     - vehicles_ros.ROSVehicleSimulation
+#     - id_vehicle: d_SE2_car_v-cam360
+#       id_world: box10
+
+# - id: d_SE2_rb_v-rf360-box10
+#   desc: TOWRITE 
+#   code:
+#     - vehicles_ros.ROSVehicleSimulation
+#     - id_vehicle: d_SE2_rb_v-rf360
+#       id_world: box10
+#           

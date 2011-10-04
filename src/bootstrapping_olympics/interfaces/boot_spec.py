@@ -1,11 +1,7 @@
+from . import StreamSpec, logger
+from contracts import check, describe_type
+from pprint import pformat
 import numpy as np
-from contracts import check
-
-# Types: 
-#  float
-#  float ra
-#  binary
-#  alphabet
 
 class BootSpec:
     ''' 
@@ -14,18 +10,38 @@ class BootSpec:
         array and the number of commands. 
     '''
     
-    def __init__(self, sensels_shape, commands_spec):
-        self.sensels_shape = sensels_shape
-        self.commands_spec = commands_spec
-        BootSpec.check_valid_commands_spec(commands_spec)
-        self.num_sensels = np.prod(sensels_shape)
-        self.num_commands = len(self.commands_spec)
-    
-    def __eq__(self, other):
-        return ((self.sensels_shape == other.sensels_shape) and 
-                (self.commands_spec == other.commands_spec))
+    def __init__(self, obs_spec, cmd_spec, id_robot=None, desc=None, extra=None):
+        self.id_robot = id_robot
+        self.desc = desc
+        self.extra = extra
+        if not isinstance(obs_spec, StreamSpec):
+            msg = ('Expected StreamSpec for observations, not %s.' % 
+                   describe_type(obs_spec))
+            raise ValueError(msg)
+        if not isinstance(cmd_spec, StreamSpec):
+            msg = ('Expected StreamSpec for commands, not %s.' % 
+                   describe_type(cmd_spec))
+            raise ValueError(msg)
+        self.observations = obs_spec
+        self.commands = cmd_spec
+
+#
+#    def __init__(self, sensels_shape, commands_spec):
+#        self.sensels_shape = sensels_shape
+#        self.commands_spec = commands_spec
+#        BootSpec.check_valid_commands_spec(commands_spec)
+#        self.num_sensels = np.prod(sensels_shape)
+#        self.num_commands = len(self.commands_spec)
+#    
+#    def __eq__(self, other):
+#        return ((self.sensels_shape == other.sensels_shape) and 
+#                (self.commands_spec == other.commands_spec))
      
-    def reshape_raw_sensels(self, raw):
+    def __eq__(self, other):
+        return ((self.commands == other.commands) and 
+                (self.observations == other.observations)) 
+     
+    def reshape_raw_sensels(self, raw): # XXX: remove
         ''' Transforms the raw 1D sensels in ROS messages to
             a correctly shaped array.
         '''
@@ -71,6 +87,7 @@ class BootSpec:
     
     @staticmethod
     def check_valid_commands_spec(commands_spec):
+        # XXX
         check('list', commands_spec)
 
     @staticmethod
@@ -82,3 +99,36 @@ class BootSpec:
     
     def __str__(self):
         return 'Spec(%r,%r)' % (self.sensels_shape, self.commands_spec)
+
+    @staticmethod
+    def from_yaml(xo):
+        try:
+            if not isinstance(xo, dict):
+                raise ValueError('Expected a dict, got %s' % xo)
+            x = dict(**xo) # make a copy
+            observations = StreamSpec.from_yaml(x.pop('observations'))
+            commands = StreamSpec.from_yaml(x.pop('commands'))
+            extra = x.pop('extra', None)
+            desc = x.pop('desc', None)
+            id_robot = x.pop('id', None)
+            
+            if x.keys():
+                logger.warning('While reading\n%s\nextra keys detected: %s' % 
+                               (pformat(xo), x.keys()))
+            return BootSpec(observations, commands,
+                            id_robot=id_robot,
+                            extra=extra,
+                            desc=desc)
+        except:
+            logger.error('Error while parsing the BootSpec:\n%s' % xo)
+            raise
+        
+    def to_yaml(self):
+        x = {}
+        x['observations'] = self.observations.to_yaml()
+        x['commands'] = self.commands.to_yaml()
+        x['extra'] = self.extra
+        x['id'] = self.id_robot
+        x['desc'] = self.desc
+        return x
+    

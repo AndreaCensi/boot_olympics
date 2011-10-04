@@ -1,15 +1,18 @@
+from .. import AgentInterface, RobotInterface
 from .agents import check_valid_agent_config
 from .events import check_valid_event_config
 from .robots import check_valid_robot_config
 from .tasks import check_valid_task_config
-from conf_tools import ConfigMaster
+from conf_tools import ConfigMaster, GenericInstance
 
 class BootConfigMaster(ConfigMaster):
     def __init__(self):
         ConfigMaster.__init__(self)
 
-        self.add_class('robots', '*.robots.yaml', check_valid_robot_config)
-        self.add_class('agents', '*.agents.yaml', check_valid_agent_config)
+        self.add_class('robots', '*.robots.yaml', check_valid_robot_config,
+                       GenericInstance(RobotInterface))
+        self.add_class('agents', '*.agents.yaml', check_valid_agent_config,
+                       GenericInstance(AgentInterface))
         self.add_class('events', '*.events.yaml', check_valid_event_config)
         self.add_class('tasks', '*.tasks.yaml', check_valid_task_config)
         

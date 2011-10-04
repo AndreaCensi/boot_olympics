@@ -1,7 +1,7 @@
 from .. import logger
 
-from .boot_stream import *
 from .logs_format import *
+from .boot_stream import *
 
 from . import ros
 

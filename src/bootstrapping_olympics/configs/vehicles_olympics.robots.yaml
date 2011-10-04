@@ -1,0 +1,360 @@
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: orb-1d, id_world: stochastic_box_10}
+  desc: Vehicle simulation (orb-1d, stochastic_box_10)
+  id: orb-1d-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: example_custom_vehicle, id_world: stochastic_box_10}
+  desc: Vehicle simulation (example_custom_vehicle, stochastic_box_10)
+  id: example_custom_vehicle-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-random_5, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_SE2_rb_v-random_5, stochastic_box_10)
+  id: d_SE2_rb_v-random_5-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-cam180, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_SE2_rb_v-cam180, stochastic_box_10)
+  id: d_SE2_rb_v-cam180-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v-cam360, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_SE2_dd_v-cam360, stochastic_box_10)
+  id: d_SE2_dd_v-cam360-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v-rf360, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_SE2_dd_v-rf360, stochastic_box_10)
+  id: d_SE2_dd_v-rf360-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: landroid-4cam, id_world: stochastic_box_10}
+  desc: Vehicle simulation (landroid-4cam, stochastic_box_10)
+  id: landroid-4cam-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-rf180, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_SE2_rb_v-rf180, stochastic_box_10)
+  id: d_SE2_rb_v-rf180-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v2-cam360, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_SE2_dd_v2-cam360, stochastic_box_10)
+  id: d_SE2_dd_v2-cam360-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_car_v-cam360, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_SE2_car_v-cam360, stochastic_box_10)
+  id: d_SE2_car_v-cam360-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v2-rf360, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_SE2_dd_v2-rf360, stochastic_box_10)
+  id: d_SE2_dd_v2-rf360-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: landroid-hokuyo-4cam, id_world: stochastic_box_10}
+  desc: Vehicle simulation (landroid-hokuyo-4cam, stochastic_box_10)
+  id: landroid-hokuyo-4cam-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_car_v-rf360, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_SE2_car_v-rf360, stochastic_box_10)
+  id: d_SE2_car_v-rf360-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_fixed-rf360, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_fixed-rf360, stochastic_box_10)
+  id: d_fixed-rf360-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: landroid-hokuyo, id_world: stochastic_box_10}
+  desc: Vehicle simulation (landroid-hokuyo, stochastic_box_10)
+  id: landroid-hokuyo-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_fixed-cam360, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_fixed-cam360, stochastic_box_10)
+  id: d_fixed-cam360-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-rf360, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_SE2_rb_v-rf360, stochastic_box_10)
+  id: d_SE2_rb_v-rf360-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-cam180-stereo, id_world: stochastic_box_10}
+  desc: Vehicle simulation (d_SE2_rb_v-cam180-stereo, stochastic_box_10)
+  id: d_SE2_rb_v-cam180-stereo-stochastic_box_10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: orb-1d, id_world: test_dynamic}
+  desc: Vehicle simulation (orb-1d, test_dynamic)
+  id: orb-1d-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: example_custom_vehicle, id_world: test_dynamic}
+  desc: Vehicle simulation (example_custom_vehicle, test_dynamic)
+  id: example_custom_vehicle-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-random_5, id_world: test_dynamic}
+  desc: Vehicle simulation (d_SE2_rb_v-random_5, test_dynamic)
+  id: d_SE2_rb_v-random_5-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-cam180, id_world: test_dynamic}
+  desc: Vehicle simulation (d_SE2_rb_v-cam180, test_dynamic)
+  id: d_SE2_rb_v-cam180-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v-cam360, id_world: test_dynamic}
+  desc: Vehicle simulation (d_SE2_dd_v-cam360, test_dynamic)
+  id: d_SE2_dd_v-cam360-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v-rf360, id_world: test_dynamic}
+  desc: Vehicle simulation (d_SE2_dd_v-rf360, test_dynamic)
+  id: d_SE2_dd_v-rf360-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: landroid-4cam, id_world: test_dynamic}
+  desc: Vehicle simulation (landroid-4cam, test_dynamic)
+  id: landroid-4cam-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-rf180, id_world: test_dynamic}
+  desc: Vehicle simulation (d_SE2_rb_v-rf180, test_dynamic)
+  id: d_SE2_rb_v-rf180-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v2-cam360, id_world: test_dynamic}
+  desc: Vehicle simulation (d_SE2_dd_v2-cam360, test_dynamic)
+  id: d_SE2_dd_v2-cam360-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_car_v-cam360, id_world: test_dynamic}
+  desc: Vehicle simulation (d_SE2_car_v-cam360, test_dynamic)
+  id: d_SE2_car_v-cam360-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v2-rf360, id_world: test_dynamic}
+  desc: Vehicle simulation (d_SE2_dd_v2-rf360, test_dynamic)
+  id: d_SE2_dd_v2-rf360-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: landroid-hokuyo-4cam, id_world: test_dynamic}
+  desc: Vehicle simulation (landroid-hokuyo-4cam, test_dynamic)
+  id: landroid-hokuyo-4cam-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_car_v-rf360, id_world: test_dynamic}
+  desc: Vehicle simulation (d_SE2_car_v-rf360, test_dynamic)
+  id: d_SE2_car_v-rf360-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_fixed-rf360, id_world: test_dynamic}
+  desc: Vehicle simulation (d_fixed-rf360, test_dynamic)
+  id: d_fixed-rf360-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: landroid-hokuyo, id_world: test_dynamic}
+  desc: Vehicle simulation (landroid-hokuyo, test_dynamic)
+  id: landroid-hokuyo-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_fixed-cam360, id_world: test_dynamic}
+  desc: Vehicle simulation (d_fixed-cam360, test_dynamic)
+  id: d_fixed-cam360-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-rf360, id_world: test_dynamic}
+  desc: Vehicle simulation (d_SE2_rb_v-rf360, test_dynamic)
+  id: d_SE2_rb_v-rf360-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-cam180-stereo, id_world: test_dynamic}
+  desc: Vehicle simulation (d_SE2_rb_v-cam180-stereo, test_dynamic)
+  id: d_SE2_rb_v-cam180-stereo-test_dynamic
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: orb-1d, id_world: empty}
+  desc: Vehicle simulation (orb-1d, empty)
+  id: orb-1d-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: example_custom_vehicle, id_world: empty}
+  desc: Vehicle simulation (example_custom_vehicle, empty)
+  id: example_custom_vehicle-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-random_5, id_world: empty}
+  desc: Vehicle simulation (d_SE2_rb_v-random_5, empty)
+  id: d_SE2_rb_v-random_5-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-cam180, id_world: empty}
+  desc: Vehicle simulation (d_SE2_rb_v-cam180, empty)
+  id: d_SE2_rb_v-cam180-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v-cam360, id_world: empty}
+  desc: Vehicle simulation (d_SE2_dd_v-cam360, empty)
+  id: d_SE2_dd_v-cam360-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v-rf360, id_world: empty}
+  desc: Vehicle simulation (d_SE2_dd_v-rf360, empty)
+  id: d_SE2_dd_v-rf360-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: landroid-4cam, id_world: empty}
+  desc: Vehicle simulation (landroid-4cam, empty)
+  id: landroid-4cam-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-rf180, id_world: empty}
+  desc: Vehicle simulation (d_SE2_rb_v-rf180, empty)
+  id: d_SE2_rb_v-rf180-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v2-cam360, id_world: empty}
+  desc: Vehicle simulation (d_SE2_dd_v2-cam360, empty)
+  id: d_SE2_dd_v2-cam360-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_car_v-cam360, id_world: empty}
+  desc: Vehicle simulation (d_SE2_car_v-cam360, empty)
+  id: d_SE2_car_v-cam360-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v2-rf360, id_world: empty}
+  desc: Vehicle simulation (d_SE2_dd_v2-rf360, empty)
+  id: d_SE2_dd_v2-rf360-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: landroid-hokuyo-4cam, id_world: empty}
+  desc: Vehicle simulation (landroid-hokuyo-4cam, empty)
+  id: landroid-hokuyo-4cam-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_car_v-rf360, id_world: empty}
+  desc: Vehicle simulation (d_SE2_car_v-rf360, empty)
+  id: d_SE2_car_v-rf360-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_fixed-rf360, id_world: empty}
+  desc: Vehicle simulation (d_fixed-rf360, empty)
+  id: d_fixed-rf360-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: landroid-hokuyo, id_world: empty}
+  desc: Vehicle simulation (landroid-hokuyo, empty)
+  id: landroid-hokuyo-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_fixed-cam360, id_world: empty}
+  desc: Vehicle simulation (d_fixed-cam360, empty)
+  id: d_fixed-cam360-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-rf360, id_world: empty}
+  desc: Vehicle simulation (d_SE2_rb_v-rf360, empty)
+  id: d_SE2_rb_v-rf360-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-cam180-stereo, id_world: empty}
+  desc: Vehicle simulation (d_SE2_rb_v-cam180-stereo, empty)
+  id: d_SE2_rb_v-cam180-stereo-empty
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: orb-1d, id_world: box10}
+  desc: Vehicle simulation (orb-1d, box10)
+  id: orb-1d-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: example_custom_vehicle, id_world: box10}
+  desc: Vehicle simulation (example_custom_vehicle, box10)
+  id: example_custom_vehicle-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-random_5, id_world: box10}
+  desc: Vehicle simulation (d_SE2_rb_v-random_5, box10)
+  id: d_SE2_rb_v-random_5-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-cam180, id_world: box10}
+  desc: Vehicle simulation (d_SE2_rb_v-cam180, box10)
+  id: d_SE2_rb_v-cam180-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v-cam360, id_world: box10}
+  desc: Vehicle simulation (d_SE2_dd_v-cam360, box10)
+  id: d_SE2_dd_v-cam360-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v-rf360, id_world: box10}
+  desc: Vehicle simulation (d_SE2_dd_v-rf360, box10)
+  id: d_SE2_dd_v-rf360-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: landroid-4cam, id_world: box10}
+  desc: Vehicle simulation (landroid-4cam, box10)
+  id: landroid-4cam-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-rf180, id_world: box10}
+  desc: Vehicle simulation (d_SE2_rb_v-rf180, box10)
+  id: d_SE2_rb_v-rf180-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v2-cam360, id_world: box10}
+  desc: Vehicle simulation (d_SE2_dd_v2-cam360, box10)
+  id: d_SE2_dd_v2-cam360-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_car_v-cam360, id_world: box10}
+  desc: Vehicle simulation (d_SE2_car_v-cam360, box10)
+  id: d_SE2_car_v-cam360-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_dd_v2-rf360, id_world: box10}
+  desc: Vehicle simulation (d_SE2_dd_v2-rf360, box10)
+  id: d_SE2_dd_v2-rf360-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: landroid-hokuyo-4cam, id_world: box10}
+  desc: Vehicle simulation (landroid-hokuyo-4cam, box10)
+  id: landroid-hokuyo-4cam-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_car_v-rf360, id_world: box10}
+  desc: Vehicle simulation (d_SE2_car_v-rf360, box10)
+  id: d_SE2_car_v-rf360-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_fixed-rf360, id_world: box10}
+  desc: Vehicle simulation (d_fixed-rf360, box10)
+  id: d_fixed-rf360-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: landroid-hokuyo, id_world: box10}
+  desc: Vehicle simulation (landroid-hokuyo, box10)
+  id: landroid-hokuyo-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_fixed-cam360, id_world: box10}
+  desc: Vehicle simulation (d_fixed-cam360, box10)
+  id: d_fixed-cam360-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-rf360, id_world: box10}
+  desc: Vehicle simulation (d_SE2_rb_v-rf360, box10)
+  id: d_SE2_rb_v-rf360-box10
+- code:
+  - vehicles_boot.BOVehicleSimulation
+  - {dt: 0.10000000000000001, id_vehicle: d_SE2_rb_v-cam180-stereo, id_world: box10}
+  desc: Vehicle simulation (d_SE2_rb_v-cam180-stereo, box10)
+  id: d_SE2_rb_v-cam180-stereo-box10

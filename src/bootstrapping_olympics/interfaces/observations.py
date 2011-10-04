@@ -14,14 +14,15 @@ class Observations:
     '''  
     def __init__(self):
         self.time = None
-        self.dt = None # Time since last observations
         
         self.sensel_values = None
 
         self.commands = None
         self.commands_source = None 
         
+        self.dt = None # Time since last observations
         self.counter = None 
         self.id_episode = None
         self.episode_changed = None #
         
+        self.id_world = None # XXX: make sure we use it

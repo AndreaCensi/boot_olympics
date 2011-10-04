@@ -7,24 +7,19 @@ class RobotInterface:
     
     __metaclass__ = ABCMeta
     
-    def __init__(self, observations_shape, commands_spec,
-                 id_robot='unknown-robot',
-                 id_sensors='unknown-sensors',
-                 id_actuators='unknown-actuators'):
-        # TODO: document commands_spec
-        self.observations_shape = observations_shape
-        self.commands_spec = commands_spec
-        
+    def __init__(self):        
         self.counter = 0
-        self.id_robot = id_robot
-        self.id_sensors = id_sensors
-        self.id_actuators = id_actuators
         self.id_episode = "id-episode-not-set"
         self.id_environment = 'id_environment_not_set'      
         self.last_commands = None
         self.last_commands_source = None
         self.last_observations = None 
           
+    @abstractmethod
+    def get_spec(self):
+        ''' Returns the sensorimotor spec for this robot
+            (a BootSpec object). '''
+        
     @abstractmethod
     def new_episode(self):
         ''' 
@@ -34,8 +29,6 @@ class RobotInterface:
             
             Should set the attributes ``id_episode`` and ``id_environment``.
         '''
-        self.id_episode = 'id-episode-not-set'
-        self.id_environment = 'id_environment_not_set'
 
     @abstractmethod
     def set_commands(self, commands):
@@ -60,6 +53,7 @@ class RobotInterface:
     # Do not replace the following methods.
     #
     # This is the data structure returned by get_last_observations()
+    # XXX: this is redundant
     Observations = namedtuple('Observations',
                               'timestamp counter id_episode id_environment sensel_values '
                               'commands commands_source')
