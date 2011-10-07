@@ -1,4 +1,4 @@
-from bootstrapping_olympics.ros_scripts.ros_conversions import ROS2Python
+from . import ROS2Python
 
 def bag_read(bag_file, topic, spec, substitute_id_episode):
     ''' 
