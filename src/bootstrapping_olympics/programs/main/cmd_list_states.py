@@ -1,8 +1,7 @@
-from . import  logger
-from ..agent_states import LearningStateDB
-from contracts import describe_value 
+from . import logger, check_no_spurious
+from ...agent_states import LearningStateDB
+from contracts import describe_value
 from optparse import OptionParser
-from bootstrapping_olympics.ros_scripts.log_learn.common import check_no_spurious
 
 __all__ = ['cmd_list_states']
 
@@ -37,5 +36,6 @@ def cmd_list_states(main_options, argv):
              
     if not options.verbose:
         logger.debug('Use -v for more information.')
+        
 cmd_list_states.short_usage = 'list-states [-v]'
     

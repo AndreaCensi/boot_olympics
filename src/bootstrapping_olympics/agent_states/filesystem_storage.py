@@ -1,10 +1,10 @@
 from . import logger
 from glob import glob
 from os.path import splitext, basename
-import os
-#import pickle
-import time
 import cPickle as pickle
+import os
+import time
+#import pickle
 
 # XXX: remove this junk
 PRINT_STATS = False

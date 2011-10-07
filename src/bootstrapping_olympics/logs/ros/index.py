@@ -1,7 +1,7 @@
 from . import logger
-from ....interfaces import BootSpec
-from ..boot_stream import BootStream
-import os 
+from .. import BootStream
+from ... import BootSpec
+import os
 
 def bag_get_bootstrapping_stream(bag_file):
     ''' 

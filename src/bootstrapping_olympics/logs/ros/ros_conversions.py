@@ -1,4 +1,5 @@
-from .. import logger, np
+from . import logger
+import numpy as np
 
 class ROS2Python():
     ''' 

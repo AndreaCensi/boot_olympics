@@ -1,5 +1,5 @@
 from . import StorageFilesystem, logger
-from ...utils import isodate, expand_environment
+from ..utils import isodate, expand_environment
 from contracts import contract
 import os
 

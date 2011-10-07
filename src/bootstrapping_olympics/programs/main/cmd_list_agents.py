@@ -1,7 +1,6 @@
-from . import logger 
+from . import check_no_spurious, logger
 from optparse import OptionParser
 from pprint import pformat
-from bootstrapping_olympics.ros_scripts.log_learn.common import check_no_spurious
 
 __all__ = ['cmd_list_agents']
 

@@ -1,5 +1,5 @@
 from .. import BootStream
-from .... import BootSpec
+from ... import BootSpec
 import numpy as np
 import tables
 import yaml

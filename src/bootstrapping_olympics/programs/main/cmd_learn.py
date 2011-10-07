@@ -3,7 +3,7 @@ from ...configuration import BootOlympicsConfig
 from ...display import ReprepPublisher
 from ...interfaces import AgentInterface
 from ...utils import InAWhile, expand_environment, isodate, substitute
-from ..agent_states import LearningState
+from ...agent_states import LearningState
 from optparse import OptionParser
 import numpy as np
 import os
