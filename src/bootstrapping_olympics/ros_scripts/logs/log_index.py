@@ -83,8 +83,7 @@ def index_directory(directory):
     for i, filename in enumerate(files):
         logger.debug('%4d/%d: %s' % (i + 1 , len(files), filename))
         reader = LogsFormat.get_reader_for(filename)
-#        streams = reader.index_file_cached(filename) FIXME ???
-        streams = reader.index_file(filename)
+        streams = reader.index_file_cached(filename) 
         if streams:
             for stream in streams:
                 assert isinstance(stream, BootStream)

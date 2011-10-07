@@ -1,6 +1,6 @@
 from . import check_no_spurious, logger
 from optparse import OptionParser
-import os
+
 
 __all__ = ['cmd_list_logs']
 

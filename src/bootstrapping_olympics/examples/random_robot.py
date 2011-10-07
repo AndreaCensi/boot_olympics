@@ -1,5 +1,5 @@
 from .. import RobotObservations, BootSpec, RobotInterface, EpisodeDesc
-from ..utils import isodate
+from ..utils import isodate_with_secs
 import numpy as np
 
 __all__ = ['RandomRobot']
@@ -15,9 +15,7 @@ class RandomRobot(RobotInterface):
         self.dt = dt
         self.commands = np.zeros(self.num_commands)
         self.commands_source = 'rest'
-        
-    def get_spec(self):
-        return BootSpec.from_yaml({
+        self.spec = BootSpec.from_yaml({
             'commands': {
                 'shape': [self.num_commands],
                 'format': 'C',
@@ -31,6 +29,9 @@ class RandomRobot(RobotInterface):
             }        
         })
         
+    def get_spec(self):
+        return self.spec 
+        
     def get_observations(self):
         obs = np.random.rand(self.num_sensels)
         return RobotObservations(self.timestamp, obs, commands=self.commands,
@@ -43,5 +44,5 @@ class RandomRobot(RobotInterface):
     
     def new_episode(self):
         self.timestamp = 0
-        return EpisodeDesc(isodate(), 'n/a')
+        return EpisodeDesc(isodate_with_secs(), 'n/a')
         

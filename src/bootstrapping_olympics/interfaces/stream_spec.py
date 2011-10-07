@@ -38,10 +38,6 @@ class StreamSpec:
         self.kind = self.streamels['kind']
         self.lower = self.streamels['lower']
         self.upper = self.streamels['upper']
-        self.streamelsf = self.streamels.flat
-        self.kindf = self.streamels['kind'].flat
-        self.lowerf = self.streamels['lower'].flat
-        self.upperf = self.streamels['upper'].flat
         
         # If the "format" is a string it is valid for all of them
         if isinstance(format, str):
@@ -97,10 +93,12 @@ class StreamSpec:
             This is distributed uniformly in the ranges. 
             (representation dependent)'''
         x = np.zeros(self.streamels.shape)
+        
+        streamelsf = self.streamels.flat
         for i in xrange(x.size):
-            lower = self.lowerf[i]
-            upper = self.upperf[i]
-            kind = self.kindf[i] 
+            lower = streamelsf[i]['lower']
+            upper = streamelsf[i]['upper']
+            kind = streamelsf[i]['kind'] 
             if kind == ValueFormats.Continuous:
                 val = np.random.uniform(lower, upper)
             elif kind == ValueFormats.Discrete:

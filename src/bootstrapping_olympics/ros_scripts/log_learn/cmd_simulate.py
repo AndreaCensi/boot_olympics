@@ -1,13 +1,11 @@
 from . import check_mandatory, logger, check_no_spurious
 from ... import AgentInterface, ObsKeeper, RobotObservations, RobotInterface
-from ...utils import isodate
+from ...utils import InAWhile, isodate_with_secs
 from contracts import contract
 from optparse import OptionParser
 import tables
 import time
 import yaml
-from bootstrapping_olympics.utils.in_a_while import InAWhile
-
 
 __all__ = ['cmd_simulate']
 
@@ -56,7 +54,7 @@ def cmd_simulate(data_central, argv):
         
         
     ds = data_central.get_dir_structure()
-    id_stream = '%s-%s-%s' % (id_robot, id_agent, isodate())
+    id_stream = '%s-%s-%s' % (id_robot, id_agent, isodate_with_secs())
     filename = ds.get_simlog_hdf_filename(id_robot=id_robot,
                                           id_agent=id_agent,
                                           id_stream=id_stream)
@@ -66,36 +64,38 @@ def cmd_simulate(data_central, argv):
     def create_table(dtype):                
         filters = tables.Filters(complevel=9, complib='zlib',
                                  fletcher32=True)
-        global table
         return  hf.createTable(
                         where='/boot_olympics/logs',
                         name=id_stream,
                         description=dtype,
-                        byteorder='little',
                         filters=filters,
                         createparents=True
                     )
     table = None
     tracker = InAWhile(options.interval_print)
     num_episodes = 0
+    num_observations = 0
     for _ in range(options.num_episodes):
         num_episodes += 1
-        
         for observations in run_simulation(id_robot, robot, agent,
                                            100000, options.episode_len):
             if table is None:
                 table = create_table(observations.dtype)
             
             if tracker.its_time():
-                msg = ('simulating %d/%d episodes (%5.1f fps)' % 
-                       (num_episodes, options.num_episodes, tracker.fps()))
+                msg = ('simulating %d/%d episodes obs %d (%5.1f fps)' % 
+                       (num_episodes, options.num_episodes,
+                        num_observations, tracker.fps()))
                 logger.info(msg)
           
+
             observations = observations.reshape((1,))
             table.append(observations)
 
-
-        hf.close() 
+            num_observations += 1
+        table.flush()
+        
+    hf.close() 
 
 
 @contract(id_robot='str',
@@ -109,13 +109,14 @@ def run_simulation(id_robot, robot, agent, max_observations, max_time):
     keeper.new_episode_started(episode.id_episode,
                                episode.id_environment)
     counter = 0
+    obs_spec = robot.get_spec().get_observations()
+    cmd_spec = robot.get_spec().get_commands()
     while counter < max_observations:
         obs = robot.get_observations()
         assert isinstance(obs, RobotObservations)
-        robot.get_spec().get_observations().check_valid_value(obs.observations)
-        robot.get_spec().get_commands().check_valid_value(obs.commands)
+        obs_spec.check_valid_value(obs.observations)
+        cmd_spec.check_valid_value(obs.commands)
         
-        robot.get_spec()
         keeper.push_data(obs.timestamp, obs.observations, obs.commands,
                          obs.commands_source)
         observations = keeper.get_observations()

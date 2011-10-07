@@ -16,6 +16,7 @@ import numpy as np
      episode_changed: True if the episode changed, meaning that the observations
                       are not logically in sequence with previous ones.
 '''  
+import yaml
 
 boot_observations_version = [1, 0]  
 
@@ -59,7 +60,7 @@ class ObsKeeper:
                       boot_spec.get_commands().shape()))
         self.dtype = dtype 
         
-        self.boot_spec_yaml = boot_spec.to_yaml()
+        self.boot_spec_yaml = yaml.dump(boot_spec.to_yaml())
         self.id_robot = id_robot
         
     def new_episode_started(self, id_episode, id_world):
@@ -104,7 +105,6 @@ class ObsKeeper:
         x['extra'] = {}
         # TODO: check size
         x['spec'] = self.boot_spec_yaml
-        
         
         self.observations = x
         
