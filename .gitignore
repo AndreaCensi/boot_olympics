@@ -4,3 +4,5 @@ boot_olympics.wiki
 config
 .coverage
 .noseids
+build
+dist
