@@ -11,7 +11,9 @@ The following is a list of conventions that we use.
 Initialization
 --------------
 
-(TOWRITE/TODO)
+init(boot_spec) is called first. 
+process_observations() is guaranteed to be called at least once
+before choose_commands().
 
 Processing the observations
 ---------------------------
@@ -52,29 +54,29 @@ During offline learning, the data will be written to HTML files.
 
     __metaclass__ = ABCMeta
     
-    
-    def perform_task(self, task):
-        ''' 
-            Asks the agent to perform a task. 
-            To refuse (i.e., not implemented), return false.
-            
-            The list of tasks is found in ???.
-        '''
-        return False
+#    
+#    def perform_task(self, task):
+#        ''' 
+#            Asks the agent to perform a task. 
+#            To refuse (i.e., not implemented), return false.
+#            
+#            The list of tasks is found in ???.
+#        '''
+#        return False
     
     @abstractmethod
-    def init(self, num_sensels, commands_spec):
+    def init(self, boot_spec):
         ''' 
             Called when the observations and commands shape are available,
             so that the agent can initialize its data structures.
             
-            :param:num_sensels: Number of sensels produced.
-            :param:commands_spec: A vector with the bounds for the commands.
+            The agent might throw the exception UnsupportedSpec if the 
+            spec is not supported.
             
-                A list of tuples (lower, upper).
-                For example: [(-1,+1), (0,1)] indicates that there are two
-                commands, one is bounded between -1 and +1, and the other is
-                bounded between 0 and 1.
+            :param:boot_spec: An instance of the class BootSpec, which
+                              describes the specifications of the sensorimotor
+                              cascades.
+                              
         '''
         pass
     
@@ -131,5 +133,10 @@ During offline learning, the data will be written to HTML files.
             else:
                 self.__dict__[v] = state[v]
         self.info('State loaded: %s' % state_vars)
+
+class UnsupportedSpec(Exception):
+    ''' Thrown by agents if they do not support the spec. '''
+    pass
+
 
 

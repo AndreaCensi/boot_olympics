@@ -1,3 +1,4 @@
+from . import BootStream
 from abc import abstractmethod
 import os
 import pickle
@@ -16,6 +17,8 @@ class LogsFormat:
         if os.path.exists(cache): # TODO: mtime
             return pickle.load(open(cache))
         res = self.index_file(filename)
+        for stream in res:
+            assert isinstance(stream, BootStream)
         with open(cache, 'wb') as f:
             pickle.dump(res, f, protocol=pickle.HIGHEST_PROTOCOL)
         return res

@@ -29,7 +29,6 @@ def isakey(t):
     return ',' in t
 
 class LearningStateDB(object):
-    DEFAULT_DIR = '~/boot_learning_states/' # TODO: move in constants
     
     def __init__(self, datadir):
         datadir = expand_environment(datadir)
@@ -58,3 +57,15 @@ class LearningStateDB(object):
         ''' Sets the learning state for the given combination. '''
         key = tuple2key((id_agent, id_robot))
         return self.storage.set(key, state)
+    
+    def reload_state_for_agent(self, id_agent, id_robot, agent):
+        state = self.get_state(id_agent, id_robot)
+    
+        logger.debug('State after learning %d episodes.' % 
+                     len(state.id_episodes))
+        try:
+            agent.set_state(state.agent_state)
+        except:
+            logger.error('Could not set agent to previous state.')
+            raise     
+

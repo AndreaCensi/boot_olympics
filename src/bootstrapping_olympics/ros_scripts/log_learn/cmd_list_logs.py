@@ -1,11 +1,10 @@
-from . import logger
-from ..logs import LogIndex
+from . import check_no_spurious, logger
 from optparse import OptionParser
 import os
 
 __all__ = ['cmd_list_logs']
 
-def cmd_list_logs(main_options, argv):
+def cmd_list_logs(data_central, argv):
     '''Shows information about every log. '''
     
     parser = OptionParser(usage=cmd_list_logs.short_usage)
@@ -21,12 +20,9 @@ def cmd_list_logs(main_options, argv):
                       help="Displays all streams.")
     (options, args) = parser.parse_args(argv)
     
-    if args: 
-        raise Exception('Spurious args (%s)' % args)
-        
-    index = LogIndex()
-    index.index(main_options.log_directory,
-                ignore_cache=options.refresh)
+    check_no_spurious(args)
+
+    index = data_central.get_log_index(ignore_cache=options.refresh)
     
     
     logger.info('Index contains %d bag files with boot data.' % 
@@ -52,15 +48,15 @@ def cmd_list_logs(main_options, argv):
          
         if options.display_logs:
             for stream in streams:
-                logger.info('- %5ds %s' % (stream.length,
-                                os.path.relpath(stream.bag_file,
-                                                main_options.log_directory)))
+                logger.info('- %5ds %s' % (stream.length, stream.bag_file))
+#                                os.path.relpath(stream.bag_file,
+#                                                main_options.log_directory)))
             
     if options.display_streams:
         for filename, streams in index.file2streams.items():
             if streams:
-                logger.info('%s' % os.path.relpath(filename,
-                                                   main_options.log_directory))
+                logger.info('%s' % filename)
+                                            
                 for topic, content in streams.items():
                     logger.info('%s: %s' % (topic, content))
             else:

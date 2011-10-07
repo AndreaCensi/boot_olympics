@@ -3,37 +3,37 @@ from optparse import OptionParser
 from pprint import pformat
 from bootstrapping_olympics.ros_scripts.log_learn.common import check_no_spurious
 
-__all__ = ['cmd_list_agents']
+__all__ = ['cmd_list_robots']
 
-def cmd_list_agents(data_central, argv):
-    '''Shows a summary of the agents in the configuration. '''
-    parser = OptionParser(usage=cmd_list_agents.short_usage)
+def cmd_list_robots(data_central, argv):
+    '''Shows a summary of the robots in the configuration. '''
+    parser = OptionParser(usage=cmd_list_robots.short_usage)
     parser.disable_interspersed_args()
     parser.add_option("-v", dest='verbose', default=False, action='store_true',
                       help="Show more verbose output.") 
     (options, args) = parser.parse_args(argv)    
     
     check_no_spurious(args)
-    
+        
     bo_config = data_central.get_bo_config()
-    agents = bo_config.agents
-    which = bo_config.agents.keys() # TODO: selection
+    robots = bo_config.robots
+    which = robots.keys() # TODO: selection, natsort
+    
+    logger.info('I know %d robots:' % len(robots))
     
     max_len = max(len(x) for x in which)
     formats = '%%%ds: %%s' % (max_len + 1)
-
-    logger.info('I know %d agents:' % len(agents))
-    for id_agent in which:
-        agent_spec = agents[id_agent]
-        logger.info(formats % (id_agent, agent_spec['desc']))
+    for id_robot in which:
+        robot_spec = robots[id_robot]
+        logger.info(formats % (id_robot, robot_spec['desc']))
     
     if options.verbose:
-        for id_agent in which:
-            agent_spec = agents[id_agent]
-            logger.info(pformat(agent_spec))
+        for id_robot in which:
+            robot_spec = robots[id_robot]
+            logger.info(pformat(robot_spec))
     else:
         logger.info('Use "-v" to see more information.')
          
 
-cmd_list_agents.short_usage = 'list-agents [-v]'
+cmd_list_robots.short_usage = 'list-robots [-v]'
     

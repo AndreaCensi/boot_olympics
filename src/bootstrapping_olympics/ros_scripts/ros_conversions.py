@@ -1,5 +1,4 @@
 from .. import logger, np
-from ..interfaces import Observations
 
 class ROS2Python():
     ''' 

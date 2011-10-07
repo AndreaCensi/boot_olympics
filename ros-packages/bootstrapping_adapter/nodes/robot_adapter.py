@@ -79,13 +79,15 @@ def robot_adapter():
         rospy.logerr(msg)
         raise
     
-    publisher = rospy.Publisher('~observations', BootstrappingObservations, latch=True)
+    publisher = rospy.Publisher('~observations',
+                                BootstrappingObservations, latch=True)
     
     # Reset simulation
     Global.robot.new_episode()
     
     # Start service
-    service = rospy.Service('~commands', BootstrappingCommands, commands_request)
+    service = rospy.Service('~commands',
+                            BootstrappingCommands, commands_request)
 
     # Broadcast observations anyway every few seconds
     last_observations_sent = 0

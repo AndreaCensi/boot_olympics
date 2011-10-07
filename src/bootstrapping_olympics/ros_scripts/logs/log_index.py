@@ -1,8 +1,7 @@
-from . import  logger
+from . import BootStream, logger, LogsFormat
 from collections import defaultdict
 from conf_tools import locate_files
 import os
-from . import LogsFormat
 import pickle
 
 class LogIndex:
@@ -43,6 +42,11 @@ def index_directory_cached(directory, ignore_cache=False):
             os.unlink(index_file)
         try:
             file2streams = index_directory(directory)
+            for x, k in file2streams.items():
+                assert isinstance(x, str)
+                assert isinstance(k, list)
+                
+        
             with open(index_file, 'wb') as f:
                 pickle.dump(file2streams, f)
         except:
@@ -79,13 +83,16 @@ def index_directory(directory):
     for i, filename in enumerate(files):
         logger.debug('%4d/%d: %s' % (i + 1 , len(files), filename))
         reader = LogsFormat.get_reader_for(filename)
-        streams = reader.index_file_cached(filename)
+#        streams = reader.index_file_cached(filename) FIXME ???
+        streams = reader.index_file(filename)
         if streams:
             for stream in streams:
+                assert isinstance(stream, BootStream)
+                logger.info('filename: %s stream: %s' % (filename, stream))
                 logger.debug('%s: %s' % (stream.topic, stream))
             file2streams[filename] = streams
         else:
-            logger.info('  No bootstrapping data found. ')   
+            logger.warning('No streams found. ')   
     return file2streams
     
 def index_robots(file2streams):

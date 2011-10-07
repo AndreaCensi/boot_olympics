@@ -1,18 +1,18 @@
-from . import cmd_list_logs, cmd_list_states, logger, cmd_learn_log, cmd_list_agents
+from . import (cmd_list_logs, cmd_simulate, cmd_list_states, logger,
+    cmd_learn_log, cmd_list_agents, cmd_list_robots, DataCentral)
+from ...configuration import DirectoryStructure
+from ...utils import wrap_script_entry_point, UserError
 from optparse import OptionParser
-import sys
-import traceback
 import numpy as np
-# XXX:
-from ..agent_states import LearningStateDB
-from ...configuration import BootOlympicsConfig
-from bootstrapping_olympics.utils.scripts_utils import wrap_script_entry_point
+import contracts
 
 commands = {
     'list-logs': cmd_list_logs,
     'list-agents': cmd_list_agents,
+    'list-robots': cmd_list_robots,
     'list-states': cmd_list_states,
     'learn-log': cmd_learn_log,
+    'simulate': cmd_simulate
 }
 
 
@@ -31,24 +31,32 @@ Available commands:
 Use: `boot_learn  <command> -h' to get more information about that command.  
 """ % commands_list
 
+
 def boot_log_learn(args):
-    np.seterr(all='raise')
-                 
     parser = OptionParser(usage=usage)
     parser.disable_interspersed_args()
-    parser.add_option("-c", dest='conf_directory',
-                      help="Configuration directory [%default].")
-    parser.add_option("-l", dest='log_directory',
-                      default="~/.ros/log",
-                      help="Log directory [%default].")
-    parser.add_option("-s", dest='state_directory',
-                      default=LearningStateDB.DEFAULT_DIR,
-                      help="State directory [%default].")
+    parser.add_option("-d", dest='boot_root',
+                      default=DirectoryStructure.DEFAULT_ROOT,
+                      help='Root directory with logs, config, etc. [%default]')
+    
+    parser.add_option("--contracts", default=False, action='store_true',
+                      help="Activate PyContracts checker (disbaled by default)")
+
     (options, args) = parser.parse_args()
     
     if not args:
         msg = 'Please supply command. Available: %s' % ", ".join(commands.keys())
-        raise Exception(msg)
+        raise UserError(msg)
+    
+    # TODO: option
+    np.seterr(all='raise')
+    if not options.contracts:
+        contracts.disable_all()
+    
+    
+    data_central = DataCentral(options.boot_root)
+    # TODO: additional directories
+    # TODO: read from environment variables    
     
     cmd = args[0]
     cmd_options = args[1:]
@@ -58,9 +66,7 @@ def boot_log_learn(args):
                (cmd, ", ".join(commands.keys())))
         raise Exception(msg)
     
-    BootOlympicsConfig.load(options.conf_directory)
-     
-    return commands[cmd](options, cmd_options)
+    return commands[cmd](data_central, cmd_options)
     
 
 def main(): 

@@ -1,5 +1,5 @@
 import os
-from . import LogsFormat
+
 
 __all__ = ['BootStream']
 
@@ -15,6 +15,7 @@ class BootStream(object):
         self.num_observations = num_observations
         self.spec = spec
 
+        # TODO: change with id_stream, filename
         self.bag_file = bag_file
         self.topic = topic
 
@@ -27,6 +28,7 @@ class BootStream(object):
                                          self.spec)
 
     def read(self, only_episodes=False): # TODO: implement
+        from . import LogsFormat
         reader = LogsFormat.get_reader_for(self.bag_file)
         generator = reader.read_stream(self) 
         for x in generator:

@@ -1,20 +1,16 @@
-from . import logger
+from . import check_no_spurious, check_mandatory, logger
 from ...configuration import BootOlympicsConfig
 from ...display import ReprepPublisher
 from ...interfaces import AgentInterface
-from ...utils import InAWhile, expand_environment, isodate
-from ..agent_states import LearningState, LearningStateDB
-from ..logs import LogIndex
-from conf_tools import instantiate_spec
+from ...utils import InAWhile, expand_environment, isodate, substitute
+from ..agent_states import LearningState
 from optparse import OptionParser
-from pprint import pformat
-from string import Template
 import numpy as np
 import os
 
 __all__ = ['cmd_learn_log']
 
-def cmd_learn_log(main_options, argv):
+def cmd_learn_log(data_central, argv):
     '''Runs the learning for a given agent and log. ''' 
     parser = OptionParser(usage=cmd_learn_log.short_usage)
     parser.disable_interspersed_args()
@@ -38,30 +34,18 @@ def cmd_learn_log(main_options, argv):
     
     (options, args) = parser.parse_args(argv)
     
-    if args:
-        raise Exception('Spurious arguments: %s' % args)
-    
-    if options.agent is None:
-        msg = 'Please provide agent ID with --agent.'
-        raise Exception(msg)
+    check_no_spurious(args)
+    check_mandatory(options, ['agent', 'robot'])
         
-    
-    id_agent = options.agent
-
-    if options.robot is None:
-        msg = 'Please provide robot ID with --robot.'
-        raise Exception(msg)
-        
+    id_agent = options.agent        
     id_robot = options.robot
         
-    index = LogIndex()
-    index.index(main_options.log_directory)
+    log_index = data_central.get_log_index()
     
-    if not id_robot in index.robot2streams:
+    if log_index.has_logs_for(id_robot):
         msg = ('No log for robot %r found. I know: %s.' 
-               % (id_robot, ", ".join(index.robot2streams.keys())))
+               % (id_robot, ", ".join(log_index.robot2streams.keys())))
         raise Exception(msg)
-        
 
     if not id_agent in BootOlympicsConfig.agents:
         msg = ('Agent %r not found in configuration. I know: %s.' 
@@ -71,18 +55,13 @@ def cmd_learn_log(main_options, argv):
     
     AgentInterface.logger = logger # TODO: create one for agent
     
-    agent_spec = BootOlympicsConfig.agents[id_agent]
-       
     
-    agent, state = load_agent_and_state(
-                    agent_spec=agent_spec,
-                    id_agent=id_agent,
-                    id_robot=id_robot,
-                    state_db_directory=main_options.state_directory,
-                    log_directory=main_options.log_directory,
-                    reset_state=options.reset)
-
-    db = LearningStateDB(main_options.state_directory)
+    agent, state = load_agent_state(data_central,
+                                    id_agent=options.id_agent,
+                                    id_robot=options.id_robot,
+                                    reset_state=options.reset)
+    
+    db = data_central.get_agent_state_db()
 
     if True:
         from matplotlib import rc
@@ -99,12 +78,12 @@ def cmd_learn_log(main_options, argv):
         date = isodate()
         date = state.id_state
         variables = dict(id_agent=id_agent, id_robot=id_robot, date=date)
-        pd = substitute(pd_template, variables)
+        pd = substitute(pd_template, **variables)
         logger.info('Writing output to directory %r.' % pd)
         publish_agent_output(state, agent, pd)
         
         variables['date'] = 'last'
-        pd_last = substitute(pd_template, variables)
+        pd_last = substitute(pd_template, **variables)
         logger.info('Also available as %s' % pd_last)
         if os.path.exists(pd_last):
             os.unlink(pd_last)
@@ -112,10 +91,10 @@ def cmd_learn_log(main_options, argv):
     
     if options.once:
         logger.info('As requested, exiting after publishing information.')
-        return 0
+        return
     
         
-    streams = index.robot2streams[id_robot]
+    streams = log_index.robot2streams[id_robot]
     # TODO: progress bar
     num_episodes_total = 0
     num_episodes_remaining = 0
@@ -153,9 +132,7 @@ def cmd_learn_log(main_options, argv):
             continue
             
         cur_stream_observations = 0
-        for obs in stream.read(only_episodes=to_learn):
-            
-            
+        for obs in stream.read(only_episodes=to_learn): 
             state.num_observations += 1
             cur_stream_observations += 1
             
@@ -234,18 +211,8 @@ cmd_learn_log.short_usage = ('learn-log -a <AGENT> -r <ROBOT> '
                              ' [--reset] [--publish interval]')
     
 
-def substitute(template, variables):
-    ''' Wrapper around Template.substitute for better error display. '''
-    try:
-        return Template(template).substitute(variables)
-    except KeyError as e:
-        msg = ('Error while substituting in string %r. Key %s not found: '
-               'available keys are %s.' % (template, e, variables.keys()))
-        raise Exception(msg)
-    
 
-def load_agent_and_state(agent_spec, id_agent, id_robot,
-                         state_db_directory, log_directory, reset_state=False):
+def load_agent_state(data_central, id_agent, id_robot, reset_state=False):
     ''' Load the agent, loading the agent state from the state_db directory.
         If the state is not available, then it initializes anew. The
         problem spec (sensel shape, commands shape) is loaded from the 
@@ -253,16 +220,15 @@ def load_agent_and_state(agent_spec, id_agent, id_robot,
         
         Returns tuple agent, state.
     '''
-    logger.info('Instancing agent spec:\n%s' % pformat(agent_spec))
-    agent = instantiate_spec(agent_spec['code']) # XXX    
-    db = LearningStateDB(state_db_directory)
+    agent = data_central.get_bo_config().agents.instance(id_agent) #@UndefinedVariable
+
+    db = data_central.get_agent_state_db()
     key = dict(id_robot=id_robot, id_agent=id_agent)
     
     # XXX: I'm not sure this is the right order
     # XXX: not sure the smartest thing to do:
     
-    index = LogIndex()
-    index.index(log_directory)
+    index = data_central.get_log_index()
     spec = index.robot2streams[id_robot][0].spec
     sensel_shape = spec.sensels_shape
     commands_spec = spec.commands_spec
@@ -272,14 +238,10 @@ def load_agent_and_state(agent_spec, id_agent, id_robot,
 
     if not reset_state and db.has_state(**key):
         logger.info('Using previous learned state.')
-        state = db.get_state(**key)
-        logger.info('State after learning %d episodes.' % 
-                    len(state.id_episodes))
-        try:
-            agent.set_state(state.agent_state)
-        except:
-            logger.error('Could not set agent to previous state.')
-            raise 
+        
+        db.reload_state_for_agent(id_agent=id_agent, id_robot=id_robot,
+                                  agent=agent)
+        
     else:
         logger.info('No previous learned state found.')
         state = LearningState(id_robot=id_robot, id_agent=id_agent)

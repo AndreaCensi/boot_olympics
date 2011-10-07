@@ -2,6 +2,7 @@ from . import  logger
 from ..agent_states import LearningStateDB
 from contracts import describe_value 
 from optparse import OptionParser
+from bootstrapping_olympics.ros_scripts.log_learn.common import check_no_spurious
 
 __all__ = ['cmd_list_states']
 
@@ -13,8 +14,7 @@ def cmd_list_states(main_options, argv):
                       help="Show more verbose output.") 
     (options, args) = parser.parse_args(argv)    
     
-    if args:
-        raise Exception('Spurious args: %s' % args)
+    check_no_spurious(args)
     
     db = LearningStateDB(main_options.state_directory)
     

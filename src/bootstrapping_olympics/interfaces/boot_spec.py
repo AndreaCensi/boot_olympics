@@ -1,5 +1,5 @@
 from . import StreamSpec, logger
-from contracts import check, describe_type
+from contracts import check, describe_type, contract
 from pprint import pformat
 import numpy as np
 
@@ -25,18 +25,16 @@ class BootSpec:
         self.observations = obs_spec
         self.commands = cmd_spec
 
-#
-#    def __init__(self, sensels_shape, commands_spec):
-#        self.sensels_shape = sensels_shape
-#        self.commands_spec = commands_spec
-#        BootSpec.check_valid_commands_spec(commands_spec)
-#        self.num_sensels = np.prod(sensels_shape)
-#        self.num_commands = len(self.commands_spec)
-#    
-#    def __eq__(self, other):
-#        return ((self.sensels_shape == other.sensels_shape) and 
-#                (self.commands_spec == other.commands_spec))
-     
+    @contract(returns=StreamSpec)
+    def get_commands(self):
+        ''' Returns a StreamSpec instance representing the commands. '''
+        return self.commands
+    
+    @contract(returns=StreamSpec)
+    def get_observations(self):
+        ''' Returns a StreamSpec instance representing the observations. '''
+        return self.observations
+    
     def __eq__(self, other):
         return ((self.commands == other.commands) and 
                 (self.observations == other.observations)) 
@@ -98,7 +96,7 @@ class BootSpec:
         return BootSpec(sensels_shape, commands_spec)
     
     def __str__(self):
-        return 'Spec(%r,%r)' % (self.sensels_shape, self.commands_spec)
+        return 'BootSpec(%s,%s)' % (self.observations, self.commands)
 
     @staticmethod
     def from_yaml(xo):

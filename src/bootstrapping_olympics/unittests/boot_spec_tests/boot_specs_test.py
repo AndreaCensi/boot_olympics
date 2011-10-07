@@ -1,8 +1,8 @@
-from bootstrapping_olympics.interfaces import BootSpec
-from numpy.testing.utils import assert_raises
-from .boot_specs import valid_boot_specs, \
-    invalid_boot_specs
+from .boot_specs import valid_boot_specs, invalid_boot_specs
+from bootstrapping_olympics import BootSpec
 from contracts import ContractNotRespected
+from numpy.testing.utils import assert_raises
+import yaml
 
 
 
@@ -15,9 +15,11 @@ def check_parsing_invalid(x):
 def check_conversions(x):
     spec = BootSpec.from_yaml(x)
     assert isinstance(spec, BootSpec)
-    y = spec.to_yaml()
-    assert isinstance(y, dict)
-    spec2 = spec.from_yaml(y)
+    spec_struct = spec.to_yaml()
+    assert isinstance(spec_struct, dict)
+    spec_struct_yaml = yaml.dump(spec_struct)
+    spec_struct2 = yaml.load(spec_struct_yaml)
+    spec2 = spec.from_yaml(spec_struct2)
     assert spec == spec2
     
 def test_validity_1():

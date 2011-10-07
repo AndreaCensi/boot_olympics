@@ -1,20 +1,17 @@
 from ..interfaces import AgentInterface
 
-from ..interfaces.commands_utils import random_commands
-
 __all__ = ['RandomAgent']
 
 class RandomAgent(AgentInterface):
     
-
-    def init(self, sensels_shape, commands_spec):
-        self.commands_spec = commands_spec
+    def init(self, boot_spec):
+        self.commands_spec = boot_spec.get_commands()
     
     def process_observations(self, observations):
         pass
     
     def choose_commands(self):
-        return random_commands(commands_spec=self.commands_spec)
+        return self.commands_spec.get_random_value()
     
     def __repr__(self):
         return "RandomAgent"

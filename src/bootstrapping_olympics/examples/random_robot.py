@@ -1,5 +1,5 @@
-from bootstrapping_olympics import BootSpec, RobotInterface
-from bootstrapping_olympics.utils import isodate
+from .. import RobotObservations, BootSpec, RobotInterface, EpisodeDesc
+from ..utils import isodate
 import numpy as np
 
 __all__ = ['RandomRobot']
@@ -13,14 +13,16 @@ class RandomRobot(RobotInterface):
         self.num_commands = num_commands
         self.timestamp = 0
         self.dt = dt
-        RobotInterface.__init__(self)
+        self.commands = np.zeros(self.num_commands)
+        self.commands_source = 'rest'
         
     def get_spec(self):
         return BootSpec.from_yaml({
             'commands': {
                 'shape': [self.num_commands],
                 'format': 'C',
-                'range': [-1, 1]
+                'range': [-1, 1],
+                'rest': [0] * self.num_commands
             },
             'observations': {
                 'shape': [self.num_sensels],
@@ -30,13 +32,16 @@ class RandomRobot(RobotInterface):
         })
         
     def get_observations(self):
-        return self.timestamp, np.random.rand(self.num_sensels)    
+        obs = np.random.rand(self.num_sensels)
+        return RobotObservations(self.timestamp, obs, commands=self.commands,
+                                 commands_source=self.commands_source)    
 
-    def set_commands(self, dt):
-        self.timestamp += dt
+    def set_commands(self, commands):
+        self.timestamp += self.dt
+        self.commands = commands
+        self.commands_source = 'agent'
     
     def new_episode(self):
-        self.id_episode = isodate()
-        self.id_environment = 'n/a'
         self.timestamp = 0
+        return EpisodeDesc(isodate(), 'n/a')
         

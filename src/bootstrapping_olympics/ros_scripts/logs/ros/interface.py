@@ -3,9 +3,6 @@ from .. import LogsFormat
 
 class ROSLogsFormat(LogsFormat):
     
-    # extension -> LogsFormat
-    formats = {}
-    
     def index_file(self, filename):
         ''' Returns a list of BootStream objects. '''
         return bag_get_bootstrapping_stream(filename)
