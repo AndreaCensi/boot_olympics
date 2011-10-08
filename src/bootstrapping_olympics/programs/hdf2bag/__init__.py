@@ -1,12 +1,13 @@
-# XXX: not sure about this 
-import roslib; roslib.load_manifest('bootstrapping_adapter') #@UnresolvedImport
-
-
 import logging
 logger = logging.getLogger("hdf2bag")
 logger.setLevel(logging.DEBUG)
 
-from .conversion import *
+try: 
+    from procgraph import pg
+    from .conversion import *
 
-
+except ImportError as e:
+    import warnings
+    msg = 'Skipping because of %s.' % e # XXX
+    warnings.warn(msg)
 
