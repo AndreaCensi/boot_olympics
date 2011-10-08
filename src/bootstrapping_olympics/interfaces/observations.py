@@ -16,7 +16,6 @@ import numpy as np
      episode_changed: True if the episode changed, meaning that the observations
                       are not logically in sequence with previous ones.
 '''  
-import yaml
 
 boot_observations_version = [1, 0]  
 
@@ -37,12 +36,19 @@ boot_observations_dtype = [
     ('dt', 'float64'), # time from last observations. This is 0 if counter = 0
     ('time_from_episode_start', 'float64'),
     
-    ('spec', 'S65000'), # yaml string of a dictionary
-    ('extra', 'S65000') # yaml string of a dictionary
+    ('extra', 'object')
     # extra['state'] # world state
     # extra['state']
     # extra['processed-timestsamp']
 ]
+
+def get_observations_dtype(boot_spec):
+    dtype = list(boot_observations_dtype)
+    dtype.append(('observations', 'float32',
+                  boot_spec.get_observations().shape()))
+    dtype.append(('commands', 'float32',
+                  boot_spec.get_commands().shape()))
+    return np.dtype(dtype)
 
 class ObsKeeper:
     ''' This is a simple utility class to fill in the redundant 
@@ -52,15 +58,7 @@ class ObsKeeper:
         self.episode_started = False
         self.observations = None
         self.boot_spec = boot_spec 
-        
-        dtype = list(boot_observations_dtype)
-        dtype.append(('observations', 'float32',
-                      boot_spec.get_observations().shape()))
-        dtype.append(('commands', 'float32',
-                      boot_spec.get_commands().shape()))
-        self.dtype = dtype 
-        
-        self.boot_spec_yaml = yaml.dump(boot_spec.to_yaml())
+        self.dtype = get_observations_dtype(boot_spec)  
         self.id_robot = id_robot
         
     def new_episode_started(self, id_episode, id_world):
@@ -102,9 +100,7 @@ class ObsKeeper:
             x['dt'] = x['timestamp'] - self.last_observations['timestamp']
             x['episode_start'] = False
             
-        x['extra'] = {}
-        # TODO: check size
-        x['spec'] = self.boot_spec_yaml
+        x['extra'] = None
         
         self.observations = x
         

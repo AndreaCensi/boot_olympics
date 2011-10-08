@@ -215,8 +215,9 @@ class StreamSpec:
     @contract(returns='dict')
     def to_yaml(self):
         arange = []
+        # FIXME multi array
         for i in range(self.streamels.size):
-            arange.append([self.lower[i], self.upper[i]])
+            arange.append([float(self.lower[i]), float(self.upper[i])])
             
         data = {
             'shape': list(self.streamels.shape),
@@ -260,14 +261,14 @@ class StreamSpec:
                           filtered=filtered, desc=desc)
 
     
-
+@contract(bounds='seq[2](number)')
 def check_valid_bounds(bounds):
     if not isinstance(bounds, (list, np.ndarray)):
         msg = 'Expect list or array, got %s.' % bounds
         raise ValueError(msg) 
     expect_size(bounds, 2) 
     if not bounds[0] < bounds[1]:
-        raise ValueError('Invalid bounds [%s,%s]' % 
+        raise ValueError('Invalid bounds lower: %s upper: %s (lower>=upper)' % 
                          (bounds[0], bounds[1]))
 
 def expect_one_of(x, options):

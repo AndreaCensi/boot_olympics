@@ -4,7 +4,6 @@ from os.path import splitext, basename
 import cPickle as pickle
 import os
 import time
-#import pickle
 
 # XXX: remove this junk
 PRINT_STATS = False

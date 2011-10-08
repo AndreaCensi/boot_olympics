@@ -1,10 +1,9 @@
-from . import BootStream
+from . import BootStream, logger
 from abc import abstractmethod
 import os
 import pickle
 
 class LogsFormat:
-    
     # extension -> LogsFormat
     formats = {}
     
@@ -12,10 +11,18 @@ class LogsFormat:
     def index_file(self, filename):
         ''' Returns a list of BootStream objects. '''
     
-    def index_file_cached(self, filename):
+    # TODO: uniform mechanism for this
+    def index_file_cached(self, filename, ignore_cache=False):
         cache = '%s.index_cache' % filename
-        if os.path.exists(cache): # TODO: mtime
-            return pickle.load(open(cache))
+        if os.path.exists(cache) and not ignore_cache: # TODO: mtime
+            try:
+                return pickle.load(open(cache))
+            except Exception as e:
+                msg = 'Could not unpickle cache %r, deleting.' % cache
+                msg += '\n%s' % e
+                os.unlink(cache) 
+                logger.warning(msg)
+                pass
         res = self.index_file(filename)
         for stream in res:
             assert isinstance(stream, BootStream)
@@ -27,6 +34,10 @@ class LogsFormat:
     def read_stream(self, boot_stream):
         ''' Yields observations from the stream. '''
 
+    @abstractmethod
+    def write_stream(self, filename, id_stream):
+        ''' Yields a writer object (interface TBD). '''
+
     @staticmethod
     def get_reader_for(filename):
         extension = os.path.splitext(filename)[1][1:]
@@ -34,3 +45,5 @@ class LogsFormat:
             msg = 'Cannot read %r, no reader for %r' % (filename, extension)
             raise ValueError(msg)
         return LogsFormat.formats[extension]
+
+    

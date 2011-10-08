@@ -1,6 +1,6 @@
-from . import hdf_list_streams, hdf_read
-from .. import LogsFormat
-from.. import BootStream
+from . import HDFLogWriter, hdf_list_streams, hdf_read
+from .. import BootStream, LogsFormat
+from contextlib import contextmanager
 
 class HDFLogsFormat(LogsFormat): 
     
@@ -19,5 +19,13 @@ class HDFLogsFormat(LogsFormat):
                           stream.spec):
             yield x
 
+    
+    @contextmanager
+    def write_stream(self, filename, id_stream, boot_spec):
+        writer = HDFLogWriter(filename, id_stream, boot_spec)
+        try:
+            yield writer
+        finally:
+            writer.close()
 
 LogsFormat.formats['h5'] = HDFLogsFormat()

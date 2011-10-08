@@ -6,3 +6,4 @@ from .test_robot import *
 from .test_joint import *
 
 
+from .logs  import *

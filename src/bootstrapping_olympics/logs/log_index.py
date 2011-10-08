@@ -3,6 +3,8 @@ from collections import defaultdict
 from conf_tools import locate_files
 import os
 import pickle
+from contracts import contract
+import traceback
 
 class LogIndex:
     def __init__(self):
@@ -14,7 +16,15 @@ class LogIndex:
     def index(self, directory, ignore_cache=False):
         new_streams = index_directory_cached(directory, ignore_cache)
         self.file2streams.update(new_streams)
-        self.robot2streams = index_robots(self.file2streams)
+        self.robots2streams = index_robots(self.file2streams)
+        
+    def has_streams_for_robot(self, id_robot):
+        return id_robot in self.robots2streams
+    
+    @contract(returns='list')
+    def get_streams_for_robot(self, id_robot):
+        return  self.robots2streams[id_robot]
+    
 
 def index_directory_cached(directory, ignore_cache=False):
     ''' Returns dict: filename -> list of BootStreams'''
@@ -41,7 +51,7 @@ def index_directory_cached(directory, ignore_cache=False):
         if os.path.exists(index_file):
             os.unlink(index_file)
         try:
-            file2streams = index_directory(directory)
+            file2streams = index_directory(directory, ignore_cache=ignore_cache)
             for x, k in file2streams.items():
                 assert isinstance(x, str)
                 assert isinstance(k, list)
@@ -65,7 +75,7 @@ def index_directory_cached(directory, ignore_cache=False):
         raise
     
 
-def index_directory(directory):
+def index_directory(directory, ignore_cache=False):
     ''' Returns a hash filename -> list of streams. '''
     extensions = LogsFormat.formats.keys()
     
@@ -83,15 +93,20 @@ def index_directory(directory):
     for i, filename in enumerate(files):
         logger.debug('%4d/%d: %s' % (i + 1 , len(files), filename))
         reader = LogsFormat.get_reader_for(filename)
-        streams = reader.index_file_cached(filename) 
-        if streams:
-            for stream in streams:
-                assert isinstance(stream, BootStream)
-                logger.info('filename: %s stream: %s' % (filename, stream))
-                logger.debug('%s: %s' % (stream.topic, stream))
-            file2streams[filename] = streams
-        else:
-            logger.warning('No streams found. ')   
+        try:
+            streams = reader.index_file_cached(filename, ignore_cache=ignore_cache) 
+            if streams:
+                for stream in streams:
+                    assert isinstance(stream, BootStream)
+                    logger.info('filename: %s stream: %s' % (filename, stream))
+                    logger.debug('%s: %s' % (stream.topic, stream))
+                file2streams[filename] = streams
+            else:
+                logger.warning('No streams found. ')
+        except Exception as e:
+            logger.error('Invalid data in file %r.' % filename)
+            logger.error(traceback.format_exc())
+               
     return file2streams
     
 def index_robots(file2streams):
@@ -103,6 +118,7 @@ def index_robots(file2streams):
     for _, streams in file2streams.items():
         for stream in streams:
             id_robot = stream.id_robot
+            
             if not id_robot in robot2spec:
                 robot2spec[id_robot] = stream.spec
             else:
@@ -118,9 +134,13 @@ def index_robots(file2streams):
                     continue
             robot2streams[id_robot].append(stream)
     
+    
+    
     for robot in robot2streams:        
         robot2streams[robot] = sorted(robot2streams[robot],
                                  key=lambda x: list(x.id_episodes)[0])
+    
+    
 
-    return robot2streams
+    return dict(**robot2streams)
     

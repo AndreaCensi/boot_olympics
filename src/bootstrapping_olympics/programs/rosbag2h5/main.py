@@ -1,5 +1,5 @@
 from . import logger
-from ...ros_scripts.logs.log_index import LogIndex
+#from ...ros_scripts.logs.log_index import LogIndex
 from bootstrapping_olympics.utils.scripts_utils import wrap_script_entry_point
 from optparse import OptionParser
 import os

@@ -15,5 +15,6 @@ class ROSLogsFormat(LogsFormat):
                           substitute_id_episode=stream.short_file):
             yield x
 
+    
 
 LogsFormat.formats['bag'] = ROSLogsFormat()

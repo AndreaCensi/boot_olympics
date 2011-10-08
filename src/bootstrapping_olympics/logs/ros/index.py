@@ -2,6 +2,7 @@ from . import logger
 from .. import BootStream
 from ... import BootSpec
 import os
+import numpy as np
 
 def bag_get_bootstrapping_stream(bag_file):
     ''' 
@@ -32,13 +33,22 @@ def bag_get_bootstrapping_stream(bag_file):
                     id_episode = os.path.basename(bag_file)
                 id_episodes.add(id_episode)
                 if spec is None:
-                    spec = BootSpec.from_ros_structure(msg)
+                    spec = boot_spec_from_ros_message(msg)
                 
                 try:
-                    spec.check_compatible_commands_values(msg.commands)
-                    spec.check_compatible_raw_sensels_values(msg.sensel_values)
+                    commands = np.array(msg.commands)
+                    spec.get_commands().check_valid_value(commands)
                 except Exception as e:
-                    logger.error('Invalid data at #%d:%s' % (num, t))
+                    logger.error('Invalid observations at #%d:%s' % (num, t))
+                    logger.error(e)
+                
+                try:
+                    observations = np.array(msg.sensel_values)
+                    spec.get_observations().check_valid_value(observations)
+                    # XXX: reshape first?
+                    # spec.check_compatible_raw_sensels_values(msg.sensel_values)
+                except Exception as e:
+                    logger.error('Invalid commands at #%d:%s' % (num, t))
                     logger.error(e)
                 
                 num += 1
@@ -57,3 +67,25 @@ def bag_get_bootstrapping_stream(bag_file):
 
     bag.close()
     return streams
+
+
+def boot_spec_from_ros_message(msg):
+    ''' Infers the boot spec from a ROS message. '''
+    commands_spec = eval(msg.commands_spec) # XXX: not safe 
+    sensels_shape = msg.sensel_shape # TODO: check coherence
+
+    nu = len(commands_spec)
+    spec = {
+            'observations': {
+                             'shape': list(sensels_shape),
+                             'range': [0, 1],
+                             'format': 'C'
+            },
+            'commands': {
+                         'shape': [nu],
+                         'range': map(list, commands_spec),
+                         'format': ['C'] * nu 
+            }
+    }
+    return BootSpec.from_yaml(spec)
+    

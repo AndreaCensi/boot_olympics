@@ -1,10 +1,10 @@
 from . import (cmd_list_logs, cmd_simulate, cmd_list_states, logger,
     cmd_learn_log, cmd_list_agents, cmd_list_robots, DataCentral)
 from ...configuration import DirectoryStructure
-from ...utils import wrap_script_entry_point, UserError
+from ...utils import wrap_script_entry_point, UserError, substitute
 from optparse import OptionParser
-import numpy as np
 import contracts
+import numpy as np
 
 commands = {
     'list-logs': cmd_list_logs,
@@ -20,19 +20,23 @@ commands_list = "\n".join([ '  %-15s  %s\n  %-15s  Usage: %s' %
                            (cmd, f.__doc__, '', f.short_usage) 
                            for cmd, f in commands.items()])
 
-usage = """
+usage_pattern = """
 
-    boot_learn [options]  <command>  [command options]
+    ${cmd} [options]  <command>  [command options]
     
 Available commands:
 
-%s
+${commands_list}
 
-Use: `boot_learn  <command> -h' to get more information about that command.  
-""" % commands_list
+Use: `${cmd}  <command> -h' to get more information about that command.  
+""" 
 
 
-def boot_log_learn(args):
+
+def boot_olympics_manager(args):
+    usage = substitute(usage_pattern, commands_list=commands_list,
+                       cmd='boot_olympics_manager')
+    
     parser = OptionParser(usage=usage)
     parser.disable_interspersed_args()
     parser.add_option("-d", dest='boot_root',
@@ -41,6 +45,10 @@ def boot_log_learn(args):
     
     parser.add_option("--contracts", default=False, action='store_true',
                       help="Activate PyContracts checker (disbaled by default)")
+
+#    def add_log_dir(option, opt, value, parser):
+#
+#    parser.add_option("-c", action="callback", callback=my_callback)
 
     (options, args) = parser.parse_args()
     
@@ -70,7 +78,7 @@ def boot_log_learn(args):
     
 
 def main(): 
-    wrap_script_entry_point(boot_log_learn, logger)
+    wrap_script_entry_point(boot_olympics_manager, logger)
 
 if __name__ == '__main__':
     main()

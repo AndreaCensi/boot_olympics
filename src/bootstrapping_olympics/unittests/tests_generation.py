@@ -1,9 +1,6 @@
 from . import all_robots, get_robot, all_agents, get_agent, logger
 import sys
 
-
-module = sys.modules[__name__]
-
 def for_all_robots(f):
     for id_robot in all_robots():
         def test_caller():
@@ -12,9 +9,9 @@ def for_all_robots(f):
 
         name = '%s-%s' % (f.__name__, id_robot)
         test_caller.__name__ = name
+        module = sys.modules[f.__module__]
         module.__dict__[name] = test_caller
-    return None
-
+ 
 def for_all_agents(f):
     for id_agent in all_agents():
         def test_caller():
@@ -23,8 +20,8 @@ def for_all_agents(f):
             
         name = '%s-%s' % (f.__name__, id_agent)
         test_caller.__name__ = name
+        module = sys.modules[f.__module__]
         module.__dict__[name] = test_caller
-    return None
 
 
 def for_all_pairs(f):
@@ -36,10 +33,10 @@ def for_all_pairs(f):
                 wrap_with_desc(f, (id_agent, agent, id_robot, robot),
                                agent=agent, robot=robot)
                 
-            name = '%s-%s' % (f.__name__, id_agent)
+            name = '%s-%s-%s' % (f.__name__, id_agent, id_robot)
             test_caller.__name__ = name
-            module.__dict__[name] = test_caller
-    return None
+            module = sys.modules[f.__module__]
+            module.__dict__[name] = test_caller 
 
 def wrap_with_desc(function, arguments, agent=None, robot=None):
     ''' Calls function with arguments, and writes debug information

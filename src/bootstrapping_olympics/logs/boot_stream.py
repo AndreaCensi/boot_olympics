@@ -22,7 +22,7 @@ class BootStream(object):
         # Visualization only
         self.short_file = os.path.splitext(os.path.basename(bag_file))[0]
 
-    def __str__(self):
+    def __repr__(self):
         return 'BootStream(%s,%s,T=%s,spec=%s)' % (self.short_file,
                                          self.id_robot, self.length,
                                          self.spec)

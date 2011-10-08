@@ -28,9 +28,9 @@ def cmd_list_logs(data_central, argv):
     logger.info('Index contains %d bag files with boot data.' % 
                 len(index.file2streams))
     logger.info('In total, there are %d robots:' 
-                % len(index.robot2streams))
+                % len(index.robots2streams))
     
-    for robot, streams in index.robot2streams.items():
+    for robot, streams in index.robots2streams.items():
         logger.info('- robot %r has %d streams.' % (robot, len(streams)))
         if streams:
             logger.info('  spec: %s' % streams[0].spec)
