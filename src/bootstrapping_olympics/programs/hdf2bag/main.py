@@ -1,6 +1,5 @@
-from . import logger
+from . import logger, pg
 from optparse import OptionParser
-from procgraph import pg
 import os
 import sys
 import traceback
@@ -11,11 +10,14 @@ usage = """
 
     boot_hdf2bag <directory>
     
-Creates a .bag file.
+Creates a .bag file from a .h5 file.
   
 """  
 
 def hdf2bag(pargs):
+
+    import roslib; roslib.load_manifest('bootstrapping_adapter') #@UnresolvedImport
+
     parser = OptionParser(usage=usage)
     parser.disable_interspersed_args()
 
