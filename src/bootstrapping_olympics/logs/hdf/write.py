@@ -4,6 +4,7 @@ from contracts import contract
 import numpy as np
 import tables
 import warnings
+from bootstrapping_olympics.utils import copy_from
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 
@@ -24,10 +25,8 @@ class HDFLogWriter():
             self.create_table(self.table_dtype)
             
         # TODO: what about extra?
-        row = np.zeros((1), self.table_dtype)
-        
-        for name in row.dtype.names:
-            row[name] = observations[name].flat
+        row = np.zeros((), self.table_dtype)
+        copy_from(row, observations)        
         
         row = row.copy().reshape((1,)) 
         self.table.append(row)
@@ -50,8 +49,7 @@ class HDFLogWriter():
                                            tables.VLUnicodeAtom(),
                                            filters=filters)
 
-    def close(self):
-        self.table.flush()
+    def close(self): 
         self.hf.close() 
 
 

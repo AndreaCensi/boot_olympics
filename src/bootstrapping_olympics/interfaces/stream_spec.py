@@ -39,14 +39,15 @@ class StreamSpec:
         self.lower = self.streamels['lower']
         self.upper = self.streamels['upper']
         
+        
         # If the "format" is a string it is valid for all of them
         if isinstance(format, str):
             expect_one_of(format, ValueFormats.valid)
-            self.kind[:] = format
+            self.kind.flat[:] = format
             # at this point the range must be unique
             check_valid_bounds(range)
-            self.lower[:] = range[0]
-            self.upper[:] = range[1]
+            self.lower.flat[:] = range[0]
+            self.upper.flat[:] = range[1]
         else:
             # If the format is not a string, then it must be a list
             if not isinstance(format, list):
@@ -58,23 +59,32 @@ class StreamSpec:
                        (formats.shape, self.streamels.shape)) 
                 raise ValueError(msg)
             for i in xrange(formats.size):
-                expect_one_of(formats[i], ValueFormats.valid)
-                self.kind.flat[i] = formats[i]
-            # Also the range must be a list
-            assert range is not None 
-            range = np.array(range) #@ReservedAssignment
-            # With the same number of elements
-            if range.shape[:-1] != self.streamels.shape:
-                msg = ('Expected range to have shape %r instead of %r' % 
-                       (self.streamels.shape, range.shape))
-                raise ValueError(msg)
-            # Each element of range must be a list with two elements
-            for i, bounds in enumerate(range):
-                check_valid_bounds(bounds)
-                self.lower[i] = bounds[0]
-                self.upper[i] = bounds[1]
+                expect_one_of(formats.flat[i], ValueFormats.valid)
+                self.kind.flat[i] = formats.flat[i]
                 
-    
+            # Also the range must be a list
+            assert isinstance(range, list)
+            if len(self.streamels.shape) == 1:
+                if len(range) != self.streamels.shape[0]:
+                    raise ValueError('Expected %s, got %s.' % 
+                                     (self.streamels.shape[0], len(range))) 
+                    
+                for i in xrange(self.streamels.shape[0]):
+                    set_streamel_range(self.streamels[i], range[i])
+
+            elif len(self.streamels.shape) == 2:
+                if len(range) != self.streamels.shape[0]:
+                    raise ValueError('Expected %s, got %s.' % 
+                                     (self.streamels.shape[0], len(range))) 
+                for i in xrange(self.streamels.shape[0]):
+                    if len(range[i]) != self.streamels.shape[1]:
+                        raise ValueError('Expected %s, got %s.' % 
+                                          (self.streamels.shape[1], len(range[i])))
+                    for j in xrange(self.streamels.shape[1]):
+                        set_streamel_range(self.streamels[i, j], range[i][j])
+            else:
+                raise ValueError('Not implemented')
+
     def __eq__(self, other):
         return np.all(self.streamels == other.streamels) 
         
@@ -215,9 +225,16 @@ class StreamSpec:
     @contract(returns='dict')
     def to_yaml(self):
         arange = []
-        # FIXME multi array
-        for i in range(self.streamels.size):
-            arange.append([float(self.lower[i]), float(self.upper[i])])
+        if self.streamels.ndim == 1:
+            for i in range(self.streamels.size):
+                arange.append(get_streamel_range(self.streamels[i]))
+        elif self.streamels.ndim == 2:
+            for i in range(self.streamels.shape[0]):
+                row = []
+                for j in range(self.streamels.shape[1]):
+                    row.append(get_streamel_range(self.streamels[i, j]))
+                arange.append(row)
+        else: assert False
             
         data = {
             'shape': list(self.streamels.shape),
@@ -261,7 +278,6 @@ class StreamSpec:
                           filtered=filtered, desc=desc)
 
     
-@contract(bounds='seq[2](number)')
 def check_valid_bounds(bounds):
     if not isinstance(bounds, (list, np.ndarray)):
         msg = 'Expect list or array, got %s.' % bounds
@@ -281,3 +297,23 @@ def expect_size(x, l):
     if not len(x) == l:
         msg = 'Expected len %s, got %s.' % (l, len(x))
         raise ValueError(msg)
+
+
+def set_streamel_range(streamel, bounds):
+    if streamel['kind'] == ValueFormats.Invalid:
+        if (bounds is not None) and (bounds != [None, None]):
+            msg = ('Incorrect bounds spec for invalid streamel: %r (%s).' 
+                   % (bounds, (bounds is None)))
+            raise ValueError(msg)
+        streamel['lower'] = np.inf # do not use nan, otherwise streamels!=streamels
+        streamel['upper'] = np.inf
+    else:
+        check_valid_bounds(bounds)
+        streamel['lower'] = bounds[0]
+        streamel['upper'] = bounds[1]
+        
+def get_streamel_range(streamel):
+    if streamel['kind'] == ValueFormats.Invalid:
+        return None
+    else:
+        return [float(streamel['lower']), float(streamel['upper'])] 

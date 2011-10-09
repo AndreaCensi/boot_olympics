@@ -1,5 +1,4 @@
 from . import check_no_spurious, check_mandatory, logger
-from ...configuration import BootOlympicsConfig
 from ...display import ReprepPublisher
 from ...interfaces import AgentInterface
 from ...utils import InAWhile, expand_environment, isodate, substitute
@@ -7,6 +6,7 @@ from ...agent_states import LearningState
 from optparse import OptionParser
 import numpy as np
 import os
+from bootstrapping_olympics.utils.scripts_utils import UserError
 
 __all__ = ['cmd_learn_log']
 
@@ -42,23 +42,25 @@ def cmd_learn_log(data_central, argv):
         
     log_index = data_central.get_log_index()
     
-    if log_index.has_logs_for(id_robot):
+    if not log_index.has_streams_for_robot(id_robot):
         msg = ('No log for robot %r found. I know: %s.' 
                % (id_robot, ", ".join(log_index.robot2streams.keys())))
         raise Exception(msg)
 
-    if not id_agent in BootOlympicsConfig.agents:
+    bo_config = data_central.get_bo_config()
+
+    if not id_agent in bo_config.agents:
         msg = ('Agent %r not found in configuration. I know: %s.' 
-               % (options.agent, ", ".join(BootOlympicsConfig.agents.keys())))
-        raise Exception(msg)
+               % (options.agent, ", ".join(bo_config.agents.keys())))
+        raise UserError(msg)
         
     
     AgentInterface.logger = logger # TODO: create one for agent
     
     
     agent, state = load_agent_state(data_central,
-                                    id_agent=options.id_agent,
-                                    id_robot=options.id_robot,
+                                    id_agent=id_agent,
+                                    id_robot=id_robot,
                                     reset_state=options.reset)
     
     db = data_central.get_agent_state_db()
@@ -94,7 +96,7 @@ def cmd_learn_log(data_central, argv):
         return
     
         
-    streams = log_index.robot2streams[id_robot]
+    streams = log_index.get_streams_for_robot(id_robot)
     # TODO: progress bar
     num_episodes_total = 0
     num_episodes_remaining = 0
@@ -225,16 +227,9 @@ def load_agent_state(data_central, id_agent, id_robot, reset_state=False):
     db = data_central.get_agent_state_db()
     key = dict(id_robot=id_robot, id_agent=id_agent)
     
-    # XXX: I'm not sure this is the right order
-    # XXX: not sure the smartest thing to do:
-    
     index = data_central.get_log_index()
-    spec = index.robot2streams[id_robot][0].spec
-    sensel_shape = spec.sensels_shape
-    commands_spec = spec.commands_spec
-    logger.info('Agent init Sensels: %s  commands: %s' % 
-                (sensel_shape, commands_spec))
-    agent.init(sensel_shape, commands_spec) # XXX: put new initialization
+    spec = index.get_robot_spec(id_robot)
+    agent.init(spec)
 
     if not reset_state and db.has_state(**key):
         logger.info('Using previous learned state.')

@@ -1,6 +1,5 @@
 import os
 
-
 __all__ = ['BootStream']
 
 class BootStream(object):

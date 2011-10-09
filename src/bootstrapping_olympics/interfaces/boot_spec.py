@@ -1,5 +1,5 @@
 from . import StreamSpec, logger
-from contracts import check, describe_type, contract
+from contracts import  describe_type, contract
 from pprint import pformat
 import numpy as np
 
@@ -44,50 +44,7 @@ class BootSpec:
             a correctly shaped array.
         '''
         return np.array(raw, dtype='float32').reshape(self.sensels_shape)
-        
-#    def check_compatible_raw_sensels_values(self, sensels):
-#        if len(sensels) != self.num_sensels:
-#            msg = ('Raw sensels incompatible with spec %s: expected len %s, got %s.' % 
-#                   (self, self.num_sensels, len(sensels)))
-#            raise Exception(msg)
-#        
-#    def check_compatible_sensels_values(self, sensels):
-#        ''' Returns true if the given sensels (numpy array) 
-#            is compatible with this sensorimotor cascade. '''
-#        # XXX: this is wasteful
-#        sensels = np.array(sensels)
-#        ok_shape = self.sensels_shape == sensels.shape
-#        if not ok_shape:
-#            msg = ('Sensels incompatible with spec %s: expected shape %s, got %s.' % 
-#                   (self, self.sensels_shape, sensels.shape))
-#            raise Exception(msg)
-#        
-#    def check_compatible_commands_values(self, commands0):
-#        commands = np.array(commands0)
-#        ok_shape = commands.size == self.num_commands
-#        if not ok_shape:
-#            msg = ('Commands incompatible with spec %s: expected %d commands, got %d. %s' % 
-#                   (self, self.num_commands, commands.size, self.commands_spec))
-#            raise Exception(msg)
-#        
-#        for i in range(self.num_commands):
-#            u_i = commands[i]
-#            bounds = self.commands_spec[i]
-#            if isinstance(bounds, tuple):
-#                umin, umax = bounds
-#                if not umin <= u_i <= umax:
-#                    msg = ('Invalid value u[%d]=%d not in [%s,%s] in u=%s' % 
-#                           (i, u_i, umin, umax, commands0))
-#                    raise Exception(msg)
-#            else:
-#                # TODO: not implemented yet
-#                pass
-#    
-#    @staticmethod
-#    def check_valid_commands_spec(commands_spec):
-#        # XXX
-#        check('list', commands_spec)
-
+         
     def __str__(self):
         return 'BootSpec(%s,%s)' % (self.observations, self.commands)
 

@@ -21,6 +21,14 @@ range: [[0,1],[0,1],[0,2]]
 shape: [1]
 format: C
 range: [0,1]
+---
+shape: [5]
+format: [C, I, C, I, C]
+range: [[0,1],null,[0,1],null,[0,1]]
+---
+shape: [10,10]
+format: C
+range: [0,1]
 """)
 
      

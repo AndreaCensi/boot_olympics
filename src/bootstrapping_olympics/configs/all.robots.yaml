@@ -2,8 +2,16 @@
   desc: random robot
   code:
   - bootstrapping_olympics.examples.RandomRobot
-  - num_sensels: 4 
-    num_commands: 1
+  - boot_spec:
+      observations:
+        shape: [4]
+        format: C
+        range: [0,1]
+      commands:
+        shape: [1]
+        format: C
+        range: [-1,+1]
+        rest: [0]
 
 # - id: random_1_4
   # desc: random robot

@@ -4,6 +4,7 @@ from conf_tools.utils import col_logging # colored logging
 logger = logging.getLogger("BootOlympics")
 logger.setLevel(logging.DEBUG)
 
+from .constants import Constants
 
 import numpy as np
 from contracts import contract

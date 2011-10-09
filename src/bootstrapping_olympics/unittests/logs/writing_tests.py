@@ -1,16 +1,22 @@
 from .. import for_all_pairs
 from bootstrapping_olympics.configuration import DirectoryStructure
 from bootstrapping_olympics.logs import BootStream, LogIndex
-from bootstrapping_olympics.logs.logs_format import LogsFormat
+from bootstrapping_olympics.logs import LogsFormat
 from bootstrapping_olympics.programs.manager.cmd_simulate import run_simulation
 from bootstrapping_olympics.utils import isodate_with_secs
 from numpy.testing.utils import assert_equal
 import numpy as np
 import shutil
 import tempfile
+from bootstrapping_olympics.interfaces.agent import UnsupportedSpec
 
 @for_all_pairs
 def check_writing_logs(id_agent, agent, id_robot, robot):
+    try:
+        agent.init(robot.get_spec())
+    except UnsupportedSpec:
+        return
+
     root = tempfile.mkdtemp()
     ds = DirectoryStructure(root)
     id_stream = isodate_with_secs()
@@ -23,9 +29,8 @@ def check_writing_logs(id_agent, agent, id_robot, robot):
     with logs_format.write_stream(filename=filename,
                                   id_stream=id_stream,
                                   boot_spec=robot.get_spec()) as writer:
-    
-        agent.init(robot.get_spec())
         for observations in run_simulation(id_robot, robot, agent, 3, 1000):
+            print('observation timestamp %s' % observations['timestamp'])
             extra = {'random_number': np.random.randint(1)}
             writer.push_observations(observations, extra)
             written_extra.append(extra)
@@ -66,9 +71,7 @@ def check_writing_logs(id_agent, agent, id_robot, robot):
         fields = set(a.dtype.names) or set(b.dtype.names)
         fields.remove('extra')
         for field in fields:
-            # print('Checking %s %s' % (field, a.dtype[field]))
             assert_equal(a[field], b[field])
-#            assert np.all(a[field] == b[field])
 
     for i in range(len(read_back)):
         a = written_extra[i]

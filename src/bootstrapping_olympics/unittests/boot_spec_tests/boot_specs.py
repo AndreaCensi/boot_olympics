@@ -15,6 +15,26 @@ commands:
 extra: 
     type: simulation
     random: 1
+---
+observations:
+  shape: [10,10]
+  format: C
+  range: [0,1]
+commands:
+  shape: [2]
+  format: C
+  range: [-1,+1]
+  default: [0,0]
+---
+observations:
+  shape: [5]
+  format: [C, I, C, I, C]
+  range: [[0,1],null,[0,1],null,[0,1]]
+commands:
+  shape: [2]
+  format: C
+  range: [-1,+1]
+  default: [0,0]
 """)
 
 

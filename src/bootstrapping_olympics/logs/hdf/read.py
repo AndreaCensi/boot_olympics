@@ -1,9 +1,9 @@
+from . import logger
 from .. import BootStream
-from ... import BootSpec
+from ... import BootSpec, get_observations_dtype
+from ...utils import yaml_load
 import numpy as np
 import tables
-from bootstrapping_olympics.interfaces.observations import get_observations_dtype
-from bootstrapping_olympics.utils.c_yaml import yaml_load
 
 def hdf_list_streams(filename):
     f = tables.openFile(filename)
@@ -38,15 +38,20 @@ def hdf_read(filename, id_stream, boot_spec):
         # TODO: check table exists
         table = f.root.boot_olympics.streams._v_children[id_stream].boot_stream
         extra = f.root.boot_olympics.streams._v_children[id_stream].extra
-        # TODO: read companion table with extra
         n = len(table)
+        n_extra = len(extra)
+        if n != n_extra:
+            msg = ('In stream %s:%s I see  %d observations, but only %d extra.' 
+                   % (filename, id_stream, n, n_extra))
+            logger.warn(msg)
+        n = min(n, n_extra)
         dtype = get_observations_dtype(boot_spec)
         for i in range(n):
             row = table[i]
             observations = np.zeros((), dtype)
             for x in dtype.names:
                 if x == 'extra': continue
-                observations[x].flat = row[x].flat # Strange strange
+                observations[x].flat = row[x].flat # FIXME Strange strange
             observations['extra'] = yaml_load(str(extra[i]))
             yield observations
     finally:

@@ -1,11 +1,9 @@
 from . import check_mandatory, logger, check_no_spurious
 from ... import AgentInterface, ObsKeeper, RobotObservations, RobotInterface
+from ...logs import LogsFormat
 from ...utils import InAWhile, isodate_with_secs
 from contracts import contract
 from optparse import OptionParser
-import time 
-from bootstrapping_olympics.logs.hdf import HDFLogWriter
-from bootstrapping_olympics.logs.logs_format import LogsFormat
 
 __all__ = ['cmd_simulate']
 
@@ -115,8 +113,12 @@ def run_simulation(id_robot, robot, agent, max_observations, max_time):
         keeper.push_data(obs.timestamp, obs.observations, obs.commands,
                          obs.commands_source)
         observations = keeper.get_observations()
+        obs_spec.check_valid_value(observations['observations'])
+        cmd_spec.check_valid_value(observations['commands'])
+        print('Processing %s' % agent)
         agent.process_observations(observations)
         commands = agent.choose_commands()
+        cmd_spec.check_valid_value(commands)
         robot.set_commands(commands)
         yield observations
         if observations['time_from_episode_start'] > max_time:

@@ -10,7 +10,7 @@ class LogIndex:
     def __init__(self):
         # id robot -> list of streams
         self.robots2streams = {}
-        # filename -> list of streams for filename
+        # filename -> list of streams  
         self.file2streams = {} 
 
     def index(self, directory, ignore_cache=False):
@@ -25,6 +25,9 @@ class LogIndex:
     def get_streams_for_robot(self, id_robot):
         return  self.robots2streams[id_robot]
     
+    def get_robot_spec(self, id_robot):
+        ''' Returns the spec of the robot as stored in the files. '''
+        return self.robots2streams[id_robot][0].spec
 
 def index_directory_cached(directory, ignore_cache=False):
     ''' Returns dict: filename -> list of BootStreams'''

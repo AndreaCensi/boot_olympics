@@ -1,48 +1,38 @@
 from .. import RobotObservations, BootSpec, RobotInterface, EpisodeDesc
 from ..utils import isodate_with_secs
-import numpy as np
+from contracts import contract
 
 __all__ = ['RandomRobot']
 
 class RandomRobot(RobotInterface):
-    ''' This is a sensorimotor cascade generating Gaussian noise,
+    ''' This is a sensorimotor cascade generating uniform noise,
         and ignores any command given. '''
     
-    def __init__(self, num_sensels=1, num_commands=1, dt=0.1):
-        self.num_sensels = num_sensels
-        self.num_commands = num_commands
+    def __init__(self, boot_spec, dt=0.1):
         self.timestamp = 0
         self.dt = dt
-        self.commands = np.zeros(self.num_commands)
-        self.commands_source = 'rest'
-        self.spec = BootSpec.from_yaml({
-            'commands': {
-                'shape': [self.num_commands],
-                'format': 'C',
-                'range': [-1, 1],
-                'rest': [0] * self.num_commands
-            },
-            'observations': {
-                'shape': [self.num_sensels],
-                'format': 'C',
-                'range': [0, 1]
-            }        
-        })
+        self.spec = BootSpec.from_yaml(boot_spec)
+        self.commands = self.spec.get_commands().get_default_value()
+        print('commands: %r' % self.commands)
+        self.commands_source = 'rest' # XXX: add constant
         
     def get_spec(self):
         return self.spec 
         
     def get_observations(self):
-        obs = np.random.rand(self.num_sensels)
-        return RobotObservations(self.timestamp, obs, commands=self.commands,
+        obs = self.spec.get_observations().get_random_value()
+        return RobotObservations(timestamp=self.timestamp,
+                                 observations=obs,
+                                 commands=self.commands,
                                  commands_source=self.commands_source)    
 
+    @contract(commands='array')
     def set_commands(self, commands):
         self.timestamp += self.dt
         self.commands = commands
-        self.commands_source = 'agent'
+        self.commands_source = 'agent'  # XXX: add constant
     
     def new_episode(self):
-        self.timestamp = 0
-        return EpisodeDesc(isodate_with_secs(), 'n/a')
+        self.timestamp = 0.0
+        return EpisodeDesc(isodate_with_secs(), 'n/a')  # XXX: add constant
         
