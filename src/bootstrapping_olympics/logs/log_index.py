@@ -1,10 +1,11 @@
 from . import BootStream, logger, LogsFormat
 from collections import defaultdict
 from conf_tools import locate_files
+from contracts import contract
 import os
 import pickle
-from contracts import contract
 import traceback
+from bootstrapping_olympics.programs.print_config.natsort import natsorted
 
 class LogIndex:
     def __init__(self):
@@ -13,9 +14,22 @@ class LogIndex:
         # filename -> list of streams  
         self.file2streams = {} 
 
+        self.directories_indexed = set()
+        
+    def reindex(self):
+        for dirname in self.directories_indexed:
+            new_streams = index_directory_cached(dirname,
+                                                 ignore_file_cache=False,
+                                                 ignore_dir_cache=True)
+            self.file2streams.update(new_streams)
+        self.robots2streams = index_robots(self.file2streams)
+        
     def index(self, directory, ignore_cache=False):
-        new_streams = index_directory_cached(directory, ignore_cache)
+        new_streams = index_directory_cached(directory,
+                                             ignore_file_cache=ignore_cache,
+                                             ignore_dir_cache=True)
         self.file2streams.update(new_streams)
+        self.directories_indexed.add(directory)
         self.robots2streams = index_robots(self.file2streams)
         
     def has_streams_for_robot(self, id_robot):
@@ -23,13 +37,31 @@ class LogIndex:
     
     @contract(returns='list')
     def get_streams_for_robot(self, id_robot):
-        return  self.robots2streams[id_robot]
+        if not id_robot in self.robots2streams:
+            raise ValueError('No streams for robot %r.' % id_robot)
+        return self.robots2streams[id_robot]
     
     def get_robot_spec(self, id_robot):
         ''' Returns the spec of the robot as stored in the files. '''
         return self.robots2streams[id_robot][0].spec
+    
+    def get_episodes_for_robot(self, id_robot, id_agent=None):
+        ''' Returns a list of all episodes for the given robot (and
+            agent if it is given). ''' # TODO: implement this
+        episodes = []
+        for stream in self.get_streams_for_robot(id_robot):
+            episodes.extend(stream.id_episodes)
+        return natsorted(episodes)
+    
+    def read_all_robot_streams(self, id_robot, read_extra=False):
+        ''' Reads all the data corresponding to a robot. '''
+        for stream in self.get_streams_for_robot(id_robot):
+            for obs in stream.read(read_extra=read_extra):
+                yield obs 
 
-def index_directory_cached(directory, ignore_cache=False):
+
+def index_directory_cached(directory, ignore_dir_cache=False,
+                           ignore_file_cache=False):
     ''' Returns dict: filename -> list of BootStreams'''
     index_dir = os.path.join(directory, '.log_learn_indices')
     if not os.path.exists(index_dir):
@@ -42,7 +74,7 @@ def index_directory_cached(directory, ignore_cache=False):
     if not os.path.exists(index_file):
         logger.debug('Index file not existing -- will create.')
         needs_recreate = True
-    elif ignore_cache:
+    elif ignore_dir_cache:
         logger.debug('Ignoring existing cache')
         needs_recreate = True
     elif os.path.getmtime(directory) > os.path.getmtime(index_file):
@@ -54,7 +86,8 @@ def index_directory_cached(directory, ignore_cache=False):
         if os.path.exists(index_file):
             os.unlink(index_file)
         try:
-            file2streams = index_directory(directory, ignore_cache=ignore_cache)
+            file2streams = index_directory(directory,
+                                           ignore_cache=ignore_file_cache)
             for x, k in file2streams.items():
                 assert isinstance(x, str)
                 assert isinstance(k, list)
@@ -101,8 +134,8 @@ def index_directory(directory, ignore_cache=False):
             if streams:
                 for stream in streams:
                     assert isinstance(stream, BootStream)
-                    logger.info('filename: %s stream: %s' % (filename, stream))
-                    logger.debug('%s: %s' % (stream.topic, stream))
+                    #logger.info('filename: %s stream: %s' % (filename, stream))
+                    #logger.debug('%s: %s' % (stream.topic, stream))
                 file2streams[filename] = streams
             else:
                 logger.warning('No streams found. ')

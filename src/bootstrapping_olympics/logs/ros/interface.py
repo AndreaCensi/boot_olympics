@@ -7,7 +7,7 @@ class ROSLogsFormat(LogsFormat):
         ''' Returns a list of BootStream objects. '''
         return bag_get_bootstrapping_stream(filename)
     
-    def read_stream(self, stream):
+    def read_stream(self, stream, read_extra=False):
         ''' Yields observations from the stream. '''
         for x in bag_read(stream.bag_file,
                           stream.topic,

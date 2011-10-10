@@ -13,7 +13,6 @@ class RandomRobot(RobotInterface):
         self.dt = dt
         self.spec = BootSpec.from_yaml(boot_spec)
         self.commands = self.spec.get_commands().get_default_value()
-        print('commands: %r' % self.commands)
         self.commands_source = 'rest' # XXX: add constant
         
     def get_spec(self):

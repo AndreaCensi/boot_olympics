@@ -53,6 +53,11 @@ class RobotInterface:
             Should return an instance of EpisodeDesc.
         '''
 
+    # XXX: I'm not sure this is the best thing
+    def episode_ended(self):
+        return False
+
+
     @abstractmethod
     def set_commands(self, commands):
         pass
@@ -76,49 +81,3 @@ class RobotInterface:
         ''' Load the given state (obtained by 'get_state'). '''
         pass
     
-    
-#    #
-#    # Do not replace the following methods.
-#    #
-#    # This is the data structure returned by get_last_observations()
-#    # XXX: this is redundant
-#    Observations = namedtuple('Observations',
-#                              'timestamp counter id_episode id_environment sensel_values '
-#                              'commands commands_source')
-#   
-#    def get_observations_wrap(self):
-#        ''' Returns an Observations structure with lots of metadata. '''
-#        if self.last_observations is None:
-#            self.compute_and_store_observations()
-#        return self.last_observations
-#        
-#    @contract(commands='array[K]')
-#    def set_commands_wrap(self, commands, commands_source):
-#        # Simulate the system
-#        self.set_commands(commands)
-#        self.last_commands = commands
-#        self.last_commands_source = commands_source
-#        self.counter += 1 
-#        # Compute new observations 
-#        self.compute_and_store_observations()
-#        
-#    def compute_and_store_observations(self):
-#        # compute and store observations
-#        time_sensel_tuple = self.get_observations()
-#        check('tuple(float, array)', time_sensel_tuple)
-#        
-#        timestamp, sensel_values = time_sensel_tuple
-#        
-#        fields = {
-#          'timestamp': timestamp,
-#          'counter': self.counter,
-#          'id_episode': self.id_episode,
-#          'id_environment': self.id_environment,
-#          'sensel_values': sensel_values,
-#          'commands': self.last_commands,
-#          'commands_source': self.last_commands_source
-#        }
-#        # TODO: remember state
-#        self.last_observations = RobotInterface.Observations(**fields)
-#        self.counter += 1
-     

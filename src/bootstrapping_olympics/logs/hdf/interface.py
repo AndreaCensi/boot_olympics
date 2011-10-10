@@ -12,11 +12,11 @@ class HDFLogsFormat(LogsFormat):
         print streams
         return streams
     
-    def read_stream(self, stream):
+    def read_stream(self, stream, read_extra=False):
         ''' Yields observations from the stream. '''
         for x in hdf_read(stream.bag_file,
                           stream.topic,
-                          stream.spec):
+                          stream.spec, read_extra=read_extra):
             yield x
 
     

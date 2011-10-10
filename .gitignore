@@ -6,3 +6,4 @@ config
 .noseids
 build
 dist
+coverage_information

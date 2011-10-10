@@ -26,9 +26,9 @@ class BootStream(object):
                                          self.id_robot, self.length,
                                          self.spec)
 
-    def read(self, only_episodes=False): # TODO: implement
+    def read(self, only_episodes=False, read_extra=False): # TODO: implement
         from . import LogsFormat
         reader = LogsFormat.get_reader_for(self.bag_file)
-        generator = reader.read_stream(self) 
+        generator = reader.read_stream(self, read_extra=read_extra) 
         for x in generator:
             yield x

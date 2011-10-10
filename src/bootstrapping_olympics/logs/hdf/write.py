@@ -1,3 +1,4 @@
+from . import logger
 from ... import BootSpec
 from ...utils import yaml_dump
 from contracts import contract
@@ -5,6 +6,7 @@ import numpy as np
 import tables
 import warnings
 from bootstrapping_olympics.utils import copy_from
+import os
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 
@@ -13,6 +15,7 @@ class HDFLogWriter():
     
     def __init__(self, filename, id_stream, boot_spec):
         assert isinstance(boot_spec, BootSpec)
+        self.filename = filename
         self.hf = tables.openFile(filename, 'w')
         self.id_stream = id_stream
         self.table = None
@@ -50,7 +53,12 @@ class HDFLogWriter():
                                            filters=filters)
 
     def close(self): 
-        self.hf.close() 
+        if self.table is None:
+            logger.error('No data given for writing; deleting file.')
+            self.hf.close()
+            os.unlink(self.filename)
+        else:
+            self.hf.close() 
 
 
 def remove_fields(dt, fields_to_remove):

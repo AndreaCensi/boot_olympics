@@ -32,7 +32,7 @@ def hdf_list_streams(filename):
         f.close()
 
     
-def hdf_read(filename, id_stream, boot_spec):
+def hdf_read(filename, id_stream, boot_spec, read_extra=False):
     f = tables.openFile(filename)
     try:
         # TODO: check table exists
@@ -52,7 +52,10 @@ def hdf_read(filename, id_stream, boot_spec):
             for x in dtype.names:
                 if x == 'extra': continue
                 observations[x].flat = row[x].flat # FIXME Strange strange
-            observations['extra'] = yaml_load(str(extra[i]))
+            if read_extra:
+                observations['extra'] = yaml_load(str(extra[i]))
+            else:
+                observations['extra'] = {}
             yield observations
     finally:
         f.close()

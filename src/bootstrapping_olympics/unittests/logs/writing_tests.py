@@ -56,7 +56,7 @@ def check_writing_logs(id_agent, agent, id_robot, robot):
 
     read_back = []
     read_back_extra = []
-    for observations2 in stream.read():
+    for observations2 in stream.read(read_extra=True):
         read_back_extra.append(observations2['extra'])
         read_back.append(observations2)
 

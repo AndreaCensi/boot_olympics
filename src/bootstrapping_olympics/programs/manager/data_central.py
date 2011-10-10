@@ -34,3 +34,6 @@ class DataCentral:
 
     def get_dir_structure(self):
         return self.dir_structure
+
+        
+        

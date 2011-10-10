@@ -1,11 +1,10 @@
 from . import logger, check_no_spurious
-from ...agent_states import LearningStateDB
 from contracts import describe_value
 from optparse import OptionParser
 
 __all__ = ['cmd_list_states']
 
-def cmd_list_states(main_options, argv):
+def cmd_list_states(data_central, argv):
     '''Shows a summary of the states present in DB. '''
     parser = OptionParser(usage=cmd_list_states.short_usage)
     parser.disable_interspersed_args()
@@ -14,8 +13,7 @@ def cmd_list_states(main_options, argv):
     (options, args) = parser.parse_args(argv)    
     
     check_no_spurious(args)
-    
-    db = LearningStateDB(main_options.state_directory)
+    db = data_central.get_agent_state_db()
     
     combinations = list(db.list_states())
     if not combinations:

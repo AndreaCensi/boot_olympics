@@ -5,6 +5,7 @@ from contracts import describe_type
 from types import NoneType
 import numpy as np
 import yaml
+from numpy.ma.testutils import assert_not_equal
 
 @for_all_robots
 def check_robot_type(id_robot, robot):
@@ -29,6 +30,15 @@ def check_robot_spec(id_robot, robot):
 def check_robot_new_episode(id_robot, robot):
     ed = robot.new_episode()
     assert isinstance(ed, EpisodeDesc), describe_type(ed)
+
+
+@for_all_robots
+def check_robot_new_episode_id(id_robot, robot):
+    ''' Episodes ID must be unique. '''
+    ep1 = robot.new_episode()
+    ep2 = robot.new_episode()
+    assert_not_equal(ep1.id_episode, ep2.id_episode)
+    
 
 @for_all_robots
 def check_robot_observations(id_robot, robot):

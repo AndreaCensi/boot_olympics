@@ -68,4 +68,5 @@ class LearningStateDB(object):
         except:
             logger.error('Could not set agent to previous state.')
             raise     
+        return state
 

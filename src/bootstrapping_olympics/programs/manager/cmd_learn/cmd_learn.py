@@ -1,12 +1,10 @@
-from . import check_no_spurious, check_mandatory, logger
-from ...display import ReprepPublisher
-from ...interfaces import AgentInterface
-from ...utils import InAWhile, expand_environment, isodate, substitute
-from ...agent_states import LearningState
+from . import publish_agent_output
+from .. import check_no_spurious, check_mandatory, logger
+from ....agent_states import LearningState
+from ....interfaces import AgentInterface
+from ....utils import InAWhile, UserError
 from optparse import OptionParser
 import numpy as np
-import os
-from bootstrapping_olympics.utils.scripts_utils import UserError
 
 __all__ = ['cmd_learn_log']
 
@@ -22,11 +20,7 @@ def cmd_learn_log(data_central, argv):
                       default=None,
                       help="Publish debug information every N cycles.")
     parser.add_option("--once", default=False, action='store_true',
-                      help="Just plot the published information once and exit.")
-    parser.add_option("-o", dest='publish_dir', # XXX: use pattern
-                      default="~/boot-learn-out/${id_agent}-${id_robot}-${date}",
-                      help="Directory to store debug information [%default]")
-    
+                      help="Just plot the published information once and exit.") 
     parser.add_option("--interval_save", type='int', default=300,
                       help="Interval for saving state (seconds) [%default]")
     parser.add_option("--interval_print", type='int', default=5,
@@ -36,22 +30,39 @@ def cmd_learn_log(data_central, argv):
     
     check_no_spurious(args)
     check_mandatory(options, ['agent', 'robot'])
-        
-    id_agent = options.agent        
-    id_robot = options.robot
-        
+    
+    if options.publish_interval is  None and not options.once:
+        msg = 'Not creating any report; pass -p <interval> or --once to do it.'
+        logger.info(msg)
+  
+    learn_log(data_central=data_central,
+              id_agent=options.agent,
+              id_robot=options.robot,
+              reset=options.reset,
+              publish_interval=options.publish_interval,
+              publish_once=options.once,
+              interval_save=options.interval_save,
+              interval_print=options.interval_print)
+    
+
+def learn_log(data_central, id_agent, id_robot,
+              reset=False,
+              publish_interval=None,
+              publish_once=False,
+              interval_save=None,
+              interval_print=None):
     log_index = data_central.get_log_index()
     
     if not log_index.has_streams_for_robot(id_robot):
         msg = ('No log for robot %r found. I know: %s.' 
-               % (id_robot, ", ".join(log_index.robot2streams.keys())))
+               % (id_robot, ", ".join(log_index.robots2streams.keys())))
         raise Exception(msg)
 
     bo_config = data_central.get_bo_config()
 
     if not id_agent in bo_config.agents:
         msg = ('Agent %r not found in configuration. I know: %s.' 
-               % (options.agent, ", ".join(bo_config.agents.keys())))
+               % (id_agent, ", ".join(bo_config.agents.keys())))
         raise UserError(msg)
         
     
@@ -61,10 +72,11 @@ def cmd_learn_log(data_central, argv):
     agent, state = load_agent_state(data_central,
                                     id_agent=id_agent,
                                     id_robot=id_robot,
-                                    reset_state=options.reset)
+                                    reset_state=reset)
     
     db = data_central.get_agent_state_db()
 
+    # TODO: move this somewhere else
     if True:
         from matplotlib import rc
 #        rc('font', **{'family':'sans-serif', 'sans-serif':['Helvetica']})
@@ -73,25 +85,18 @@ def cmd_learn_log(data_central, argv):
                                                  'Palatino'],
                        'size': 9.0})
 #        rc('text', usetex=True)
-        
 
-    if options.publish_interval is not None or options.once:
-        pd_template = expand_environment(options.publish_dir)
-        date = isodate()
-        date = state.id_state
-        variables = dict(id_agent=id_agent, id_robot=id_robot, date=date)
-        pd = substitute(pd_template, **variables)
-        logger.info('Writing output to directory %r.' % pd)
-        publish_agent_output(state, agent, pd)
-        
-        variables['date'] = 'last'
-        pd_last = substitute(pd_template, **variables)
-        logger.info('Also available as %s' % pd_last)
-        if os.path.exists(pd_last):
-            os.unlink(pd_last)
-        os.symlink(pd, pd_last)
+
+    if publish_interval is not None or publish_once:
+        ds = data_central.get_dir_structure()
+        report_dir = ds.get_report_dir(id_agent=id_agent,
+                                       id_robot=id_robot,
+                                       id_state=state.id_state)
+        logger.info('Writing output to directory %r.' % report_dir)
+        publish_agent_output(state, agent, report_dir)
+
     
-    if options.once:
+    if publish_once:
         logger.info('As requested, exiting after publishing information.')
         return
     
@@ -122,9 +127,9 @@ def cmd_learn_log(data_central, argv):
                             num_episodes_remaining,
                             num_observations_remaining))
 
-    tracker_save = InAWhile(options.interval_save)
+    tracker_save = InAWhile(interval_save)
     
-    tracker = InAWhile(options.interval_print)
+    tracker = InAWhile(interval_print)
 
     for stream in streams: 
         # Check if all learned
@@ -153,64 +158,28 @@ def cmd_learn_log(data_central, argv):
                 logger.info(msg)
             
             if tracker_save.its_time():
+                logger.debug('Saving state (periodic)')
                 # note: episodes not updated
                 state.agent_state = agent.get_state()
                 db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
     
             agent.process_observations(obs)
             
-            if options.publish_interval is not None:
-                if 0 == state.num_observations % options.publish_interval:
-                    publish_agent_output(state, agent, pd)
+            if publish_interval is not None:
+                if 0 == state.num_observations % publish_interval:
+                    publish_agent_output(state, agent, report_dir)
                     
         state.id_episodes.update(to_learn)
         # Saving agent state
+        logger.debug('Saving state (end of stream)')
         state.agent_state = agent.get_state()
         db.set_state(state=state, id_robot=id_robot, id_agent=id_agent) 
 
 
 once = False
 
-def try_until_done(function): 
-    while True:
-        try:
-            function()
-            break
-        except KeyboardInterrupt:
-            logger.info('Caught CTRL-C, retrying.')
-            continue   
-
-def publish_agent_output(state, agent, pd):
-    rid = ('%s-%s-%s-%07d' % (state.id_agent, state.id_robot,
-                            state.id_state, state.num_observations))
-    publisher = ReprepPublisher(rid)
-    report = publisher.r
-    
-    stats = ("Num episodes: %s\nNum observations: %s" % 
-             (len(state.id_episodes), state.num_observations))
-    report.text('learning statistics', stats)
-    
-    report.text('report_date', isodate())
-
-    agent.publish(publisher)
-    filename = os.path.join(pd, '%s.html' % rid)
-    global once
-    if not once:
-        once = True
-        logger.info('Writing to %r.' % filename)
-    else:
-        #logger.debug('Writing to [...]/%s .' % os.path.basename(filename))
-        pass
-    rd = os.path.join(pd, 'images')
-    report.to_html(filename, resources_dir=rd)
-    
-    last = os.path.join(pd, 'last.html')
-    if os.path.exists(last):
-        os.unlink(last)
-    os.link(filename, last)
-    
 cmd_learn_log.short_usage = ('learn-log -a <AGENT> -r <ROBOT> '
-                             ' [--reset] [--publish interval]')
+                             ' [--reset] [--publish interval] [--once]')
     
 
 
@@ -234,7 +203,7 @@ def load_agent_state(data_central, id_agent, id_robot, reset_state=False):
     if not reset_state and db.has_state(**key):
         logger.info('Using previous learned state.')
         
-        db.reload_state_for_agent(id_agent=id_agent, id_robot=id_robot,
+        state = db.reload_state_for_agent(id_agent=id_agent, id_robot=id_robot,
                                   agent=agent)
         
     else:

@@ -13,7 +13,7 @@ import numpy as np
          commands:  numpy array
          
     
-     episode_changed: True if the episode changed, meaning that the observations
+     episode_start: True if the episode changed, meaning that the observations
                       are not logically in sequence with previous ones.
 '''  
 
@@ -95,7 +95,8 @@ class ObsKeeper:
         
         if self.last_observations is None:
             x['dt'] = 0
-            x['episode_start'] = True
+            x['episode_start'] = True 
+        
         else:
             x['dt'] = x['timestamp'] - self.last_observations['timestamp']
             x['episode_start'] = False
@@ -103,8 +104,10 @@ class ObsKeeper:
         x['extra'] = None
         
         self.observations = x
+        self.last_observations = x
         
         self.counter += 1
+        
         
     def get_observations(self):
         if self.observations is None:
