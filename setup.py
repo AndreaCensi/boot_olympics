@@ -1,14 +1,14 @@
 import os
 from setuptools import setup, find_packages
 
-version = "0.5"
+version = "1.0"
 
 description = """""" 
 
     
 long_description = description  
 
-setup(name='BootstrappingOlympics',
+setup(name='BootOlympics',
       url='http://github.com/AndreaCensi/boot_olympics/',
       
       description=description,
@@ -26,13 +26,17 @@ setup(name='BootstrappingOlympics',
       ],
 
       version=version,
-#      download_url='http://github.com/GITHUB_USER/GITHUB_PROJECT/tarball/%s' % version,
+      download_url='http://github.com/AndreaCensi/boot_olympics/tarball/%s' % version,
       
       package_dir={'':'src'},
       packages=find_packages('src'),
-      install_requires=[ 'PyYAML', 'PyContracts', 'ConfTools'],
+      install_requires=[ 
+        'PyYAML', 
+        'PyContracts>=1.2,<2', 
+        'ConfTools>=1.0,<2'
+      ],
       extras_require={
-        'reports':  ['RepRep'],
+        'reports':  ['RepRep>=1.0,<2'],
       },
       tests_require=['nose'],
       entry_points={

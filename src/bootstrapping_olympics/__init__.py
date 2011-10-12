@@ -1,3 +1,5 @@
+__version__ = '1.0'
+
 import logging;  logging.basicConfig()
 from conf_tools.utils import col_logging # colored logging
 
