@@ -1,5 +1,5 @@
 from .. import RobotObservations, BootSpec, RobotInterface, EpisodeDesc
-from ..utils import isodate_with_secs
+from ..utils import unique_timestamp_string
 from contracts import contract
 
 __all__ = ['RandomRobot']
@@ -33,5 +33,5 @@ class RandomRobot(RobotInterface):
     
     def new_episode(self):
         self.timestamp = 0.0
-        return EpisodeDesc(isodate_with_secs(), 'n/a')  # XXX: add constant
+        return EpisodeDesc(unique_timestamp_string(), 'n/a')  # XXX: add constant
         

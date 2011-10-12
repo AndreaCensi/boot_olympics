@@ -1,12 +1,8 @@
 from . import logger
-from .natsort import natsorted
-from bootstrapping_olympics import BootOlympicsConfig
+from ... import BootOlympicsConfig
+from ...utils import wrap_script_entry_point, natsorted
 from optparse import OptionParser
-from reprep import Report
 import os
-from bootstrapping_olympics.utils.scripts_utils import wrap_script_entry_point
-
-
 
 usage = """
 
@@ -33,6 +29,8 @@ def boot_olympics_print_config():
     
 
 def print_configuration(directory, outdir):
+    from reprep import Report
+
     BootOlympicsConfig.load(directory)
      
     def write_report(r):

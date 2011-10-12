@@ -1,7 +1,7 @@
 from .. import logger
 from ....display import ReprepPublisher 
 import os
-from bootstrapping_olympics.utils import isodate
+from ....utils import isodate
 
 def publish_once(data_central, id_agent, id_robot):
     from .cmd_learn import load_agent_state

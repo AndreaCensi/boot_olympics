@@ -1,12 +1,11 @@
 from . import logger
 from ... import BootSpec
-from ...utils import yaml_dump
+from ...utils import copy_from, yaml_dump
 from contracts import contract
 import numpy as np
+import os
 import tables
 import warnings
-from bootstrapping_olympics.utils import copy_from
-import os
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 

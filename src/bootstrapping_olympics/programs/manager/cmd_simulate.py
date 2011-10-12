@@ -1,10 +1,10 @@
 from . import check_mandatory, logger, check_no_spurious
 from ... import AgentInterface, ObsKeeper, RobotObservations, RobotInterface
 from ...logs import LogsFormat
-from ...utils import InAWhile, isodate_with_secs
+from ...utils import InAWhile, isodate_with_secs, natsorted
 from contracts import contract
-import numpy as np
 from optparse import OptionParser
+import numpy as np
 
 __all__ = ['cmd_simulate', 'simulate']
 
@@ -47,6 +47,7 @@ def simulate(data_central, id_agent, id_robot,
              stateful=False,
              interval_print=None,
              write_extra=True):
+    ''' Returns the list of the episodes IDs simulated. ''' 
     # Instance agent object    
     agent = data_central.get_bo_config().agents.instance(id_agent) #@UndefinedVariable
     # Instance robot object
@@ -91,7 +92,7 @@ def simulate(data_central, id_agent, id_robot,
             while bk.another_episode_todo():
                 for observations in run_simulation(id_robot, robot, agent,
                                                    100000, max_episode_len):            
-                    bk.observations()
+                    bk.observations(observations)
                     if write_extra:
                         extra = dict(robot_state=robot.get_state())
                     else:
@@ -99,6 +100,8 @@ def simulate(data_central, id_agent, id_robot,
                     writer.push_observations(observations=observations,
                                              extra=extra)
                 bk.episode_done()
+                
+    return bk.get_id_episodes()
 
 class Bookkeeping():
     ''' Simple class to keep track of how many we have to simulate. '''
@@ -128,8 +131,11 @@ class Bookkeeping():
     
         self.interval_print = interval_print
         self.tracker = InAWhile(interval_print)
+        self.id_episodes = set()
         
-    def observations(self):
+    def observations(self, observations):
+        self.id_episodes.add(observations['id_episode'].item())
+        
         self.num_observations_episode += 1
         self.num_observations += 1
         if self.tracker.its_time():
@@ -141,7 +147,11 @@ class Bookkeeping():
                 msg += (' (mean obs/ep: %.1f)' % 
                         (np.mean(self.observations_per_episode)))
             logger.info(msg)
-              
+            
+    def get_id_episodes(self):
+        ''' Returns the list of episodes seen. '''
+        return natsorted(self.id_episodes)  
+    
     def episode_done(self):
         self.num_episodes_done += 1
         self.observations_per_episode.append(self.num_observations_episode)

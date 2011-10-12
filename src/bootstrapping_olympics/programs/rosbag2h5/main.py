@@ -1,5 +1,5 @@
 from . import logger
-from bootstrapping_olympics.utils import wrap_script_entry_point
+from ...utils import wrap_script_entry_point
 from optparse import OptionParser
 import os
 import tables

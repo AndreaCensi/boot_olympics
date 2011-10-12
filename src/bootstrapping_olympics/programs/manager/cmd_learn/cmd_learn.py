@@ -6,7 +6,7 @@ from ....utils import InAWhile, UserError
 from optparse import OptionParser
 import numpy as np
 
-__all__ = ['cmd_learn_log']
+__all__ = ['cmd_learn_log', 'learn_log']
 
 def cmd_learn_log(data_central, argv):
     '''Runs the learning for a given agent and log. ''' 

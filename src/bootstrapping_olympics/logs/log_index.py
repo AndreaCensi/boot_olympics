@@ -1,11 +1,11 @@
 from . import BootStream, logger, LogsFormat
+from ..utils import natsorted
 from collections import defaultdict
 from conf_tools import locate_files
 from contracts import contract
 import os
 import pickle
 import traceback
-from bootstrapping_olympics.programs.print_config.natsort import natsorted
 
 class LogIndex:
     def __init__(self):
@@ -59,6 +59,17 @@ class LogIndex:
             for obs in stream.read(read_extra=read_extra):
                 yield obs 
 
+    def read_robot_episode(self, id_robot, id_episode, read_extra=False):
+        ''' Reads only one episode. '''
+        for stream in self.get_streams_for_robot(id_robot):
+            if id_episode in stream.id_episodes:
+                for obs in stream.read(read_extra=read_extra):
+                    if obs['id_episode'].item() == id_episode:
+                        yield obs
+                break
+        else:
+            raise Exception('No episode %r found.' % id_episode)
+             
 
 def index_directory_cached(directory, ignore_dir_cache=False,
                            ignore_file_cache=False):
@@ -139,7 +150,7 @@ def index_directory(directory, ignore_cache=False):
                 file2streams[filename] = streams
             else:
                 logger.warning('No streams found. ')
-        except Exception as e:
+        except Exception:
             logger.error('Invalid data in file %r.' % filename)
             logger.error(traceback.format_exc())
                

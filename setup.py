@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = "0.1"
+version = "0.5"
 
 description = """""" 
 
@@ -30,7 +30,10 @@ setup(name='BootstrappingOlympics',
       
       package_dir={'':'src'},
       packages=find_packages('src'),
-      install_requires=[ 'PyYAML', 'RepRep', 'PyContracts', 'ConfTools'],
+      install_requires=[ 'PyYAML', 'PyContracts', 'ConfTools'],
+      extras_require={
+        'reports':  ['RepRep'],
+      },
       tests_require=['nose'],
       entry_points={
          'console_scripts': [
