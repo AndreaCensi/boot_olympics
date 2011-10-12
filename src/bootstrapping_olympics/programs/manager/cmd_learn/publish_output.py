@@ -1,5 +1,4 @@
 from .. import logger
-from ....display import ReprepPublisher 
 import os
 from ....utils import isodate
 
@@ -21,6 +20,8 @@ def publish_once(data_central, id_agent, id_robot):
 def publish_agent_output(state, agent, pd):
     rid = ('%s-%s-%s-%07d' % (state.id_agent, state.id_robot,
                             state.id_state, state.num_observations))
+    from ....display import ReprepPublisher
+
     publisher = ReprepPublisher(rid)
     report = publisher.r
     
