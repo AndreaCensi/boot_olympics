@@ -88,8 +88,8 @@ class DirectoryStructure:
 
         return dirname 
         
-    def get_video_filename(self, id_robot, id_episode):
-        pattern = '${id_robot}-${id_episode}.avi'
+    def get_video_basename(self, id_robot, id_episode):
+        pattern = '${id_robot}-${id_episode}'
         filename = os.path.join(self.root, DirectoryStructure.DIR_VIDEOS,
                                substitute(pattern,
                                           id_robot=id_robot,

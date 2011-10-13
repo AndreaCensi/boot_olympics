@@ -47,7 +47,8 @@ def simulate(data_central, id_agent, id_robot,
              stateful=False,
              interval_print=None,
              write_extra=True):
-    ''' Returns the list of the episodes IDs simulated. ''' 
+    ''' If not cumulative, returns the list of the episodes IDs simulated,
+        otherwise it returns all episodes. ''' 
     # Instance agent object    
     agent = data_central.get_bo_config().agents.instance(id_agent) #@UndefinedVariable
     # Instance robot object
@@ -101,7 +102,10 @@ def simulate(data_central, id_agent, id_robot,
                                              extra=extra)
                 bk.episode_done()
                 
-    return bk.get_id_episodes()
+    if cumulative:
+        return bk.get_all_episodes()
+    else:
+        return bk.get_id_episodes()
 
 class Bookkeeping():
     ''' Simple class to keep track of how many we have to simulate. '''
@@ -114,9 +118,10 @@ class Bookkeeping():
         if self.cumulative:
             log_index = data_central.get_log_index()
             if log_index.has_streams_for_robot(id_robot):
-                done_before = log_index.get_episodes_for_robot(id_robot)
-                self.num_episodes_done_before = len(done_before)
+                self.done_before = log_index.get_episodes_for_robot(id_robot)
+                self.num_episodes_done_before = len(self.done_before)
             else:
+                self.done_before = set()
                 self.num_episodes_done_before = 0
             self.num_episodes_todo = num_episodes - self.num_episodes_done_before
             logger.info('Preparing to do %d episodes (already done %d).' % 
@@ -149,8 +154,16 @@ class Bookkeeping():
             logger.info(msg)
             
     def get_id_episodes(self):
-        ''' Returns the list of episodes seen. '''
+        ''' Returns the list of episodes simulated. '''
         return natsorted(self.id_episodes)  
+
+    def get_all_episodes(self):
+        ''' Returns the list of all episodes, both the already present
+            and the simulated. '''
+        eps = []
+        eps.extend(self.id_episodes)
+        eps.extend(self.done_before)
+        return natsorted(set(eps))  
     
     def episode_done(self):
         self.num_episodes_done += 1
