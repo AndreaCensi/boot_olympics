@@ -23,10 +23,12 @@ def experiment_explore_learn_main(proj_root,
                       help="Number of episodes to simulate [%default]")
     parser.add_option("--episode_len", type='float', default=30,
                       help="Maximum len of episode (seconds) [%default]")
+    parser.add_option("--contracts", default=False, action='store_true',
+                      help="Slower, more checks.")
     (options, args) = parser.parse_args(args)
     
-    
-    contracts.disable_all() # TODO: option
+    if not options.contracts:
+        contracts.disable_all() # TODO: option
 
     if options.compmake:
         from compmake import compmake_console #@UnresolvedImport
@@ -131,14 +133,16 @@ def experiment_explore_learn_compmake(proj_root,
                      data_central=data_central,
                      id_robot=id_robot,
                      zoom=0,
-                     job_id=job_id)
+                     job_id=job_id,
+                     extra_dep=[robot2simulations[id_robot]])
             
             job_id = 'video-exploration-%s-epall-zoom' % (id_robot)  
             comp(create_video_all_episodes,
                      data_central=data_central,
                      id_robot=id_robot,
                      zoom=2,
-                     job_id=job_id)
+                     job_id=job_id,
+                     extra_dep=[robot2simulations[id_robot]])
           
 
     # FIXME: needs redoing
