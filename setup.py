@@ -14,15 +14,11 @@ setup(name='BootOlympics',
       description=description,
       long_description=long_description,
       keywords="",
-      license="",
+      license="LGPL",
       
       classifiers=[
         'Development Status :: 4 - Beta',
-        # 'Intended Audience :: Developers',
-        # 'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
-        # 'Topic :: Software Development :: Quality Assurance',
-        # 'Topic :: Software Development :: Documentation',
-        # 'Topic :: Software Development :: Testing'
+        'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
       ],
 
       version=version,
@@ -31,12 +27,13 @@ setup(name='BootOlympics',
       package_dir={'':'src'},
       packages=find_packages('src'),
       install_requires=[ 
-        'PyYAML', 
-        'PyContracts>=1.2,<2', 
+        'PyYAML',
+        'PyContracts>=1.2,<2',
         'ConfTools>=1.0,<2'
       ],
       extras_require={
         'reports':  ['RepRep>=1.0,<2'],
+        'compmake':  ['compmake>=1.0,<2'],
       },
       tests_require=['nose'],
       entry_points={

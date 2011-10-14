@@ -23,10 +23,12 @@ def experiment_explore_learn_main(proj_root,
                       help="Number of episodes to simulate [%default]")
     parser.add_option("--episode_len", type='float', default=30,
                       help="Maximum len of episode (seconds) [%default]")
+    parser.add_option("--contracts", default=False, action='store_true',
+                      help="Slower, more checks.")
     (options, args) = parser.parse_args(args)
     
-    
-    contracts.disable_all() # TODO: option
+    if not options.contracts:
+        contracts.disable_all() # TODO: option
 
     if options.compmake:
         from compmake import compmake_console #@UnresolvedImport
@@ -115,7 +117,33 @@ def experiment_explore_learn_compmake(proj_root,
                      episodes=robot2simulations[id_robot],
                      episode_index=i,
                      id_robot=id_robot,
+                     zoom=0,
                      job_id=job_id)
+                job_id = 'video-exploration-%s-ep%04d-zoom' % (id_robot, i)  
+                comp(create_video,
+                     zoom=2,
+                     data_central=data_central,
+                     episodes=robot2simulations[id_robot],
+                     episode_index=i,
+                     id_robot=id_robot,
+                     job_id=job_id)
+                
+            job_id = 'video-exploration-%s-epall' % (id_robot)  
+            comp(create_video_all_episodes,
+                     data_central=data_central,
+                     id_robot=id_robot,
+                     zoom=0,
+                     job_id=job_id,
+                     extra_dep=[robot2simulations[id_robot]])
+            
+            job_id = 'video-exploration-%s-epall-zoom' % (id_robot)  
+            comp(create_video_all_episodes,
+                     data_central=data_central,
+                     id_robot=id_robot,
+                     zoom=2,
+                     job_id=job_id,
+                     extra_dep=[robot2simulations[id_robot]])
+          
 
     # FIXME: needs redoing
     #index.reindex()
@@ -142,16 +170,40 @@ def experiment_explore_learn_compmake(proj_root,
              job_id=job_id, extra_dep=extra_dep)
     
             
-def create_video(data_central, episodes, episode_index, id_robot):
+def create_video(data_central, episodes, episode_index, id_robot, zoom=0):
     id_episode = episodes[episode_index]
     ds = data_central.get_dir_structure()
-    filename = ds.get_video_filename(id_robot, id_episode)
+    basename = ds.get_video_basename(id_robot, id_episode)
+    if zoom:
+        basename += '-z%.1f' % zoom
+    
+    filename = basename + '.avi'
     logdir = ds.get_simulated_logs_dir()
     import procgraph_vehicles #@UnusedImport
     from procgraph import pg
     config = dict(logdir=logdir,
                 id_robot=id_robot,
                 id_episode=id_episode,
+                zoom=zoom,
+                output=filename)
+    pg('boot_log2movie', config=config)
+
+
+def create_video_all_episodes(data_central, id_robot, zoom=0):
+    ''' Creates a video containing all episodes. '''
+    ds = data_central.get_dir_structure()
+    basename = ds.get_video_basename(id_robot, 'all')
+    if zoom:
+        basename += '-z%.1f' % zoom
+    
+    filename = basename + '.avi'
+    logdir = ds.get_simulated_logs_dir()
+    import procgraph_vehicles #@UnusedImport
+    from procgraph import pg
+    config = dict(logdir=logdir,
+                id_robot=id_robot,
+                id_episode='',
+                zoom=zoom,
                 output=filename)
     pg('boot_log2movie', config=config)
 
