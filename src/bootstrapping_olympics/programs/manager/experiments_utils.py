@@ -1,12 +1,15 @@
 '''Some functions to help in writing experiments scripts'''
 
-from . import DataCentral
+from . import DataCentral, logger
 from .cmd_learn import learn_log, publish_once
 from .cmd_simulate import simulate
 from optparse import OptionParser
 import contracts
 import itertools
 import numpy as np
+import os
+import shutil
+
 
 def experiment_explore_learn_main(proj_root,
                                   explorer, agents, robots,
@@ -15,74 +18,47 @@ def experiment_explore_learn_main(proj_root,
     parser.disable_interspersed_args()
     parser.add_option("--reset", default=False, action='store_true',
                       help="Reset the state of the agents.")
-    parser.add_option("--compmake", default=False, action='store_true',
-                      help="Uses compmake [%default]")
-    parser.add_option("--write_extra", default=False, action='store_true',
-                      help="Writes extra info in the logs (robot state) [%default]")
+    parser.add_option("--resimulate", default=False, action='store_true',
+                      help="Resimulates the logs.")
+#    parser.add_option("--compmake", default=False, action='store_true',
+#                      help="Uses compmake [%default]")
+#    parser.add_option("--write_extra", default=False, action='store_true',
+#                      help="Writes extra info in the logs (robot state) [%default]")
     parser.add_option("--num_episodes", type='int', default=10,
                       help="Number of episodes to simulate [%default]")
     parser.add_option("--episode_len", type='float', default=30,
                       help="Maximum len of episode (seconds) [%default]")
     parser.add_option("--contracts", default=False, action='store_true',
                       help="Slower, more checks.")
+    parser.add_option("--only", default=None,
+                      help="Only do things for this robot.")
     (options, args) = parser.parse_args(args)
     
     if not options.contracts:
         contracts.disable_all() # TODO: option
 
-    if options.compmake:
-        from compmake import compmake_console #@UnresolvedImport
-        experiment_explore_learn_compmake(proj_root,
-                             explorer, agents, robots,
-                             episode_len=options.episode_len,
-                             num_episodes=options.num_episodes,
-                             write_extra=True)
-        compmake_console()
-    else:
-        experiment_explore_learn(proj_root,
-                             explorer, agents, robots,
-                             episode_len=options.episode_len,
-                             num_episodes=options.num_episodes,
-                             write_extra=True)
-
-
-def experiment_explore_learn(proj_root,
-                             explorer, agents, robots, episode_len,
-                             num_episodes, write_extra=True,
-                             reset=False):
-    #from compmake import comp
+    from compmake import compmake_console, batch_command #@UnresolvedImport
+    experiment_explore_learn_compmake(proj_root,
+                         explorer, agents, robots,
+                         episode_len=options.episode_len,
+                         num_episodes=options.num_episodes,
+                         write_extra=True)
+    
+    if options.resimulate:
+        logger.info('Removing previous logs.')
+        dirname = os.path.join(proj_root, 'logs', 'simulations')
+        if os.path.exists(dirname):
+            shutil.rmtree(dirname)
+        batch_command('clean simulate*')
         
-    data_central = DataCentral(proj_root)
-    
-    index = data_central.get_log_index()
-    
-    for id_robot in robots:
-        simulate(data_central=data_central,
-                 id_agent=explorer,
-                 id_robot=id_robot,
-                 max_episode_len=episode_len,
-                 num_episodes=num_episodes,
-                 stateful=False,
-                 interval_print=5,
-                 cumulative=True,
-                 write_extra=write_extra)
-    
-    index.reindex()
-    
-    
-    for id_robot, id_agent  in itertools.product(robots, agents):
-        learn_log(data_central=data_central,
-                  id_agent=id_agent,
-                  id_robot=id_robot,
-                  reset=reset,
-                  publish_interval=None,
-                  publish_once=False,
-                  interval_save=300,
-                  interval_print=5)
-    
-        publish_once(data_central, id_agent, id_robot)
-    
-
+    if options.only:
+        id_robot = options.only
+        logger.info('Only doing things for robot %r.' % id_robot)
+        cmd1 = 'make sim*X* pub*X* '.replace('X', id_robot)
+        cmd2 = 'make video-exploration-X-ep0000-*'.replace('X', id_robot)
+        batch_command(cmd1)
+        batch_command(cmd2)
+    compmake_console() 
 
 def experiment_explore_learn_compmake(proj_root,
                              explorer, agents, robots, episode_len,

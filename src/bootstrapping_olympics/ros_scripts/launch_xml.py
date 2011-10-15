@@ -1,6 +1,3 @@
-
-#from bootstrapping_olympics.configuration import (check_valid_ros_node_spec,
-#    parse_yaml_ros_node_spec)
 from string import Template
 import yaml
 from ..configuration.yaml_ros_node_spec import check_valid_ros_node_spec, \
