@@ -6,7 +6,7 @@ from .cmd_simulate import simulate
 from optparse import OptionParser
 import contracts
 import itertools
-
+import numpy as np
 
 def experiment_explore_learn_main(proj_root,
                                   explorer, agents, robots,
@@ -110,7 +110,9 @@ def experiment_explore_learn_compmake(proj_root,
                                              job_id=job_id)
         
         if write_extra: # also add video
-            for i in range(num_episodes):
+            max_videos = 20
+            nvideos = min(num_episodes, max_videos)
+            for i in range(nvideos):
                 job_id = 'video-exploration-%s-ep%04d' % (id_robot, i)  
                 comp(create_video,
                      data_central=data_central,

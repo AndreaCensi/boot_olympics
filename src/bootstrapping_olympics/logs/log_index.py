@@ -27,7 +27,7 @@ class LogIndex:
     def index(self, directory, ignore_cache=False):
         new_streams = index_directory_cached(directory,
                                              ignore_file_cache=ignore_cache,
-                                             ignore_dir_cache=True)
+                                             ignore_dir_cache=True) # XXX
         self.file2streams.update(new_streams)
         self.directories_indexed.add(directory)
         self.robots2streams = index_robots(self.file2streams)
@@ -82,6 +82,7 @@ def index_directory_cached(directory, ignore_dir_cache=False,
     
     needs_recreate = False
     
+    logger.debug('Indexing %s %s' % (directory, ''))
     if not os.path.exists(index_file):
         logger.debug('Index file not existing -- will create.')
         needs_recreate = True
@@ -103,9 +104,11 @@ def index_directory_cached(directory, ignore_dir_cache=False,
                 assert isinstance(x, str)
                 assert isinstance(k, list)
                 
-        
-            with open(index_file, 'wb') as f:
-                pickle.dump(file2streams, f)
+            if not ignore_dir_cache:
+                with open(index_file, 'wb') as f:
+                    pickle.dump(file2streams, f)
+            
+            return file2streams
         except:
             logger.error('Caught exception while indexing, deleting db.')
             if os.path.exists(index_file):
@@ -113,14 +116,14 @@ def index_directory_cached(directory, ignore_dir_cache=False,
             raise
     else:
         logger.debug('Using cached index %r.' % index_file)
+            
+        try:
+            with open(index_file, 'rb') as f:
+                return pickle.load(f)
+        except:
+            logger.error('Index file corrupted; try deleting %r.' % (index_file))
+            raise
         
-    try:
-        with open(index_file, 'rb') as f:
-            return pickle.load(f)
-    except:
-        logger.error('Index file corrupted; try deleting %r.' % (index_file))
-        raise
-    
 
 def index_directory(directory, ignore_cache=False):
     ''' Returns a hash filename -> list of streams. '''
