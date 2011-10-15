@@ -1,12 +1,9 @@
 '''Some functions to help in writing experiments scripts'''
 
-from . import DataCentral, logger
-from .cmd_learn import learn_log, publish_once
-from .cmd_simulate import simulate
+from . import DataCentral, logger, learn_log, publish_once, simulate
 from optparse import OptionParser
 import contracts
 import itertools
-import numpy as np
 import os
 import shutil
 
@@ -20,10 +17,11 @@ def experiment_explore_learn_main(proj_root,
                       help="Reset the state of the agents.")
     parser.add_option("--resimulate", default=False, action='store_true',
                       help="Resimulates the logs.")
-#    parser.add_option("--compmake", default=False, action='store_true',
-#                      help="Uses compmake [%default]")
-#    parser.add_option("--write_extra", default=False, action='store_true',
-#                      help="Writes extra info in the logs (robot state) [%default]")
+    parser.add_option("--republish", default=False, action='store_true',
+                      help="Cleans the reports.")
+    
+    parser.add_option("--write_extra", default=False, action='store_true',
+                      help="Writes extra info in the logs (robot state) [%default]")
     parser.add_option("--num_episodes", type='int', default=10,
                       help="Number of episodes to simulate [%default]")
     parser.add_option("--episode_len", type='float', default=30,
@@ -42,29 +40,45 @@ def experiment_explore_learn_main(proj_root,
                          explorer, agents, robots,
                          episode_len=options.episode_len,
                          num_episodes=options.num_episodes,
-                         write_extra=True)
+                         reset=options.reset,
+                         write_extra=options.write_extra)
     
+    if options.reset:
+        batch_command('clean learn*')
+        
+    if options.republish:
+        logger.info('Removing previous logs.')
+        dirname = os.path.join(proj_root, 'reports', 'learn')
+        if os.path.exists(dirname):
+            shutil.rmtree(dirname)
+            
+        batch_command('clean publish*')
+        
     if options.resimulate:
         logger.info('Removing previous logs.')
         dirname = os.path.join(proj_root, 'logs', 'simulations')
         if os.path.exists(dirname):
             shutil.rmtree(dirname)
+            
         batch_command('clean simulate*')
         
     if options.only:
         id_robot = options.only
         logger.info('Only doing things for robot %r.' % id_robot)
         cmd1 = 'make sim*X* pub*X* '.replace('X', id_robot)
-        cmd2 = 'make video-exploration-X-ep0000-*'.replace('X', id_robot)
         batch_command(cmd1)
-        batch_command(cmd2)
+        if options.write_extra:
+            cmd2 = 'make video-exploration-X-ep0000-*'.replace('X', id_robot)
+            batch_command(cmd2)
+        
+        
     compmake_console() 
 
 def experiment_explore_learn_compmake(proj_root,
                              explorer, agents, robots, episode_len,
                              num_episodes, write_extra=True,
                              reset=False):
-    from compmake import comp #, compmake_storage @UnresolvedImport
+    from compmake import comp # @UnresolvedImport
     
     data_central = DataCentral(proj_root)
 #    ds = data_central.get_directory_structure()
@@ -122,10 +136,7 @@ def experiment_explore_learn_compmake(proj_root,
                      job_id=job_id,
                      extra_dep=[robot2simulations[id_robot]])
           
-
-    # FIXME: needs redoing
-    #index.reindex()
-    
+ 
     ra2learned = {}
     for id_robot, id_agent in itertools.product(robots, agents):
         extra_dep = [robot2simulations[id_robot]]

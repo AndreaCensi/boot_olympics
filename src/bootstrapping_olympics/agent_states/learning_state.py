@@ -43,6 +43,7 @@ class LearningStateDB(object):
 #        logger.debug('Keys: %s' % [ key2tuple(x) for x in  self.storage.keys()])
         return [ key2tuple(x) for x in  self.storage.keys() if isakey(x)]
         
+        
     def has_state(self, id_agent, id_robot):
         ''' Returns true if the learning state is already present. '''
         key = tuple2key((id_agent, id_robot))

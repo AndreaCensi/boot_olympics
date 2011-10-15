@@ -63,9 +63,11 @@ class DirectoryStructure:
             os.makedirs(dirname)
         return filename 
     
-    def get_report_dir(self, id_agent, id_robot, id_state):
+    def get_report_dir(self, id_agent, id_robot, id_state, phase='learn',
+                        add_last=False):
         pattern = '${id_robot}-${id_agent}-${id_state}'
         dirname = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
+                               phase,
                                substitute(pattern,
                                           id_agent=id_agent,
                                           id_robot=id_robot,
@@ -73,18 +75,20 @@ class DirectoryStructure:
         if not os.path.exists(dirname):
             os.makedirs(dirname)
       
-        last1 = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
-                               substitute(pattern,
-                                          id_agent=id_agent,
-                                          id_robot=id_robot,
-                                          id_state='last')) 
-        last2 = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
-                             'last') 
-        
-        for l in [last1, last2]:
-            if os.path.exists(l):
-                os.unlink(l)
-            os.symlink(dirname, l)
+        if add_last:
+            last1 = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
+                                 phase,
+                                   substitute(pattern,
+                                              id_agent=id_agent,
+                                              id_robot=id_robot,
+                                              id_state='last')) 
+            last2 = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
+                                 'last') 
+            
+            for l in [last1, last2]:
+                if os.path.exists(l):
+                    os.unlink(l)
+                os.symlink(dirname, l)
 
         return dirname 
         

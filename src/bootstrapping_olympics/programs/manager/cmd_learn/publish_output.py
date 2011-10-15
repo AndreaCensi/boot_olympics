@@ -12,7 +12,8 @@ def publish_once(data_central, id_agent, id_robot):
     ds = data_central.get_dir_structure()
     report_dir = ds.get_report_dir(id_agent=id_agent,
                                        id_robot=id_robot,
-                                       id_state=state.id_state)
+                                       id_state=state.id_state,
+                                       phase='learn')
     publish_agent_output(state, agent, report_dir)
 
     

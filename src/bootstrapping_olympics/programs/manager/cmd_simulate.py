@@ -1,10 +1,8 @@
-from . import check_mandatory, logger, check_no_spurious
+from . import check_mandatory, logger, check_no_spurious, contract, np, OptionParser
 from ... import AgentInterface, ObsKeeper, RobotObservations, RobotInterface
 from ...logs import LogsFormat
 from ...utils import InAWhile, isodate_with_secs, natsorted
-from contracts import contract
-from optparse import OptionParser
-import numpy as np
+
 
 __all__ = ['cmd_simulate', 'simulate']
 

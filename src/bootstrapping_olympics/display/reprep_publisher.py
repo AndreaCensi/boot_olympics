@@ -28,6 +28,8 @@ class ReprepPublisher(Publisher):
         else:
             node = self.r.data(name, value, mime=MIME_PYTHON, caption=caption)
             m = node.display(filter, **filter_params)
+            if caption is None:
+                caption = name
             self.f.sub(m, caption=caption)
         
     @contract(name='str', value='str')

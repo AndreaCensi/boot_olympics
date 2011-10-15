@@ -1,10 +1,10 @@
 from . import (cmd_list_logs, cmd_simulate, cmd_list_states, logger,
-    cmd_learn_log, cmd_list_agents, cmd_list_robots, DataCentral)
+    cmd_learn_log, cmd_list_agents, cmd_list_robots, DataCentral, cmd_task_predict,
+    np)
 from ...configuration import DirectoryStructure
 from ...utils import wrap_script_entry_point, UserError, substitute
 from optparse import OptionParser
 import contracts
-import numpy as np
 
 commands = {
     'list-logs': cmd_list_logs,
@@ -12,6 +12,7 @@ commands = {
     'list-robots': cmd_list_robots,
     'list-states': cmd_list_states,
     'learn-log': cmd_learn_log,
+    'predict': cmd_task_predict,
     'simulate': cmd_simulate
 }
 

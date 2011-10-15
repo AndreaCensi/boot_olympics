@@ -5,6 +5,7 @@ from ....interfaces import AgentInterface
 from ....utils import InAWhile, UserError
 from optparse import OptionParser
 import numpy as np
+import logging
 
 __all__ = ['cmd_learn_log', 'learn_log']
 
@@ -66,8 +67,9 @@ def learn_log(data_central, id_agent, id_robot,
         raise UserError(msg)
         
     
-    AgentInterface.logger = logger # TODO: create one for agent
-    
+    logger = logging.getLogger("BootOlympics:%s" % id_agent)
+    logger.setLevel(logging.DEBUG)
+    AgentInterface.logger = logger
     
     agent, state = load_agent_state(data_central,
                                     id_agent=id_agent,
@@ -183,7 +185,8 @@ cmd_learn_log.short_usage = ('learn-log -a <AGENT> -r <ROBOT> '
     
 
 
-def load_agent_state(data_central, id_agent, id_robot, reset_state=False):
+def load_agent_state(data_central, id_agent, id_robot, reset_state=False,
+                     raise_if_no_state=False):
     ''' Load the agent, loading the agent state from the state_db directory.
         If the state is not available, then it initializes anew. The
         problem spec (sensel shape, commands shape) is loaded from the 
@@ -191,6 +194,7 @@ def load_agent_state(data_central, id_agent, id_robot, reset_state=False):
         
         Returns tuple agent, state.
     '''
+    logger.info('Loading state %s/%s reset=%s ' % (id_agent, id_robot, reset_state))
     agent = data_central.get_bo_config().agents.instance(id_agent) #@UndefinedVariable
 
     db = data_central.get_agent_state_db()
@@ -200,15 +204,24 @@ def load_agent_state(data_central, id_agent, id_robot, reset_state=False):
     spec = index.get_robot_spec(id_robot)
     agent.init(spec)
 
-    if not reset_state and db.has_state(**key):
-        logger.info('Using previous learned state.')
-        
-        state = db.reload_state_for_agent(id_agent=id_agent, id_robot=id_robot,
-                                  agent=agent)
-        
-    else:
-        logger.info('No previous learned state found.')
+    if reset_state:
         state = LearningState(id_robot=id_robot, id_agent=id_agent)
-
-    return agent, state
-
+        return agent, state
+    else:
+        if db.has_state(**key):
+            logger.info('Using previous learned state.')
+            state = db.reload_state_for_agent(id_agent=id_agent,
+                                              id_robot=id_robot,
+                                              agent=agent)
+            return agent, state
+        else:
+            logger.info('No previous learned state found.')
+            if raise_if_no_state:
+                raise Exception('No previous learned state found.')
+            else:
+                state = LearningState(id_robot=id_robot, id_agent=id_agent)
+                return agent, state
+    
+    assert False
+    
+    
