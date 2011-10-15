@@ -2,6 +2,7 @@ from ..interfaces import Publisher
 from reprep import Report
 from contextlib import contextmanager
 from contracts import contract
+from reprep import MIME_PYTHON
 
 __all__ = ['ReprepPublisher']
 
@@ -13,42 +14,31 @@ class ReprepPublisher(Publisher):
             self.r = Report(rid)
         else:
             self.r = report
-        self.subs = {}
+        self.f = self.r.figure()
     
-    @contract(name='str|tuple[=2]')
-    def get_sub(self, name):
-        if isinstance(name, str):
-            subname = 'default'
-            resname = name
-        elif isinstance(name, tuple):
-            subname = name[0]
-            resname = name[1]
-        if not subname in self.subs:
-            self.subs[subname] = self.r.figure(subname, cols=4)
-        return self.subs[subname], resname
-    
-    def array(self, name, value):
-        f, name = self.get_sub(name)
-        f.data(name, value)
+    @contract(name='str', caption='None|str')
+    def array(self, name, value, caption=None):
+        self.f.data(name, value)
 
-    def array_as_image(self, name, value, filter='posneg', filter_params={}): #@ReservedAssignment
-        f, name = self.get_sub(name)
+    @contract(name='str', value='array', filter='str', caption='None|str')
+    def array_as_image(self, name, value, filter='posneg', filter_params={},
+                       caption=None): #@ReservedAssignment
         if len(value.shape) == 3 and value.shape[2] == 3: # try image
-            f.data_rgb(name, value)
+            self.f.data_rgb(name, value)
         else:
-            f.data(name, value).display(filter, **filter_params)
-        f.last().add_to(f) # XXX
+            node = self.r.data(name, value, mime=MIME_PYTHON, caption=caption)
+            m = node.display(filter, **filter_params)
+            self.f.sub(m, caption=caption)
         
+    @contract(name='str', value='str')
     def text(self, name, value):
-        f, name = self.get_sub(name)
-        f.text(name, value)
+        self.r.text(name, value)
         
     @contextmanager
-    def plot(self, name, **args):
-        f, name = self.get_sub(name)
-        with f.data_pylab(name, **args) as pylab:
+    @contract(name='str', caption='None|str')
+    def plot(self, name, caption=None, **args):
+        with self.f.data_pylab(name, caption=caption, **args) as pylab:
             yield pylab
-        f.last().add_to(f)
         
     def section(self, section_name):
         child = self.r.node(section_name)

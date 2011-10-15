@@ -15,7 +15,7 @@ class Publisher:
 
     @abstractmethod
     @contract(name='str', value='array')
-    def array(self, name, value):
+    def array(self, name, value, caption=None):
         ''' Publishes an array; the publisher decides how to visualize it. '''
     
     FILTER_POSNEG = 'posneg'
@@ -24,7 +24,8 @@ class Publisher:
     @abstractmethod
     @contract(name='str', value='array')
     def array_as_image(self, name, value,
-                       filter='posneg', filter_params={}): #@ReservedAssignment
+                       filter='posneg', filter_params={}, #@ReservedAssignment
+                       caption=None): 
         ''' 
             Publishes an array as a false-color image. 
             ``filter`` is the name of a filter.
@@ -47,7 +48,7 @@ class Publisher:
         '''
     
     @abstractmethod
-    def plot(self, name, **args):
+    def plot(self, name, caption=None, **args):
         ''' 
             Usage example: ::
         
