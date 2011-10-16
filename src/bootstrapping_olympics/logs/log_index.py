@@ -40,6 +40,17 @@ class LogIndex:
         if not id_robot in self.robots2streams:
             raise ValueError('No streams for robot %r.' % id_robot)
         return self.robots2streams[id_robot]
+
+    @contract(returns='list')
+    def get_streams_for(self, id_robot, id_agent):
+        if not id_robot in self.robots2streams:
+            raise ValueError('No streams for robot %r.' % id_robot)
+        streams = []
+        for stream in self.robots2streams[id_robot]:
+            if id_agent in stream.id_agents:
+                streams.append(stream)
+        return streams
+
     
     def get_robot_spec(self, id_robot):
         ''' Returns the spec of the robot as stored in the files. '''
@@ -50,15 +61,27 @@ class LogIndex:
             agent if it is given). ''' # TODO: implement this
         episodes = []
         for stream in self.get_streams_for_robot(id_robot):
-            episodes.extend(stream.id_episodes)
+            if id_agent is None:
+                episodes.extend(stream.id_episodes)
+            else:
+                if id_agent in stream.id_agents:
+                    episodes.extend(stream.id_episodes)
         return natsorted(episodes)
     
-    def read_all_robot_streams(self, id_robot, read_extra=False):
-        ''' Reads all the data corresponding to a robot. '''
+    def read_all_robot_streams(self, id_robot, id_agent=None, read_extra=False):
+        ''' Reads all the data corresponding to a robot.
+            If agent is not None, it filters by agent.
+         '''
         for stream in self.get_streams_for_robot(id_robot):
+            if id_agent is None:
+                do_this = True
+            else:
+                do_this = id_agent in stream.id_agents
+            if not do_this: continue
+            
             for obs in stream.read(read_extra=read_extra):
-                yield obs 
-
+                    yield obs 
+            
     def read_robot_episode(self, id_robot, id_episode, read_extra=False):
         ''' Reads only one episode. '''
         for stream in self.get_streams_for_robot(id_robot):

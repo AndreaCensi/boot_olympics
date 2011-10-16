@@ -29,8 +29,12 @@ def check_writing_logs(id_agent, agent, id_robot, robot):
     with logs_format.write_stream(filename=filename,
                                   id_stream=id_stream,
                                   boot_spec=robot.get_spec()) as writer:
-        for observations in run_simulation(id_robot, robot, agent, 3, 1000):
-            print('observation timestamp %s' % observations['timestamp'])
+        for observations in run_simulation(id_robot=id_robot,
+                                           robot=robot,
+                                           id_agent=id_agent,
+                                           agent=agent,
+                                           max_observations=3, max_time=1000,
+                                           check_valid_values=True):
             extra = {'random_number': np.random.randint(1)}
             writer.push_observations(observations, extra)
             written_extra.append(extra)

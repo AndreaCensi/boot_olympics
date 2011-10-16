@@ -1,24 +1,36 @@
-from . import check_mandatory, logger, check_no_spurious, contract, np, OptionParser
-from ... import AgentInterface, ObsKeeper, RobotObservations, RobotInterface
-from ...logs import LogsFormat
-from ...utils import InAWhile, isodate_with_secs, natsorted
+from . import logger, contract
+from .. import check_mandatory, check_no_spurious
+from bootstrapping_olympics.interfaces import AgentInterface
+from bootstrapping_olympics.interfaces import ObsKeeper
+from bootstrapping_olympics.interfaces import (RobotInterface,
+    RobotObservations)
+from bootstrapping_olympics.logs import LogsFormat
+from bootstrapping_olympics.programs.manager.cmd_learn.cmd_learn import (
+    load_agent_state)
+from bootstrapping_olympics.utils import InAWhile
+from bootstrapping_olympics.utils import isodate_with_secs
+from bootstrapping_olympics.utils import natsorted
+from geometry.manifolds import SE3
+from geometry.poses import SE3_from_SE2, SE2_from_translation_angle
+from optparse import OptionParser
+import numpy as np
+from geometry.yaml import to_yaml
 
 
-__all__ = ['cmd_simulate', 'simulate']
 
-def cmd_simulate(data_central, argv):
+__all__ = ['cmd_task_servo', 'task_servo']
+
+def cmd_task_servo(data_central, argv):
     '''Simulate the interaction of an agent and a robot. ''' 
-    parser = OptionParser(usage=cmd_simulate.__doc__)
+    parser = OptionParser(usage=cmd_task_servo.__doc__)
     parser.disable_interspersed_args()
     parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
     parser.add_option("-r", "--robot", dest='robot', help="Robot ID")
-    parser.add_option("--stateful", default=False, action='store_true',
-                      help="Save/load the state of the agent.")
     parser.add_option("--num_episodes", type='int', default=10,
                       help="Number of episodes to simulate [%default]")
     parser.add_option("--cumulative", default=False, action='store_true',
                       help="Count already simulated episodes towards the count.")
-    parser.add_option("--episode_len", type='float', default=30,
+    parser.add_option("--max_episode_len", type='float', default=30,
                       help="Maximum len of episode (seconds) [%default]")
     parser.add_option("--interval_print", type='float', default=5,
                       help='Frequency of debug messages.')
@@ -29,47 +41,38 @@ def cmd_simulate(data_central, argv):
     
     id_agent = options.agent
     id_robot = options.robot
-    simulate(data_central,
+    task_servo(data_central,
              id_agent=id_agent,
              id_robot=id_robot,
-             max_episode_len=options.episode_len,
+             max_episode_len=options.max_episode_len,
              num_episodes=options.num_episodes,
-             stateful=options.stateful,
-             interval_print=options.interval_print,
-             cumulative=options.cumulative)
-    
-def simulate(data_central, id_agent, id_robot,
-             max_episode_len,
+             cumulative=options.cumulative,
+             interval_print=options.interval_print)
+
+cmd_task_servo.short_usage = '''servo  -a <agent> -r <robot> '''
+def task_servo(data_central, id_agent, id_robot,
+               max_episode_len,
              num_episodes,
              cumulative,
-             stateful=False,
-             interval_print=None,
-             write_extra=True):
-    ''' If not cumulative, returns the list of the episodes IDs simulated,
-        otherwise it returns all episodes. ''' 
-    # Instance agent object    
-    agent = data_central.get_bo_config().agents.instance(id_agent) #@UndefinedVariable
+                 interval_print=None, write_extra=True):
+    ''' Returns the list of the episodes IDs simulated. '''
     # Instance robot object
     robot = data_central.get_bo_config().robots.instance(id_robot) #@UndefinedVariable
 
     boot_spec = robot.get_spec()
+     
+    # Instance agent object    
     
-    # If --stateful is passed, we try to load a previous state.
-    if stateful:
-        db = data_central.get_agent_state_db()
-        if db.has_state(id_agent=id_agent, id_robot=id_robot):
-            logger.info('Using previous state.')
-            db.reload_state_for_agent(id_agent=id_agent, id_robot=id_robot,
-                                      agent=agent)
-        else:
-            logger.info('No previous state found.')
-            agent.init(boot_spec)
-    else:
-        agent.init(boot_spec)
-        
-        
+    agent, _ = load_agent_state(data_central, id_agent, id_robot,
+                             reset_state=False,
+                             raise_if_no_state=True)
+     
+    servo_agent = agent.get_servo()
+    
+    id_agent_servo = '%s_servo' % id_agent
+          
     ds = data_central.get_dir_structure()
-    id_stream = '%s-%s-%s' % (id_robot, id_agent, isodate_with_secs())
+    id_stream = '%s-%s-%s-servo' % (id_robot, id_agent, isodate_with_secs())
     filename = ds.get_simlog_hdf_filename(id_robot=id_robot,
                                           id_agent=id_agent,
                                           id_stream=id_stream)
@@ -77,23 +80,49 @@ def simulate(data_central, id_agent, id_robot,
     
     logs_format = LogsFormat.get_reader_for(filename)
     
-    bk = Bookkeeping(data_central=data_central,
+    bk = BookkeepingServo(data_central=data_central,
                      id_robot=id_robot,
+                     id_agent=id_agent_servo,
                      num_episodes=num_episodes,
                      cumulative=cumulative,
                      interval_print=interval_print)
 
+    @contract(returns='SE2')
+    def random_displacement():
+        max_angle = np.deg2rad(15)
+        max_t = 0.1
+        t = max_t * np.random.uniform(-max_t, +max_t, 2)
+        theta = np.random.uniform(-max_angle, +max_angle)
+        return SE2_from_translation_angle(t, theta)
+        
     if bk.another_episode_todo():
         with logs_format.write_stream(filename=filename,
                                       id_stream=id_stream,
                                       boot_spec=boot_spec) as writer:
         
             while bk.another_episode_todo():
-                for observations in run_simulation(id_robot, robot, id_agent, agent,
-                                                   100000, max_episode_len):            
+                episode = robot.new_episode()
+                # OK this only works with Vehicles
+                vehicle = robot.vehicle
+                obs0 = robot.get_observations().observations
+                pose0 = vehicle.get_pose()
+                displ = SE3_from_SE2(random_displacement())
+                pose1 = SE3.multiply(pose0, displ)
+                vehicle.set_pose(pose1)
+                servo_agent.set_goal_observations(obs0)
+                
+                for observations in run_simulation_servo(id_robot, robot,
+                                                   id_agent_servo, servo_agent,
+                                                   100000, max_episode_len,
+                                                   episode):            
                     bk.observations(observations)
                     if write_extra:
-                        extra = dict(robot_state=robot.get_state())
+                        extra = dict(robot_state=robot.get_state(),
+                                     obs0=obs0.tolist(),
+                                     pose0=to_yaml('SE3', pose0),
+                                     displ=to_yaml('SE3', displ),
+                                     pose1=to_yaml('SE3', pose1)
+                                     )
                     else:
                         extra = {}
                     writer.push_observations(observations=observations,
@@ -104,10 +133,12 @@ def simulate(data_central, id_agent, id_robot,
         return bk.get_all_episodes()
     else:
         return bk.get_id_episodes()
-
-class Bookkeeping():
+ 
+        
+        
+class BookkeepingServo():
     ''' Simple class to keep track of how many we have to simulate. '''
-    def __init__(self, data_central, id_robot, num_episodes,
+    def __init__(self, data_central, id_robot, id_agent, num_episodes,
                  cumulative=True, interval_print=5):
         self.data_central = data_central
         self.id_robot = id_robot
@@ -115,12 +146,8 @@ class Bookkeeping():
 
         if self.cumulative:
             log_index = data_central.get_log_index()
-            if log_index.has_streams_for_robot(id_robot):
-                self.done_before = log_index.get_episodes_for_robot(id_robot)
-                self.num_episodes_done_before = len(self.done_before)
-            else:
-                self.done_before = set()
-                self.num_episodes_done_before = 0
+            self.done_before = log_index.get_episodes_for_robot(id_robot, id_agent)
+            self.num_episodes_done_before = len(self.done_before)
             self.num_episodes_todo = num_episodes - self.num_episodes_done_before
             logger.info('Preparing to do %d episodes (already done %d).' % 
                         (self.num_episodes_todo, self.num_episodes_done_before)) 
@@ -171,21 +198,18 @@ class Bookkeeping():
     def another_episode_todo(self):
         return self.num_episodes_done < self.num_episodes_todo
 
-cmd_simulate.short_usage = ('simulate -a <AGENT> -r <ROBOT> [--num_episodes N ]'          
-                            '[--episode_len N] [--save] ')
-    
 
 
 @contract(id_robot='str', id_agent='str',
           robot=RobotInterface, agent=AgentInterface, max_observations='>=1',
           max_time='>0')
-def run_simulation(id_robot, robot, id_agent, agent, max_observations, max_time,
+def run_simulation_servo(id_robot, robot, id_agent, agent,
+                         max_observations, max_time,
+                         episode,
                    check_valid_values=True):
     ''' Runs an episode of the simulation. The agent should already been
         init()ed. '''
-    episode = robot.new_episode()
-    logger.debug('Episode %s' % episode)
-
+    
     keeper = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
     keeper.new_episode_started(episode.id_episode,
                                episode.id_environment)

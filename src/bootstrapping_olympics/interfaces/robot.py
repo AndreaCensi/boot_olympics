@@ -59,7 +59,7 @@ class RobotInterface:
 
 
     @abstractmethod
-    def set_commands(self, commands):
+    def set_commands(self, commands, commands_source):
         pass
     
     @abstractmethod

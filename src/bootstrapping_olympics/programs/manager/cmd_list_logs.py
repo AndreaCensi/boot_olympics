@@ -37,14 +37,17 @@ def cmd_list_logs(data_central, argv):
             total_length = 0
             total_obs = 0
             total_episodes = 0
+            agents = set()
             for stream in streams:
                 total_length += stream.length
                 total_obs += stream.num_observations
                 total_episodes += len(stream.id_episodes)
+                agents.update(stream.id_agents)
             logger.info('    total length: %.1f minutes' % 
                         (total_length / 60.0))
             logger.info('  total episodes: %d' % (total_episodes))
             logger.info('   total samples: %d' % (total_obs))
+            logger.info('          agents: %s' % list(agents))
          
         if options.display_logs:
             for stream in streams:

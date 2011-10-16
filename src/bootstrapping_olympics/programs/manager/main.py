@@ -1,6 +1,6 @@
 from . import (cmd_list_logs, cmd_simulate, cmd_list_states, logger,
     cmd_learn_log, cmd_list_agents, cmd_list_robots, DataCentral, cmd_task_predict,
-    np)
+    np, cmd_task_servo, cmd_video)
 from ...configuration import DirectoryStructure
 from ...utils import wrap_script_entry_point, UserError, substitute
 from optparse import OptionParser
@@ -13,6 +13,8 @@ commands = {
     'list-states': cmd_list_states,
     'learn-log': cmd_learn_log,
     'predict': cmd_task_predict,
+    'servo': cmd_task_servo,
+    'video': cmd_video,
     'simulate': cmd_simulate
 }
 
@@ -58,7 +60,7 @@ def boot_olympics_manager(args):
         raise UserError(msg)
     
     # TODO: option
-    np.seterr(all='raise')
+    # np.seterr(all='raise')
     if not options.contracts:
         contracts.disable_all()
     

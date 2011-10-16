@@ -17,6 +17,7 @@ def hdf_list_streams(filename):
             table = group._v_children[sid].boot_stream
             spec = BootSpec.from_yaml(yaml_load(str(table.attrs['boot_spec'])))
             id_episodes = set(np.unique(table[:]['id_episode']))
+            id_agents = set(np.unique(table[:]['commands_source']))
             num_observations = len(table)
             bag_file = filename # TODO: change name
             topic = sid
@@ -24,7 +25,8 @@ def hdf_list_streams(filename):
             timestamp = table[0]['timestamp']
             length = table[-1]['timestamp'] - table[0]['timestamp']
             stream = BootStream(id_robot, id_episodes, timestamp, length,
-                                num_observations, bag_file, topic, spec)
+                                num_observations, bag_file, topic, spec,
+                                id_agents)
             
             streams.append(stream)
         return streams
@@ -41,7 +43,7 @@ def hdf_read(filename, id_stream, boot_spec, read_extra=False):
         n = len(table)
         n_extra = len(extra)
         if n != n_extra:
-            msg = ('In stream %s:%s I see  %d observations, but only %d extra.' 
+            msg = ('In stream %s:%s I see %d observations, but only %d extra.' 
                    % (filename, id_stream, n, n_extra))
             logger.warn(msg)
         n = min(n, n_extra)
@@ -53,7 +55,9 @@ def hdf_read(filename, id_stream, boot_spec, read_extra=False):
                 if x == 'extra': continue
                 observations[x].flat = row[x].flat # FIXME Strange strange
             if read_extra:
-                observations['extra'] = yaml_load(str(extra[i]))
+                extra_string = str(extra[i])
+                assert isinstance(extra_string, str)
+                observations['extra'] = yaml_load(extra_string)
             else:
                 observations['extra'] = {}
             yield observations

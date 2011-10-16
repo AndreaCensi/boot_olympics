@@ -10,4 +10,5 @@ from .cmd_list_states import *
 from .cmd_list_agents import *
 from .cmd_list_robots import *
 from .cmd_simulate import *
+from .cmd_video import *
 from .tasks import *

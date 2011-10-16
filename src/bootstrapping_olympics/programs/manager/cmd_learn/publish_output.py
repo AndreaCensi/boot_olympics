@@ -1,6 +1,6 @@
 from .. import logger
-import os
 from ....utils import isodate
+import os
 
 def publish_once(data_central, id_agent, id_robot):
     from .cmd_learn import load_agent_state

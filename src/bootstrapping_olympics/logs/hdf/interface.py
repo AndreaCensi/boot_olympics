@@ -9,7 +9,6 @@ class HDFLogsFormat(LogsFormat):
         streams = hdf_list_streams(filename)
         for stream in streams:
             assert isinstance(stream, BootStream)
-        print streams
         return streams
     
     def read_stream(self, stream, read_extra=False):

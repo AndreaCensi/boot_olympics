@@ -1,4 +1,4 @@
-from .. import logger
+from .. import logger, np, contract
 
 from .boot_stream import *
 from .logs_format import *

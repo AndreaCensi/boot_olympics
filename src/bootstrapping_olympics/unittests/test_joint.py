@@ -21,6 +21,7 @@ def check_small_simulation(id_agent, agent, id_robot, robot):
         return
     for _ in run_simulation(id_robot=id_robot,
                             robot=robot,
+                            id_agent=id_agent,
                             agent=agent,
                             max_observations=3, max_time=100):
         pass
@@ -58,6 +59,7 @@ def check_publish(id_agent, agent, id_robot, robot):
     
     for _ in run_simulation(id_robot=id_robot,
                             robot=robot,
+                            id_agent=id_agent,
                             agent=agent,
                             max_observations=10, max_time=100):
         pass

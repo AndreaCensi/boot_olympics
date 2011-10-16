@@ -44,7 +44,11 @@ def experiment_explore_learn_main(proj_root,
                          write_extra=options.write_extra)
     
     if options.reset:
-        batch_command('clean learn*')
+        if options.only:
+            id_robot = options.only
+            batch_command('clean learn*X*'.replace('X', id_robot))
+        else:
+            batch_command('clean learn*')
         
     if options.republish:
         logger.info('Removing previous logs.')
@@ -54,7 +58,7 @@ def experiment_explore_learn_main(proj_root,
             
         batch_command('clean publish*')
         
-    if options.resimulate:
+    if options.resimulate: # TODO: change for only robot
         logger.info('Removing previous logs.')
         dirname = os.path.join(proj_root, 'logs', 'simulations')
         if os.path.exists(dirname):
