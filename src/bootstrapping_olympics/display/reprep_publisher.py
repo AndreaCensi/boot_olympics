@@ -1,8 +1,7 @@
+from . import contract
 from ..interfaces import Publisher
-from reprep import Report
 from contextlib import contextmanager
-from contracts import contract
-from reprep import MIME_PYTHON
+from reprep import MIME_PYTHON, Report
 
 __all__ = ['ReprepPublisher']
 
@@ -14,14 +13,14 @@ class ReprepPublisher(Publisher):
             self.r = Report(rid)
         else:
             self.r = report
-        self.f = self.r.figure()
+        self.f = self.r.figure(cols=4)
     
     @contract(name='str', caption='None|str')
     def array(self, name, value, caption=None):
         self.f.data(name, value)
 
     @contract(name='str', value='array', filter='str', caption='None|str')
-    def array_as_image(self, name, value, filter='posneg', filter_params={},
+    def array_as_image(self, name, value, filter='posneg', filter_params={}, #@ReservedAssignment
                        caption=None): #@ReservedAssignment
         if len(value.shape) == 3 and value.shape[2] == 3: # try image
             self.f.data_rgb(name, value)

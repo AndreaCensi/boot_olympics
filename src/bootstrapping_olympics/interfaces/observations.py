@@ -1,5 +1,5 @@
-from contracts import contract
-import numpy as np
+from . import contract, np
+
 
 ''' 
     This is the structure passed to an agent's process_observations(). 
@@ -36,10 +36,9 @@ boot_observations_dtype = [
     ('dt', 'float64'), # time from last observations. This is 0 if counter = 0
     ('time_from_episode_start', 'float64'),
     
+    
     ('extra', 'object')
-    # extra['state'] # world state
-    # extra['state']
-    # extra['processed-timestsamp']
+    # extra['robot_state'] # robot state
 ]
 
 def get_observations_dtype(boot_spec):

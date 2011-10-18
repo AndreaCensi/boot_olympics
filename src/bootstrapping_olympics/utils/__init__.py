@@ -1,4 +1,4 @@
-from .. import logger
+from .. import logger, np, contract
 from .in_a_while import *
 from .isodate import *
 from .expand_environment import *

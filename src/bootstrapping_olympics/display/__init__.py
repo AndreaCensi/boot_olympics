@@ -1,3 +1,5 @@
+from .. import np, contract
+
 try: 
     import reprep
     installed = True

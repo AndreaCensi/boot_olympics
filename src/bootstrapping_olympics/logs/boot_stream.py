@@ -1,4 +1,3 @@
-from . import contract
 import os
 
 __all__ = ['BootStream']
@@ -6,7 +5,6 @@ __all__ = ['BootStream']
 class BootStream(object):
     ''' This class represents the structure used in the .bag index. '''
     
-    #@contract(id_agents='list(str)')
     def __init__(self, id_robot, id_episodes, timestamp, length,
                  num_observations, bag_file, topic, spec, id_agents):
         self.id_robot = id_robot

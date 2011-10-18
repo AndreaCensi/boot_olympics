@@ -1,8 +1,7 @@
-from . import logger
+from . import logger, np
 from .. import BootStream
 from ... import BootSpec
 import os
-import numpy as np
 
 def bag_get_bootstrapping_stream(bag_file):
     ''' 

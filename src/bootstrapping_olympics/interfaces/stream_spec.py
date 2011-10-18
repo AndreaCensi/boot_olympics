@@ -1,6 +1,5 @@
-from . import logger
-from contracts import check, contract, describe_type, describe_value
-import numpy as np
+from . import logger, contract, np
+from contracts import check, describe_type, describe_value
 import warnings
 
 
@@ -23,7 +22,9 @@ streamel_dtype = [('kind', 'S1'), # 'I','D','C'
                 ('upper', 'float')]
 
 class StreamSpec:
-    
+
+    # TODO: make this accept only the a streamel_dtype array, put the interpretation
+    # in another module    
     @contract(id_stream='None|str', shape='list[int]', format='list|str', range='list',
               extra='None|dict', filtered='None|dict', desc='None|str')
     def __init__(self, id_stream, shape, format, range, extra, #@ReservedAssignment

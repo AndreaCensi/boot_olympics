@@ -2,6 +2,8 @@ from . import HDFLogWriter, hdf_list_streams, hdf_read
 from .. import BootStream, LogsFormat
 from contextlib import contextmanager
 
+__all__ = ['HDFLogsFormat']
+
 class HDFLogsFormat(LogsFormat): 
     
     def index_file(self, filename):

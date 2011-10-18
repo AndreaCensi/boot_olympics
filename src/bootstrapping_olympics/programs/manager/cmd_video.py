@@ -1,5 +1,5 @@
-from . import check_mandatory, check_no_spurious, logger
-from optparse import OptionParser
+from . import check_mandatory, check_no_spurious, logger, OptionParser
+
 
 def cmd_video(data_central, argv):
     '''Runs the learning for a given agent and log. ''' 

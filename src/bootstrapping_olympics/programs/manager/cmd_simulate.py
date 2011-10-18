@@ -1,7 +1,9 @@
-from . import check_mandatory, logger, check_no_spurious, contract, np, OptionParser
+from . import (check_mandatory, logger, check_no_spurious, contract, np,
+    OptionParser)
 from ... import AgentInterface, ObsKeeper, RobotObservations, RobotInterface
 from ...logs import LogsFormat
 from ...utils import InAWhile, isodate_with_secs, natsorted
+import logging
 
 
 __all__ = ['cmd_simulate', 'simulate']
@@ -52,6 +54,12 @@ def simulate(data_central, id_agent, id_robot,
     # Instance robot object
     robot = data_central.get_bo_config().robots.instance(id_robot) #@UndefinedVariable
 
+
+    logger = logging.getLogger("BO:%s(%s)" % (id_agent, id_robot))
+    logger.setLevel(logging.DEBUG)
+    AgentInterface.logger = logger # XXX
+    
+    
     boot_spec = robot.get_spec()
     
     # If --stateful is passed, we try to load a previous state.

@@ -1,4 +1,4 @@
-from bootstrapping_olympics.utils.scripts_utils import UserError
+from ...utils import UserError
 
 
 def check_mandatory(options, mandatory):

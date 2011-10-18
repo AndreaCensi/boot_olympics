@@ -1,20 +1,13 @@
-from . import logger, contract
+from . import logger, contract, OptionParser, np
 from .. import check_mandatory, check_no_spurious
-from bootstrapping_olympics.interfaces import AgentInterface
-from bootstrapping_olympics.interfaces import ObsKeeper
-from bootstrapping_olympics.interfaces import (RobotInterface,
-    RobotObservations)
-from bootstrapping_olympics.logs import LogsFormat
-from bootstrapping_olympics.programs.manager.cmd_learn.cmd_learn import (
-    load_agent_state)
-from bootstrapping_olympics.utils import InAWhile
-from bootstrapping_olympics.utils import isodate_with_secs
-from bootstrapping_olympics.utils import natsorted
-from geometry.manifolds import SE3
-from geometry.poses import SE3_from_SE2, SE2_from_translation_angle
-from optparse import OptionParser
-import numpy as np
+from ....interfaces import (RobotInterface, RobotObservations, AgentInterface,
+    ObsKeeper)
+from ....logs import LogsFormat
+from ....programs.manager.cmd_learn.cmd_learn import load_agent_state
+from ....utils import InAWhile, isodate_with_secs, natsorted
+from geometry import SE3, SE3_from_SE2, SE2_from_translation_angle
 from geometry.yaml import to_yaml
+
 
 
 
@@ -90,7 +83,7 @@ def task_servo(data_central, id_agent, id_robot,
     @contract(returns='SE2')
     def random_displacement():
         max_angle = np.deg2rad(15)
-        max_t = 0.1
+        max_t = 0.3
         t = max_t * np.random.uniform(-max_t, +max_t, 2)
         theta = np.random.uniform(-max_angle, +max_angle)
         return SE2_from_translation_angle(t, theta)

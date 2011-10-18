@@ -1,6 +1,6 @@
-from . import logger, check_no_spurious
+from . import logger, check_no_spurious, OptionParser
 from contracts import describe_value
-from optparse import OptionParser
+
 
 __all__ = ['cmd_list_states']
 

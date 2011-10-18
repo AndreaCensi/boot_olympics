@@ -1,7 +1,9 @@
-from . import StreamSpec, logger
-from contracts import  describe_type, contract
+from . import StreamSpec, logger, contract, np
+from contracts import  describe_type
 from pprint import pformat
-import numpy as np
+
+
+__all__ = ['BootSpec']
 
 class BootSpec:
     ''' 

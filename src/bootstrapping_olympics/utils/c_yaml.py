@@ -1,11 +1,12 @@
 ''' Fast routines to yaml reading and writing. '''
 
-from contracts import contract#, describe_value
+from . import contract
 from yaml import load, dump
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
 except ImportError:
+    # TODO: write error
     from yaml import Loader, Dumper
 
 

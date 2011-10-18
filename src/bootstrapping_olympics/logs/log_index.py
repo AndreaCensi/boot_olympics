@@ -7,6 +7,8 @@ import os
 import pickle
 import traceback
 
+__all__ = ['LogIndex']
+
 class LogIndex:
     def __init__(self):
         # id robot -> list of streams

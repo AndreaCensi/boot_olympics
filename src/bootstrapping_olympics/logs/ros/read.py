@@ -1,6 +1,5 @@
-from . import logger
+from . import logger, np
 from bootstrapping_olympics import ObsKeeper
-import numpy as np
 
 def bag_read(bag_file, topic, spec, substitute_id_episode):
     ''' 

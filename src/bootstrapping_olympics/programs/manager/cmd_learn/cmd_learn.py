@@ -1,10 +1,8 @@
-from . import publish_agent_output
-from .. import check_no_spurious, check_mandatory, logger
+from . import publish_agent_output, logger, np, OptionParser
+from .. import check_no_spurious, check_mandatory
 from ....agent_states import LearningState
 from ....interfaces import AgentInterface
 from ....utils import InAWhile, UserError
-from optparse import OptionParser
-import numpy as np
 import logging
 
 __all__ = ['cmd_learn_log', 'learn_log']
@@ -67,7 +65,7 @@ def learn_log(data_central, id_agent, id_robot,
         raise UserError(msg)
         
     
-    logger = logging.getLogger("BootOlympics:%s" % id_agent)
+    logger = logging.getLogger("BO:%s(%s)" % (id_agent, id_robot))
     logger.setLevel(logging.DEBUG)
     AgentInterface.logger = logger
     

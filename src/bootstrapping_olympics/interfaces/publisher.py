@@ -1,8 +1,9 @@
-from contracts import contract
+from . import contract
 from abc import ABCMeta, abstractmethod
 from contextlib import contextmanager
 
-# TODO: add caption to all of these
+
+__all__ = ['Publisher'] 
 
 class Publisher:
     ''' 
@@ -58,9 +59,10 @@ class Publisher:
                     pylab.plot(y_min, label='y_min')
                     pylab.legend()
         ''' 
-    
+    # TODO: make this abstract   
     def section(self, section_name):
         return Section(self, section_name)
+
 
 class Section():
     def __init__(self, other, prefix):

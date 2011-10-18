@@ -1,6 +1,7 @@
-from .. import RobotObservations, BootSpec, RobotInterface, EpisodeDesc
+from . import contract
+from .. import (Constants, RobotObservations, BootSpec, RobotInterface,
+    EpisodeDesc)
 from ..utils import unique_timestamp_string
-from contracts import contract
 import time
 
 __all__ = ['RandomRobot']
@@ -9,12 +10,12 @@ class RandomRobot(RobotInterface):
     ''' This is a sensorimotor cascade generating uniform noise,
         and ignores any command given. '''
     
-    def __init__(self, boot_spec, dt=0.1):
+    def __init__(self, boot_spec, dt=Constants.DEFAULT_SIMULATION_DT):
         self.timestamp = time.time()
         self.dt = dt
         self.spec = BootSpec.from_yaml(boot_spec)
         self.commands = self.spec.get_commands().get_default_value()
-        self.commands_source = 'rest' # XXX: add constant
+        self.commands_source = Constants.CMD_SOURCE_REST
         
     def get_spec(self):
         return self.spec 
@@ -34,5 +35,6 @@ class RandomRobot(RobotInterface):
     
     def new_episode(self):
         self.timestamp = time.time()
-        return EpisodeDesc(unique_timestamp_string(), 'n/a')  # XXX: add constant
+        return EpisodeDesc(unique_timestamp_string(),
+                           'n/a')  # XXX: add constant
         

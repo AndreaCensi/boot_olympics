@@ -1,14 +1,12 @@
-from . import logger
+from . import logger, np, tables, contract
 from ... import BootSpec
 from ...utils import copy_from, yaml_dump
-from contracts import contract
-import numpy as np
 import os
-import tables
 import warnings
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 
+#TODO: write on temporary file name
 
 class HDFLogWriter():
     
@@ -37,6 +35,7 @@ class HDFLogWriter():
     def create_table(self, dtype):                
         filters = tables.Filters(complevel=9, complib='zlib',
                                  fletcher32=True)
+        # TODO: CONSTANTS
         group = '/boot_olympics/streams/%s' % self.id_stream
         self.table = self.hf.createTable(
                         where=group,

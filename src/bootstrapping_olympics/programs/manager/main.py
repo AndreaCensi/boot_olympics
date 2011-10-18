@@ -1,9 +1,8 @@
 from . import (cmd_list_logs, cmd_simulate, cmd_list_states, logger,
     cmd_learn_log, cmd_list_agents, cmd_list_robots, DataCentral, cmd_task_predict,
-    np, cmd_task_servo, cmd_video)
+    np, cmd_task_servo, cmd_video, OptionParser)
 from ...configuration import DirectoryStructure
 from ...utils import wrap_script_entry_point, UserError, substitute
-from optparse import OptionParser
 import contracts
 
 commands = {
@@ -64,7 +63,14 @@ def boot_olympics_manager(args):
     if not options.contracts:
         contracts.disable_all()
     
-    
+    # TODO: make more elegant
+    try:
+        from vehicles import VehiclesConfig
+        VehiclesConfig.load()
+        VehiclesConfig.load(options.boot_root)
+    except ImportError:
+        pass
+        
     data_central = DataCentral(options.boot_root)
     # TODO: additional directories
     # TODO: read from environment variables    

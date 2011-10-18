@@ -1,5 +1,4 @@
-from .. import logger
-from .commands_utils import *
+from .. import logger, np, contract
 from .stream_spec import *
 from .boot_spec import *
 from .agent  import *

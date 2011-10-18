@@ -1,13 +1,10 @@
-from . import logger
+from . import logger, np, OptionParser
 from .. import check_mandatory, check_no_spurious
-from boot_agents.utils import PredictionStats
-from bootstrapping_olympics.display import ReprepPublisher
-from bootstrapping_olympics.programs.manager.cmd_learn.cmd_learn import (
-    load_agent_state)
+from ....display import ReprepPublisher
+from ..cmd_learn.cmd_learn import load_agent_state
+from boot_agents.utils import PredictionStats # TODO: remove dependency on boot_agents
 from contracts import describe_type
-from optparse import OptionParser
-from reprep import Report
-import numpy as np
+from reprep import Report # TODO: be safe
 import os
 
 

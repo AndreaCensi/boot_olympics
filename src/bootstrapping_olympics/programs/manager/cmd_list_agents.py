@@ -1,5 +1,4 @@
-from . import check_no_spurious, logger
-from optparse import OptionParser
+from . import check_no_spurious, logger, OptionParser
 from pprint import pformat
 
 __all__ = ['cmd_list_agents']

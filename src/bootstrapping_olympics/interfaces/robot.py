@@ -1,6 +1,7 @@
-from . import BootSpec
+from . import contract, BootSpec
 from abc import abstractmethod, ABCMeta
-from contracts import  contract
+
+__all__ = ['EpisodeDesc', 'RobotObservations', 'RobotInterface']
 
 class EpisodeDesc:
     ''' Structure that must be returned by new_episode(). '''
@@ -8,7 +9,7 @@ class EpisodeDesc:
     def __init__(self, id_episode, id_environment, extra=None):
         self.id_episode = id_episode
         self.id_environment = id_environment
-        self.extra = extra
+        self.extra = extra # TODO: is this stored on file?
         
     def __str__(self):
         return "EpisodeDesc(%s,%s)" % (self.id_episode, self.id_environment)

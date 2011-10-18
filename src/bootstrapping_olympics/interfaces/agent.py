@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
+__all__ = ['AgentInterface', 'UnsupportedSpec']
 
 class AgentInterface:
     ''' 
@@ -53,17 +54,7 @@ During offline learning, the data will be written to HTML files.
     '''
 
     __metaclass__ = ABCMeta
-    
-#    
-#    def perform_task(self, task):
-#        ''' 
-#            Asks the agent to perform a task. 
-#            To refuse (i.e., not implemented), return false.
-#            
-#            The list of tasks is found in ???.
-#        '''
-#        return False
-    
+
     @abstractmethod
     def init(self, boot_spec):
         ''' 
