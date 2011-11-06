@@ -5,7 +5,6 @@ from ...logs import LogsFormat
 from ...utils import InAWhile, isodate_with_secs, natsorted
 import logging
 
-
 __all__ = ['cmd_simulate', 'simulate']
 
 def cmd_simulate(data_central, argv):
@@ -38,27 +37,32 @@ def cmd_simulate(data_central, argv):
              num_episodes=options.num_episodes,
              stateful=options.stateful,
              interval_print=options.interval_print,
-             cumulative=options.cumulative)
+             cumulative=options.cumulative,
+             id_episodes=None)
     
 def simulate(data_central, id_agent, id_robot,
              max_episode_len,
              num_episodes,
              cumulative,
+             id_episodes=None, # if None, just use the ID given by the world
              stateful=False,
              interval_print=None,
              write_extra=True):
     ''' If not cumulative, returns the list of the episodes IDs simulated,
         otherwise it returns all episodes. ''' 
+    
+    if id_episodes is not None:
+        if len(id_episodes) != num_episodes:
+            raise ValueError('Expected correct number of IDs.')
+        
     # Instance agent object    
     agent = data_central.get_bo_config().agents.instance(id_agent) #@UndefinedVariable
     # Instance robot object
     robot = data_central.get_bo_config().robots.instance(id_robot) #@UndefinedVariable
 
-
     logger = logging.getLogger("BO:%s(%s)" % (id_agent, id_robot))
     logger.setLevel(logging.DEBUG)
     AgentInterface.logger = logger # XXX
-    
     
     boot_spec = robot.get_spec()
     
@@ -97,8 +101,15 @@ def simulate(data_central, id_agent, id_robot,
                                       boot_spec=boot_spec) as writer:
         
             while bk.another_episode_todo():
-                for observations in run_simulation(id_robot, robot, id_agent, agent,
-                                                   100000, max_episode_len):            
+                if id_episodes is not None:
+                    id_episode = id_episodes.pop(0)
+                else:
+                    id_episode = None 
+                     
+                for observations in run_simulation(id_robot, robot, id_agent,
+                                                   agent,
+                                                   100000, max_episode_len,
+                                                   id_episode=id_episode):            
                     bk.observations(observations)
                     if write_extra:
                         extra = dict(robot_state=robot.get_state())
@@ -188,19 +199,22 @@ cmd_simulate.short_usage = ('simulate -a <AGENT> -r <ROBOT> [--num_episodes N ]'
           robot=RobotInterface, agent=AgentInterface, max_observations='>=1',
           max_time='>0')
 def run_simulation(id_robot, robot, id_agent, agent, max_observations, max_time,
-                   check_valid_values=True):
+                   check_valid_values=True, id_episode=None):
     ''' Runs an episode of the simulation. The agent should already been
         init()ed. '''
     episode = robot.new_episode()
-    logger.debug('Episode %s' % episode)
-
+    
     keeper = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
-    keeper.new_episode_started(episode.id_episode,
-                               episode.id_environment)
+    
+    if id_episode is None:
+        id_episode = episode.id_episode
+    keeper.new_episode_started(id_episode, episode.id_environment)
     counter = 0
     obs_spec = robot.get_spec().get_observations()
     cmd_spec = robot.get_spec().get_commands()
     
+    logger.debug('Episode %s started (%s)' % (id_episode, episode))
+
     def get_observations():
         obs = robot.get_observations()
         if check_valid_values:

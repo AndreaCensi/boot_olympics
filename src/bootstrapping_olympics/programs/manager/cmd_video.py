@@ -9,9 +9,9 @@ def cmd_video(data_central, argv):
     parser.add_option("-r", "--robot", dest='robot', help="Robot ID") 
     parser.add_option("-z", "--zoom", dest='zoom', type='float',
                       default=0,
-                       help="Zoom in m (0: whole map)") 
+                       help="Zoom in m (0: whole map) [%default]") 
     parser.add_option("-m", "--model", dest='model', default='boot_log2movie',
-                      help="Procgraph model used for visualization.") 
+                      help="Procgraph model used for visualization.  [%default]") 
     
     (options, args) = parser.parse_args(argv)
     
@@ -36,7 +36,7 @@ def create_video(data_central, id_robot, id_agent, model='boot_log2movie', zoom=
     if zoom:
         basename += '-z%.1f' % zoom
     
-    filename = basename + '-%s.avi' % model
+    filename = basename + '-%s' % model
     logdir = ds.get_simulated_logs_dir()
     import procgraph_vehicles #@UnusedImport
     from procgraph import pg

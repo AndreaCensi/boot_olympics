@@ -20,7 +20,6 @@ class HDFLogsFormat(LogsFormat):
                           stream.spec, read_extra=read_extra):
             yield x
 
-    
     @contextmanager
     def write_stream(self, filename, id_stream, boot_spec):
         writer = HDFLogWriter(filename, id_stream, boot_spec)

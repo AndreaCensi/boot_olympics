@@ -2,7 +2,6 @@ from . import logger, np, OptionParser
 from .. import check_mandatory, check_no_spurious
 from ....display import ReprepPublisher
 from ..cmd_learn.cmd_learn import load_agent_state
-from boot_agents.utils import PredictionStats # TODO: remove dependency on boot_agents
 from contracts import describe_type
 from reprep import Report # TODO: be safe
 import os
@@ -39,10 +38,11 @@ def cmd_task_predict(data_central, argv):
 
 cmd_task_predict.short_usage = '''predict  -a <agent> -r <robot> '''
 def task_predict(data_central, id_agent, id_robot,
-                 interval_print=None):
+                 interval_print=5):
     ''' Returns the list of the episodes IDs simulated. ''' 
     # Instance agent object    
-    
+    from boot_agents.utils import PredictionStats # TODO: remove dependency on boot_agents
+
     agent, state = load_agent_state(data_central, id_agent, id_robot,
                              reset_state=False,
                              raise_if_no_state=True)
@@ -116,9 +116,7 @@ def predict_all_streams(streams, predictor, skip_initial=5):
                 found = predict_y.shape
                 if expected != found:
                     msg = 'Want shape %s, got %s.' % (expected, found)
-                    raise Exception(msg)
-                
-                
+                    raise Exception(msg) 
                 
                 yield dict(prev=last_observations,
                            data=observations,

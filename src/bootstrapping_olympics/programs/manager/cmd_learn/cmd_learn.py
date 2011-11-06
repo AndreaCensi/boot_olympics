@@ -49,25 +49,28 @@ def learn_log(data_central, id_agent, id_robot,
               publish_interval=None,
               publish_once=False,
               interval_save=None,
-              interval_print=None):
-    log_index = data_central.get_log_index()
+              interval_print=None,
+              episodes=None):
+    ''' If episodes is not None, it is a list of episodes id to learn. '''
     
+    logger.info('Learning episodes %r' % episodes)
+    
+    log_index = data_central.get_log_index()
     if not log_index.has_streams_for_robot(id_robot):
         msg = ('No log for robot %r found. I know: %s.' 
                % (id_robot, ", ".join(log_index.robots2streams.keys())))
         raise Exception(msg)
 
     bo_config = data_central.get_bo_config()
-
     if not id_agent in bo_config.agents:
         msg = ('Agent %r not found in configuration. I know: %s.' 
                % (id_agent, ", ".join(bo_config.agents.keys())))
         raise UserError(msg)
         
     
-    logger = logging.getLogger("BO:%s(%s)" % (id_agent, id_robot))
-    logger.setLevel(logging.DEBUG)
-    AgentInterface.logger = logger
+    agent_logger = logging.getLogger("BO:%s(%s)" % (id_agent, id_robot))
+    agent_logger.setLevel(logging.DEBUG)
+    AgentInterface.logger = agent_logger
     
     agent, state = load_agent_state(data_central,
                                     id_agent=id_agent,
@@ -99,7 +102,6 @@ def learn_log(data_central, id_agent, id_robot,
     if publish_once:
         logger.info('As requested, exiting after publishing information.')
         return
-    
         
     streams = log_index.get_streams_for_robot(id_robot)
     # TODO: progress bar
@@ -112,6 +114,7 @@ def learn_log(data_central, id_agent, id_robot,
         num_episodes_total += len(stream.id_episodes)
         num_observations_total += stream.num_observations
         to_learn = stream.id_episodes.difference(state.id_episodes)
+        to_learn = to_learn.intersection(episodes)
         if to_learn:
             num_episodes_remaining += len(to_learn)
             num_observations_remaining += stream.num_observations 
@@ -134,6 +137,7 @@ def learn_log(data_central, id_agent, id_robot,
     for stream in streams: 
         # Check if all learned
         to_learn = stream.id_episodes.difference(state.id_episodes)
+        to_learn = to_learn.intersection(episodes)
         if not to_learn:
             #logger.info('Stream %s already completely learned.' % stream)
             continue
@@ -148,13 +152,12 @@ def learn_log(data_central, id_agent, id_robot,
                                   num_observations_total)
                 progress_log = 100 * (float(cur_stream_observations) / 
                                       stream.num_observations)
-                estimated = np.NaN
                 msg = ('overall %.2f%% (log %3d%%) (eps: %4d/%d, obs: %4d/%d); '
-                       '%5.1f fps; remain ~%.1f minutes' % 
+                       '%5.1f fps' % 
                        (progress, progress_log, len(state.id_episodes),
                          num_episodes_total,
                         state.num_observations, num_observations_total,
-                        tracker.fps(), estimated))
+                        tracker.fps()))
                 logger.info(msg)
             
             if tracker_save.its_time():

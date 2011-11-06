@@ -13,7 +13,7 @@ commands = {
     'learn-log': cmd_learn_log,
     'predict': cmd_task_predict,
     'servo': cmd_task_servo,
-    'video': cmd_video,
+    'movie': cmd_video,
     'simulate': cmd_simulate
 }
 
@@ -81,7 +81,7 @@ def boot_olympics_manager(args):
     if not cmd in commands:
         msg = ('Unknown command %r. Available: %s.' % 
                (cmd, ", ".join(commands.keys())))
-        raise Exception(msg)
+        raise UserError(msg)
     
     return commands[cmd](data_central, cmd_options)
     

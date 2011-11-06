@@ -1,6 +1,6 @@
-from . import StorageFilesystem, logger
+from . import StorageFilesystem, logger, contract
 from ..utils import isodate, expand_environment
-from contracts import contract
+
 import os
 
 __all__ = ['LearningState', 'LearningStateDB']

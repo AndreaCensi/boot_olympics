@@ -1,7 +1,9 @@
 import time
+from . import contract
 
 class InAWhile:
     
+    @contract(interval='>0')
     def __init__(self, interval=5):
         self.count = 0
         self.start = time.time()

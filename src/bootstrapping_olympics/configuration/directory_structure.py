@@ -65,10 +65,11 @@ class DirectoryStructure:
     
     def get_report_dir(self, id_agent, id_robot, id_state, phase='learn',
                         add_last=False):
-        pattern = '${id_robot}-${id_agent}-${id_state}'
+        pattern = '${id_robot}/${id_agent}'
         dirname = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
                                phase,
                                substitute(pattern,
+                                          phase=phase,
                                           id_agent=id_agent,
                                           id_robot=id_robot,
                                           id_state=id_state)) 

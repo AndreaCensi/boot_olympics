@@ -1,14 +1,11 @@
 from . import logger, contract, OptionParser, np
 from .. import check_mandatory, check_no_spurious
-from ....interfaces import (RobotInterface, RobotObservations, AgentInterface,
-    ObsKeeper)
+from ....interfaces import RobotInterface, RobotObservations, ObsKeeper
 from ....logs import LogsFormat
 from ....programs.manager.cmd_learn.cmd_learn import load_agent_state
 from ....utils import InAWhile, isodate_with_secs, natsorted
 from geometry import SE3, SE3_from_SE2, SE2_from_translation_angle
 from geometry.yaml import to_yaml
-
-
 
 
 __all__ = ['cmd_task_servo', 'task_servo']
@@ -40,18 +37,31 @@ def cmd_task_servo(data_central, argv):
              max_episode_len=options.max_episode_len,
              num_episodes=options.num_episodes,
              cumulative=options.cumulative,
-             interval_print=options.interval_print)
+             interval_print=options.interval_print,
+             num_episodes_with_robot_state=options.num_episodes) # xXX
 
 cmd_task_servo.short_usage = '''servo  -a <agent> -r <robot> '''
+    
+@contract(interval_print='>=0')
 def task_servo(data_central, id_agent, id_robot,
                max_episode_len,
-             num_episodes,
-             cumulative,
-                 interval_print=None, write_extra=True):
+               num_episodes,
+               id_episodes=None, # if None, just use the ID given by the world
+               cumulative=False,
+               interval_print=5,
+               num_episodes_with_robot_state=0):
     ''' Returns the list of the episodes IDs simulated. '''
+    
+    if id_episodes is not None:
+        if len(id_episodes) != num_episodes:
+            raise ValueError('Expected correct number of IDs.')
+    
+    
     # Instance robot object
     robot = data_central.get_bo_config().robots.instance(id_robot) #@UndefinedVariable
 
+    # TODO: check that this is a Vehicles simulation
+    
     boot_spec = robot.get_spec()
      
     # Instance agent object    
@@ -79,43 +89,70 @@ def task_servo(data_central, id_agent, id_robot,
                      num_episodes=num_episodes,
                      cumulative=cumulative,
                      interval_print=interval_print)
-
+    
+    # TODO: add intrinsic notion here
     @contract(returns='SE2')
     def random_displacement():
-        max_angle = np.deg2rad(15)
-        max_t = 0.3
-        t = max_t * np.random.uniform(-max_t, +max_t, 2)
-        theta = np.random.uniform(-max_angle, +max_angle)
+        # ok for rf, cam
+        # max_angle = np.deg2rad(15)
+        #max_t = 0.3
+        # ok for rf, cam
+        max_angle = np.deg2rad(35)
+        max_t = 0.1
+        # 2,30 rf
+        max_t = 0.2
+        max_angle = np.deg2rad(35)
+        # t = max_t * np.random.uniform(-max_t, +max_t, 2)
+        # theta = np.random.uniform(-max_angle, +max_angle)
+        phi = np.random.rand() * 2 * np.pi
+        x = np.cos(phi) * max_t
+        y = np.sin(phi) * max_t
+        t = np.array([x, y])
+        theta = np.sign(np.random.randn()) * max_angle
+        
         return SE2_from_translation_angle(t, theta)
         
+    
     if bk.another_episode_todo():
         with logs_format.write_stream(filename=filename,
                                       id_stream=id_stream,
                                       boot_spec=boot_spec) as writer:
-        
+            counter = 0
             while bk.another_episode_todo():
+                counter += 1
                 episode = robot.new_episode()
                 # OK this only works with Vehicles
                 vehicle = robot.vehicle
-                obs0 = robot.get_observations().observations
+                obss = []
+                # average observations
+                for _ in range(10): # XXX: fixed threshold
+                    obss.append(robot.get_observations().observations)
+                obs0 = np.mean(obss, axis=0)
                 pose0 = vehicle.get_pose()
                 displ = SE3_from_SE2(random_displacement())
                 pose1 = SE3.multiply(pose0, displ)
                 vehicle.set_pose(pose1)
                 servo_agent.set_goal_observations(obs0)
                 
+                if id_episodes is not None:
+                    id_episode = id_episodes.pop(0)
+                else:
+                    id_episode = episode.id_episode      
+                     
                 for observations in run_simulation_servo(id_robot, robot,
-                                                   id_agent_servo, servo_agent,
-                                                   100000, max_episode_len,
-                                                   episode):            
+                                       id_agent_servo, servo_agent,
+                                       100000, max_episode_len,
+                                       id_episode=id_episode,
+                                       id_environment=episode.id_environment):            
                     bk.observations(observations)
-                    if write_extra:
-                        extra = dict(robot_state=robot.get_state(),
-                                     obs0=obs0.tolist(),
-                                     pose0=to_yaml('SE3', pose0),
-                                     displ=to_yaml('SE3', displ),
-                                     pose1=to_yaml('SE3', pose1)
-                                     )
+                    
+                    servoing = dict(obs0=obs0.tolist(),
+                                 pose0=to_yaml('SE3', pose0),
+                                 displ=to_yaml('SE3', displ),
+                                 pose1=to_yaml('SE3', pose1))
+                    extra = dict(servoing=servoing)
+                    if counter < num_episodes_with_robot_state:
+                        extra['robot_state'] = robot.get_state()
                     else:
                         extra = {}
                     writer.push_observations(observations=observations,
@@ -131,6 +168,7 @@ def task_servo(data_central, id_agent, id_robot,
         
 class BookkeepingServo():
     ''' Simple class to keep track of how many we have to simulate. '''
+    @contract(interval_print='>=0')
     def __init__(self, data_central, id_robot, id_agent, num_episodes,
                  cumulative=True, interval_print=5):
         self.data_central = data_central
@@ -194,19 +232,17 @@ class BookkeepingServo():
 
 
 @contract(id_robot='str', id_agent='str',
-          robot=RobotInterface, agent=AgentInterface, max_observations='>=1',
+          robot=RobotInterface, max_observations='>=1',
           max_time='>0')
 def run_simulation_servo(id_robot, robot, id_agent, agent,
                          max_observations, max_time,
-                         episode,
+                         id_episode, id_environment,
                    check_valid_values=True):
     ''' Runs an episode of the simulation. The agent should already been
         init()ed. '''
     
     keeper = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
-    keeper.new_episode_started(episode.id_episode,
-                               episode.id_environment)
-    counter = 0
+    keeper.new_episode_started(id_episode, id_environment)
     obs_spec = robot.get_spec().get_observations()
     cmd_spec = robot.get_spec().get_commands()
     
@@ -227,6 +263,7 @@ def run_simulation_servo(id_robot, robot, id_agent, agent,
         return observations
     
     commands = agent.choose_commands() # repeated
+    counter = 0
     while counter < max_observations:
        
         if check_valid_values:

@@ -1,7 +1,11 @@
 from . import all_robots, get_robot, all_agents, get_agent, logger
 import sys
+from nose.tools import istest
+
+# TODO: use shortcut from vehicles
 
 def add_robot_f(f, id_robot):
+    @istest
     def test_caller():
         robot = get_robot(id_robot)
         wrap_with_desc(f, (id_robot, robot), agent=None, robot=robot)
@@ -20,6 +24,7 @@ def for_all_robots(f):
         add_robot_f(f, id_robot)
         
 def add_agent_f(f, id_agent):
+    @istest
     def test_caller():
         agent = get_agent(id_agent)
         wrap_with_desc(f, (id_agent, agent), agent=agent, robot=None)
@@ -38,6 +43,7 @@ def for_all_agents(f):
         add_agent_f(f, id_agent)
 
 def add_pair_f(f, id_robot, id_agent):
+    @istest
     def test_caller():
         agent = get_agent(id_agent)
         robot = get_robot(id_robot)

@@ -166,7 +166,8 @@ def index_directory(directory, ignore_cache=False):
 
     file2streams = {}
     for i, filename in enumerate(files):
-        logger.debug('%4d/%d: %s' % (i + 1 , len(files), filename))
+        # logger.debug('%4d/%d: %s' % (i + 1 , len(files),
+        #                              os.path.relpath(filename, directory)))
         reader = LogsFormat.get_reader_for(filename)
         try:
             streams = reader.index_file_cached(filename, ignore_cache=ignore_cache) 
@@ -209,13 +210,9 @@ def index_robots(file2streams):
                     continue
             robot2streams[id_robot].append(stream)
     
-    
-    
     for robot in robot2streams:        
         robot2streams[robot] = sorted(robot2streams[robot],
                                  key=lambda x: list(x.id_episodes)[0])
     
-    
-
     return dict(**robot2streams)
     

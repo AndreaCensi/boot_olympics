@@ -13,7 +13,8 @@ class HDFLogWriter():
     def __init__(self, filename, id_stream, boot_spec):
         assert isinstance(boot_spec, BootSpec)
         self.filename = filename
-        self.hf = tables.openFile(filename, 'w')
+        self.tmp_filename = filename + '.active'
+        self.hf = tables.openFile(self.tmp_filename, 'w')
         self.id_stream = id_stream
         self.table = None
         self.boot_spec = boot_spec
@@ -52,11 +53,14 @@ class HDFLogWriter():
 
     def close(self): 
         if self.table is None:
-            logger.error('No data given for writing; deleting file.')
+            logger.error('No data given for writing; deleting tmp file.')
             self.hf.close()
-            os.unlink(self.filename)
+            os.unlink(self.tmp_filename)
         else:
             self.hf.close() 
+            if os.path.exists(self.filename):
+                os.unlink(self.filename)
+            os.rename(self.tmp_filename, self.filename)
 
 
 def remove_fields(dt, fields_to_remove):
