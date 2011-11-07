@@ -29,6 +29,7 @@ class RandomPermutation(RepresentationNuisance):
         streamels['kind'] = streamels['kind'][self.perm]
         streamels['lower'] = streamels['lower'][self.perm]
         streamels['upper'] = streamels['upper'][self.perm]
+        streamels['default'] = streamels['default'][self.perm]
         
         if stream_spec.id_stream:
             id_stream = stream_spec.id_stream + '-rperm%s' % self.seed

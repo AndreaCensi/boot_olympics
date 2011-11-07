@@ -17,9 +17,29 @@ streamel_dtype = [('kind', 'S1'), # 'I','D','C'
 
 @contract(streamels='array')
 def check_valid_streamels(streamels):
+    ''' Raises a ValueError if the data in the structure is not coherent. '''
     assert streamels.dtype == np.dtype(streamel_dtype)
+    # XXX: how about invalid values?
+    def check(which, msg):
+        if not np.all(which):
+            raise ValueError(msg)
+    not_discrete = streamels['kind'] != ValueFormats.Discrete
+    invalid = streamels['kind'] == ValueFormats.Invalid
+    
+    check(np.logical_or(invalid, streamels['lower'] < streamels['upper']),
+          'lower<upper')
+    check(np.logical_or(invalid, streamels['default'] <= streamels['upper']),
+          'default<=upper')
+    check(np.logical_or(invalid, streamels['lower'] <= streamels['default']),
+          'default<=upper')
+    
+    check(np.logical_or(not_discrete,
+                        np.round(streamels['default']) == streamels['default']),
+                        'default is discrete')
+    
     # TODO: check shape 
-    # TODO: check bounds 
+    # TODO: check if invalid, they are all 0 
+    # TODO: check if discrete, the default values are discrete
 
 class StreamSpec:
 
@@ -216,7 +236,8 @@ class StreamSpec:
             
         data = {
             'shape': list(self.streamels.shape),
-            'format': self.kind.tolist(),
+            'format': self.streamels['kind'].tolist(),
+            'default': self.streamels['default'].tolist(),
             'range': arange,
             'id': self.id_stream,
             'desc': self.desc,
@@ -378,7 +399,11 @@ def streamels_from_spec(shape, format, range, default): #@ReservedAssignment
         defaults = np.array(default)
         if defaults.shape != streamels.shape:
             msg = ('Expected defaults shape to be %s instead of %s.' % 
-                   (formats.shape, defaults.shape)) 
+                   (defaults.shape, streamels.shape)) 
+            raise ValueError(msg)
+        if not (np.issubdtype(defaults.dtype, int) or
+                np.issubdtype(defaults.dtype, float)):  
+            msg = 'Expect an array of numbers, not %s.' % describe_value(defaults)
             raise ValueError(msg)
         streamels['default'].flat[:] = defaults.flat
     else:

@@ -38,6 +38,7 @@ class RandomScaling(RepresentationNuisance):
         streamels2 = streamels.copy()
         streamels2['lower'] *= self.scale
         streamels2['upper'] *= self.scale
+        streamels2['default'] *= self.scale
     
         filtered = {
             'original': [stream_spec.to_yaml()],
