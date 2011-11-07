@@ -1,3 +1,4 @@
 from .. import logger, np, contract
-from .random_agent import *
-from .random_robot import *
+from .agents import *
+from .robots import *
+from .rep_nuisances import *

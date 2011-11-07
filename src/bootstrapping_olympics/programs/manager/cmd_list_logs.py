@@ -28,6 +28,7 @@ def cmd_list_logs(data_central, argv):
     logger.info('In total, there are %d robots:' 
                 % len(index.robots2streams))
     
+    
     for robot, streams in index.robots2streams.items():
         logger.info('- robot %r has %d streams.' % (robot, len(streams)))
         if streams:
@@ -58,8 +59,8 @@ def cmd_list_logs(data_central, argv):
             if streams:
                 logger.info('%s' % filename)
                                             
-                for topic, content in streams.items():
-                    logger.info('%s: %s' % (topic, content))
+                for stream in streams:
+                    logger.info(' %s' % (stream))
             else:
                 logger.info('  No bootstrapping data found. ') 
  

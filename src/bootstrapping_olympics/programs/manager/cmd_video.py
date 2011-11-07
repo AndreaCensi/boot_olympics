@@ -32,7 +32,7 @@ def create_video(data_central, id_robot, id_agent, model='boot_log2movie', zoom=
                 (id_robot, id_agent, zoom))
     
     ds = data_central.get_dir_structure()
-    basename = ds.get_video_basename(id_robot, 'a%s' % id_agent)
+    basename = ds.get_video_basename(id_robot, 'a%s' % id_agent, id_episode='all')
     if zoom:
         basename += '-z%.1f' % zoom
     

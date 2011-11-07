@@ -137,7 +137,6 @@ def experiment_explore_learn_compmake(proj_root,
             t_write_extra = e_to > num_ep_expl_v 
             tranchenum2episodes[t] = [episode_id_exploration(K) 
                                       for K in range(e_from, e_to)]
-            job_id = 'simulate-%s-%s' % (id_robot, t)
             tranche = comp(simulate,
                             data_central=data_central,
                              id_agent=explorer,
@@ -149,20 +148,22 @@ def experiment_explore_learn_compmake(proj_root,
                              id_episodes=tranchenum2episodes[t],
                              cumulative=False,
                              write_extra=t_write_extra,
-                             job_id=job_id)
+                             job_id='simulate-%s-%s' % (id_robot, t))
             tranches.append(tranche)
             for id_episode in tranchenum2episodes[t]:
                 episode2tranche[id_episode] = tranche
 
         #robot2tranches[id_robot] = tranches
         
-        job_id = 'simulate-%s' % (id_robot)
-        extra_dep = tranches
         all_simulations = comp(checkpoint, 'all simulations',
-                                           job_id=job_id, extra_dep=extra_dep)
+                                job_id='simulate-%s' % (id_robot),
+                                extra_dep=tranches)
         # robot2simulations[id_robot] = all_simulations
-        add_exploration_videos(data_central, id_robot,
-                               episode2tranche, num_ep_expl_v)        
+        add_exploration_videos(data_central=data_central,
+                               id_robot=id_robot,
+                               id_agent=explorer,
+                               episode2tranche=episode2tranche,
+                               num_ep_expl_v=num_ep_expl_v)        
  
         for id_agent in agents:
             #extra_dep = [robot2simulations[id_robot]]
@@ -173,7 +174,7 @@ def experiment_explore_learn_compmake(proj_root,
                 extra_dep = [tranche] 
                 if previous_state:
                     extra_dep.append(previous_state)
-                job_id = 'learn-%s-%s-%s' % (id_robot, id_agent, t)
+                
                 previous_state = comp(learn_log, data_central=data_central,
                                       id_agent=id_agent,
                                       id_robot=id_robot,
@@ -183,32 +184,31 @@ def experiment_explore_learn_compmake(proj_root,
                                       publish_once=False,
                                       interval_save=300,
                                       interval_print=5,
-                                      extra_dep=extra_dep, job_id=job_id)
+                                      extra_dep=extra_dep,
+                                      job_id='learn-%s-%s-%s' % (id_robot, id_agent, t))
     
-                job_id = 'publish-%s-%s-%s' % (id_robot, id_agent, t)
-                extra_dep = previous_state
                 comp(publish_once, data_central, id_agent, id_robot,
                      phase='learn', progress='t%03d' % t,
-                     job_id=job_id, extra_dep=extra_dep)
+                     job_id='publish-%s-%s-%s' % (id_robot, id_agent, t),
+                     extra_dep=previous_state)
     
-            job_id = 'learn-%s-%s' % (id_robot, id_agent)
             all_learned = comp(checkpoint, 'all learned',
-                                extra_dep=[previous_state], job_id=job_id)
+                                job_id='learn-%s-%s' % (id_robot, id_agent),
+                                extra_dep=[previous_state])
                 
-            job_id = 'publish-%s-%s' % (id_robot, id_agent)
             comp(publish_once, data_central, id_agent, id_robot,
                  phase='learn', progress='all',
-                 job_id=job_id, extra_dep=all_learned)
+                 job_id='publish-%s-%s' % (id_robot, id_agent),
+                 extra_dep=all_learned)
     
             # ra2learned[(id_robot, id_agent)] = all_learned
             has_servo = agent_has_servo(data_central, id_agent) 
             
             if not has_servo:
                 logger.debug('Agent %s does not support servoing.' % id_agent)
-                
+                   
             if has_servo and num_ep_serv > 0:
                 # TODO: check robot is vehicleSimulation
-                job_id = 'servo-%s-%s' % (id_robot, id_agent)
                 id_episodes = [ episode_id_servoing(K) 
                                for K in range(num_ep_serv)]
                 all_servo = comp(task_servo, data_central=data_central,
@@ -219,73 +219,76 @@ def experiment_explore_learn_compmake(proj_root,
                      cumulative=True,
                      interval_print=5,
                      num_episodes_with_robot_state=num_ep_serv_v,
-                     job_id=job_id, extra_dep=all_learned)
+                     job_id='servo-%s-%s' % (id_robot, id_agent),
+                     extra_dep=all_learned)
                 # todo: temporary videos
                 for i in range(num_ep_serv_v):
-                    extra_dep = episode2tranche[id_episode]
-                    job_id = 'video-serv-%s-%s-ep%04d' % (id_robot, id_agent, i)  
                     comp(create_video,
                          data_central=data_central,
                          id_episode=id_episodes[i],
+                         id_agent=id_agent,
                          id_robot=id_robot,
                          model='boot_log2movie_servo',
                          zoom=2,
-                         job_id=job_id, extra_dep=all_servo)
+                         job_id='video-serv-%s-%s-ep%04d' % (id_robot, id_agent, i),
+                         extra_dep=all_servo)
             
-            has_predictor = agent_has_predictor(data_central, id_agent)     
+            has_predictor = agent_has_predictor(data_central, id_agent)  
+            if not has_predictor:
+                logger.debug('Agent %s does not support predicting.' % id_agent)
+             
             if has_predictor:
                 # FIXME: here we are using *all* streams 
-                job_id = 'predict-%s-%s' % (id_robot, id_agent)
                 comp(task_predict, data_central=data_central,
                      id_agent=id_agent, id_robot=id_robot,
                      interval_print=5,
-                     job_id=job_id, extra_dep=all_learned)
+                     job_id='predict-%s-%s' % (id_robot, id_agent),
+                     extra_dep=all_learned)
 
             
-def add_exploration_videos(data_central, id_robot,
-                            episode2tranche, num_exploration_videos):
-    if num_exploration_videos == 0: # also add video
-        return
+def add_exploration_videos(data_central, id_robot, id_agent,
+                            episode2tranche, num_ep_expl_v):
     
-    from compmake import comp # @UnresolvedImport
+    from compmake import comp 
     
-    for i in range(num_exploration_videos):
+    for i in range(num_ep_expl_v):
         id_episode = episode_id_exploration(i)
-        extra_dep = episode2tranche[id_episode]
-        job_id = 'video-expl-%s-ep%04d' % (id_robot, i)  
         comp(create_video,
              data_central=data_central,
              id_episode=id_episode,
              id_robot=id_robot,
+             id_agent=id_agent,
              zoom=0,
-             job_id=job_id, extra_dep=extra_dep)
-        job_id = 'video-expl-%s-ep%04d-zoom' % (id_robot, i)  
+             job_id='video-expl-%s-ep%04d' % (id_robot, i),
+             extra_dep=episode2tranche[id_episode])
         comp(create_video,
              zoom=1.5,
              data_central=data_central,
              id_episode=id_episode,
              id_robot=id_robot,
-             job_id=job_id, extra_dep=extra_dep)
+             id_agent=id_agent,
+             job_id='video-expl-%s-ep%04d-zoom' % (id_robot, i),
+             extra_dep=episode2tranche[id_episode])
     
-    all_episodes = [episode_id_exploration(i) 
-                     for i in range(num_exploration_videos)]
-    extra_dep = [episode2tranche[id_episode] for id_episode in all_episodes]
-        
-    job_id = 'video-expl-%s-epall' % (id_robot)  
-    comp(create_video_all_episodes,
-             data_central=data_central,
-             id_robot=id_robot,
-             episodes=all_episodes,
-             zoom=0,
-             job_id=job_id, extra_dep=extra_dep)
-    
-    job_id = 'video-expl-%s-epall-zoom' % (id_robot)  
-    comp(create_video_all_episodes,
-             data_central=data_central,
-             id_robot=id_robot,
-             episodes=all_episodes,
-             zoom=2,
-             job_id=job_id, extra_dep=extra_dep)
+#    all_episodes = [episode_id_exploration(i) 
+#                     for i in range(num_ep_expl_v)]
+#    extra_dep = [episode2tranche[id_episode] for id_episode in all_episodes]
+#        
+#    comp(create_video_all_episodes,
+#             data_central=data_central,
+#             id_robot=id_robot,
+#             episodes=all_episodes,
+#             zoom=0,
+#             job_id='video-expl-%s-epall' % (id_robot),
+#             extra_dep=extra_dep)
+#      
+#    comp(create_video_all_episodes,
+#             data_central=data_central,
+#             id_robot=id_robot,
+#             episodes=all_episodes,
+#             zoom=2,
+#             job_id='video-expl-%s-epall-zoom' % (id_robot),
+#             extra_dep=extra_dep)
   
 def agent_has_predictor(data_central, id_agent):
     agent = data_central.get_bo_config().agents.instance(id_agent)
@@ -295,9 +298,9 @@ def agent_has_servo(data_central, id_agent):
     agent = data_central.get_bo_config().agents.instance(id_agent)
     return hasattr(agent, 'get_servo')
             
-def create_video(data_central, id_episode, id_robot, model='boot_log2movie', zoom=0):
+def create_video(data_central, id_episode, id_robot, id_agent, model='boot_log2movie', zoom=0):
     ds = data_central.get_dir_structure()
-    basename = ds.get_video_basename(id_robot, id_episode)
+    basename = ds.get_video_basename(id_robot, id_agent, id_episode)
     if zoom:
         basename += '-z%.1f' % zoom
 
@@ -313,11 +316,11 @@ def create_video(data_central, id_episode, id_robot, model='boot_log2movie', zoo
     pg(model, config=config)
 
 
-def create_video_all_episodes(data_central, id_robot, episodes=None, zoom=0):
+def create_video_all_episodes(data_central, id_robot, id_agent, episodes=None, zoom=0):
     ''' Creates a video containing all episodes. '''
     # TODO: implement episodes
     ds = data_central.get_dir_structure()
-    basename = ds.get_video_basename(id_robot, 'all')
+    basename = ds.get_video_basename(id_robot, id_agent=id_agent, id_episode='all')
     if zoom:
         basename += '-z%.1f' % zoom
     

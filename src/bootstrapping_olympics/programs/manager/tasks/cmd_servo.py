@@ -58,7 +58,7 @@ def task_servo(data_central, id_agent, id_robot,
     
     
     # Instance robot object
-    robot = data_central.get_bo_config().robots.instance(id_robot) #@UndefinedVariable
+    robot = data_central.get_bo_config().robots.instance(id_robot)
 
     # TODO: check that this is a Vehicles simulation
     
@@ -97,8 +97,8 @@ def task_servo(data_central, id_agent, id_robot,
         # max_angle = np.deg2rad(15)
         #max_t = 0.3
         # ok for rf, cam
-        max_angle = np.deg2rad(35)
-        max_t = 0.1
+#        max_angle = np.deg2rad(35)
+#        max_t = 0.1
         # 2,30 rf
         max_t = 0.2
         max_angle = np.deg2rad(35)
@@ -119,7 +119,6 @@ def task_servo(data_central, id_agent, id_robot,
                                       boot_spec=boot_spec) as writer:
             counter = 0
             while bk.another_episode_todo():
-                counter += 1
                 episode = robot.new_episode()
                 # OK this only works with Vehicles
                 vehicle = robot.vehicle
@@ -147,17 +146,18 @@ def task_servo(data_central, id_agent, id_robot,
                     bk.observations(observations)
                     
                     servoing = dict(obs0=obs0.tolist(),
-                                 pose0=to_yaml('SE3', pose0),
-                                 displ=to_yaml('SE3', displ),
-                                 pose1=to_yaml('SE3', pose1))
+                                    pose0=to_yaml('SE3', pose0),
+                                    displ=to_yaml('SE3', displ),
+                                    pose1=to_yaml('SE3', pose1))
                     extra = dict(servoing=servoing)
                     if counter < num_episodes_with_robot_state:
                         extra['robot_state'] = robot.get_state()
-                    else:
-                        extra = {}
+
                     writer.push_observations(observations=observations,
                                              extra=extra)
                 bk.episode_done()
+                counter += 1
+
                 
     if cumulative:
         return bk.get_all_episodes()

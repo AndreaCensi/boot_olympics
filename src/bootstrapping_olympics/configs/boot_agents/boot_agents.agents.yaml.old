@@ -17,7 +17,6 @@
       - boot_agents.DiffeoAgent
       - rate: 1
 
-
 - id: diffeo_agent_2d_dev
   desc: "Dev. version (real)"
   code:

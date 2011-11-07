@@ -14,6 +14,12 @@ def make_sure_loaded():
             logger.info('Use env var %s to add more config dirs.' % v)
             BootOlympicsConfig.load() 
 
+def all_nuisances():
+    make_sure_loaded()
+    nuisances = list(BootOlympicsConfig.nuisances.keys())
+    if not nuisances:
+        raise Exception('No robots defined in this configuration.')
+    return nuisances
 
 def all_robots():
     ''' Returns a list of all robots IDs. '''

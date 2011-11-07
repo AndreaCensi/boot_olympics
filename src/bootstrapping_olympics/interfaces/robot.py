@@ -33,7 +33,6 @@ class RobotInterface:
         new_episode() must be called before get_observations(
     
     '''
-    
     __metaclass__ = ABCMeta
           
     @abstractmethod

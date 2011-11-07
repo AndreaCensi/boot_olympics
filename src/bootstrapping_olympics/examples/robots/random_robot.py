@@ -1,10 +1,11 @@
-from . import contract
-from .. import (Constants, RobotObservations, BootSpec, RobotInterface,
+from .. import contract
+from ... import (Constants, RobotObservations, BootSpec, RobotInterface,
     EpisodeDesc)
-from ..utils import unique_timestamp_string
+from ...utils import unique_timestamp_string
 import time
 
 __all__ = ['RandomRobot']
+
 
 class RandomRobot(RobotInterface):
     ''' This is a sensorimotor cascade generating uniform noise,
