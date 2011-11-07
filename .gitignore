@@ -7,3 +7,4 @@ config
 build
 dist
 coverage_information
+.nose-stopwatch-times

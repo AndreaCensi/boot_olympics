@@ -29,6 +29,22 @@ range: [[0,1],null,[0,1],null,[0,1]]
 shape: [10,10]
 format: C
 range: [0,1]
+---  # tests with default value
+shape: [3]
+format: D
+range: [0,1]
+default: 0
+---  # tests with default value
+shape: [3]
+format: C
+range: [0,1]
+default: 0.5
+---  # tests with default value
+shape: [3]
+format: C
+range: [0,1]
+default: [0,0.5,0.2]
+
 """)
 
      
@@ -81,4 +97,34 @@ range: [[0,0],[0,5],[0,2]]
 shape: [3]
 format: [C, C, C]
 range: [[1,0],[0,5],[0,2]]
+---  # invalid default value
+shape: [3]
+format: C
+range: [0,1]
+default: ciao
+---  # invalid default value (outside of bounds)
+shape: [3]
+format: C
+range: [0,1]
+default: 2
+---  # invalid default value (outside of bounds)
+shape: [3]
+format: C
+range: [0,1]
+default: [0,1,2]
+---  # invalid default value (not discrete)
+shape: [3]
+format: D
+range: [0,1]
+default: [0.5, 0.5, 0.5]
+---  # invalid default value (not correct size)
+shape: [3]
+format: D
+range: [0,1]
+default: [0.5, 0.5]
+---  # invalid default value (other stuff inside)
+shape: [3]
+format: D
+range: [0,1]
+default: [0.5, 0.5, ciao]
 """)

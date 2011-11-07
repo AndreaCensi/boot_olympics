@@ -1,8 +1,6 @@
-from .. import for_all_robots
+from .. import all_nuisances, for_all_robots
+from ... import BootOlympicsConfig, StreamSpec
 from numpy.testing.utils import assert_allclose
-from bootstrapping_olympics.interfaces.stream_spec import StreamSpec
-from bootstrapping_olympics.unittests.instantiation import all_nuisances
-from bootstrapping_olympics.configuration.master import BootOlympicsConfig
 
 
 @for_all_robots

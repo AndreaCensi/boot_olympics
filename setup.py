@@ -5,7 +5,6 @@ version = "1.0"
 
 description = """""" 
 
-    
 long_description = description  
 
 setup(name='BootOlympics',
@@ -13,7 +12,7 @@ setup(name='BootOlympics',
       
       description=description,
       long_description=long_description,
-      keywords="",
+      keywords="agents learning bootstrapping",
       license="LGPL",
       
       classifiers=[
@@ -35,7 +34,9 @@ setup(name='BootOlympics',
         'reports':  ['RepRep>=1.0,<2'],
         'compmake':  ['compmake>=1.0,<2'],
       },
-      tests_require=['nose'],
+      setup_requires=['nose>=1.0'],
+      tests_require=['nose>=1.0', 'rudolf', 'nose-progressive', 'nose-cov'],
+
       entry_points={
          'console_scripts': [
            'boot_olympics_print_config = '
@@ -54,6 +55,7 @@ setup(name='BootOlympics',
                 'bootstrapping_olympics.programs.rosbag2h5.main:main',
 
         ]
-      }          
+      },
+      test_suite='nose.collector'
 )
 

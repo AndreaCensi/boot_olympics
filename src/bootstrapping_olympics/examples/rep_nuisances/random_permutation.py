@@ -17,15 +17,26 @@ class RandomPermutation(RepresentationNuisance):
     
     @contract(stream_spec=StreamSpec)
     def transform_spec(self, stream_spec):
-        
+        # XXX: only allow 1D
         n = stream_spec.size()
         self.perm = random_permutation(n, self.seed)
         if self.inverted:
             self.perm = invert_permutation(self.perm)
             
-        # Doesn't change the spec
-        # FIXME: spec may change!
-        return stream_spec
+        
+        streamels = stream_spec.get_streamels().copy()
+        
+        streamels['kind'] = streamels['kind'][self.perm]
+        streamels['lower'] = streamels['lower'][self.perm]
+        streamels['upper'] = streamels['upper'][self.perm]
+        
+        if stream_spec.id_stream:
+            id_stream = stream_spec.id_stream + '-rperm%s' % self.seed
+        else:
+            id_stream = None
+        return StreamSpec(id_stream=id_stream,
+                          streamels=streamels,
+                          extra=stream_spec.extra)
     
     def transform_value(self, values):
         if self.perm is None:
@@ -39,7 +50,7 @@ class RandomPermutation(RepresentationNuisance):
         if self.perm is None:
             data = ""
         else:
-            data = ',%s' % self.scale
+            data = ',%s' % self.perm
         return 'Perm(%s,%s%s)' % (self.seed, self.inverted, data)
 
 

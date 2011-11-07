@@ -26,10 +26,13 @@ class RandomScaling(RepresentationNuisance):
         n = stream_spec.size()
         self.scale = np.random.exponential(scale=1.0, size=n)
         
+        
 #        print('seed %s scale %s' % (self.seed, self.scale)) 
         if self.inverted:
             self.scale = 1.0 / self.scale
 
+        self.scale = self.scale.astype('float32')
+        
         # TODO: default values        
         streamels = stream_spec.get_streamels()
         streamels2 = streamels.copy()

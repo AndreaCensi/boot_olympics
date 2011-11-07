@@ -1,18 +1,16 @@
-from bootstrapping_olympics import BootOlympicsConfig, Constants
-import os
 from . import logger
+from .. import BootOlympicsConfig
+import os
 
 def make_sure_loaded():
     if not BootOlympicsConfig.loaded:
-        # TODO: add from environment variable
-        v = Constants.TEST_ADDITIONAL_CONFIG_DIR_ENV
-        if v in os.environ:
-            for dirname in os.environ[v].split(':'):
-                logger.info('Using additional dir %r' % dirname)
-                BootOlympicsConfig.load(dirname)             
-        else:
-            logger.info('Use env var %s to add more config dirs.' % v)
-            BootOlympicsConfig.load() 
+        from pkg_resources import resource_filename #@UnresolvedImport
+        dirname = resource_filename("bootstrapping_olympics", "configs")
+        dirname = os.path.join(dirname, 'for_testing') 
+        logger.info('Configuration not set by environment variable; loading '
+                    'default testing config from %s.' % dirname)
+
+        BootOlympicsConfig.load(dirname)
 
 def all_nuisances():
     make_sure_loaded()

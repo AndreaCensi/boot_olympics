@@ -14,6 +14,9 @@ class EquivRobot(RobotInterface):
     def __init__(self, robot, obs_nuisance=[], cmd_nuisance=[]):
         self.robot = BootOlympicsConfig.robots.instance(robot) #@UndefinedVariable
         
+        self.desc = ('EquivRobot(%s,obs:%s,cmd:%s)'
+                    % (robot, obs_nuisance, cmd_nuisance))
+        
         # convert to (possibly empty) list of strings
         if isinstance(obs_nuisance, str): obs_nuisance = [obs_nuisance]
         if isinstance(cmd_nuisance, str): cmd_nuisance = [cmd_nuisance]
@@ -42,6 +45,9 @@ class EquivRobot(RobotInterface):
         
         self.spec = BootSpec(obs_spec=obs_spec, cmd_spec=cmd_spec)
 
+    def __str__(self):
+        return self.desc
+    
     def get_spec(self):
         return self.spec 
         

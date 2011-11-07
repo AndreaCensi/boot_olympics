@@ -4,8 +4,6 @@ from contracts import ContractNotRespected
 from numpy.testing.utils import assert_raises
 import yaml
 
-
-
 def check_parsing(x):
     BootSpec.from_yaml(x)    
 
@@ -25,8 +23,7 @@ def check_conversions(x):
 def test_validity_1():
     for x in valid_boot_specs:
         yield check_parsing, x
-        yield check_conversions, x
-        
+        yield check_conversions, x 
 
 def test_validity_2():
     for x in invalid_boot_specs:

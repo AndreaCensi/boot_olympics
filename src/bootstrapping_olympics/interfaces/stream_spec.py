@@ -1,8 +1,7 @@
 from . import logger, contract, np
 from contracts import check, describe_type, describe_value
-import warnings
-from numpy.core.numeric import allclose
 from numpy.testing.utils import assert_allclose
+from numbers import Number
 
 
 class ValueFormats:
@@ -13,7 +12,8 @@ class ValueFormats:
 
 streamel_dtype = [('kind', 'S1'), # 'I','D','C'
                   ('lower', 'float'),
-                  ('upper', 'float')]
+                  ('upper', 'float'),
+                  ('default', 'float')]
 
 @contract(streamels='array')
 def check_valid_streamels(streamels):
@@ -61,8 +61,7 @@ class StreamSpec:
             commands streams, this has the semantics of being
             a "at rest" value. For observations, this is an "example"
             value, used for visualization. '''
-        warnings.warn("Values set to zero and not loaded from config.")
-        return np.zeros(self.streamels.shape)
+        return self.streamels['default']
     
     @contract(returns='array')
     def get_random_value(self):
@@ -94,14 +93,26 @@ class StreamSpec:
             msg += '\n  stream: %s' % self
             msg += '\n   value: %s' % describe_value(x)
             raise ValueError(msg)
-        def display_some(x, select):
+        def display_some(x, select, max_to_display=4):
             ''' Displays some of the elements in x (array) given
                 by select (array of bool). '''
             how_many = np.sum(select)
-            to_display = min(how_many, 4)
+            to_display = min(how_many, max_to_display)
             s = 'First %s of %s/%s: %s' % (to_display, how_many, x.size,
                                            x[select][:to_display])
             return s
+
+        def display_some_extended(x, streamels, select, max_to_display=4):
+            ''' Displays some of the elements in x (array) given
+                by select (array of bool). '''
+            how_many = np.sum(select)
+            to_display = min(how_many, max_to_display)
+            values = x[select][:to_display]
+            s = 'First %s of %s/%s: %s' % (to_display, how_many, x.size, values)
+            s += '\n lower: %s' % streamels['lower'][select][:to_display]
+            s += '\n upper: %s' % streamels['upper'][select][:to_display]
+            return s
+
         
         if not isinstance(x, np.ndarray):
             msg = 'Type is %s instead of numpy array.' % describe_type(x)
@@ -138,12 +149,12 @@ class StreamSpec:
                    display_some(d, not_discrete))
             bail(msg)
         
-        lv = self.lower[valid]
+        lv = self.lower[valid] # XXX: is this only 1D?
         uv = self.upper[valid]
         out_of_range = np.logical_or(xv < lv, xv > uv)
         if np.any(out_of_range):
             msg = ('Found elements out of range. %s' % 
-                   display_some(xv, out_of_range))
+                   display_some_extended(xv, self.streamels[valid], out_of_range))
             bail(msg) 
     
     @contract(returns='int,>0')
@@ -176,12 +187,13 @@ class StreamSpec:
             range = s.pop('range') #@ReservedAssignment
             extra = s.pop('extra', {})
             filtered = s.pop('filtered', None)
+            default = s.pop('default', None)
             
             if s.keys():
                 logger.warning('While reading\n%s\nextra keys detected: %s' % 
                                ((spec), s.keys()))
             
-            streamels = streamels_from_spec(shape, format, range)
+            streamels = streamels_from_spec(shape, format, range, default)
             
             return StreamSpec(id_stream, streamels, extra, filtered, desc)
         except:
@@ -291,7 +303,7 @@ def get_streamel_range(streamel):
 
 @contract(shape='list[int]', format='list|str', range='list',
           returns='array')
-def streamels_from_spec(shape, format, range): #@ReservedAssignment
+def streamels_from_spec(shape, format, range, default): #@ReservedAssignment
     streamels = np.zeros(shape=shape, dtype=streamel_dtype)
     kind = streamels['kind']
     lower = streamels['lower']
@@ -321,6 +333,8 @@ def streamels_from_spec(shape, format, range): #@ReservedAssignment
             expect_one_of(formats.flat[i], ValueFormats.valid)
             kind.flat[i] = formats.flat[i]
             
+        # also 'default' must 
+            
         # Also the range must be a list
         if not isinstance(range, list):
             msg = 'Expected list for "range", got %s.' % describe_value(range)
@@ -347,4 +361,27 @@ def streamels_from_spec(shape, format, range): #@ReservedAssignment
         else:
             raise ValueError('Not implemented for shape %s.' % 
                              str(streamels.shape))
+            
+    # and also the default value must be a number
+    if default is None:
+        # Use half of the range
+        half = (streamels['upper'] + streamels['lower']) / 2.0
+        streamels['default'][:] = half # XXX
+        # round down, discretize if discrete
+        isdiscrete = kind == ValueFormats.Discrete
+        rounded = np.floor(half)
+        streamels['default'][isdiscrete] = rounded[isdiscrete]
+    elif isinstance(default, Number):
+        # 
+        streamels['default'].flat[:] = default
+    elif isinstance(default, list): # explicit list
+        defaults = np.array(default)
+        if defaults.shape != streamels.shape:
+            msg = ('Expected defaults shape to be %s instead of %s.' % 
+                   (formats.shape, defaults.shape)) 
+            raise ValueError(msg)
+        streamels['default'].flat[:] = defaults.flat
+    else:
+        msg = 'Could not interpret default value %s.' % describe_value(default)
+        raise ValueError(msg)
     return streamels
