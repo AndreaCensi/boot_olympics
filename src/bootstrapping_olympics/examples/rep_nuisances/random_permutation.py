@@ -22,8 +22,7 @@ class RandomPermutation(RepresentationNuisance):
         self.perm = random_permutation(n, self.seed)
         if self.inverted:
             self.perm = invert_permutation(self.perm)
-            
-        
+              
         streamels = stream_spec.get_streamels().copy()
         
         streamels['kind'] = streamels['kind'][self.perm]

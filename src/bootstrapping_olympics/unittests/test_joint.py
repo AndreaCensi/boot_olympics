@@ -2,8 +2,8 @@ from . import for_all_pairs
 from StringIO import StringIO
 from bootstrapping_olympics import UnsupportedSpec
 from bootstrapping_olympics.display import ReprepPublisher
-from bootstrapping_olympics.programs.manager.cmd_simulate import run_simulation
 import cPickle as pickle
+from bootstrapping_olympics.programs.manager.simulate import run_simulation
 
 @for_all_pairs
 def check_agent_init(id_agent, agent, id_robot, robot):

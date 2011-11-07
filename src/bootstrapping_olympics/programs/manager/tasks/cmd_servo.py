@@ -2,10 +2,10 @@ from . import logger, contract, OptionParser, np
 from .. import check_mandatory, check_no_spurious
 from ....interfaces import RobotInterface, RobotObservations, ObsKeeper
 from ....logs import LogsFormat
-from ....programs.manager.cmd_learn.cmd_learn import load_agent_state
 from ....utils import InAWhile, isodate_with_secs, natsorted
 from geometry import SE3, SE3_from_SE2, SE2_from_translation_angle
 from geometry.yaml import to_yaml
+from bootstrapping_olympics.programs.manager.learning.cmd_learn import load_agent_state
 
 
 __all__ = ['cmd_task_servo', 'task_servo']

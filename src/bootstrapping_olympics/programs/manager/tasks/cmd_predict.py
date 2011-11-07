@@ -1,10 +1,10 @@
 from . import logger, np, OptionParser
 from .. import check_mandatory, check_no_spurious
 from ....display import ReprepPublisher
-from ..cmd_learn.cmd_learn import load_agent_state
 from contracts import describe_type
 from reprep import Report # TODO: be safe
 import os
+from bootstrapping_olympics.programs.manager.learning.cmd_learn import load_agent_state
 
 
 __all__ = ['cmd_task_predict', 'task_predict']

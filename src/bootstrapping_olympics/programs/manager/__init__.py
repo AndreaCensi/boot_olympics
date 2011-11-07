@@ -4,11 +4,11 @@ from optparse import OptionParser
 
 from .data_central import *
 from .common import *
-from .cmd_learn import *
-from .cmd_list_logs import *
-from .cmd_list_states import *
-from .cmd_list_agents import *
-from .cmd_list_robots import *
-from .cmd_simulate import *
-from .cmd_video import *
+from .learning import *
+from .list_logs import *
+from .list_states import *
+from .list_agents import *
+from .list_robots import *
+from .simulating import *
+from .video import *
 from .tasks import *

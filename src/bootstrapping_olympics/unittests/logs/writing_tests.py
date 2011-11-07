@@ -1,14 +1,13 @@
 from .. import for_all_pairs
 from bootstrapping_olympics.configuration import DirectoryStructure
-from bootstrapping_olympics.logs import BootStream, LogIndex
-from bootstrapping_olympics.logs import LogsFormat
-from bootstrapping_olympics.programs.manager.cmd_simulate import run_simulation
+from bootstrapping_olympics.interfaces import UnsupportedSpec
+from bootstrapping_olympics.logs import BootStream, LogIndex, LogsFormat
+from bootstrapping_olympics.programs.manager.simulate import run_simulation # XXX
 from bootstrapping_olympics.utils import isodate_with_secs
 from numpy.testing.utils import assert_equal
 import numpy as np
 import shutil
 import tempfile
-from bootstrapping_olympics.interfaces.agent import UnsupportedSpec
 
 @for_all_pairs
 def check_writing_logs(id_agent, agent, id_robot, robot):

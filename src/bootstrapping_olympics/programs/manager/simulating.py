@@ -192,16 +192,16 @@ class Bookkeeping():
 
 cmd_simulate.short_usage = ('simulate -a <AGENT> -r <ROBOT> [--num_episodes N ]'          
                             '[--episode_len N] [--save] ')
-    
-
 
 @contract(id_robot='str', id_agent='str',
           robot=RobotInterface, agent=AgentInterface, max_observations='>=1',
           max_time='>0')
 def run_simulation(id_robot, robot, id_agent, agent, max_observations, max_time,
                    check_valid_values=True, id_episode=None):
-    ''' Runs an episode of the simulation. The agent should already been
-        init()ed. '''
+    ''' 
+        Runs an episode of the simulation. The agent should already been
+        init()ed. 
+    '''
     episode = robot.new_episode()
     
     keeper = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
@@ -245,7 +245,7 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations, max_time,
         if observations['time_from_episode_start'] > max_time:
             break
         
-        if robot.episode_ended(): # Fishy
+        if robot.episode_ended(): # FIXME: Fishy
             break
     
         agent.process_observations(observations)
