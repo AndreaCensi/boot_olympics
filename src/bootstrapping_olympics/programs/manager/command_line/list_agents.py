@@ -1,8 +1,7 @@
-from . import check_no_spurious, logger, OptionParser
+from . import logger, OptionParser, check_no_spurious, declare_command
 from pprint import pformat
 
-__all__ = ['cmd_list_agents']
-
+@declare_command('list-agents', 'list-agents [-v]')
 def cmd_list_agents(data_central, argv):
     '''Shows a summary of the agents in the configuration. '''
     parser = OptionParser(usage=cmd_list_agents.short_usage)
@@ -32,6 +31,4 @@ def cmd_list_agents(data_central, argv):
     else:
         logger.info('Use "-v" to see more information.')
          
-
-cmd_list_agents.short_usage = 'list-agents [-v]'
-    
+ 

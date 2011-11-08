@@ -1,10 +1,10 @@
 from .. import logger
 from ....utils import isodate
+from . import load_agent_state
 import os
 
 def publish_once(data_central, id_agent, id_robot, phase='learn', progress='all'):
         
-    from .cmd_learn import load_agent_state
     agent, state = load_agent_state(data_central,
                                     id_agent=id_agent,
                                     id_robot=id_robot,

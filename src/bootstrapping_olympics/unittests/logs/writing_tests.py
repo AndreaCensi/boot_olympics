@@ -1,9 +1,9 @@
 from .. import for_all_pairs
-from bootstrapping_olympics.configuration import DirectoryStructure
-from bootstrapping_olympics.interfaces import UnsupportedSpec
-from bootstrapping_olympics.logs import BootStream, LogIndex, LogsFormat
-from bootstrapping_olympics.programs.manager.simulate import run_simulation # XXX
-from bootstrapping_olympics.utils import isodate_with_secs
+from ...configuration import DirectoryStructure
+from ...interfaces import UnsupportedSpec
+from ...logs import BootStream, LogIndex, LogsFormat
+from ...programs.manager import run_simulation # XXX
+from ...utils import isodate_with_secs
 from numpy.testing.utils import assert_equal
 import numpy as np
 import shutil

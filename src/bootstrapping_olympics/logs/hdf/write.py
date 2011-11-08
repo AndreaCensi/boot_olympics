@@ -5,14 +5,13 @@ import os
 import warnings
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
-
-#TODO: write on temporary file name
-
+ 
 class HDFLogWriter():
     
     def __init__(self, filename, id_stream, boot_spec):
         assert isinstance(boot_spec, BootSpec)
         self.filename = filename
+        # XXX: check that we are not given the same filename
         self.tmp_filename = filename + '.active'
         self.hf = tables.openFile(self.tmp_filename, 'w')
         self.id_stream = id_stream

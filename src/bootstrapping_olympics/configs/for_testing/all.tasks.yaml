@@ -1,7 +1,0 @@
-- id: Task1
-  desc: A visual servoing task
-  code: 
-     - sim/Andrea.py
-     - param1: 1
-       param2: 2
-        

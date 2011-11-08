@@ -1,7 +1,7 @@
-from ... import BootOlympicsConfig
-from ...agent_states import LearningStateDB
-from ...configuration import DirectoryStructure
-from ...logs import LogIndex
+from . import DirectoryStructure
+from .... import BootOlympicsConfig
+from ....agent_states import LearningStateDB
+from ....logs import LogIndex
 
 class DataCentral:
     def __init__(self, boot_root=None):

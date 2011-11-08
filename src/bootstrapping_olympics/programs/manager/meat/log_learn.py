@@ -1,48 +1,8 @@
-from . import publish_agent_output, logger, np, OptionParser
-from .. import check_no_spurious, check_mandatory
-from ....agent_states import LearningState
+from . import load_agent_state, publish_agent_output, logger
 from ....interfaces import AgentInterface
 from ....utils import InAWhile, UserError
 import logging
-
-__all__ = ['cmd_learn_log', 'learn_log']
-
-def cmd_learn_log(data_central, argv):
-    '''Runs the learning for a given agent and log. ''' 
-    parser = OptionParser(usage=cmd_learn_log.short_usage)
-    parser.disable_interspersed_args()
-    parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
-    parser.add_option("-r", "--robot", dest='robot', help="Robot ID")
-    parser.add_option("--reset", default=False, action='store_true',
-                      help="Do not use cached state.")
-    parser.add_option("-p", "--publish", dest='publish_interval', type='float',
-                      default=None,
-                      help="Publish debug information every N cycles.")
-    parser.add_option("--once", default=False, action='store_true',
-                      help="Just plot the published information once and exit.") 
-    parser.add_option("--interval_save", type='int', default=300,
-                      help="Interval for saving state (seconds) [%default]")
-    parser.add_option("--interval_print", type='int', default=5,
-                      help="Interval for printing stats (seconds) [%default]")
-    
-    (options, args) = parser.parse_args(argv)
-    
-    check_no_spurious(args)
-    check_mandatory(options, ['agent', 'robot'])
-    
-    if options.publish_interval is  None and not options.once:
-        msg = 'Not creating any report; pass -p <interval> or --once to do it.'
-        logger.info(msg)
-  
-    learn_log(data_central=data_central,
-              id_agent=options.agent,
-              id_robot=options.robot,
-              reset=options.reset,
-              publish_interval=options.publish_interval,
-              publish_once=options.once,
-              interval_save=options.interval_save,
-              interval_print=options.interval_print)
-    
+   
 
 def learn_log(data_central, id_agent, id_robot,
               reset=False,
@@ -178,51 +138,3 @@ def learn_log(data_central, id_agent, id_robot,
         state.agent_state = agent.get_state()
         db.set_state(state=state, id_robot=id_robot, id_agent=id_agent) 
 
-
-once = False
-
-cmd_learn_log.short_usage = ('learn-log -a <AGENT> -r <ROBOT> '
-                             ' [--reset] [--publish interval] [--once]')
-    
-
-
-def load_agent_state(data_central, id_agent, id_robot, reset_state=False,
-                     raise_if_no_state=False):
-    ''' Load the agent, loading the agent state from the state_db directory.
-        If the state is not available, then it initializes anew. The
-        problem spec (sensel shape, commands shape) is loaded from the 
-        logs in log_directory. 
-        
-        Returns tuple agent, state.
-    '''
-    logger.info('Loading state %s/%s reset=%s ' % (id_agent, id_robot, reset_state))
-    agent = data_central.get_bo_config().agents.instance(id_agent) #@UndefinedVariable
-
-    db = data_central.get_agent_state_db()
-    key = dict(id_robot=id_robot, id_agent=id_agent)
-    
-    index = data_central.get_log_index()
-    spec = index.get_robot_spec(id_robot)
-    agent.init(spec)
-
-    if reset_state:
-        state = LearningState(id_robot=id_robot, id_agent=id_agent)
-        return agent, state
-    else:
-        if db.has_state(**key):
-            logger.info('Using previous learned state.')
-            state = db.reload_state_for_agent(id_agent=id_agent,
-                                              id_robot=id_robot,
-                                              agent=agent)
-            return agent, state
-        else:
-            logger.info('No previous learned state found.')
-            if raise_if_no_state:
-                raise Exception('No previous learned state found.')
-            else:
-                state = LearningState(id_robot=id_robot, id_agent=id_agent)
-                return agent, state
-    
-    assert False
-    
-    

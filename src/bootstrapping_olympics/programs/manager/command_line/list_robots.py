@@ -1,9 +1,8 @@
-from . import check_no_spurious, logger, OptionParser
+from . import check_no_spurious, logger, OptionParser, declare_command
 
 from pprint import pformat
 
-__all__ = ['cmd_list_robots']
-
+@declare_command('list-robots', 'list-robots [-v]')
 def cmd_list_robots(data_central, argv):
     '''Shows a summary of the robots in the configuration. '''
     parser = OptionParser(usage=cmd_list_robots.short_usage)
@@ -34,5 +33,4 @@ def cmd_list_robots(data_central, argv):
         logger.info('Use "-v" to see more information.')
          
 
-cmd_list_robots.short_usage = 'list-robots [-v]'
     

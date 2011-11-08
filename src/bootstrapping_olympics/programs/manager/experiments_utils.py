@@ -1,13 +1,11 @@
 '''Some functions to help in writing experiments scripts'''
-from . import DataCentral, logger, learn_log, publish_once, simulate, np
-from bootstrapping_olympics.programs.manager.tasks.cmd_predict import (
-    task_predict)
-from bootstrapping_olympics.programs.manager.tasks.cmd_servo import task_servo
+from . import (task_predict, DataCentral, logger, learn_log, publish_once, np,
+    task_servo)
+from .meat import simulate
 from optparse import OptionParser
 import contracts
 import os
 import shutil
-
 
 def experiment_explore_learn_main(proj_root,
                                   explorer, agents, robots,
@@ -21,8 +19,8 @@ def experiment_explore_learn_main(proj_root,
     parser.add_option("--republish", default=False, action='store_true',
                       help="Cleans the reports.")
     
-    parser.add_option("--write_extra", default=False, action='store_true',
-                      help="Writes extra info in the logs (robot state) [%default]")
+#    parser.add_option("--write_extra", default=False, action='store_true',
+#                      help="Writes extra info in the logs (robot state) [%default]")
     parser.add_option("--num_ep_expl", type='int', default=10,
                       help="Number of episodes to simulate [%default]")
     parser.add_option("--num_ep_expl_v", type='int', default=6,
@@ -46,14 +44,15 @@ def experiment_explore_learn_main(proj_root,
         contracts.disable_all()
 
     from compmake import compmake_console, batch_command #@UnresolvedImport
-    experiment_explore_learn_compmake(proj_root, explorer, agents, robots,
+    data_central = DataCentral(proj_root)
+
+    experiment_explore_learn_compmake(data_central, explorer, agents, robots,
                          episode_len=options.episode_len,
                          num_ep_expl=options.num_ep_expl,
                          num_ep_expl_v=options.num_ep_expl_v,
                          num_ep_serv=options.num_ep_serv,
                          num_ep_serv_v=options.num_ep_serv_v,
-                         reset=options.reset,
-                         write_extra=options.write_extra,
+                         reset=options.reset
                          )
     
     if options.only:
@@ -102,20 +101,18 @@ def episode_id_exploration(K):
 def episode_id_servoing(K):
     return 'ep-serv-%05d' % K
 
-def experiment_explore_learn_compmake(proj_root,
+def experiment_explore_learn_compmake(data_central,
                              explorer, agents, robots, episode_len,
                              num_ep_expl=10,
                              num_ep_expl_v=1,
                              num_ep_serv=1,
                              num_ep_serv_v=1,
-                             write_extra=True,
                              reset=False,
                              episodes_per_tranche=10):
-    from compmake import comp, comp_prefix # XXX
-    
+    from compmake import comp
+
     #comp_prefix()
     
-    data_central = DataCentral(proj_root)
     # TODO: place compmake directory somewhere
     # ds = data_central.get_directory_structure()
     # compmake_storage(ds.get_storage_dir()) 

@@ -1,47 +1,11 @@
-from . import logger, contract, OptionParser, np
-from .. import check_mandatory, check_no_spurious
+from . import logger, contract, np
 from ....interfaces import RobotInterface, RobotObservations, ObsKeeper
 from ....logs import LogsFormat
 from ....utils import InAWhile, isodate_with_secs, natsorted
 from geometry import SE3, SE3_from_SE2, SE2_from_translation_angle
 from geometry.yaml import to_yaml
-from bootstrapping_olympics.programs.manager.learning.cmd_learn import load_agent_state
+from bootstrapping_olympics.programs.manager.meat import load_agent_state
 
-
-__all__ = ['cmd_task_servo', 'task_servo']
-
-def cmd_task_servo(data_central, argv):
-    '''Simulate the interaction of an agent and a robot. ''' 
-    parser = OptionParser(usage=cmd_task_servo.__doc__)
-    parser.disable_interspersed_args()
-    parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
-    parser.add_option("-r", "--robot", dest='robot', help="Robot ID")
-    parser.add_option("--num_episodes", type='int', default=10,
-                      help="Number of episodes to simulate [%default]")
-    parser.add_option("--cumulative", default=False, action='store_true',
-                      help="Count already simulated episodes towards the count.")
-    parser.add_option("--max_episode_len", type='float', default=30,
-                      help="Maximum len of episode (seconds) [%default]")
-    parser.add_option("--interval_print", type='float', default=5,
-                      help='Frequency of debug messages.')
-    (options, args) = parser.parse_args(argv)
-    
-    check_no_spurious(args)
-    check_mandatory(options, ['agent', 'robot'])
-    
-    id_agent = options.agent
-    id_robot = options.robot
-    task_servo(data_central,
-             id_agent=id_agent,
-             id_robot=id_robot,
-             max_episode_len=options.max_episode_len,
-             num_episodes=options.num_episodes,
-             cumulative=options.cumulative,
-             interval_print=options.interval_print,
-             num_episodes_with_robot_state=options.num_episodes) # xXX
-
-cmd_task_servo.short_usage = '''servo  -a <agent> -r <robot> '''
-    
 @contract(interval_print='>=0')
 def task_servo(data_central, id_agent, id_robot,
                max_episode_len,

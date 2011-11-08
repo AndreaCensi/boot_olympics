@@ -1,6 +1,8 @@
-from . import BootOlympicsConfig
-from ..utils import expand_environment, substitute
+from . import logger
+from ....configuration import  BootOlympicsConfig
+from ....utils import expand_environment, substitute
 import os
+import tempfile
 
 class DirectoryStructure:
     
@@ -22,9 +24,11 @@ class DirectoryStructure:
             raise Exception(msg)
         
     def additional_config_dir(self, dirname):
+        # FIXME: complete
         assert False
     
     def additional_log_dir(self, dirname):
+        # FIXME: complete
         assert False
      
     def get_config_directories(self):
@@ -51,16 +55,26 @@ class DirectoryStructure:
     def get_state_db_directory(self):
         return os.path.join(self.root, 'states/')
 
-    def get_simlog_hdf_filename(self, id_agent, id_robot, id_stream):
-        pattern = 'simulations/${id_robot}/${id_agent}/${id_stream}.h5'
-        filename = os.path.join(self.root, DirectoryStructure.DIR_LOGS,
+    def get_simlog_hdf_filename(self, id_agent, id_robot, id_stream):        
+        pattern = 'simulations/${id_robot}/${id_agent}/'
+        dirname = os.path.join(self.root, DirectoryStructure.DIR_LOGS,
                                substitute(pattern,
                                           id_agent=id_agent,
                                           id_robot=id_robot,
                                           id_stream=id_stream)) 
-        dirname = os.path.dirname(filename)
         if not os.path.exists(dirname):
             os.makedirs(dirname)
+        
+        tmpfile = tempfile.NamedTemporaryFile(suffix='.h5.active', prefix=id_stream,
+                                              dir=dirname, delete=False)
+        tmpfile.write('To be used')
+        
+        tmp_filename = tmpfile.name
+        filename = tmp_filename.replace('.active', '')
+
+        tmpfile.close()
+        logger.debug('Writing on file %r' % filename)
+        
         return filename 
     
     def get_report_dir(self, id_agent, id_robot, id_state, phase='learn',

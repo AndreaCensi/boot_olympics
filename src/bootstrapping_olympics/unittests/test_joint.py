@@ -3,7 +3,7 @@ from StringIO import StringIO
 from bootstrapping_olympics import UnsupportedSpec
 from bootstrapping_olympics.display import ReprepPublisher
 import cPickle as pickle
-from bootstrapping_olympics.programs.manager.simulate import run_simulation
+from bootstrapping_olympics.programs.manager import run_simulation
 
 @for_all_pairs
 def check_agent_init(id_agent, agent, id_robot, robot):

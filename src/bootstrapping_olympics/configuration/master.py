@@ -2,9 +2,7 @@ from . import logger
 from .. import Constants
 from ..interfaces import AgentInterface, RobotInterface, RepresentationNuisance
 from .agents import check_valid_agent_config
-from .events import check_valid_event_config
 from .robots import check_valid_robot_config, check_valid_nuisance_config
-from .tasks import check_valid_task_config
 from conf_tools import ConfigMaster, GenericInstance
 import os
 
@@ -19,14 +17,9 @@ class BootConfigMaster(ConfigMaster):
         self.add_class('nuisances', '*.nuisances.yaml',
                        check_valid_nuisance_config,
                        GenericInstance(RepresentationNuisance))
-
-        self.add_class('events', '*.events.yaml', check_valid_event_config)
-        self.add_class('tasks', '*.tasks.yaml', check_valid_task_config)
-        
+ 
         self.robots = self.specs['robots']
         self.agents = self.specs['agents']
-        self.events = self.specs['events']
-        self.tasks = self.specs['tasks']
         self.nuisances = self.specs['nuisances']
         
         v = Constants.TEST_ADDITIONAL_CONFIG_DIR_ENV

@@ -1,5 +1,4 @@
-from ...utils import UserError
-
+from ....utils import UserError
 
 def check_mandatory(options, mandatory):
     for m in mandatory:

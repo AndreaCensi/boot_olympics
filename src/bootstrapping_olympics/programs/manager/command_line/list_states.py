@@ -1,9 +1,7 @@
-from . import logger, check_no_spurious, OptionParser
+from . import logger, check_no_spurious, OptionParser, declare_command
 from contracts import describe_value
 
-
-__all__ = ['cmd_list_states']
-
+@declare_command('list-states', 'list-states [-v]')
 def cmd_list_states(data_central, argv):
     '''Shows a summary of the states present in DB. '''
     parser = OptionParser(usage=cmd_list_states.short_usage)
@@ -33,7 +31,6 @@ def cmd_list_states(data_central, argv):
                 logger.error('  (could not load state: %s) ' % e)
              
     if not options.verbose:
-        logger.debug('Use -v for more information.')
+        logger.debug('Use -v for more information.') 
         
-cmd_list_states.short_usage = 'list-states [-v]'
-    
+        

@@ -1,45 +1,10 @@
-from . import (check_mandatory, logger, check_no_spurious, contract, np,
-    OptionParser)
-from ... import AgentInterface, ObsKeeper, RobotObservations, RobotInterface
-from ...logs import LogsFormat
-from ...utils import InAWhile, isodate_with_secs, natsorted
+from . import logger, np
+from .... import AgentInterface
+from ....logs import LogsFormat
+from ....utils import InAWhile, isodate_with_secs, natsorted
 import logging
+from . import run_simulation
 
-__all__ = ['cmd_simulate', 'simulate']
-
-def cmd_simulate(data_central, argv):
-    '''Simulate the interaction of an agent and a robot. ''' 
-    parser = OptionParser(usage=cmd_simulate.__doc__)
-    parser.disable_interspersed_args()
-    parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
-    parser.add_option("-r", "--robot", dest='robot', help="Robot ID")
-    parser.add_option("--stateful", default=False, action='store_true',
-                      help="Save/load the state of the agent.")
-    parser.add_option("--num_episodes", type='int', default=10,
-                      help="Number of episodes to simulate [%default]")
-    parser.add_option("--cumulative", default=False, action='store_true',
-                      help="Count already simulated episodes towards the count.")
-    parser.add_option("--episode_len", type='float', default=30,
-                      help="Maximum len of episode (seconds) [%default]")
-    parser.add_option("--interval_print", type='float', default=5,
-                      help='Frequency of debug messages.')
-    (options, args) = parser.parse_args(argv)
-    
-    check_no_spurious(args)
-    check_mandatory(options, ['agent', 'robot'])
-    
-    id_agent = options.agent
-    id_robot = options.robot
-    simulate(data_central,
-             id_agent=id_agent,
-             id_robot=id_robot,
-             max_episode_len=options.episode_len,
-             num_episodes=options.num_episodes,
-             stateful=options.stateful,
-             interval_print=options.interval_print,
-             cumulative=options.cumulative,
-             id_episodes=None)
-    
 def simulate(data_central, id_agent, id_robot,
              max_episode_len,
              num_episodes,
@@ -190,66 +155,3 @@ class Bookkeeping():
     def another_episode_todo(self):
         return self.num_episodes_done < self.num_episodes_todo
 
-cmd_simulate.short_usage = ('simulate -a <AGENT> -r <ROBOT> [--num_episodes N ]'          
-                            '[--episode_len N] [--save] ')
-
-@contract(id_robot='str', id_agent='str',
-          robot=RobotInterface, agent=AgentInterface, max_observations='>=1',
-          max_time='>0')
-def run_simulation(id_robot, robot, id_agent, agent, max_observations, max_time,
-                   check_valid_values=True, id_episode=None):
-    ''' 
-        Runs an episode of the simulation. The agent should already been
-        init()ed. 
-    '''
-    episode = robot.new_episode()
-    
-    keeper = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
-    
-    if id_episode is None:
-        id_episode = episode.id_episode
-    keeper.new_episode_started(id_episode, episode.id_environment)
-    counter = 0
-    obs_spec = robot.get_spec().get_observations()
-    cmd_spec = robot.get_spec().get_commands()
-    
-    logger.debug('Episode %s started (%s)' % (id_episode, episode))
-
-    def get_observations():
-        obs = robot.get_observations()
-        if check_valid_values:
-            assert isinstance(obs, RobotObservations)
-            obs_spec.check_valid_value(obs.observations)
-            cmd_spec.check_valid_value(obs.commands)
-        
-        keeper.push_data(obs.timestamp, obs.observations, obs.commands,
-                         obs.commands_source)
-        observations = keeper.get_observations()
-        
-        if check_valid_values:
-            obs_spec.check_valid_value(observations['observations'])
-            cmd_spec.check_valid_value(observations['commands'])
-        return observations
-    
-    commands = agent.choose_commands() # repeated
-    while counter < max_observations:
-       
-        if check_valid_values:
-            cmd_spec.check_valid_value(commands)
-        
-        robot.set_commands(commands, id_agent)
-        observations = get_observations()
-        
-        yield observations
-        
-        if observations['time_from_episode_start'] > max_time:
-            break
-        
-        if robot.episode_ended(): # FIXME: Fishy
-            break
-    
-        agent.process_observations(observations)
-        commands = agent.choose_commands() # repeated
-            
-        counter += 1
-        

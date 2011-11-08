@@ -14,7 +14,7 @@
         default: [0]
 
 - id: random_nuis
-  desc: a perturbed version
+  desc: "A perturbed version of the random robot."
   code:
   - bootstrapping_olympics.examples.EquivRobot
   - robot: random_1_4

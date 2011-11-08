@@ -48,7 +48,7 @@ setup(name='BootOlympics',
             'boot_olympics_gui = '
                 'boot_gui.boot_gui:main',
             'boot_olympics_manager = '
-                'bootstrapping_olympics.programs.manager.main:main',
+                'bootstrapping_olympics.programs.manager:manager_main',
             'boot_olympics_hdf2bag = '
                 'bootstrapping_olympics.programs.hdf2bag.main:main',
             'boot_olympics_rosbag2h5 = '

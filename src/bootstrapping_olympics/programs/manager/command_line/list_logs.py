@@ -1,7 +1,7 @@
-from . import check_no_spurious, logger, OptionParser
+from . import check_no_spurious, logger, OptionParser, declare_command
 
-__all__ = ['cmd_list_logs']
 
+@declare_command('list-logs', 'list-logs [-v] [-vv]')
 def cmd_list_logs(data_central, argv):
     '''Shows information about every log. '''
     
@@ -51,8 +51,6 @@ def cmd_list_logs(data_central, argv):
         if options.display_logs:
             for stream in streams:
                 logger.info('- %5ds %s' % (stream.length, stream.bag_file))
-#                                os.path.relpath(stream.bag_file,
-#                                                main_options.log_directory)))
             
     if options.display_streams:
         for filename, streams in index.file2streams.items():
@@ -64,7 +62,4 @@ def cmd_list_logs(data_central, argv):
             else:
                 logger.info('  No bootstrapping data found. ') 
  
-cmd_list_logs.short_usage = 'list-logs [-v] [-vv]'
-
-
-    
+ 
