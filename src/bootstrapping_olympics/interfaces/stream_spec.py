@@ -1,50 +1,12 @@
-from . import logger, contract, np
+from . import (check_valid_streamels, ValueFormats, streamel_dtype, logger,
+    contract, np)
 from contracts import check, describe_type, describe_value
-from numpy.testing.utils import assert_allclose
 from numbers import Number
+from numpy.testing.utils import assert_allclose
 
-
-class ValueFormats:
-    Continuous = 'C' # range is [min, max]
-    Discrete = 'D' # finite number of elements 
-    Invalid = 'I' # invalid/not used # TODO: tests for invalid values
-    valid = [Continuous, Discrete, Invalid]
-
-streamel_dtype = [('kind', 'S1'), # 'I','D','C'
-                  ('lower', 'float'),
-                  ('upper', 'float'),
-                  ('default', 'float')]
-
-@contract(streamels='array')
-def check_valid_streamels(streamels):
-    ''' Raises a ValueError if the data in the structure is not coherent. '''
-    assert streamels.dtype == np.dtype(streamel_dtype)
-    # XXX: how about invalid values?
-    def check(which, msg):
-        if not np.all(which):
-            raise ValueError(msg)
-    not_discrete = streamels['kind'] != ValueFormats.Discrete
-    invalid = streamels['kind'] == ValueFormats.Invalid
-    
-    check(np.logical_or(invalid, streamels['lower'] < streamels['upper']),
-          'lower<upper')
-    check(np.logical_or(invalid, streamels['default'] <= streamels['upper']),
-          'default<=upper')
-    check(np.logical_or(invalid, streamels['lower'] <= streamels['default']),
-          'default<=upper')
-    
-    check(np.logical_or(not_discrete,
-                        np.round(streamels['default']) == streamels['default']),
-                        'default is discrete')
-    
-    # TODO: check shape 
-    # TODO: check if invalid, they are all 0 
-    # TODO: check if discrete, the default values are discrete
 
 class StreamSpec:
 
-    # TODO: make this accept only the a streamel_dtype array, put the interpretation
-    # in another module    
     @contract(id_stream='None|str', streamels='array',
               extra='None|dict', filtered='None|dict', desc='None|str')
     def __init__(self, id_stream, streamels, extra, #@ReservedAssignment
@@ -217,7 +179,7 @@ class StreamSpec:
             
             return StreamSpec(id_stream, streamels, extra, filtered, desc)
         except:
-            logger.info('Error while parsing the StreamSpec:\n%s' % spec)
+            logger.error('Error while parsing the StreamSpec:\n%s' % spec)
             raise
         
     @contract(returns='dict')

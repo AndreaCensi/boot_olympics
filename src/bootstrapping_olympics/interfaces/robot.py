@@ -16,14 +16,30 @@ class EpisodeDesc:
 
 class RobotObservations:
     ''' Structure that must be returned by get_observations(). '''
-    @contract(timestamp='number', observations='array', commands='array',
-              commands_source='str')
-    def __init__(self, timestamp, observations, commands, commands_source):
+    @contract(timestamp='number',
+              observations='array',
+              commands='array',
+              commands_source='str',
+              episode_end='bool')
+    def __init__(self, timestamp, observations, commands, commands_source,
+                        episode_end, robot_pose):
+        '''
+        
+            - ``episode_end`` should indicate whether the episode ended
+              due to, e.g., user intervention or collision
+              (commands not accepted anymore).
+            - ``robot_pose`` should be either None or a 4x4 Numpy matrix representing
+              an element of SE(3). This is used for tasks such as servoing,
+              where we need to know the pose of the robot for assessing
+              performance.
+        '''
+        
         self.timestamp = timestamp
         self.observations = observations
         self.commands = commands
         self.commands_source = commands_source
-        
+        self.episode_end = episode_end
+        self.robot_pose = robot_pose
         
 class RobotInterface:
     ''' This is the basic class for robot simulators. 
@@ -53,11 +69,6 @@ class RobotInterface:
             Should return an instance of EpisodeDesc.
         '''
 
-    # XXX: I'm not sure this is the best thing
-    def episode_ended(self):
-        return False
-
-
     @abstractmethod
     def set_commands(self, commands, commands_source):
         pass
@@ -70,8 +81,9 @@ class RobotInterface:
     
     @contract(returns='None|dict')
     def get_state(self):
-        ''' Return the state so that it can be saved. 
-            This should be either a dictionary with YAML-serializable entriee,
+        ''' 
+            Return the state so that it can be saved. 
+            This should be either a dictionary with YAML-serializable entries,
             or None.
         '''
         return None

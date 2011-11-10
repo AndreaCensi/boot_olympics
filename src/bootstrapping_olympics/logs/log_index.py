@@ -1,8 +1,7 @@
-from . import BootStream, logger, LogsFormat
+from . import BootStream, logger, LogsFormat, contract
 from ..utils import natsorted
 from collections import defaultdict
 from conf_tools import locate_files
-from contracts import contract
 import os
 import pickle
 import traceback
@@ -93,7 +92,10 @@ class LogIndex:
                         yield obs
                 break
         else:
-            raise Exception('No episode %r found.' % id_episode)
+            msg = 'found:\n'
+            for stream in self.get_streams_for_robot(id_robot):
+                msg += ' %s: %s\n' % (stream, stream.id_episodes) 
+            raise Exception('No episode %r found: %s' % (id_episode, msg))
              
 
 def index_directory_cached(directory, ignore_dir_cache=False,
@@ -109,14 +111,14 @@ def index_directory_cached(directory, ignore_dir_cache=False,
     
     logger.debug('Indexing %s %s' % (directory, ''))
     if not os.path.exists(index_file):
-        logger.debug('Index file not existing -- will create.')
+        #logger.debug('Index file not existing -- will create.')
         needs_recreate = True
     elif ignore_dir_cache:
-        logger.debug('Ignoring existing cache')
+        #logger.debug('Ignoring existing cache')
         needs_recreate = True
     elif os.path.getmtime(directory) > os.path.getmtime(index_file):
         # TODO: all subdirs
-        logger.debug('Index file existing, but new logs added.')
+        #logger.debug('Index file existing, but new logs added.')
         needs_recreate = True
         
     if needs_recreate:
@@ -171,9 +173,9 @@ def index_directory(directory, ignore_cache=False):
         reader = LogsFormat.get_reader_for(filename)
         try:
             streams = reader.index_file_cached(filename, ignore_cache=ignore_cache) 
+            for stream in streams:
+                assert isinstance(stream, BootStream)
             if streams:
-                for stream in streams:
-                    assert isinstance(stream, BootStream)
                     #logger.info('filename: %s stream: %s' % (filename, stream))
                     #logger.debug('%s: %s' % (stream.topic, stream))
                 file2streams[filename] = streams

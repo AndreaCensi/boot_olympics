@@ -96,10 +96,10 @@ def experiment_explore_learn_main(proj_root,
     compmake_console() 
 
 def episode_id_exploration(K):
-    return 'ep-expl-%05d' % K
+    return 'ep_expl_%05d' % K
 
 def episode_id_servoing(K):
-    return 'ep-serv-%05d' % K
+    return 'ep_serv_%05d' % K
 
 def experiment_explore_learn_compmake(data_central,
                              explorer, agents, robots, episode_len,
@@ -107,19 +107,18 @@ def experiment_explore_learn_compmake(data_central,
                              num_ep_expl_v=1,
                              num_ep_serv=1,
                              num_ep_serv_v=1,
+                             servo_displacement=1,
+                             servo_max_episode_len=5,
                              reset=False,
                              episodes_per_tranche=10):
     from compmake import comp
-
-    #comp_prefix()
     
-    # TODO: place compmake directory somewhere
-    # ds = data_central.get_directory_structure()
-    # compmake_storage(ds.get_storage_dir()) 
+    if not robots: 
+        raise Exception('Please specify at least one robot.')
+    if not agents: 
+        raise Exception('Please specify at least one agent.')
     
-    #robot2simulations = {}
-    #robot2tranches = {}
-    #ra2learned = {}
+    logger.info('Creating set for \n robots: %s\n agents: %s' % (robots, agents))
 
     for id_robot in robots:
         # Divide the simulation in parallel tranches
@@ -131,7 +130,7 @@ def experiment_explore_learn_compmake(data_central,
         for t in range(num_tranches):
             e_from = t * episodes_per_tranche
             e_to = min(num_ep_expl, e_from + episodes_per_tranche)
-            t_write_extra = e_to > num_ep_expl_v 
+            t_write_extra = num_ep_expl_v > e_from
             tranchenum2episodes[t] = [episode_id_exploration(K) 
                                       for K in range(e_from, e_to)]
             tranche = comp(simulate,
@@ -145,17 +144,16 @@ def experiment_explore_learn_compmake(data_central,
                              id_episodes=tranchenum2episodes[t],
                              cumulative=False,
                              write_extra=t_write_extra,
-                             job_id='simulate-%s-%s' % (id_robot, t))
+                             job_id='simulate-%s-%s' % (id_robot, t + 1))
             tranches.append(tranche)
             for id_episode in tranchenum2episodes[t]:
                 episode2tranche[id_episode] = tranche
-
-        #robot2tranches[id_robot] = tranches
+ 
         
         all_simulations = comp(checkpoint, 'all simulations',
                                 job_id='simulate-%s' % (id_robot),
                                 extra_dep=tranches)
-        # robot2simulations[id_robot] = all_simulations
+         
         add_exploration_videos(data_central=data_central,
                                id_robot=id_robot,
                                id_agent=explorer,
@@ -163,7 +161,6 @@ def experiment_explore_learn_compmake(data_central,
                                num_ep_expl_v=num_ep_expl_v)        
  
         for id_agent in agents:
-            #extra_dep = [robot2simulations[id_robot]]
             # Learn tranche by tranche
             previous_state = None
             for t, tranche in enumerate(tranches):
@@ -204,30 +201,46 @@ def experiment_explore_learn_compmake(data_central,
             if not has_servo:
                 logger.debug('Agent %s does not support servoing.' % id_agent)
                    
-            if has_servo and num_ep_serv > 0:
-                # TODO: check robot is vehicleSimulation
-                id_episodes = [ episode_id_servoing(K) 
-                               for K in range(num_ep_serv)]
-                all_servo = comp(task_servo, data_central=data_central,
+            if has_servo and num_ep_serv > 0: 
+                
+                num_servo_tranches = int(np.ceil(num_ep_serv * 1.0 / episodes_per_tranche))
+                all_tranches = []
+                for st in range(num_servo_tranches):
+                    e_from = st * episodes_per_tranche
+                    e_to = min(num_ep_serv, e_from + episodes_per_tranche)
+                    num_episodes_with_robot_state = max(0, num_ep_serv_v - e_from)
+                    st_id_episodes = [episode_id_servoing(K) 
+                                              for K in range(e_from, e_to)]
+                    assert len(st_id_episodes) > 0
+                    tranche = comp(task_servo, data_central=data_central,
                      id_agent=id_agent, id_robot=id_robot,
-                     max_episode_len=5,
-                     num_episodes=num_ep_serv,
-                     id_episodes=id_episodes,
-                     cumulative=True,
+                     max_episode_len=servo_max_episode_len,
+                     num_episodes=len(st_id_episodes),
+                     id_episodes=st_id_episodes,
+                     cumulative=False,
+                     displacement=servo_displacement,
                      interval_print=5,
-                     num_episodes_with_robot_state=num_ep_serv_v,
-                     job_id='servo-%s-%s' % (id_robot, id_agent),
+                     num_episodes_with_robot_state=num_episodes_with_robot_state,
+                     job_id='servo-%s-%s-%s' % (id_robot, id_agent, st + 1),
                      extra_dep=all_learned)
+                    
+                    all_tranches.append(tranche)
+                
+                all_servo = comp(checkpoint, 'all servo',
+                                job_id='servo-%s-%s' % (id_robot, id_agent),
+                                extra_dep=all_tranches)
+                
                 # todo: temporary videos
                 for i in range(num_ep_serv_v):
                     comp(create_video,
                          data_central=data_central,
-                         id_episode=id_episodes[i],
+                         id_episode=episode_id_servoing(i),
                          id_agent=id_agent,
                          id_robot=id_robot,
                          model='boot_log2movie_servo',
                          zoom=2,
-                         job_id='video-serv-%s-%s-ep%04d' % (id_robot, id_agent, i),
+                         job_id='video-serv-%s-%s-%s' % 
+                            (id_robot, id_agent, episode_id_servoing(i)),
                          extra_dep=all_servo)
             
             has_predictor = agent_has_predictor(data_central, id_agent)  
@@ -256,7 +269,7 @@ def add_exploration_videos(data_central, id_robot, id_agent,
              id_robot=id_robot,
              id_agent=id_agent,
              zoom=0,
-             job_id='video-expl-%s-ep%04d' % (id_robot, i),
+             job_id='video-expl-%s-%s' % (id_robot, id_episode),
              extra_dep=episode2tranche[id_episode])
         comp(create_video,
              zoom=1.5,
@@ -264,7 +277,7 @@ def add_exploration_videos(data_central, id_robot, id_agent,
              id_episode=id_episode,
              id_robot=id_robot,
              id_agent=id_agent,
-             job_id='video-expl-%s-ep%04d-zoom' % (id_robot, i),
+             job_id='video-expl-%s-%s-zoom' % (id_robot, id_episode),
              extra_dep=episode2tranche[id_episode])
     
 #    all_episodes = [episode_id_exploration(i) 

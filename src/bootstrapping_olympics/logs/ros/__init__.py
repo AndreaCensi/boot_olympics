@@ -1,3 +1,4 @@
+''' Functions for dealing with ROS logs (currently broken). '''
 from .. import LogsFormat, logger, np, contract
 
 from .index import *

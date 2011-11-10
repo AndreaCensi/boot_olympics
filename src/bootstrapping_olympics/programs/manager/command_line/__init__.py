@@ -1,3 +1,5 @@
+''' Command-line interface to the functions in "meat". '''
+
 from .. import  np, contract, logger
 from optparse import OptionParser
 

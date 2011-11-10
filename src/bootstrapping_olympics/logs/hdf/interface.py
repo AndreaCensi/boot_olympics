@@ -8,11 +8,9 @@ class HDFLogsFormat(LogsFormat):
     
     def index_file(self, filename):
         ''' Returns a list of BootStream objects. '''
-        streams = hdf_list_streams(filename)
-        for stream in streams:
-            assert isinstance(stream, BootStream)
-        return streams
-    
+        return hdf_list_streams(filename)
+        
+
     def read_stream(self, stream, read_extra=False):
         ''' Yields observations from the stream. '''
         for x in hdf_read(stream.bag_file,

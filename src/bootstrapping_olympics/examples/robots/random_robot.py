@@ -26,8 +26,14 @@ class RandomRobot(RobotInterface):
         return RobotObservations(timestamp=self.timestamp,
                                  observations=obs,
                                  commands=self.commands,
-                                 commands_source=self.commands_source)    
+                                 commands_source=self.commands_source,
+                                 episode_end=False,
+                                 robot_pose=None)    
 
+    def __str__(self):
+        return 'RandomRobot(%s;%s)' % (self.spec.get_observations(),
+                                       self.spec.get_commands())
+        
     @contract(commands='array')
     def set_commands(self, commands, commands_source):
         self.timestamp += self.dt

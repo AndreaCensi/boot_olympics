@@ -16,6 +16,8 @@ def cmd_list_logs(data_central, argv):
     parser.add_option("--vv", dest='display_streams', action='store_true',
                       default=False,
                       help="Displays all streams.")
+    parser.add_option("--vvv", dest='display_episodes', action='store_true',
+                      default=False, help="Displays all episodes.")
     (options, args) = parser.parse_args(argv)
     
     check_no_spurious(args)
@@ -30,7 +32,7 @@ def cmd_list_logs(data_central, argv):
     
     
     for robot, streams in index.robots2streams.items():
-        logger.info('- robot %r has %d streams.' % (robot, len(streams)))
+        print('- robot %r has %d streams.' % (robot, len(streams)))
         if streams:
             logger.info('  spec: %s' % streams[0].spec)
             total_length = 0
@@ -42,15 +44,15 @@ def cmd_list_logs(data_central, argv):
                 total_obs += stream.num_observations
                 total_episodes += len(stream.id_episodes)
                 agents.update(stream.id_agents)
-            logger.info('    total length: %.1f minutes' % 
+            print('    total length: %.1f minutes' % 
                         (total_length / 60.0))
-            logger.info('  total episodes: %d' % (total_episodes))
-            logger.info('   total samples: %d' % (total_obs))
-            logger.info('          agents: %s' % list(agents))
+            print('  total episodes: %d' % (total_episodes))
+            print('   total samples: %d' % (total_obs))
+            print('          agents: %s' % list(agents))
          
         if options.display_logs:
             for stream in streams:
-                logger.info('- %5ds %s' % (stream.length, stream.bag_file))
+                print('- %5ds %s' % (stream.length, stream.bag_file))
             
     if options.display_streams:
         for filename, streams in index.file2streams.items():
@@ -60,6 +62,12 @@ def cmd_list_logs(data_central, argv):
                 for stream in streams:
                     logger.info(' %s' % (stream))
             else:
-                logger.info('  No bootstrapping data found. ') 
+                print('  No bootstrapping data found. ') 
  
- 
+    if options.display_episodes:
+        for robot, streams in index.robots2streams.items():
+            for stream in streams:
+                print('%s: %s' % (robot, stream))
+                for episode in stream.episodes:
+                    print('- %s' % episode)
+

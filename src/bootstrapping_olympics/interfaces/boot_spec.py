@@ -64,6 +64,7 @@ class BootSpec:
             if x.keys():
                 logger.warning('While reading\n%s\nextra keys detected: %s' % 
                                (pformat(xo), x.keys()))
+                
             return BootSpec(observations, commands,
                             id_robot=id_robot,
                             extra=extra,

@@ -16,7 +16,7 @@ def all_nuisances():
     make_sure_loaded()
     nuisances = list(BootOlympicsConfig.nuisances.keys())
     if not nuisances:
-        raise Exception('No robots defined in this configuration.')
+        raise Exception('No nuisances defined in this configuration.')
     return nuisances
 
 def all_robots():

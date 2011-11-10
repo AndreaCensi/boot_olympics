@@ -1,3 +1,5 @@
+''' Functions for dealing with HDF logs. '''
+
 from .. import logger, np, contract
 
 import tables

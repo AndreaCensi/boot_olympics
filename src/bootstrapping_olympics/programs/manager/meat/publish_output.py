@@ -2,6 +2,7 @@ from .. import logger
 from ....utils import isodate
 from . import load_agent_state
 import os
+from bootstrapping_olympics.utils.filesystem_utils import safe_symlink
 
 def publish_once(data_central, id_agent, id_robot, phase='learn', progress='all'):
         
@@ -42,7 +43,5 @@ def publish_agent_output(state, agent, pd, basename):
     report.to_html(filename, resources_dir=rd)
     
     last = os.path.join(pd, 'last.html')
-    if os.path.exists(last):
-        os.unlink(last)
-    os.link(filename, last)
-    
+    safe_symlink(filename, last)
+

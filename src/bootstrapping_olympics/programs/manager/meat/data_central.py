@@ -5,7 +5,8 @@ from ....logs import LogIndex
 
 class DataCentral:
     def __init__(self, boot_root=None):
-        self.dir_structure = DirectoryStructure(boot_root)
+        self.root = boot_root
+        self.dir_structure = DirectoryStructure(self.root)
         self.states_db = None
         self.log_index = None
         self.bo_config = None

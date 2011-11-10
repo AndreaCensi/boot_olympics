@@ -51,6 +51,9 @@ class EquivRobot(RobotInterface):
     def get_spec(self):
         return self.spec 
         
+    def get_state(self):
+        return self.robot.get_state()
+     
     def get_observations(self):
         obs = self.robot.get_observations()
         values = obs.observations

@@ -1,9 +1,7 @@
-from bootstrapping_olympics.interfaces.agent import AgentInterface
-from bootstrapping_olympics.interfaces.robot import RobotInterface, \
-    RobotObservations
+from . import contract, logger
+from bootstrapping_olympics.interfaces import (RobotInterface, RobotObservations,
+    AgentInterface, ObsKeeper)
 
-from . import contract , logger
-from bootstrapping_olympics.interfaces.observations import ObsKeeper
 
 @contract(id_robot='str', id_agent='str',
           robot=RobotInterface, agent=AgentInterface, max_observations='>=1',
@@ -41,7 +39,8 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations, max_time,
         if check_valid_values:
             obs_spec.check_valid_value(observations['observations'])
             cmd_spec.check_valid_value(observations['commands'])
-        return observations
+            
+        return observations, obs.episode_end
     
     commands = agent.choose_commands() # repeated
     while counter < max_observations:
@@ -50,16 +49,16 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations, max_time,
             cmd_spec.check_valid_value(commands)
         
         robot.set_commands(commands, id_agent)
-        observations = get_observations()
+        observations, episode_end = get_observations()
         
         yield observations
         
         if observations['time_from_episode_start'] > max_time:
             break
-        
-        if robot.episode_ended(): # FIXME: Fishy
+
+        if episode_end: # Fishy
             break
-    
+
         agent.process_observations(observations)
         commands = agent.choose_commands() # repeated
             

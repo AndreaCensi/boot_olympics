@@ -1,3 +1,8 @@
+''' 
+    Contains the less basic operations we want to do on top of the 
+    minimal infrastraccture. 
+''' 
+
 from .. import logger, OptionParser, np, contract
 from .directory_structure import *
 from .data_central import *

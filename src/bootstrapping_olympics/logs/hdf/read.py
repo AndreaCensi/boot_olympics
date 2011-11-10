@@ -2,6 +2,8 @@ from . import logger, np, tables
 from .. import BootStream
 from ... import BootSpec, get_observations_dtype
 from ...utils import yaml_load
+from bootstrapping_olympics.logs.boot_stream import EpisodeSummary
+import os
 
 
 __all__ = ['hdf_list_streams', 'hdf_read']
@@ -16,25 +18,47 @@ def hdf_list_streams(filename):
         streams = []
         for sid in ids:
             table = group._v_children[sid].boot_stream
+            extra = group._v_children[sid].extra
             spec = BootSpec.from_yaml(yaml_load(str(table.attrs['boot_spec'])))
             id_episodes = set(np.unique(table[:]['id_episode']))
             id_agents = set(np.unique(table[:]['commands_source']))
+            
+            episodes_summary = [ episode_summary(table, extra, id_episode) 
+                                for id_episode in id_episodes ]
+                
             num_observations = len(table)
-            bag_file = filename # TODO: change name
             topic = sid
             id_robot = table[0]['id_robot'] 
             timestamp = table[0]['timestamp']
             length = table[-1]['timestamp'] - table[0]['timestamp']
+            
+            filename = os.path.realpath(filename)
             stream = BootStream(id_robot, id_episodes, timestamp, length,
-                                num_observations, bag_file, topic, spec,
-                                id_agents)
+                                num_observations, filename, topic, spec,
+                                id_agents, episodes_summary)
             
             streams.append(stream)
         return streams
     finally:
         f.close()
 
+def episode_summary(boot_stream, extra_table, id_episode):
+    # XXX: do it differently when format change
+    sel = boot_stream[:]['id_episode'] == id_episode
+    stream = boot_stream[sel]
     
+    id_agent = stream[-1]['commands_source'] # XXX
+    id_world = stream[0]['id_world']
+    length = stream[-1]['timestamp'] - stream[0]['timestamp']
+    num_observations = len(stream) 
+    
+    extra_string = str(extra_table[sel][0])
+    extra = yaml_load(extra_string)
+    extras = list(extra.keys())
+    return EpisodeSummary(id_episode, id_agent, id_world, num_observations,
+                           length, extras)
+      
+               
 def hdf_read(filename, id_stream, boot_spec, read_extra=False):
     f = tables.openFile(filename)
     try:

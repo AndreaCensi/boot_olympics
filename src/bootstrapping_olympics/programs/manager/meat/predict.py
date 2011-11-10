@@ -8,7 +8,6 @@ import os
 __all__ = ['task_predict']
 
 
-
 def task_predict(data_central, id_agent, id_robot,
                  interval_print=5):
     ''' Returns the list of the episodes IDs simulated. ''' 
@@ -30,7 +29,7 @@ def task_predict(data_central, id_agent, id_robot,
         compute_errors(sample)
         y_dot_stats.update(sample['y_dot'], sample['y_dot_pred'])
         y_dot_sign_stats.update(sample['y_dot_sign'], sample['y_dot_pred_sign'])
-        print('sample: %s' % (sample['errors']))
+        #print('sample: %s' % (sample['errors']))
         
     basename = 'pred-%s-%s' % (id_agent, id_robot)
     r = Report(basename)

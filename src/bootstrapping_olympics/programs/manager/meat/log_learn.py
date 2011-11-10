@@ -40,14 +40,14 @@ def learn_log(data_central, id_agent, id_robot,
     db = data_central.get_agent_state_db()
 
     # TODO: move this somewhere else
-    if True:
-        from matplotlib import rc
-#        rc('font', **{'family':'sans-serif', 'sans-serif':['Helvetica']})
-        ## for Palatino and other serif fonts use:
-        rc('font', **{'family':'serif', 'serif':['Times', 'Times New Roman',
-                                                 'Palatino'],
-                       'size': 9.0})
-#        rc('text', usetex=True)
+#    if True:
+#        from matplotlib import rc
+##        rc('font', **{'family':'sans-serif', 'sans-serif':['Helvetica']})
+#        ## for Palatino and other serif fonts use:
+#        rc('font', **{'family':'serif', 'serif':['Times', 'Times New Roman',
+#                                                 'Palatino'],
+#                       'size': 9.0})
+##        rc('text', usetex=True)
 
 
     if publish_interval is not None or publish_once:
@@ -56,7 +56,7 @@ def learn_log(data_central, id_agent, id_robot,
                                        id_robot=id_robot,
                                        id_state=state.id_state)
         logger.info('Writing output to directory %r.' % report_dir)
-        publish_agent_output(state, agent, report_dir)
+        publish_agent_output(state, agent, report_dir, basename='once')
 
     
     if publish_once:
@@ -74,7 +74,8 @@ def learn_log(data_central, id_agent, id_robot,
         num_episodes_total += len(stream.id_episodes)
         num_observations_total += stream.num_observations
         to_learn = stream.id_episodes.difference(state.id_episodes)
-        to_learn = to_learn.intersection(episodes)
+        if episodes is not None:
+            to_learn = to_learn.intersection(episodes)
         if to_learn:
             num_episodes_remaining += len(to_learn)
             num_observations_remaining += stream.num_observations 
@@ -97,7 +98,8 @@ def learn_log(data_central, id_agent, id_robot,
     for stream in streams: 
         # Check if all learned
         to_learn = stream.id_episodes.difference(state.id_episodes)
-        to_learn = to_learn.intersection(episodes)
+        if episodes is not None:
+            to_learn = to_learn.intersection(episodes)
         if not to_learn:
             #logger.info('Stream %s already completely learned.' % stream)
             continue
@@ -130,11 +132,20 @@ def learn_log(data_central, id_agent, id_robot,
             
             if publish_interval is not None:
                 if 0 == state.num_observations % publish_interval:
-                    publish_agent_output(state, agent, report_dir)
+                    publish_agent_output(state, agent, report_dir,
+                                         basename='%05d' % state.num_observations)
                     
         state.id_episodes.update(to_learn)
         # Saving agent state
         logger.debug('Saving state (end of stream)')
         state.agent_state = agent.get_state()
         db.set_state(state=state, id_robot=id_robot, id_agent=id_agent) 
+
+    if publish_interval is not None:
+        ds = data_central.get_dir_structure()
+        report_dir = ds.get_report_dir(id_agent=id_agent,
+                                       id_robot=id_robot,
+                                       id_state=state.id_state)
+        logger.info('Writing output to directory %r.' % report_dir)
+        publish_agent_output(state, agent, report_dir, basename='all')
 

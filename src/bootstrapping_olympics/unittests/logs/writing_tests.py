@@ -1,8 +1,7 @@
 from .. import for_all_pairs
-from ...configuration import DirectoryStructure
 from ...interfaces import UnsupportedSpec
 from ...logs import BootStream, LogIndex, LogsFormat
-from ...programs.manager import run_simulation # XXX
+from ...programs.manager import run_simulation, DirectoryStructure # XXX
 from ...utils import isodate_with_secs
 from numpy.testing.utils import assert_equal
 import numpy as np
