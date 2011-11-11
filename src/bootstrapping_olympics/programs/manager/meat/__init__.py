@@ -14,3 +14,4 @@ from .servo import *
 from .publish_output import *
 from .log_learn import *
 from .predict import *
+from .servo_stats import *

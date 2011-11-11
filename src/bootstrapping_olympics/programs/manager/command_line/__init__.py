@@ -17,6 +17,7 @@ from . import c_simulate
 from . import servo
 from . import video
 from . import batch
+from . import servo_stats
 
 from .main import *
 

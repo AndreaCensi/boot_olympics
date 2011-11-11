@@ -52,7 +52,7 @@ def batch_process_manager(data_central, which_sets):
                  os.path.join(root_set, 'logs', 'original'))
      
     storage = data_central_set.get_dir_structure().get_storage_dir()
-    compmake_storage = os.path.join(storage, 'compmake', which_sets[0])
+    compmake_storage = os.path.join(storage, 'compmake')
     logger.debug('Using storage %r.' % compmake_storage)
     use_filesystem(compmake_storage)
 

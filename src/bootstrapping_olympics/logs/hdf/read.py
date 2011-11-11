@@ -4,6 +4,7 @@ from ... import BootSpec, get_observations_dtype
 from ...utils import yaml_load
 from bootstrapping_olympics.logs.boot_stream import EpisodeSummary
 import os
+import time
 
 
 __all__ = ['hdf_list_streams', 'hdf_read']
@@ -82,7 +83,11 @@ def hdf_read(filename, id_stream, boot_spec, read_extra=False):
             if read_extra:
                 extra_string = str(extra[i])
                 assert isinstance(extra_string, str)
+#                t0 = time.clock()
+                
                 observations['extra'] = yaml_load(extra_string)
+#                logger.debug('read string of len %s in %s' % (len(extra_string),
+#                                                              time.clock() - t0))
             else:
                 observations['extra'] = {}
             yield observations

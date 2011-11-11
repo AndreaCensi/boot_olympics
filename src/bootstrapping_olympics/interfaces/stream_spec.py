@@ -164,12 +164,16 @@ class StreamSpec:
                 if not x in s:
                     raise ValueError('Missing entry %r.' % x)
             shape = s.pop('shape')
-            check('list[>0](int,>0)', shape)
+            check('list[>0](int,>0)', shape) # XXX: slow
             format = s.pop('format') #@ReservedAssignment
             range = s.pop('range') #@ReservedAssignment
             extra = s.pop('extra', {})
             filtered = s.pop('filtered', None)
             default = s.pop('default', None)
+            
+            names = s.pop('names', None) # TODO: do something useful with this
+            if names:
+                extra['names'] = names
             
             if s.keys():
                 logger.warning('While reading\n%s\nextra keys detected: %s' % 

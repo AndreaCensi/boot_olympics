@@ -1,11 +1,13 @@
 ''' Fast routines to yaml reading and writing. '''
 
-from . import contract
+from . import contract, logger
 from yaml import load, dump
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
 except ImportError:
+    logger.debug('Could not load C YAML reader. '
+                 'I can continue but everything will be slow.')
     # TODO: write error
     from yaml import Loader, Dumper
 

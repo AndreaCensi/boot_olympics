@@ -7,7 +7,7 @@ def cmd_batch(data_central, argv):
     parser = OptionParser(usage=cmd_batch.short_usage)
     parser.disable_interspersed_args()
     
-    (options, args) = parser.parse_args(argv)
+    (_, args) = parser.parse_args(argv)
     
     which_sets = args
     

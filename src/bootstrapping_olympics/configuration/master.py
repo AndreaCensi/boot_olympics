@@ -8,7 +8,7 @@ import os
 
 class BootConfigMaster(ConfigMaster):
     def __init__(self):
-        ConfigMaster.__init__(self, logger)
+        ConfigMaster.__init__(self, 'BootOlympics')
 
         self.add_class('robots', '*.robots.yaml', check_valid_robot_config,
                        GenericInstance(RobotInterface))

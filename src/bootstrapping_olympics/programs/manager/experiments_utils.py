@@ -6,6 +6,8 @@ from optparse import OptionParser
 import contracts
 import os
 import shutil
+from bootstrapping_olympics.programs.manager.meat.servo_stats import servo_stats_report, \
+    servo_stats_summaries
 
 def experiment_explore_learn_main(proj_root,
                                   explorer, agents, robots,
@@ -118,9 +120,11 @@ def experiment_explore_learn_compmake(data_central,
     if not agents: 
         raise Exception('Please specify at least one agent.')
     
-    logger.info('Creating set for \n robots: %s\n agents: %s' % (robots, agents))
+    logger.info('Creating set for robots: %s\n agents: %s' % (robots, agents))
 
     for id_robot in robots:
+#        id_robot = BootOlympicsConfig.robots.id_from_spec(robot_spec)
+        
         # Divide the simulation in parallel tranches
         num_tranches = int(np.ceil(num_ep_expl * 1.0 / episodes_per_tranche))
         tranches = []
@@ -230,6 +234,14 @@ def experiment_explore_learn_compmake(data_central,
                                 job_id='servo-%s-%s' % (id_robot, id_agent),
                                 extra_dep=all_tranches)
                 
+                summaries = comp(servo_stats_summaries, data_central, id_agent, id_robot,
+                                 job_id='servo-summary-%s-%s' % (id_robot, id_agent),
+                                 extra_dep=all_servo)    
+                
+                comp(servo_stats_report, data_central, id_agent, id_robot, summaries,
+                     job_id='servo-report-%s-%s' % (id_robot, id_agent))
+
+
                 # todo: temporary videos
                 for i in range(num_ep_serv_v):
                     comp(create_video,

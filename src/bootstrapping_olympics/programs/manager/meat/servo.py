@@ -148,6 +148,8 @@ def servoing_episode(id_robot, robot,
         
         servoing = dict(obs0=obs0.tolist(),
                         pose0=to_yaml('SE3', pose0),
+                        poseK=to_yaml('SE3', robot_pose()),
+                        obsK=observations['observations'].tolist(),
                         displacement=displacement,
                         cmd0=cmd0.tolist(),
                         pose1=to_yaml('SE3', pose1))

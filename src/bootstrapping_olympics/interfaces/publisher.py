@@ -59,8 +59,9 @@ class Publisher:
                     pylab.plot(y_min, label='y_min')
                     pylab.legend()
         ''' 
+        
     # TODO: make this abstract   
-    def section(self, section_name):
+    def section(self, section_name, cols=None):
         return Section(self, section_name)
 
 
