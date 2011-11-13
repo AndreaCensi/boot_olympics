@@ -5,7 +5,7 @@ from ..meat import task_predict
                  "predict  -a <agent> -r <robot> ")
 def cmd_task_predict(data_central, argv):
     '''Simulate the interaction of an agent and a robot. ''' 
-    parser = OptionParser(usage=cmd_task_predict.__doc__)
+    parser = OptionParser(prog='predict', usage=cmd_task_predict.__doc__)
     parser.disable_interspersed_args()
     parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
     parser.add_option("-r", "--robot", dest='robot', help="Robot ID")

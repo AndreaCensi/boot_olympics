@@ -5,7 +5,7 @@ from . import check_no_spurious, logger, OptionParser, declare_command
 def cmd_list_logs(data_central, argv):
     '''Shows information about every log. '''
     
-    parser = OptionParser(usage=cmd_list_logs.short_usage)
+    parser = OptionParser(prog='list-logs', usage=cmd_list_logs.short_usage)
     parser.disable_interspersed_args()
     parser.add_option("-R", dest='refresh', action='store_true',
                       default=False,

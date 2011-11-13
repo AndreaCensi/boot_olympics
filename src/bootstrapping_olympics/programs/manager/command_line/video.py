@@ -4,7 +4,7 @@ from ..meat import create_video
 @declare_command('video', 'video -a <agent> -r <robot> [-z zoom]')
 def cmd_video(data_central, argv):
     '''Runs the learning for a given agent and log. ''' 
-    parser = OptionParser(usage=cmd_video.short_usage)
+    parser = OptionParser(prog='video', usage=cmd_video.short_usage)
     parser.disable_interspersed_args()
     parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
     parser.add_option("-r", "--robot", dest='robot', help="Robot ID") 

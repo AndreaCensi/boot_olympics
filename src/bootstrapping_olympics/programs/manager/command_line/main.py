@@ -21,11 +21,13 @@ ${commands_list}
 Use: `${cmd}  <command> -h' to get more information about that command.  
 """ 
 
-def boot_olympics_manager(args):
+
+
+def boot_olympics_manager(arguments):
     usage = substitute(usage_pattern, commands_list=commands_list,
                        cmd='boot_olympics_manager')
-    
-    parser = OptionParser(usage=usage)
+
+    parser = OptionParser(prog='boot_olympics_manager', usage=usage)
     parser.disable_interspersed_args()
     parser.add_option("-d", dest='boot_root',
                       default=DirectoryStructure.DEFAULT_ROOT,
@@ -45,7 +47,7 @@ def boot_olympics_manager(args):
 #
 #    parser.add_option("-c", action="callback", callback=my_callback)
 
-    (options, args) = parser.parse_args()
+    (options, args) = parser.parse_args(arguments)
     
     if not args:
         msg = ('Please supply command. Available: %s' 

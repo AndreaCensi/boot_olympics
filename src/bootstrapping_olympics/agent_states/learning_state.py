@@ -32,12 +32,15 @@ class LearningStateDB(object):
     
     def __init__(self, datadir):
         datadir = expand_environment(datadir)
+            
+        #dbdir = os.path.join(datadir, 'agent_states')
+        dbdir = datadir
+        logger.debug('Using dir %r as directory.' % dbdir)
+
         if not os.path.exists(datadir):
             os.makedirs(datadir)
-            
-        dbdir = os.path.join(datadir, 'agent_states')
-        logger.debug('Using dir %r as directory.' % dbdir)
-        self.storage = StorageFilesystem(dbdir)
+
+        self.storage = StorageFilesystem(datadir)
         
     def list_states(self):
 #        logger.debug('Keys: %s' % [ key2tuple(x) for x in  self.storage.keys()])

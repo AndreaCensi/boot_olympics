@@ -4,7 +4,7 @@ from ..meat import simulate
 @declare_command('simulate', 'simulate -a <agent> -r <robot> [options]')
 def cmd_simulate(data_central, argv):
     '''Simulate the interaction of an agent and a robot. ''' 
-    parser = OptionParser(usage=cmd_simulate.__doc__)
+    parser = OptionParser(prog='simulate', usage=cmd_simulate.__doc__)
     parser.disable_interspersed_args()
     parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
     parser.add_option("-r", "--robot", dest='robot', help="Robot ID")

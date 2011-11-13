@@ -13,6 +13,21 @@
         range: [-1,+1]
         default: [0]
 
+- id: random_2_3
+  desc: 'Random robot (2D observations)'
+  code:
+  - bootstrapping_olympics.examples.RandomRobot
+  - boot_spec:
+      observations:
+        shape: [2,3]
+        format: C
+        range: [0,1]
+      commands:
+        shape: [1]
+        format: C
+        range: [-1,+1]
+        default: [0]
+
 - id: random_nuis
   desc: "A perturbed version of the random robot."
   code:

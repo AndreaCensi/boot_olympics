@@ -1,5 +1,5 @@
 from . import contract, np
-from ...interfaces import StreamSpec, RepresentationNuisance
+from ...interfaces import StreamSpec, RepresentationNuisance, UnsupportedSpec
 
 __all__ = ['RandomPermutation']
 
@@ -18,6 +18,9 @@ class RandomPermutation(RepresentationNuisance):
     @contract(stream_spec=StreamSpec)
     def transform_spec(self, stream_spec):
         # XXX: only allow 1D
+        if 1 != len(stream_spec.shape()):
+            raise UnsupportedSpec('Permutation only works with 1D signals.')
+        
         n = stream_spec.size()
         self.perm = random_permutation(n, self.seed)
         if self.inverted:

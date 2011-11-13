@@ -6,7 +6,7 @@ from ..meat import learn_log
                 'learn-log -a <AGENT> -r <ROBOT>  [--reset] [--publish interval] [--once]')    
 def cmd_learn_log(data_central, argv):
     '''Runs the learning for a given agent and log. ''' 
-    parser = OptionParser(usage=cmd_learn_log.short_usage)
+    parser = OptionParser(prog='learn-log', usage=cmd_learn_log.short_usage)
     parser.disable_interspersed_args()
     parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
     parser.add_option("-r", "--robot", dest='robot', help="Robot ID")

@@ -51,7 +51,7 @@ def check_basic_operations(id_agent, id_robot):
         learn_log(data_central, id_robot=id_robot, id_agent=id_agent)
         
         task_servo(data_central, id_agent, id_robot,
-                   max_episode_len=10,
+                   max_episode_len=1,
                    num_episodes=1,
                    displacement=1,
                    id_episodes=None,

@@ -4,7 +4,7 @@ from pprint import pformat
 @declare_command('list-agents', 'list-agents [-v]')
 def cmd_list_agents(data_central, argv):
     '''Shows a summary of the agents in the configuration. '''
-    parser = OptionParser(usage=cmd_list_agents.short_usage)
+    parser = OptionParser(prog='list-agents', usage=cmd_list_agents.short_usage)
     parser.disable_interspersed_args()
     parser.add_option("-v", dest='verbose', default=False, action='store_true',
                       help="Show more verbose output.") 

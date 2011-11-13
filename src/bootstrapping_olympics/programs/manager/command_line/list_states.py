@@ -4,7 +4,7 @@ from contracts import describe_value
 @declare_command('list-states', 'list-states [-v]')
 def cmd_list_states(data_central, argv):
     '''Shows a summary of the states present in DB. '''
-    parser = OptionParser(usage=cmd_list_states.short_usage)
+    parser = OptionParser(prog='list-states', usage=cmd_list_states.short_usage)
     parser.disable_interspersed_args()
     parser.add_option("-v", dest='verbose', default=False, action='store_true',
                       help="Show more verbose output.") 

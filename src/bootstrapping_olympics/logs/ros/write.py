@@ -4,7 +4,8 @@ from bootstrapping_olympics.logs.ros.ros_conversions import observations2ros
 import os
 
 class BagLogWriter():
-    
+    # TODO: compress the bag
+        
     def __init__(self, filename, id_stream, boot_spec):
         from ros import rosbag #@UnresolvedImport
         assert isinstance(boot_spec, BootSpec)
@@ -14,7 +15,8 @@ class BagLogWriter():
         self.boot_spec = boot_spec
         self.topic = id_stream
         self.tmp_filename = filename + '.active'
-        self.bag = rosbag.Bag(self.tmp_filename, 'w')
+        self.bag = rosbag.Bag(self.tmp_filename, 'w',
+                              compression=rosbag.Compression.BZ2)
         self.num = 0
         
     @contract(observations='array')

@@ -1,6 +1,7 @@
 from .. import all_nuisances, for_all_robots
 from ... import BootOlympicsConfig, StreamSpec
 from numpy.testing.utils import assert_allclose
+from bootstrapping_olympics.interfaces.agent import UnsupportedSpec
 
 
 @for_all_robots
@@ -15,7 +16,11 @@ def check_nuisances(id_robot, robot):
 def check_conversions(stream_spec1, nuisance):
     nuisance_inv = nuisance.inverse()
     try:
-        stream_spec2 = nuisance.transform_spec(stream_spec1)
+        try:
+            stream_spec2 = nuisance.transform_spec(stream_spec1)
+        except UnsupportedSpec as e:
+            print(e)
+            return
         stream_spec1b = nuisance_inv.transform_spec(stream_spec2)
         StreamSpec.check_same_spec(stream_spec1, stream_spec1b)
         
