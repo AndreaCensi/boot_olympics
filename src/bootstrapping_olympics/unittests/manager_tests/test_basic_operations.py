@@ -8,6 +8,7 @@ from geometry.basic_utils import assert_allclose
 import os
 from bootstrapping_olympics.programs.manager.meat.servo import task_servo
 from bootstrapping_olympics.programs.manager.meat.predict import task_predict
+from bootstrapping_olympics.logs.logs_format import LogsFormat
 
 
 def check_basic_operations(id_agent, id_robot):
@@ -29,24 +30,29 @@ def check_basic_operations(id_agent, id_robot):
              write_extra=True)
   
         assert not log_index.has_streams_for_robot(id_robot)
-                  
-        ds.set_log_format('h5')
-        simulate_some(2)
-        simulate_some(2)
-        ds.set_log_format('bag')
-        simulate_some(2)
-        simulate_some(2)
+
+        formats = LogsFormat.formats.keys()
+        
+        for logs_format in formats:
+            ds.set_log_format(logs_format)
+            simulate_some(2)
+            simulate_some(2)
+
   
         assert not log_index.has_streams_for_robot(id_robot)
         log_index.reindex()
         assert log_index.has_streams_for_robot(id_robot)
-        assert_allclose(len(log_index.get_streams_for_robot(id_robot)), 4) 
-        assert_allclose(len(log_index.get_streams_for(id_robot, id_agent)), 4)
+        assert_allclose(len(log_index.get_streams_for_robot(id_robot)),
+                        2 * len(formats)) 
+        assert_allclose(len(log_index.get_streams_for(id_robot, id_agent)),
+                        2 * len(formats))
 
         log_index.get_robot_spec(id_robot)
         
-        assert_allclose(len(log_index.get_episodes_for_robot(id_robot)), 8)
-        assert_allclose(len(log_index.get_episodes_for_robot(id_robot, id_agent)), 8)
+        assert_allclose(len(log_index.get_episodes_for_robot(id_robot)),
+                        4 * len(formats))
+        assert_allclose(len(log_index.get_episodes_for_robot(id_robot, id_agent)),
+                        4 * len(formats))
         
         learn_log(data_central, id_robot=id_robot, id_agent=id_agent)
         

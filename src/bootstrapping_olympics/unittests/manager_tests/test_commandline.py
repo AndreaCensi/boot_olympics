@@ -6,6 +6,7 @@ from geometry.basic_utils import assert_allclose
 import os
 from bootstrapping_olympics.programs.manager.command_line.main import boot_olympics_manager
 from bootstrapping_olympics.unittests.tests_generation import for_all_pairs
+from bootstrapping_olympics.logs.logs_format import LogsFormat
 
 @for_all_pairs
 def check_basic_operations_cmdline(id_agent, agent, id_robot, robot):
@@ -19,31 +20,25 @@ def check_basic_operations_cmdline(id_agent, agent, id_robot, robot):
             boot_olympics_manager(arguments)
         
         
-            
-        
         assert not log_index.has_streams_for_robot(id_robot)
-                  
-        execute_command('--logformat', 'h5',
-                        'simulate', '-a', id_agent, '-r', id_robot,
-                         '--num_episodes', '2', '--episode_len', '2')
-        execute_command('--logformat', 'h5',
-                        'simulate', '-a', id_agent, '-r', id_robot,
-                         '--num_episodes', '2', '--episode_len', '2')
+        formats = LogsFormat.formats.keys()
         
-        execute_command('--logformat', 'bag',
-                        'simulate', '-a', id_agent, '-r', id_robot,
-                         '--num_episodes', '2', '--episode_len', '2')
-        execute_command('--logformat', 'bag',
-                        'simulate', '-a', id_agent, '-r', id_robot,
-                         '--num_episodes', '2', '--episode_len', '2')
-        
+        for logs_format in formats:
+            execute_command('--logformat', logs_format,
+                            'simulate', '-a', id_agent, '-r', id_robot,
+                             '--num_episodes', '2', '--episode_len', '2')
+            execute_command('--logformat', logs_format,
+                            'simulate', '-a', id_agent, '-r', id_robot,
+                             '--num_episodes', '2', '--episode_len', '2')
+            
         assert not log_index.has_streams_for_robot(id_robot)
         log_index.reindex()
         assert log_index.has_streams_for_robot(id_robot)
-        assert_allclose(len(log_index.get_streams_for_robot(id_robot)), 4) 
-        assert_allclose(len(log_index.get_streams_for(id_robot, id_agent)), 4)
-        assert_allclose(len(log_index.get_episodes_for_robot(id_robot)), 8)
-        assert_allclose(len(log_index.get_episodes_for_robot(id_robot, id_agent)), 8)
+        n = len(formats)
+        assert_allclose(len(log_index.get_streams_for_robot(id_robot)), 2 * n) 
+        assert_allclose(len(log_index.get_streams_for(id_robot, id_agent)), 2 * n)
+        assert_allclose(len(log_index.get_episodes_for_robot(id_robot)), 4 * n)
+        assert_allclose(len(log_index.get_episodes_for_robot(id_robot, id_agent)), 4 * n)
         
 
         execute_command('learn-log', '-a', id_agent, '-r', id_robot)
