@@ -33,7 +33,6 @@ class RobotObservations:
               where we need to know the pose of the robot for assessing
               performance.
         '''
-        
         self.timestamp = timestamp
         self.observations = observations
         self.commands = commands
@@ -70,14 +69,15 @@ class RobotInterface:
         '''
 
     @abstractmethod
+    @contract(commands='array', commands_source='str')
     def set_commands(self, commands, commands_source):
-        pass
+        ''' Send the given commands. '''
     
     @abstractmethod
     @contract(returns=RobotObservations)
     def get_observations(self):
         ''' Get observations. Must return an instance of RobotObservations. '''
-        pass
+        
     
     @contract(returns='None|dict')
     def get_state(self):

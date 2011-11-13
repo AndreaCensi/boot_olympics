@@ -18,6 +18,7 @@ def check_basic_operations_cmdline(id_agent, agent, id_robot, robot):
             arguments = ['-d', root] + list(args)
             boot_olympics_manager(arguments)
         
+        
             
         
         assert not log_index.has_streams_for_robot(id_robot)
@@ -52,9 +53,25 @@ def check_basic_operations_cmdline(id_agent, agent, id_robot, robot):
         
         execute_command('predict', '-a', id_agent, '-r', id_robot)
 
+        execute_command('list-logs')
+        execute_command('list-logs', '-e')
+        execute_command('list-logs', '-l')
+        execute_command('list-logs', '-s')
+        
+        execute_command('list-logs', '-R')
+
         # TODO: publish
+        #execute_command('batch') # TODO: test batch
         
 
+        
+        execute_command('list-agents')
+        execute_command('list-agents', '-v')
+        execute_command('list-robots')
+        execute_command('list-robots', '-v')
+        execute_command('list-states')
+        execute_command('list-states', '-v')
+        
 @contextmanager
 def create_tmp_dir():
     root = mkdtemp()

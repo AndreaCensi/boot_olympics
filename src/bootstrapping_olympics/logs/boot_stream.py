@@ -1,18 +1,21 @@
 import os
 from . import contract
+from contracts.interface import describe_value
 
 __all__ = ['BootStream', 'EpisodeSummary']
 
 class EpisodeSummary:
     @contract(id_episode='str', id_agent='str', id_world='str',
-              extras='list(str)', timestamp='float', length='>0')
+              extras='list(str)', timestamp='float', length='>0',
+              num_observations='int,>0')
     def __init__(self, id_episode, id_agent, id_world, num_observations,
                        length, extras, timestamp):
         self._id_episode = id_episode
         self._id_agent = id_agent
         self._id_world = id_world
         self._extras = extras
-        self._timestamp = timestamp 
+        self._timestamp = timestamp  
+        
         self._length = length
         self._num_observations = num_observations
 
@@ -23,13 +26,13 @@ class EpisodeSummary:
         return self._id_agent
     
     def get_timestamp(self):
-        self._timestamp
+        return self._timestamp
 
     def get_length(self):
-        self._length
+        return self._length
     
     def get_num_observations(self):
-        self._num_observations
+        return self._num_observations
 
     def __str__(self):
         return ('Episode(%s,%s,%s,%ss,%s)' % 
@@ -39,8 +42,6 @@ class EpisodeSummary:
 class BootStream(object):
     ''' This class represents the structure used in the .bag index. '''
     
-    # TODO: clear up this, use '_' for all private variables.
-    
     @contract(summaries='list')
     def __init__(self, id_robot, filename, topic, spec, summaries):
         self._id_robot = id_robot
@@ -49,21 +50,20 @@ class BootStream(object):
         self._id_episodes = set([x.get_id_episode() for x in self._episodes]) 
         self._id_agents = set([x.get_id_agent() for x in self._episodes])
         self._timestamp = min([x.get_timestamp() for x in self._episodes])
-        # FIXME: find this bug
-        # print [x.get_length() for x in self._episodes]
-        # self._length = sum([x.get_length() for x in self._episodes])
-        self._length = 1000
-        self._num_observations = 1000
-        #self._num_observations = sum([x.get_num_observations() 
-        #                              for x in self._episodes])
-        # TODO: change with id_stream, filename
+            
+        self._length = sum([x.get_length() for x in self._episodes])
+        self._num_observations = sum([x.get_num_observations() for x in self._episodes])
+        
         self._filename = filename
         self._topic = topic
 
         # Visualization only
         self._short_file = os.path.splitext(os.path.basename(filename))[0]
 
-    #@contract(returns='set(str)') # XXX
+
+    def get_episodes(self):
+        return self._episodes
+    
     def get_id_episodes(self):
         return self._id_episodes
     

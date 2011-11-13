@@ -69,7 +69,6 @@ During offline learning, the data will be written to HTML files.
                               cascades.
                               
         '''
-        pass
     
     @abstractmethod
     def process_observations(self, observations):
@@ -78,12 +77,15 @@ During offline learning, the data will be written to HTML files.
             
             :param:observations: a structure of type Observations
         '''
-        pass
+        
     
+    @abstractmethod
     def choose_commands(self):
-        ''' Chooses commands to be generated; must return a sequence of numbers or array. '''
-        pass
-    
+        ''' 
+            Chooses commands to be generated; must return a sequence 
+            of numbers or array. 
+        '''
+        
     
     def publish(self, publisher):
         ''' 
@@ -125,9 +127,10 @@ During offline learning, the data will be written to HTML files.
                 self.__dict__[v] = state[v]
         self.info('State loaded: %s' % state_vars)
 
+
 class UnsupportedSpec(Exception):
     ''' Thrown by agents if they do not support the spec. '''
-    pass
+    
 
 
 

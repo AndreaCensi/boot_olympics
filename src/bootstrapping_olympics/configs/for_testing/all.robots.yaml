@@ -13,7 +13,7 @@
         range: [-1,+1]
         default: [0]
 
-- id: random_2_3
+- id: random_1_2x3
   desc: 'Random robot (2D observations)'
   code:
   - bootstrapping_olympics.examples.RandomRobot

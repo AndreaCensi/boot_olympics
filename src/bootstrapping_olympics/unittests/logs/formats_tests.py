@@ -30,6 +30,7 @@ def check_basic_operations(id_agent, agent, id_robot, robot):
         stream_orig = log_index.get_streams_for(id_robot, id_agent)[0]
          
         for logs_format, interface in LogsFormat.formats.items():
+            print('Formatting with %r' % logs_format)
             dirname = os.path.join(root, logs_format)
             safe_makedirs(dirname)
             filename = os.path.join(dirname, 'example.%s' % logs_format)
