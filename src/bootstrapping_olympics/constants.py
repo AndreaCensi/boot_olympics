@@ -7,5 +7,6 @@ class BootOlympicsConstants:
     CMD_SOURCE_SERVO_DISPLACEMENT = 'servo_displacement'
     DEFAULT_SIMULATION_DT = 0.1
 
+    DEFAULT_LOG_FORMAT = 'h5'
 
 Constants = BootOlympicsConstants # TODO: remove old name

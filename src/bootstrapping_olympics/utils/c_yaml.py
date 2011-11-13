@@ -19,3 +19,8 @@ def yaml_load(yaml_string):
 @contract(returns='str')
 def yaml_dump(ob):
     return dump(ob, Dumper=Dumper)
+
+@contract(returns='str')
+def yaml_dump_inline(ob):
+    ''' Writes in the inline style. E.g. "{a: 1}" instead of 'a: 1'. '''
+    return dump(ob, Dumper=Dumper, default_flow_style=True)

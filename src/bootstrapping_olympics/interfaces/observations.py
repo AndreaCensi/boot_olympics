@@ -59,25 +59,42 @@ class ObsKeeper:
         self.boot_spec = boot_spec 
         self.dtype = get_observations_dtype(boot_spec)  
         self.id_robot = id_robot
-        
-    def new_episode_started(self, id_episode, id_world):
-        self.id_episode = id_episode
-        self.id_world = id_world
-        self.counter = 0
-        self.timestamp_start = None
-        self.episode_started = True
-        self.observations = None
-        self.last_observations = None
+        self.id_episode = None
+#        
+#    def new_episode_started(self, id_episode, id_world):
+#        self.id_episode = id_episode
+#        self.id_world = id_world
+#        self.counter = 0
+#        self.timestamp_start = None
+#        self.episode_started = True
+#        self.observations = None
+#        self.last_observations = None
+#                
         
     @contract(timestamp='number', observations='array', commands='array',
               commands_source='str')
-    def push_data(self, timestamp, observations, commands, commands_source):
-        if not self.episode_started:
-            msg = 'Episode not started yet.' 
-            raise ValueError(msg)
-        if  self.timestamp_start is  None:
-            self.timestamp_start = timestamp
+    def push(self, timestamp, observations, commands, commands_source,
+                   id_episode, id_world):
+        ''' Returns the observations structure. '''
         
+        if self.id_episode != id_episode:
+            self.id_episode = id_episode
+            self.id_world = id_world
+            self.counter = 0
+            self.timestamp_start = timestamp
+            self.episode_started = True
+            self.observations = None
+            self.last_observations = None
+            
+        # TODO: check timestamp order 
+        
+#        if not self.episode_started:
+#            msg = 'Episode not started yet.' 
+#            raise ValueError(msg)
+#        if  self.timestamp_start is  None:
+#            self.timestamp_start = timestamp
+        
+        # TODO: add option here
         self.boot_spec.get_observations().check_valid_value(observations)
         self.boot_spec.get_commands().check_valid_value(commands)
             
@@ -102,15 +119,14 @@ class ObsKeeper:
             
         x['extra'] = None
         
-        self.observations = x
         self.last_observations = x
-        
         self.counter += 1
-        
-        
-    def get_observations(self):
-        if self.observations is None:
-            msg = 'No data pushed yet.'
-            raise ValueError(msg)
-        return self.observations
-        
+
+        return x
+#        
+#    def get_observations(self):
+#        if self.observations is None:
+#            msg = 'No data pushed yet.'
+#            raise ValueError(msg)
+#        return self.observations
+#        

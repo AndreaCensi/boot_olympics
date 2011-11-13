@@ -3,7 +3,7 @@ from . import contract
 
 class InAWhile:
     
-    @contract(interval='>0')
+    @contract(interval='None|>0')
     def __init__(self, interval=5):
         self.count = 0
         self.start = time.time()
@@ -14,6 +14,9 @@ class InAWhile:
     def its_time(self):
         self.count += 1
         self.now = time.time()
+        
+        if self.interval is None:
+            return False
         
         if self.now >= self.last + self.interval:
             self.last = self.now

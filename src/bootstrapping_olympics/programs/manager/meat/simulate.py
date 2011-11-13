@@ -4,6 +4,7 @@ from ....logs import LogsFormat
 from ....utils import InAWhile, isodate_with_secs, natsorted
 import logging
 from . import run_simulation
+from bootstrapping_olympics.programs.manager.meat.directory_structure import DirectoryStructure
 
 def simulate(data_central, id_agent, id_robot,
              max_episode_len,
@@ -46,8 +47,10 @@ def simulate(data_central, id_agent, id_robot,
         
         
     ds = data_central.get_dir_structure()
+    assert isinstance(ds, DirectoryStructure)
+    
     id_stream = '%s-%s-%s' % (id_robot, id_agent, isodate_with_secs())
-    filename = ds.get_simlog_hdf_filename(id_robot=id_robot,
+    filename = ds.get_simlog_filename(id_robot=id_robot,
                                           id_agent=id_agent,
                                           id_stream=id_stream)
     logger.info('Creating stream %r\n in file %r' % (id_stream, filename))

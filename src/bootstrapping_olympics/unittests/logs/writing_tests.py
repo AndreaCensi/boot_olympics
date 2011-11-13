@@ -1,12 +1,13 @@
+from . import np
 from .. import for_all_pairs
 from ...interfaces import UnsupportedSpec
 from ...logs import BootStream, LogIndex, LogsFormat
 from ...programs.manager import run_simulation, DirectoryStructure # XXX
 from ...utils import isodate_with_secs
 from numpy.testing.utils import assert_equal
-import numpy as np
 import shutil
 import tempfile
+
 
 @for_all_pairs
 def check_writing_logs(id_agent, agent, id_robot, robot):
@@ -18,7 +19,7 @@ def check_writing_logs(id_agent, agent, id_robot, robot):
     root = tempfile.mkdtemp()
     ds = DirectoryStructure(root)
     id_stream = isodate_with_secs()
-    filename = ds.get_simlog_hdf_filename(id_agent, id_robot, id_stream) # XXX
+    filename = ds.get_simlog_filename(id_agent, id_robot, id_stream) 
     
     written = []
     written_extra = []
@@ -54,7 +55,7 @@ def check_writing_logs(id_agent, agent, id_robot, robot):
     stream = streams[0]
     assert isinstance(stream, BootStream)
     
-    assert stream.spec == robot.get_spec()
+    assert stream.get_spec() == robot.get_spec()
 
     read_back = []
     read_back_extra = []

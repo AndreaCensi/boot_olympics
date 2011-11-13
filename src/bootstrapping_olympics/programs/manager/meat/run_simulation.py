@@ -18,7 +18,9 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations, max_time,
     
     if id_episode is None:
         id_episode = episode.id_episode
-    keeper.new_episode_started(id_episode, episode.id_environment)
+    id_world = episode.id_environment
+    
+    #keeper.new_episode_started(id_episode, episode.id_environment)
     counter = 0
     obs_spec = robot.get_spec().get_observations()
     cmd_spec = robot.get_spec().get_commands()
@@ -32,9 +34,12 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations, max_time,
             obs_spec.check_valid_value(obs.observations)
             cmd_spec.check_valid_value(obs.commands)
         
-        keeper.push_data(obs.timestamp, obs.observations, obs.commands,
-                         obs.commands_source)
-        observations = keeper.get_observations()
+        observations = keeper.push(timestamp=obs.timestamp,
+                                   observations=obs.observations,
+                                   commands=obs.commands,
+                                   commands_source=obs.commands_source,
+                                   id_episode=id_episode,
+                                   id_world=id_world)
         
         if check_valid_values:
             obs_spec.check_valid_value(observations['observations'])

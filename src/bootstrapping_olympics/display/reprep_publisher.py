@@ -2,8 +2,7 @@ from . import contract
 from ..interfaces import Publisher
 from contextlib import contextmanager
 from reprep import MIME_PYTHON, Report
-from boot_agents.diffeo.analysis.compress.similarity_analysis import zoom
-
+ 
 __all__ = ['ReprepPublisher']
 
 class ReprepPublisher(Publisher):

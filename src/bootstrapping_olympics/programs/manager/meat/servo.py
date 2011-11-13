@@ -1,19 +1,19 @@
 from . import load_agent_state, logger, contract, np
+from .... import BootOlympicsConstants
 from ....interfaces import RobotInterface, RobotObservations, ObsKeeper
 from ....logs import LogsFormat
 from ....utils import InAWhile, isodate_with_secs, natsorted
-#from geometry import SE3, SE3_from_SE2, SE2_from_translation_angle
 from geometry.yaml import to_yaml
-from .... import BootOlympicsConstants
+#from geometry import SE3, SE3_from_SE2, SE2_from_translation_angle
 
-@contract(interval_print='>=0')
+@contract(interval_print='None|>=0')
 def task_servo(data_central, id_agent, id_robot,
                max_episode_len,
                num_episodes,
                displacement,
                id_episodes=None, # if None, just use the ID given by the world
                cumulative=False,
-               interval_print=5,
+               interval_print=None,
                num_episodes_with_robot_state=0):
     ''' Returns the list of the episodes IDs simulated. '''
     
@@ -41,7 +41,7 @@ def task_servo(data_central, id_agent, id_robot,
           
     ds = data_central.get_dir_structure()
     id_stream = '%s-%s-%s-servo' % (id_robot, id_agent, isodate_with_secs())
-    filename = ds.get_simlog_hdf_filename(id_robot=id_robot,
+    filename = ds.get_simlog_filename(id_robot=id_robot,
                                           id_agent=id_agent,
                                           id_stream=id_stream)
     logger.info('Creating stream %r\n in file %r' % (id_stream, filename))
@@ -146,13 +146,19 @@ def servoing_episode(id_robot, robot,
                            id_environment=episode.id_environment):            
         # bk.observations(observations) XXX
         
+        def represent_pose(x):
+            if x is None:
+                return x
+            else:
+                return to_yaml('SE3', x)
+        
         servoing = dict(obs0=obs0.tolist(),
-                        pose0=to_yaml('SE3', pose0),
-                        poseK=to_yaml('SE3', robot_pose()),
+                        pose0=represent_pose(pose0),
+                        poseK=represent_pose(robot_pose()),
                         obsK=observations['observations'].tolist(),
                         displacement=displacement,
                         cmd0=cmd0.tolist(),
-                        pose1=to_yaml('SE3', pose1))
+                        pose1=represent_pose(pose1))
         extra = dict(servoing=servoing)
         
         if save_robot_state:
@@ -217,7 +223,7 @@ def servoing_episode(id_robot, robot,
         
 class BookkeepingServo():
     ''' Simple class to keep track of how many we have to simulate. '''
-    @contract(interval_print='>=0')
+    @contract(interval_print='None|>=0')
     def __init__(self, data_central, id_robot, id_agent, num_episodes,
                  cumulative=True, interval_print=5):
         self.data_central = data_central
@@ -279,6 +285,7 @@ class BookkeepingServo():
         return self.num_episodes_done < self.num_episodes_todo
 
 
+# FIXME: should be the same as run_simulation()
 
 @contract(id_robot='str', id_agent='str',
           robot=RobotInterface, max_observations='>=1',
@@ -291,7 +298,9 @@ def run_simulation_servo(id_robot, robot, id_agent, agent,
         init()ed. '''
     
     keeper = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
-    keeper.new_episode_started(id_episode, id_environment)
+    
+    #keeper.new_episode_started(id_episode, id_environment)
+    
     obs_spec = robot.get_spec().get_observations()
     cmd_spec = robot.get_spec().get_commands()
     
@@ -302,9 +311,12 @@ def run_simulation_servo(id_robot, robot, id_agent, agent,
             obs_spec.check_valid_value(obs.observations)
             cmd_spec.check_valid_value(obs.commands)
         
-        keeper.push_data(obs.timestamp, obs.observations, obs.commands,
-                         obs.commands_source)
-        observations = keeper.get_observations()
+        observations = keeper.push(timestamp=obs.timestamp,
+                                   observations=obs.observations,
+                                   commands=obs.commands,
+                                   commands_source=obs.commands_source,
+                                   id_episode=id_episode,
+                                   id_world=id_environment)
         
         if check_valid_values:
             obs_spec.check_valid_value(observations['observations'])

@@ -15,3 +15,18 @@ def safe_symlink(source, linkname):
     
     # TODo: check that it was a link
     os.symlink(source, linkname)
+
+
+def mkdirs_thread_safe(dst): 
+    """Make directories leading to 'dst' if they don't exist yet""" 
+    if dst == '' or os.path.exists(dst): 
+        return 
+    head, _ = os.path.split(dst) 
+    if os.sep == ':' and not ':' in head: 
+        head = head + ':' 
+    mkdirs_thread_safe(head) 
+    try: 
+        os.mkdir(dst, 0777) 
+    except OSError as err: 
+        if err.errno != 17: #file exists 
+            raise  

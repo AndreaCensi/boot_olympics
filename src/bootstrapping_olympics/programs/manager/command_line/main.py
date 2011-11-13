@@ -2,6 +2,8 @@ from . import Storage, OptionParser, logger
 from ....utils import wrap_script_entry_point, UserError, substitute
 from ..meat import DataCentral, DirectoryStructure
 import contracts
+from bootstrapping_olympics.logs.logs_format import LogsFormat
+from bootstrapping_olympics.constants import BootOlympicsConstants
 
 
 commands_list = "\n".join([ '  %-15s  %s\n  %-15s  Usage: %s' % 
@@ -30,7 +32,14 @@ def boot_olympics_manager(args):
                       help='Root directory with logs, config, etc. [%default]')
     
     parser.add_option("--contracts", default=False, action='store_true',
-                      help="Activate PyContracts checker (disbaled by default)")
+                      help="Activate PyContracts (disabled by default)")
+
+    available = LogsFormat.formats.keys()
+    parser.add_option("--logformat", dest='log_format',
+                      default=BootOlympicsConstants.DEFAULT_LOG_FORMAT,
+                      help="Choose format for writing logs in %s. [%%default]" 
+                        % str(available))
+
 
 #    def add_log_dir(option, opt, value, parser):
 #
@@ -49,6 +58,7 @@ def boot_olympics_manager(args):
         contracts.disable_all()
     
     # TODO: make more elegant
+    # FIXME: remove this dependency
     try:
         from vehicles import VehiclesConfig
         VehiclesConfig.load()
@@ -57,6 +67,7 @@ def boot_olympics_manager(args):
         pass
         
     data_central = DataCentral(options.boot_root)
+    data_central.get_dir_structure().set_log_format(options.log_format)
     # TODO: additional directories
     # TODO: read from environment variables    
     

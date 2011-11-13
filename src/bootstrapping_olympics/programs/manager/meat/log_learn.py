@@ -71,14 +71,15 @@ def learn_log(data_central, id_agent, id_robot,
     num_observations_remaining = 0
     for stream in streams:
         # Check if all learned
-        num_episodes_total += len(stream.id_episodes)
-        num_observations_total += stream.num_observations
-        to_learn = stream.id_episodes.difference(state.id_episodes)
+        stream_episodes = stream.get_id_episodes()
+        num_episodes_total += len(stream_episodes)
+        num_observations_total += stream.get_num_observations()
+        to_learn = stream_episodes.difference(state.id_episodes)
         if episodes is not None:
             to_learn = to_learn.intersection(episodes)
         if to_learn:
             num_episodes_remaining += len(to_learn)
-            num_observations_remaining += stream.num_observations 
+            num_observations_remaining += stream.get_num_observations() 
     
     template = '%20s: %7d episodes, %7d observations.'
     logger.info(template % ('total',
@@ -97,7 +98,7 @@ def learn_log(data_central, id_agent, id_robot,
 
     for stream in streams: 
         # Check if all learned
-        to_learn = stream.id_episodes.difference(state.id_episodes)
+        to_learn = stream.get_id_episodes().difference(state.id_episodes)
         if episodes is not None:
             to_learn = to_learn.intersection(episodes)
         if not to_learn:
@@ -113,7 +114,7 @@ def learn_log(data_central, id_agent, id_robot,
                 progress = 100 * (float(state.num_observations) / 
                                   num_observations_total)
                 progress_log = 100 * (float(cur_stream_observations) / 
-                                      stream.num_observations)
+                                      stream.get_num_observations())
                 msg = ('overall %.2f%% (log %3d%%) (eps: %4d/%d, obs: %4d/%d); '
                        '%5.1f fps' % 
                        (progress, progress_log, len(state.id_episodes),

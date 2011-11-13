@@ -1,7 +1,7 @@
 
 _multiprocess_can_split_ = True # Run parallel tests
 
-from .. import logger
+from .. import logger, np
 from .instantiation import *
 from .tests_generation import *
 from .test_agent import *

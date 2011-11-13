@@ -1,9 +1,9 @@
 from . import logger, np
 from geometry import SE2, SE2_from_SE3, translation_from_SE2, angle_from_SE2
 from reprep import Report # TODO: be safe
+from reprep.plot_utils import x_axis_balanced
 import geometry
 import os
-from bootstrapping_olympics.utils.pylab_axis import x_axis_balanced
 
 
 def servo_stats_summaries(data_central, id_agent, id_robot):

@@ -1,9 +1,11 @@
 from . import BootStream, logger
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 import os
 import pickle
 
 class LogsFormat:
+    __metaclass__ = ABCMeta
+    
     # extension -> LogsFormat
     formats = {}
     
@@ -22,7 +24,7 @@ class LogsFormat:
                 msg += '\n%s' % e
                 os.unlink(cache) 
                 logger.warning(msg)
-                pass
+                
         res = self.index_file(filename)
         for stream in res:
             assert isinstance(stream, BootStream)
@@ -35,14 +37,18 @@ class LogsFormat:
         ''' Yields observations from the stream. '''
 
     @abstractmethod
-    def write_stream(self, filename, id_stream):
+    def read_from_stream(self, filename, id_stream):
+        ''' Yields observations from the stream. '''
+
+    @abstractmethod
+    def write_stream(self, filename, id_stream, boot_spec):
         ''' Yields a writer object (interface TBD). '''
 
     @staticmethod
     def get_reader_for(filename):
         extension = os.path.splitext(filename)[1][1:]
         if not extension in LogsFormat.formats:
-            msg = 'Cannot read %r, no reader for %r' % (filename, extension)
+            msg = 'Cannot read %r, no reader for %r.' % (filename, extension)
             raise ValueError(msg)
         return LogsFormat.formats[extension]
 

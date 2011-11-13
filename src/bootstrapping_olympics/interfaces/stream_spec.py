@@ -4,6 +4,8 @@ from contracts import check, describe_type, describe_value
 from numbers import Number
 from numpy.testing.utils import assert_allclose
 
+class BootInvalidValue(ValueError):
+    pass
 
 class StreamSpec:
 
@@ -69,12 +71,16 @@ class StreamSpec:
     
     @contract(x='array')
     def check_valid_value(self, x):
-        ''' Checks if the value x is valid according to this spec
-            and returns ValueError if it is not. '''
+        ''' 
+            Checks if the value x is valid according to this spec
+            and raises BootInvalidValue (derived from ValueError) if it is not.
+         '''
+        
         def bail(msg):
             msg += '\n  stream: %s' % self
             msg += '\n   value: %s' % describe_value(x)
-            raise ValueError(msg)
+            raise BootInvalidValue(msg)
+        
         def display_some(x, select, max_to_display=4):
             ''' Displays some of the elements in x (array) given
                 by select (array of bool). '''
@@ -112,8 +118,7 @@ class StreamSpec:
         
         # First check all invalids are NaN
         if not np.all(np.isnan(x[invalids])): # XXX: slow
-            msg = 'Not all invalids are set to NaN.'
-            raise ValueError(msg)
+            bail('Not all invalids are set to NaN.')
         
         # Check that all valid are not NaN
         xv = x[valid]
@@ -246,6 +251,8 @@ class StreamSpec:
                           streamels=streamels, extra=extra,
                           filtered=filtered, desc=desc)
 
+    def get_id_stream(self):
+        return self.id_stream
     
 def check_valid_bounds(bounds):
     if not isinstance(bounds, (list, np.ndarray)):

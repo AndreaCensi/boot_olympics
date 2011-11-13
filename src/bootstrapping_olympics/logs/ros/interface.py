@@ -1,5 +1,8 @@
 from . import bag_get_bootstrapping_stream, bag_read
 from .. import LogsFormat
+from . import BagLogWriter
+from contextlib import contextmanager
+import os
 
 class ROSLogsFormat(LogsFormat):
     
@@ -9,12 +12,33 @@ class ROSLogsFormat(LogsFormat):
     
     def read_stream(self, stream, read_extra=False):
         ''' Yields observations from the stream. '''
-        for x in bag_read(stream.bag_file,
-                          stream.topic,
-                          stream.spec,
-                          substitute_id_episode=stream.short_file):
+        if read_extra:
+            raise ValueError('Cannot read extras in ROS format yet.')
+       
+        subst = os.path.splitext(os.path.basename(stream.get_filename()))[0]
+        for x in bag_read(stream.get_filename(),
+                          stream.get_topic(),
+                          stream.get_spec(),
+                          substitute_id_episode=subst): # XXX
             yield x
 
-     
+    def read_from_stream(self, filename, id_stream, read_extra=False):
+        ''' Yields observations from the stream. '''
+        
+        if read_extra:
+            raise ValueError('Cannot read extras in ROS format yet.')
+        
+        subst = os.path.splitext(os.path.basename(filename))[0]
+        for x in bag_read(filename, id_stream, spec=None,
+                          substitute_id_episode=subst): # XXX
+            yield x
 
+    @contextmanager
+    def write_stream(self, filename, id_stream, boot_spec):
+        writer = BagLogWriter(filename, id_stream, boot_spec)
+        try:
+            yield writer
+        finally:
+            writer.close()
+                         
 LogsFormat.formats['bag'] = ROSLogsFormat()

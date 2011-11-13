@@ -43,6 +43,7 @@ class StorageFilesystem:
             if not os.path.exists(self.basepath):
                 os.makedirs(self.basepath)
             
+        # TODO: generalize this
         filename = self.filename_for_key(key)
         filename_new = filename + '.tmp'
         filename_old = filename + '.old'

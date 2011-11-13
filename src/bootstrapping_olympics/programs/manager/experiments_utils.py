@@ -153,10 +153,9 @@ def experiment_explore_learn_compmake(data_central,
             for id_episode in tranchenum2episodes[t]:
                 episode2tranche[id_episode] = tranche
  
-        
-        all_simulations = comp(checkpoint, 'all simulations',
-                                job_id='simulate-%s' % (id_robot),
-                                extra_dep=tranches)
+        comp(checkpoint, 'all simulations',
+                         job_id='simulate-%s' % (id_robot),
+                         extra_dep=tranches)
          
         add_exploration_videos(data_central=data_central,
                                id_robot=id_robot,

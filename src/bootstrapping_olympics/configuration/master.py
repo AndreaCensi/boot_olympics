@@ -34,7 +34,8 @@ class BootConfigMaster(ConfigMaster):
                     logger.info('Using additional dir %r' % dirname)
                     self.load(dirname)             
         else:
-            logger.info('Use env var %s to add predefined config dirs.' % v)
+            logger.debug('You can use the environment variable %r to preload ' 
+                         'the configuration in that directory.' % v)
 
 
     def get_default_dir(self):

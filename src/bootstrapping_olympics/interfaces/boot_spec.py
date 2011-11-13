@@ -1,6 +1,7 @@
 from . import StreamSpec, logger, contract, np
 from contracts import  describe_type
 from pprint import pformat
+from bootstrapping_olympics.utils.dict_utils import check_contained
 
 
 __all__ = ['BootSpec']
@@ -23,31 +24,31 @@ class BootSpec:
             msg = ('Expected StreamSpec for commands, not %s.' % 
                    describe_type(cmd_spec))
             raise ValueError(msg)
-        self.observations = obs_spec
-        self.commands = cmd_spec
+        self._observations = obs_spec
+        self._commands = cmd_spec
 
     @contract(returns=StreamSpec)
     def get_commands(self):
         ''' Returns a StreamSpec instance representing the commands. '''
-        return self.commands
+        return self._commands
     
     @contract(returns=StreamSpec)
     def get_observations(self):
         ''' Returns a StreamSpec instance representing the observations. '''
-        return self.observations
+        return self._observations
     
     def __eq__(self, other):
-        return ((self.commands == other.commands) and 
-                (self.observations == other.observations)) 
+        return ((self._commands == other._commands) and 
+                (self._observations == other._observations)) 
      
-    def reshape_raw_sensels(self, raw): # XXX: remove
-        ''' Transforms the raw 1D sensels in ROS messages to
-            a correctly shaped array.
-        '''
-        return np.array(raw, dtype='float32').reshape(self.sensels_shape)
+#    def reshape_raw_sensels(self, raw): # XXX: remove
+#        ''' Transforms the raw 1D sensels in ROS messages to
+#            a correctly shaped array.
+#        '''
+#        return np.array(raw, dtype='float32').reshape(self.sensels_shape)
          
     def __str__(self):
-        return 'BootSpec(%s,%s)' % (self.observations, self.commands)
+        return 'BootSpec(%s,%s)' % (self._observations, self._commands)
 
     @staticmethod
     def from_yaml(xo):
@@ -55,6 +56,9 @@ class BootSpec:
             if not isinstance(xo, dict):
                 raise ValueError('Expected a dict, got %s' % xo)
             x = dict(**xo) # make a copy
+            
+            check_contained('observations', x)
+            check_contained('commands', x)
             observations = StreamSpec.from_yaml(x.pop('observations'))
             commands = StreamSpec.from_yaml(x.pop('commands'))
             extra = x.pop('extra', None)
@@ -75,8 +79,8 @@ class BootSpec:
         
     def to_yaml(self):
         x = {}
-        x['observations'] = self.observations.to_yaml()
-        x['commands'] = self.commands.to_yaml()
+        x['observations'] = self._observations.to_yaml()
+        x['commands'] = self._commands.to_yaml()
         x['extra'] = self.extra
         x['id'] = self.id_robot
         x['desc'] = self.desc

@@ -9,7 +9,7 @@ __all__ = ['task_predict']
 
 
 def task_predict(data_central, id_agent, id_robot,
-                 interval_print=5):
+                 interval_print=None):
     ''' Returns the list of the episodes IDs simulated. ''' 
     # Instance agent object    
     from boot_agents.utils import PredictionStats # TODO: remove dependency on boot_agents

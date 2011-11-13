@@ -3,6 +3,10 @@ from ....configuration import  BootOlympicsConfig
 from ....utils import expand_environment, substitute
 import os
 import tempfile
+from bootstrapping_olympics.constants import BootOlympicsConstants
+from bootstrapping_olympics.logs.logs_format import LogsFormat
+from bootstrapping_olympics.utils.dict_utils import check_contained
+from bootstrapping_olympics.utils.filesystem_utils import mkdirs_thread_safe
 
 class DirectoryStructure:
     
@@ -13,6 +17,7 @@ class DirectoryStructure:
     DIR_CONFIG = 'config'
     DIR_LOGS = 'logs'
     DIR_STORAGE = 'storage'
+    DIR_STATES = 'states'
     
     def __init__(self, root=None):
         if root is None: 
@@ -23,7 +28,12 @@ class DirectoryStructure:
             msg = 'The root directory %r does not exist.' % self.root
             raise Exception(msg)
         
+        self.log_format = BootOlympicsConstants.DEFAULT_LOG_FORMAT
         
+    def set_log_format(self, log_format):
+        ''' Sets the log format to write logs with. '''
+        check_contained(log_format, LogsFormat.formats, 'format')
+        self.log_format = log_format
      
     def get_config_directories(self):
         dirs = []
@@ -47,9 +57,13 @@ class DirectoryStructure:
         return dirs
     
     def get_state_db_directory(self):
-        return os.path.join(self.root, 'states/')
+        return os.path.join(self.root, self.DIR_STATES)
 
-    def get_simlog_hdf_filename(self, id_agent, id_robot, id_stream):        
+    def get_simlog_filename(self, id_agent, id_robot, id_stream, logs_format=None):
+        if logs_format is None:
+            logs_format = self.log_format
+        check_contained(logs_format, LogsFormat.formats, 'format')
+        
         pattern = 'simulations/${id_robot}/${id_agent}/'
         dirname = os.path.join(self.root, DirectoryStructure.DIR_LOGS,
                                substitute(pattern,
@@ -59,8 +73,8 @@ class DirectoryStructure:
         mkdirs_thread_safe(dirname)
         assert os.path.exists(dirname)
 
-        
-        tmpfile = tempfile.NamedTemporaryFile(suffix='.h5.active', prefix=id_stream,
+        tmpfile = tempfile.NamedTemporaryFile(suffix='.%s.active' % logs_format,
+                                              prefix=id_stream,
                                               dir=dirname, delete=False)
         tmpfile.write('To be used')
         
@@ -111,27 +125,4 @@ class DirectoryStructure:
                                           id_robot=id_robot,
                                           id_episode=id_episode))
         return filename
-#    
-#def mkdirs_thread_safe(dirname):
-#    try: 
-#        os.makedirs(dirname, 0777) 
-#    except OSError, err: 
-#        if err.errno == 17: #file exists 
-#            pass 
-#        else: raise 
-#    
-#    
 
-def mkdirs_thread_safe(dst): 
-    """Make directories leading to 'dst' if they don't exist yet""" 
-    if dst == '' or os.path.exists(dst): 
-        return 
-    head, _ = os.path.split(dst) 
-    if os.sep == ':' and not ':' in head: 
-        head = head + ':' 
-    mkdirs_thread_safe(head) 
-    try: 
-        os.mkdir(dst, 0777) 
-    except OSError as err: 
-        if err.errno != 17: #file exists 
-            raise  

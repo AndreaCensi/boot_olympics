@@ -10,13 +10,13 @@ def cmd_list_logs(data_central, argv):
     parser.add_option("-R", dest='refresh', action='store_true',
                       default=False,
                       help="Ignores global cache.")
-    parser.add_option("-v", dest='display_logs', action='store_true',
+    parser.add_option("-l", dest='display_logs', action='store_true',
                       default=False,
                       help="Displays all logs.")
-    parser.add_option("--vv", dest='display_streams', action='store_true',
+    parser.add_option("-s", dest='display_streams', action='store_true',
                       default=False,
                       help="Displays all streams.")
-    parser.add_option("--vvv", dest='display_episodes', action='store_true',
+    parser.add_option("-e", dest='display_episodes', action='store_true',
                       default=False, help="Displays all episodes.")
     (options, args) = parser.parse_args(argv)
     
@@ -34,16 +34,15 @@ def cmd_list_logs(data_central, argv):
     for robot, streams in index.robots2streams.items():
         print('- robot %r has %d streams.' % (robot, len(streams)))
         if streams:
-            logger.info('  spec: %s' % streams[0].spec)
             total_length = 0
             total_obs = 0
             total_episodes = 0
             agents = set()
             for stream in streams:
-                total_length += stream.length
-                total_obs += stream.num_observations
-                total_episodes += len(stream.id_episodes)
-                agents.update(stream.id_agents)
+                total_length += stream.get_length()
+                total_obs += stream.get_num_observations()
+                total_episodes += len(stream.get_id_episodes())
+                agents.update(stream.get_id_agents())
             print('    total length: %.1f minutes' % 
                         (total_length / 60.0))
             print('  total episodes: %d' % (total_episodes))
@@ -52,7 +51,8 @@ def cmd_list_logs(data_central, argv):
          
         if options.display_logs:
             for stream in streams:
-                print('- %5ds %s' % (stream.length, stream.bag_file))
+                print('- %5ds %s' % (stream.get_length(),
+                                     stream.get_filename()))
             
     if options.display_streams:
         for filename, streams in index.file2streams.items():
@@ -68,6 +68,6 @@ def cmd_list_logs(data_central, argv):
         for robot, streams in index.robots2streams.items():
             for stream in streams:
                 print('%s: %s' % (robot, stream))
-                for episode in stream.episodes:
+                for episode in stream.get_episodes():
                     print('- %s' % episode)
 

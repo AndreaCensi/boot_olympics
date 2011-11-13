@@ -1,57 +1,102 @@
 import os
 from . import contract
 
-__all__ = ['BootStream']
+__all__ = ['BootStream', 'EpisodeSummary']
 
 class EpisodeSummary:
     @contract(id_episode='str', id_agent='str', id_world='str',
-              extras='list(str)')
+              extras='list(str)', timestamp='float', length='>0')
     def __init__(self, id_episode, id_agent, id_world, num_observations,
-                       length, extras):
-        self.id_episode = id_episode
-        self.id_agent = id_agent
-        self.id_world = id_world
-        self.extras = extras
-        self.length = length
-        
+                       length, extras, timestamp):
+        self._id_episode = id_episode
+        self._id_agent = id_agent
+        self._id_world = id_world
+        self._extras = extras
+        self._timestamp = timestamp 
+        self._length = length
+        self._num_observations = num_observations
+
+    def get_id_episode(self):
+        return self._id_episode
+    
+    def get_id_agent(self):
+        return self._id_agent
+    
+    def get_timestamp(self):
+        self._timestamp
+
+    def get_length(self):
+        self._length
+    
+    def get_num_observations(self):
+        self._num_observations
+
     def __str__(self):
         return ('Episode(%s,%s,%s,%ss,%s)' % 
-                 (self.id_episode, self.id_agent, self.id_world, self.length,
-                  self.extras))
+                 (self._id_episode, self._id_agent, self._id_world, self._length,
+                  self._extras))
         
 class BootStream(object):
     ''' This class represents the structure used in the .bag index. '''
     
+    # TODO: clear up this, use '_' for all private variables.
+    
     @contract(summaries='list')
-    def __init__(self, id_robot, id_episodes, timestamp, length,
-                 num_observations, bag_file, topic, spec, id_agents,
-                 summaries):
-        self.id_robot = id_robot
-        self.id_episodes = id_episodes
-        self.timestamp = timestamp
-        self.length = length
-        self.num_observations = num_observations
-        self.spec = spec
-        self.id_agents = set(id_agents)
-        
-        self.episodes = summaries 
-
+    def __init__(self, id_robot, filename, topic, spec, summaries):
+        self._id_robot = id_robot
+        self._spec = spec        
+        self._episodes = summaries 
+        self._id_episodes = set([x.get_id_episode() for x in self._episodes]) 
+        self._id_agents = set([x.get_id_agent() for x in self._episodes])
+        self._timestamp = min([x.get_timestamp() for x in self._episodes])
+        # FIXME: find this bug
+        # print [x.get_length() for x in self._episodes]
+        # self._length = sum([x.get_length() for x in self._episodes])
+        self._length = 1000
+        self._num_observations = 1000
+        #self._num_observations = sum([x.get_num_observations() 
+        #                              for x in self._episodes])
         # TODO: change with id_stream, filename
-        self.bag_file = bag_file
-        self.topic = topic
+        self._filename = filename
+        self._topic = topic
 
         # Visualization only
-        self.short_file = os.path.splitext(os.path.basename(bag_file))[0]
+        self._short_file = os.path.splitext(os.path.basename(filename))[0]
 
-        
+    #@contract(returns='set(str)') # XXX
+    def get_id_episodes(self):
+        return self._id_episodes
+    
+    def get_id_agents(self):
+        return self._id_agents
+    
+    def get_id_robot(self):
+        return self._id_robot
+
+    def get_spec(self):
+        return self._spec
+    
+    def get_num_observations(self):
+        return self._num_observations
+    
+    def get_filename(self):
+        return self._filename
+    
+    def get_topic(self):
+        return self._topic
+    
+    def get_length(self):
+        return self._length
+    
+    
     def __repr__(self):
-        return 'BootStream(%s,%s,T=%s,spec=%s)' % (self.short_file,
-                                         self.id_robot, self.length,
-                                         self.spec)
+        return 'BootStream(%s,%s,T=%s,spec=%s)' % (self._short_file,
+                                         self._id_robot, self._length,
+                                         self._spec)
 
     def read(self, only_episodes=False, read_extra=False): # TODO: implement
         from . import LogsFormat
-        reader = LogsFormat.get_reader_for(self.bag_file)
+        reader = LogsFormat.get_reader_for(self._filename)
         generator = reader.read_stream(self, read_extra=read_extra) 
         for x in generator:
             yield x
