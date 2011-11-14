@@ -2,24 +2,32 @@ from bootstrapping_olympics.agent_states.learning_state import LearningState
 
 from . import logger
 
-def load_agent_state(data_central, id_agent, id_robot, reset_state=False,
+def load_agent_state(data_central, id_agent, id_robot,
+                     reset_state=False,
                      raise_if_no_state=False):
-    ''' Load the agent, loading the agent state from the state_db directory.
-        If the state is not available, then it initializes anew. The
-        problem spec (sensel shape, commands shape) is loaded from the 
-        logs in log_directory. 
+    ''' 
+        Load the agent, loading the agent state from the state_db directory.
+        If the state is not available, then it initializes anew. 
         
-        Returns tuple agent, state.
+        Returns a tuple (agent, state).
     '''
     logger.info('Loading state %s/%s reset=%s ' % (id_agent, id_robot, reset_state))
     agent = data_central.get_bo_config().agents.instance(id_agent) #@UndefinedVariable
 
+    index = data_central.get_log_index()
+    boot_spec = index.get_robot_spec(id_robot)
+    agent.init(boot_spec)
+
+    return load_agent_state_core(data_central, id_agent, agent, id_robot,
+                          reset_state=reset_state,
+                          raise_if_no_state=raise_if_no_state)
+    
+def load_agent_state_core(data_central, id_agent, agent, id_robot,
+                          reset_state=False,
+                          raise_if_no_state=False):
+
     db = data_central.get_agent_state_db()
     key = dict(id_robot=id_robot, id_agent=id_agent)
-    
-    index = data_central.get_log_index()
-    spec = index.get_robot_spec(id_robot)
-    agent.init(spec)
 
     if reset_state:
         state = LearningState(id_robot=id_robot, id_agent=id_agent)

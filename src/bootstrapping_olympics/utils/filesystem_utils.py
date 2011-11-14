@@ -16,7 +16,6 @@ def safe_symlink(source, linkname):
     # TODo: check that it was a link
     os.symlink(source, linkname)
 
-
 def mkdirs_thread_safe(dst): 
     """Make directories leading to 'dst' if they don't exist yet""" 
     if dst == '' or os.path.exists(dst): 
@@ -30,3 +29,12 @@ def mkdirs_thread_safe(dst):
     except OSError as err: 
         if err.errno != 17: #file exists 
             raise  
+
+def make_sure_dir_exists(filename):
+    ''' Makes sure that the path to file exists, but creating directories. '''
+    dirname = os.path.dirname(filename)
+    # dir == '' for current dir
+    if dirname != '' and not os.path.exists(dirname):
+        mkdirs_thread_safe(dirname) 
+        
+        

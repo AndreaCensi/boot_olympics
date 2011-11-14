@@ -4,4 +4,6 @@
 '''
 from .. import logger
 
+from .agents import *
+from .robots import *
 from .master import BootOlympicsConfig

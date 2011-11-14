@@ -3,11 +3,8 @@
 from .. import LogsFormat, logger, np, contract
 
 try:
-    import roslib#@UnresolvedImport
-    logger.debug('Loading ROS libraries...') 
+    import roslib #@UnresolvedImport
     roslib.load_manifest('bootstrapping_adapter') 
-    logger.debug('...done.')
-
 
     from .index import *
     from .ros_conversions import *

@@ -1,6 +1,6 @@
 import os
 from . import contract
-from contracts.interface import describe_value
+
 
 __all__ = ['BootStream', 'EpisodeSummary']
 

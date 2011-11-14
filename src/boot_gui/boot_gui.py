@@ -8,9 +8,7 @@ from wx import MDIParentFrame #@UnresolvedImport
 import subprocess
 import wx
 import yaml
-
-
-
+ 
 
 def fill_combobox(widget, choices):
     widget.Clear()

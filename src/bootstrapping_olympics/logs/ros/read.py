@@ -90,7 +90,7 @@ class ROS2Python():
 #        # obs.dt is useless
         
         # FIXME: we have to do this again :-/
-        # FIXME: at least, filter the doubles
+        # FIXME: at least, filter the doubles and max_dt
         
 #        if self.last_ros_obs is not None:
 #            obs.dt = obs.time - self.last.time
@@ -130,7 +130,4 @@ class ROS2Python():
     
         self.last_ros_obs = ros_obs
  
-        return self.last
-#        self.last = obs
-#        return obs
-    
+        return self.last 

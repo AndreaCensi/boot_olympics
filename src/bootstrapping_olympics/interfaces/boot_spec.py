@@ -1,7 +1,7 @@
-from . import StreamSpec, logger, contract, np
-from contracts import  describe_type
+from . import StreamSpec, logger, contract
+from ..utils import check_contained
+from contracts import describe_type
 from pprint import pformat
-from bootstrapping_olympics.utils.dict_utils import check_contained
 
 
 __all__ = ['BootSpec']
@@ -40,13 +40,7 @@ class BootSpec:
     def __eq__(self, other):
         return ((self._commands == other._commands) and 
                 (self._observations == other._observations)) 
-     
-#    def reshape_raw_sensels(self, raw): # XXX: remove
-#        ''' Transforms the raw 1D sensels in ROS messages to
-#            a correctly shaped array.
-#        '''
-#        return np.array(raw, dtype='float32').reshape(self.sensels_shape)
-         
+              
     def __str__(self):
         return 'BootSpec(%s,%s)' % (self._observations, self._commands)
 

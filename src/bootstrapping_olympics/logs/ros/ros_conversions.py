@@ -1,7 +1,7 @@
 from . import contract
 
 from bootstrapping_adapter.msg import BootstrappingObservations #@UnresolvedImport
-from bootstrapping_olympics.utils.c_yaml import yaml_dump, yaml_dump_inline
+from bootstrapping_olympics.utils.c_yaml import   yaml_dump_inline
 
 class Cache:
     last_robot_spec = None

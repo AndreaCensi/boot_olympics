@@ -1,12 +1,14 @@
-from tempfile import mkdtemp
+from .. import for_all_pairs
+from bootstrapping_olympics.logs import LogsFormat
+from bootstrapping_olympics.programs.manager.command_line.main import (
+    boot_olympics_manager)
+from bootstrapping_olympics.programs.manager.meat.data_central import (
+    DataCentral)
 from contextlib import contextmanager
+from numpy.testing.utils import assert_allclose
 from shutil import rmtree
-from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
-from geometry.basic_utils import assert_allclose
+from tempfile import mkdtemp
 import os
-from bootstrapping_olympics.programs.manager.command_line.main import boot_olympics_manager
-from bootstrapping_olympics.unittests.tests_generation import for_all_pairs
-from bootstrapping_olympics.logs.logs_format import LogsFormat
 
 @for_all_pairs
 def check_basic_operations_cmdline(id_agent, agent, id_robot, robot):
@@ -56,9 +58,7 @@ def check_basic_operations_cmdline(id_agent, agent, id_robot, robot):
         execute_command('list-logs', '-R')
 
         # TODO: publish
-        #execute_command('batch') # TODO: test batch
-        
-
+        #execute_command('batch') # TODO: test batch 
         
         execute_command('list-agents')
         execute_command('list-agents', '-v')

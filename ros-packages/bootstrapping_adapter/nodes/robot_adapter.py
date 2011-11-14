@@ -3,7 +3,6 @@ import roslib; roslib.load_manifest('bootstrapping_adapter')
 import rospy, traceback
 import time
 from pprint import pformat
-from collections import namedtuple
 
 from bootstrapping_adapter.srv import (BootstrappingCommands,
                                        BootstrappingCommandsResponse)
