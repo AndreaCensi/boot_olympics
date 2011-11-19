@@ -9,13 +9,7 @@ def cmd_task_predict(data_central, argv):
     parser.disable_interspersed_args()
     parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
     parser.add_option("-r", "--robot", dest='robot', help="Robot ID")
-
-#    parser.add_option("--num_episodes", type='int', default=10,
-#                      help="Number of episodes to simulate [%default]")
-#    parser.add_option("--cumulative", default=False, action='store_true',
-#                      help="Count already simulated episodes towards the count.")
-#    parser.add_option("--episode_len", type='float', default=30,
-#                      help="Maximum len of episode (seconds) [%default]")
+ 
     parser.add_option("--interval_print", type='float', default=5,
                       help='Frequency of debug messages.')
     (options, args) = parser.parse_args(argv)
