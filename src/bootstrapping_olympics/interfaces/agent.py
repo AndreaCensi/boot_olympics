@@ -2,6 +2,7 @@ from abc import ABCMeta, abstractmethod
 
 __all__ = ['AgentInterface', 'UnsupportedSpec']
 
+
 class AgentInterface:
     ''' 
     
@@ -69,7 +70,7 @@ During offline learning, the data will be written to HTML files.
                               cascades.
                               
         '''
-    
+
     @abstractmethod
     def process_observations(self, observations):
         '''
@@ -77,51 +78,49 @@ During offline learning, the data will be written to HTML files.
             
             :param:observations: a structure of type Observations
         '''
-        
-    
+
     @abstractmethod
     def choose_commands(self):
         ''' 
             Chooses commands to be generated; must return a sequence 
             of numbers or array. 
         '''
-        
-    
+
     def publish(self, publisher):
         ''' 
             Publish debug information. ``publisher`` is an instance 
             of the class PublisherInterface. 
         '''
-    
+
     def state_vars(self):
         return self.__dict__.keys()
 
     def get_state(self):
         ''' Return the state for the agent so that it can be saved. '''
         return self.get_state_vars(self.state_vars())
-    
+
     def set_state(self, state):
         ''' Load the given state (obtained by 'get_state'). '''
         return self.set_state_vars(state, self.state_vars())
-    
+
     def info(self, msg):
         ''' Logs something. '''
         if AgentInterface.logger is not None:
             AgentInterface.logger.info(msg)
-             
+
     logger = None
 
     def __str__(self):
         return 'Agent(%s)' % self.__class__.__name__
-    
-    
+
     def get_state_vars(self, state_vars):
         return dict((x, self.__dict__[x]) for x in state_vars)
-    
+
     def set_state_vars(self, state, state_vars):
         for v in state_vars:
             if v not in state:
-                self.info('Warning, no variable %r found in state vars, setting none.' % v)
+                self.info('Warning, no variable %r found in state vars,'
+                          ' setting none.' % v)
                 self.__dict__[v] = None
             else:
                 self.__dict__[v] = state[v]
@@ -130,7 +129,7 @@ During offline learning, the data will be written to HTML files.
 
 class UnsupportedSpec(Exception):
     ''' Thrown by agents if they do not support the spec. '''
-    
+
 
 
 

@@ -1,6 +1,6 @@
-from bootstrapping_olympics.configuration.robots import check_valid_robot_config
-from bootstrapping_olympics.configuration.yaml_ros_node_spec import check_valid_ros_node_spec
-from bootstrapping_olympics.configuration.agents import check_valid_agent_config
+from ...configuration import (check_valid_robot_config,
+    check_valid_ros_node_spec, check_valid_agent_config)
+
 
 def wrap_python_robot(robot_spec, root):
     check_valid_robot_config(robot_spec)
@@ -10,12 +10,13 @@ def wrap_python_robot(robot_spec, root):
     check_valid_ros_node_spec(node)
     return node
 
+
 def wrap_python_agent(agent_spec, root, publish_interval=0):
     check_valid_agent_config(agent_spec)
     node = ['bootstrapping_adapter/boot_agent_adapter.py',
-                {   'agent_spec': agent_spec,
-                    'root': root,
-                    'publish_interval': publish_interval}
+                {'agent_spec': agent_spec,
+                 'root': root,
+                 'publish_interval': publish_interval}
          ]
     check_valid_ros_node_spec(node)
     return node
@@ -23,7 +24,8 @@ def wrap_python_agent(agent_spec, root, publish_interval=0):
 
 #def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir,
 #                           log_level=0, viz_level=0, publish_interval=0):
-#    logger.info('Creating launch for %s %s %s.' % (id_agent, id_vehicle, id_world))
+#    logger.info('Creating launch for %s %s %s.' % (id_agent,
+#  id_vehicle, id_world))
 #
 #    # We have to create a new 'robot'
 #    id_robot = 'sim-%s-%s' % (id_agent, id_vehicle)
@@ -44,4 +46,4 @@ def wrap_python_agent(agent_spec, root, publish_interval=0):
 #                          {'code': agent['code'],
 #                           'id_agent': id_agent,
 #                           'publish_interval': publish_interval } ]
-    
+

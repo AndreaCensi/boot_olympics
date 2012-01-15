@@ -19,11 +19,11 @@ def check_writing_logs(id_agent, agent, id_robot, robot):
     root = tempfile.mkdtemp()
     ds = DirectoryStructure(root)
     id_stream = isodate_with_secs()
-    filename = ds.get_simlog_filename(id_agent, id_robot, id_stream) 
-    
+    filename = ds.get_simlog_filename(id_agent, id_robot, id_stream)
+
     written = []
     written_extra = []
-    
+
     logs_format = LogsFormat.get_reader_for(filename)
     with logs_format.write_stream(filename=filename,
                                   id_stream=id_stream,
@@ -38,7 +38,7 @@ def check_writing_logs(id_agent, agent, id_robot, robot):
             writer.push_observations(observations, extra)
             written_extra.append(extra)
             written.append(observations)
-            
+
     logdirs = ds.get_log_directories()
     index = LogIndex()
     for logdir in logdirs:
@@ -48,13 +48,13 @@ def check_writing_logs(id_agent, agent, id_robot, robot):
     index = LogIndex()
     for logdir in logdirs:
         index.index(logdir)
-        
+
     assert index.has_streams_for_robot(id_robot)
     streams = index.get_streams_for_robot(id_robot)
     assert len(streams) == 1
     stream = streams[0]
     assert isinstance(stream, BootStream)
-    
+
     assert stream.get_spec() == robot.get_spec()
 
     read_back = []
@@ -64,13 +64,13 @@ def check_writing_logs(id_agent, agent, id_robot, robot):
         read_back.append(observations2)
 
     if len(read_back) != len(written):
-        raise Exception('Written %d, read back %d.' % 
+        raise Exception('Written %d, read back %d.' %
                         (len(written), len(read_back)))
-    
+
     for i in range(len(read_back)):
         a = written[i]
         b = read_back[i]
-        
+
         fields = set(a.dtype.names) or set(b.dtype.names)
         fields.remove('extra')
         for field in fields:
@@ -80,5 +80,5 @@ def check_writing_logs(id_agent, agent, id_robot, robot):
         a = written_extra[i]
         b = read_back_extra[i]
         assert_equal(a, b)
-        
+
     shutil.rmtree(root)

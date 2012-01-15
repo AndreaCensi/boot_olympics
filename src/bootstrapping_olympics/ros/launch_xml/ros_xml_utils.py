@@ -1,14 +1,15 @@
-from bootstrapping_olympics.configuration.yaml_ros_node_spec import parse_yaml_ros_node_spec
+from ...configuration import parse_yaml_ros_node_spec
+from ...utils import indent, yaml_dump_inline
 from string import Template
-from bootstrapping_olympics.utils.strings import indent
-from bootstrapping_olympics.utils.c_yaml import yaml_dump_inline
 
-def create_ros_node_xml(node_name, ros_node, remap=None, args=None, output=None):
+
+def create_ros_node_xml(node_name, ros_node, remap=None,
+                        args=None, output=None):
     package_name, node_type, params = parse_yaml_ros_node_spec(ros_node)
-    
+
     xml_params = create_params_xml(params)
     xml_remap = create_remaps_xml(remap)
-     
+
     template = \
 """<node pkg="${package_name}"
          type="${node_type}" 
@@ -29,7 +30,7 @@ ${xml_remap}
 
 def create_params_xml(params):
     if not params: return '<!-- No parameters specified -->'
-    return "\n".join([create_param_xml(name, value) 
+    return "\n".join([create_param_xml(name, value)
                       for name, value in params.items()])
 
 def create_param_xml(name, value):
@@ -40,12 +41,12 @@ def create_param_xml(name, value):
         return "<rosparam param='%s'>%s</rosparam>" % (name, yaml_value)
 
 def create_remaps_xml(remap):
-    if not remap: 
+    if not remap:
         return '<!-- No remappings specified -->'
-    
+
     def create_remap_xml(sfrom, sto):
         return '<remap from="%s" to="%s"/>' % (sfrom, sto)
 
-    return "\n".join([create_remap_xml(name, value) 
+    return "\n".join([create_remap_xml(name, value)
                       for name, value in remap.items()])
 

@@ -1,6 +1,8 @@
 
+
 class Storage:
     commands = {}
+
 
 def declare_command(name, short_usage):
     def wrap(f):

@@ -5,6 +5,7 @@ from bootstrapping_olympics.display import ReprepPublisher
 import cPickle as pickle
 from bootstrapping_olympics.programs.manager import run_simulation
 
+
 @for_all_pairs
 def check_agent_init(id_agent, agent, id_robot, robot):
     spec = robot.get_spec()
@@ -12,6 +13,7 @@ def check_agent_init(id_agent, agent, id_robot, robot):
         agent.init(spec)
     except UnsupportedSpec:
         pass
+
 
 @for_all_pairs
 def check_small_simulation(id_agent, agent, id_robot, robot):
@@ -32,31 +34,31 @@ def check_small_simulation(id_agent, agent, id_robot, robot):
 
 def check_pickable(x, desc):
     s = StringIO()
-    try: 
+    try:
         pickle.dump(x, s, pickle.HIGHEST_PROTOCOL)
     except:
         if isinstance(x, dict):
             for k, v in x.items():
-                try: 
+                try:
                     pickle.dump(v, s, pickle.HIGHEST_PROTOCOL)
                 except Exception as e:
                     msg = 'Cannot dump state var %r (%s): %s' % (k, desc, e)
                     raise Exception(msg)
         else:
             raise
-                    
-                
+
+
 @for_all_pairs
 def check_publish(id_agent, agent, id_robot, robot):
     try:
         agent.init(robot.get_spec())
     except UnsupportedSpec:
         return
-    
+
     # Check first without observations
-    publisher = ReprepPublisher()   
+    publisher = ReprepPublisher()
     agent.publish(publisher)
-    
+
     for _ in run_simulation(id_robot=id_robot,
                             robot=robot,
                             id_agent=id_agent,
@@ -64,9 +66,9 @@ def check_publish(id_agent, agent, id_robot, robot):
                             max_observations=10, max_time=100):
         pass
 
-    publisher = ReprepPublisher()   
+    publisher = ReprepPublisher()
     agent.publish(publisher)
-    
- 
-                
-    
+
+
+
+

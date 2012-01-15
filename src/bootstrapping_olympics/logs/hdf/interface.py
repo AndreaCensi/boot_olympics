@@ -4,12 +4,13 @@ from contextlib import contextmanager
 
 __all__ = ['HDFLogsFormat']
 
-class HDFLogsFormat(LogsFormat): 
-    
+
+class HDFLogsFormat(LogsFormat):
+
     def index_file(self, filename):
         ''' Returns a list of BootStream objects. '''
         return hdf_list_streams(filename)
-        
+
     def read_stream(self, stream, read_extra=False):
         ''' Yields observations from the stream. '''
         for x in hdf_read(filename=stream.get_filename(),
@@ -24,7 +25,6 @@ class HDFLogsFormat(LogsFormat):
                           boot_spec=None,
                           read_extra=read_extra):
             yield x
-
 
     @contextmanager
     def write_stream(self, filename, id_stream, boot_spec):

@@ -1,12 +1,14 @@
 from conf_tools import BadConfig
 
+
 def check_valid_ros_node_spec(x):
     if not isinstance(x, list):
         raise BadConfig(x, 'A ROS node spec must be a list with two elements.')
-    
+
     if len(x) != 2:
-        raise BadConfig(x, 'A ROS node spec must be a list of exactly two elements.')
-    
+        raise BadConfig(x, 'A ROS node spec must be a list of '
+                        'exactly two elements.')
+
     name = x[0]
     params = x[1]
     if not isinstance(name, str):
@@ -16,6 +18,7 @@ def check_valid_ros_node_spec(x):
         raise BadConfig(x, msg)
     if not isinstance(params, dict):
         raise BadConfig(x, 'The node params be given as a dictionary.')
+
 
 def parse_yaml_ros_node_spec(x):
     check_valid_ros_node_spec(x)

@@ -15,3 +15,5 @@ from .natsort import *
 from .wildcards import *
 from .filesystem_utils import *
 from .misc import *
+from .numpy_backported import *
+from .strings import *

@@ -1,9 +1,10 @@
 from . import OptionParser, check_no_spurious, check_mandatory, declare_command
 from ..meat import task_servo
- 
+
+
 @declare_command('servo', "servo  -a <agent> -r <robot>")
 def cmd_task_servo(data_central, argv):
-    '''Simulate the interaction of an agent and a robot. ''' 
+    '''Simulate the interaction of an agent and a robot. '''
     parser = OptionParser(prog='servo', usage=cmd_task_servo.__doc__)
     parser.disable_interspersed_args()
     parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
@@ -11,7 +12,7 @@ def cmd_task_servo(data_central, argv):
     parser.add_option("--num_episodes", type='int', default=10,
                       help="Number of episodes to simulate [%default]")
     parser.add_option("--cumulative", default=False, action='store_true',
-                      help="Count already simulated episodes towards the count.")
+                      help="Count already simulated episodes.")
     parser.add_option("--displacement", default=1.0, type='float',
                       help="Initial robot displacement (seconds) [%default].")
     parser.add_option("--max_episode_len", type='float', default=30,
@@ -19,10 +20,10 @@ def cmd_task_servo(data_central, argv):
     parser.add_option("--interval_print", type='float', default=5,
                       help='Frequency of debug messages [%default]')
     (options, args) = parser.parse_args(argv)
-    
+
     check_no_spurious(args)
     check_mandatory(options, ['agent', 'robot'])
-    
+
     id_agent = options.agent
     id_robot = options.robot
     task_servo(data_central=data_central,

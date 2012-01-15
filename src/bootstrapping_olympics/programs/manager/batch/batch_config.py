@@ -1,5 +1,6 @@
 from conf_tools import ConfigMaster
 
+
 class BatchConfigMaster(ConfigMaster):
     def __init__(self):
         ConfigMaster.__init__(self)
@@ -10,7 +11,8 @@ class BatchConfigMaster(ConfigMaster):
         from pkg_resources import resource_filename #@UnresolvedImport
         return resource_filename("bootstrapping_olympics", "configs")
 
+
 def check_valid_set_config(struct):
     pass
-   
- 
+
+

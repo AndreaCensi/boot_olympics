@@ -1,20 +1,21 @@
 from . import BootStream, logger, LogsFormat, contract
 from ..utils import natsorted
 from collections import defaultdict
-from conf_tools import locate_files 
+from conf_tools import locate_files
 import traceback
 
 __all__ = ['LogIndex']
+
 
 class LogIndex:
     def __init__(self):
         # id robot -> list of streams
         self.robots2streams = {}
         # filename -> list of streams  
-        self.file2streams = {} 
+        self.file2streams = {}
 
         self.directories_indexed = set()
-        
+
     def reindex(self):
         for dirname in self.directories_indexed:
             new_streams = index_directory_cached(dirname,
@@ -23,7 +24,7 @@ class LogIndex:
                                                  )
             self.file2streams.update(new_streams)
         self.robots2streams = index_robots(self.file2streams)
-        
+
     def index(self, directory, ignore_cache=False):
         new_streams = index_directory_cached(directory,
                                              ignore_cache=ignore_cache,
@@ -32,10 +33,10 @@ class LogIndex:
         self.file2streams.update(new_streams)
         self.directories_indexed.add(directory)
         self.robots2streams = index_robots(self.file2streams)
-        
+
     def has_streams_for_robot(self, id_robot):
         return id_robot in self.robots2streams
-    
+
     @contract(returns='list')
     def get_streams_for_robot(self, id_robot):
         if not id_robot in self.robots2streams:
@@ -52,11 +53,10 @@ class LogIndex:
                 streams.append(stream)
         return streams
 
-    
     def get_robot_spec(self, id_robot):
         ''' Returns the spec of the robot as stored in the files. '''
         return self.robots2streams[id_robot][0].get_spec()
-    
+
     def get_episodes_for_robot(self, id_robot, id_agent=None):
         ''' Returns a list of all episodes for the given robot (and
             agent if it is given). ''' # TODO: implement this
@@ -68,8 +68,9 @@ class LogIndex:
                 if id_agent in stream.get_id_agents():
                     episodes.extend(stream.get_id_episodes())
         return natsorted(episodes)
-    
-    def read_all_robot_streams(self, id_robot, id_agent=None, read_extra=False):
+
+    def read_all_robot_streams(self, id_robot,
+                               id_agent=None, read_extra=False):
         ''' Reads all the data corresponding to a robot.
             If agent is not None, it filters by agent.
          '''
@@ -79,10 +80,10 @@ class LogIndex:
             else:
                 do_this = id_agent in stream.get_id_agents()
             if not do_this: continue
-            
+
             for obs in stream.read(read_extra=read_extra):
-                    yield obs 
-            
+                    yield obs
+
     def read_robot_episode(self, id_robot, id_episode, read_extra=False):
         ''' Reads only one episode. '''
         for stream in self.get_streams_for_robot(id_robot):
@@ -94,22 +95,22 @@ class LogIndex:
         else:
             msg = 'found:\n'
             for stream in self.get_streams_for_robot(id_robot):
-                msg += ' %s: %s\n' % (stream, stream.get_id_episodes()) 
+                msg += ' %s: %s\n' % (stream, stream.get_id_episodes())
             raise Exception('No episode %r found: %s' % (id_episode, msg))
-             
+
 
 
 def index_directory(directory, ignore_cache=False):
     ''' Returns a hash filename -> list of streams. '''
     extensions = LogsFormat.formats.keys()
-    
+
     files = []
     for extension in extensions:
         pattern = '*.%s' % extension
         files.extend(locate_files(directory, pattern))
-    
+
     if not files:
-        msg = ('No log files found in %r (extensions: %s).' % 
+        msg = ('No log files found in %r (extensions: %s).' %
                (directory, extensions))
         logger.error(msg)
 
@@ -118,7 +119,7 @@ def index_directory(directory, ignore_cache=False):
         reader = LogsFormat.get_reader_for(filename)
         try:
             file2streams[filename] = \
-                reader.index_file_cached(filename, ignore_cache=ignore_cache) 
+                reader.index_file_cached(filename, ignore_cache=ignore_cache)
             for stream in file2streams[filename]:
                 assert isinstance(stream, BootStream)
             if not file2streams[filename]:
@@ -126,9 +127,9 @@ def index_directory(directory, ignore_cache=False):
         except None: # XXX
             logger.error('Invalid data in file %r.' % filename)
             logger.error(traceback.format_exc())
-               
+
     return file2streams
-    
+
 def index_robots(file2streams):
     ''' Groups the streams by robot, making sure the specs are compatible. 
         Returns dict: id_robot -> list of streams.
@@ -138,7 +139,7 @@ def index_robots(file2streams):
     for _, streams in file2streams.items():
         for stream in streams:
             id_robot = stream.get_id_robot()
-            
+
             if not id_robot in robot2spec:
                 robot2spec[id_robot] = stream.get_spec()
             else:
@@ -146,22 +147,22 @@ def index_robots(file2streams):
                 stream_spec = stream.get_spec()
                 if str(stream_spec) != str(robot2spec[id_robot]):
                     msg = 'Warning! You got your logs mixed up. \n'
-                    msg += ('Problem spec in:\n\t%s\nis\n\t%s\n' % 
+                    msg += ('Problem spec in:\n\t%s\nis\n\t%s\n' %
                            (stream, stream_spec))
                     msg += ('and this is different from:\n\t%s\n'
-                           'found in e.g.,:\n\t%s' % 
+                           'found in e.g.,:\n\t%s' %
                            (robot2spec[id_robot], robot2streams[id_robot][0]))
                     msg += '\nI will skip this stream.'
                     logger.error(msg)
                     continue
             robot2streams[id_robot].append(stream)
-    
-    for robot in robot2streams:        
+
+    for robot in robot2streams:
         robot2streams[robot] = sorted(robot2streams[robot],
                                  key=lambda x: list(x.get_id_episodes())[0])
-    
+
     return dict(**robot2streams)
-    
+
 
 index_directory_cached = index_directory
 

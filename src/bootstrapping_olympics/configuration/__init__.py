@@ -7,3 +7,5 @@ from .. import logger
 from .agents import *
 from .robots import *
 from .master import BootOlympicsConfig
+
+from .yaml_ros_node_spec import *

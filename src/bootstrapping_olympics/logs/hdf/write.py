@@ -5,9 +5,10 @@ import os
 import warnings
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
- 
+
+
 class HDFLogWriter():
-    
+
     def __init__(self, filename, id_stream, boot_spec):
         assert isinstance(boot_spec, BootSpec)
         self.filename = filename
@@ -17,22 +18,22 @@ class HDFLogWriter():
         self.id_stream = id_stream
         self.table = None
         self.boot_spec = boot_spec
-        
+
     @contract(observations='array')
     def push_observations(self, observations, extra={}):
         if self.table is None:
             self.table_dtype = remove_fields(observations.dtype, ['extra'])
             self.create_table(self.table_dtype)
-            
+
         # TODO: what about extra?
         row = np.zeros((), self.table_dtype)
-        copy_from(row, observations)        
-        
-        row = row.copy().reshape((1,)) 
+        copy_from(row, observations)
+
+        row = row.copy().reshape((1,))
         self.table.append(row)
         self.extra.append(yaml_dump(extra))
-        
-    def create_table(self, dtype):                
+
+    def create_table(self, dtype):
         filters = tables.Filters(complevel=9, complib='zlib',
                                  fletcher32=True)
         # TODO: CONSTANTS
@@ -50,13 +51,13 @@ class HDFLogWriter():
                                            tables.VLUnicodeAtom(),
                                            filters=filters)
 
-    def close(self): 
+    def close(self):
         if self.table is None:
             logger.error('No data given for writing; deleting tmp file.')
             self.hf.close()
             os.unlink(self.tmp_filename)
         else:
-            self.hf.close() 
+            self.hf.close()
             if os.path.exists(self.filename):
                 os.unlink(self.filename)
             os.rename(self.tmp_filename, self.filename)

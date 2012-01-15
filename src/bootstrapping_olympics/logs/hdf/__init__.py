@@ -2,10 +2,16 @@
 
 from .. import logger, np, contract
 
-import tables
+try:
+    import tables
 
-from .index import *
-from .read import *
-from .write import *
-from .interface import *
+except ImportError:
+    logger.info('Could not load PyTables library; '
+                'HDF log support not available.')
+
+else:
+    from .index import *
+    from .read import *
+    from .write import *
+    from .interface import *
 

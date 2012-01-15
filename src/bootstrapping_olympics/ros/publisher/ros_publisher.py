@@ -1,70 +1,65 @@
+from .. import (rospy, ROSImage, Float32MultiArray, MultiArrayLayout,
+    MultiArrayDimension)
+from bootstrapping_olympics import Publisher
+from contextlib import contextmanager
 from contracts import contract
 from reprep import scale, posneg, Report
-from bootstrapping_olympics import Publisher
-from ros import sensor_msgs
-
-import rospy
-from sensor_msgs.msg import Image #@UnresolvedImport
-from std_msgs.msg import Float32MultiArray, MultiArrayDimension, MultiArrayLayout
-        
 import numpy as np
-from contextlib import contextmanager
 
-def normalize(name):
-    if isinstance(name, tuple):
-        return '/'.join(name)
-    return name
 
 class ROSPublisher(Publisher):
     ''' 
         This is the interface that the agents can use to publish
         debug information. 
     '''
-    
-    def __init__(self):      
+
+    def __init__(self):
         self.filters = {
             Publisher.FILTER_SCALE: scale,
             Publisher.FILTER_POSNEG: posneg,
         }
-        
-        self.ros_publishers = {} 
-     
-    @contract(name='str|seq[>0](str)', value='array')    
-    def array(self, name, value):   
+
+        self.ros_publishers = {}
+
+    @contract(name='str|seq[>0](str)', value='array')
+    def array(self, name, value):
         name = normalize(name)
-                 
+
         if not name in self.ros_publishers:
             rospy.loginfo('Creating new topic ~%r.' % name)
-            self.ros_publishers[name] = rospy.Publisher('~%s' % name, Float32MultiArray)
+            self.ros_publishers[name] = rospy.Publisher('~%s' % name,
+                                                        Float32MultiArray)
         rospy.loginfo('published %s' % name)
-        
+
         # TODO: generic dimensions
         v = np.array(value.flat, dtype='float32')
         msg = Float32MultiArray()
         msg.data = v.tolist()
         msg.layout = MultiArrayLayout()
-        msg.layout.dim = [MultiArrayDimension(label='no-label', size=v.size, stride=0)]
+        msg.layout.dim = [MultiArrayDimension(label='no-label', size=v.size,
+                                              stride=0)]
         self.ros_publishers[name].publish(msg)
-    
-    
+
     @contract(name='str|seq[>0](str)', value='array')
     def array_as_image(self, name, value,
-                               filter=Publisher.FILTER_POSNEG, filter_params={}):
+                       filter=Publisher.FILTER_POSNEG, #@ReservedAssignment 
+                       filter_params={}):
         name = normalize(name)
 
         if not filter in self.filters:
-            msg = 'Unknown filter %r; I know %s' % (filter, self.filters.keys())
+            msg = 'Unknown filter %r; I know %s' % (filter,
+                                                    self.filters.keys())
             raise Exception(msg)
         rgb = self.filters[filter](value, **filter_params)
         ros_image = numpy_to_imgmsg(rgb, stamp=None) # XXX: stamp?
-         
+
         #commands = np.kron(commands, np.ones((z, z)))
         if not name in self.ros_publishers:
             rospy.loginfo('Creating new topic ~%r.' % name)
-            self.ros_publishers[name] = rospy.Publisher('~%s_image' % name, Image)
+            self.ros_publishers[name] = rospy.Publisher('~%s_image' % name,
+                                                        ROSImage)
 
         self.ros_publishers[name].publish(ros_image)
-
 
     @contract(name='str|seq[>0](str)', text='str')
     def text(self, name, text):
@@ -73,11 +68,10 @@ class ROSPublisher(Publisher):
         rospy.loginfo('Function text() not implemented')
         # XXX: TODO:
         pass
-    
+
     @contextmanager
     def plot(self, name, **args):
         name = normalize(name)
-
 
         r = Report()
         a = r.data_pylab('plot', **args)
@@ -88,9 +82,15 @@ class ROSPublisher(Publisher):
         # XXX: TODO
         rospy.loginfo('Function plot() not implemented')
 
+
+def normalize(name):
+    if isinstance(name, tuple):
+        return '/'.join(name)
+    return name
+
+
 def numpy_to_imgmsg(image, stamp=None):
-    import sensor_msgs #@UnresolvedImport
-    rosimage = sensor_msgs.msg.Image()
+    rosimage = ROSImage()
     rosimage.height = image.shape[0]
     rosimage.width = image.shape[1]
     if image.dtype == np.uint8:

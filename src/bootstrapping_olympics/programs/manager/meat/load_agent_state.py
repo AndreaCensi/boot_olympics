@@ -1,6 +1,6 @@
+from . import logger
 from bootstrapping_olympics.agent_states.learning_state import LearningState
 
-from . import logger
 
 def load_agent_state(data_central, id_agent, id_robot,
                      reset_state=False,
@@ -11,7 +11,8 @@ def load_agent_state(data_central, id_agent, id_robot,
         
         Returns a tuple (agent, state).
     '''
-    logger.info('Loading state %s/%s reset=%s ' % (id_agent, id_robot, reset_state))
+    logger.info('Loading state %s/%s reset=%s ' % (id_agent,
+                                                   id_robot, reset_state))
     agent = data_central.get_bo_config().agents.instance(id_agent) #@UndefinedVariable
 
     index = data_central.get_log_index()
@@ -21,7 +22,8 @@ def load_agent_state(data_central, id_agent, id_robot,
     return load_agent_state_core(data_central, id_agent, agent, id_robot,
                           reset_state=reset_state,
                           raise_if_no_state=raise_if_no_state)
-    
+
+
 def load_agent_state_core(data_central, id_agent, agent, id_robot,
                           reset_state=False,
                           raise_if_no_state=False):
@@ -46,7 +48,7 @@ def load_agent_state_core(data_central, id_agent, agent, id_robot,
             else:
                 state = LearningState(id_robot=id_robot, id_agent=id_agent)
                 return agent, state
-    
+
     assert False
-    
-    
+
+

@@ -3,16 +3,17 @@ from abc import abstractmethod, ABCMeta
 import os
 import pickle
 
+
 class LogsFormat:
     __metaclass__ = ABCMeta
-    
+
     # extension -> LogsFormat
     formats = {}
-    
+
     @abstractmethod
     def index_file(self, filename):
         ''' Returns a list of BootStream objects. '''
-    
+
     # TODO: uniform mechanism for this
     def index_file_cached(self, filename, ignore_cache=False):
         cache = '%s.index_cache' % filename
@@ -22,9 +23,9 @@ class LogsFormat:
             except Exception as e:
                 msg = 'Could not unpickle cache %r, deleting.' % cache
                 msg += '\n%s' % e
-                os.unlink(cache) 
+                os.unlink(cache)
                 logger.warning(msg)
-                
+
         res = self.index_file(filename)
         for stream in res:
             assert isinstance(stream, BootStream)
@@ -52,4 +53,4 @@ class LogsFormat:
             raise ValueError(msg)
         return LogsFormat.formats[extension]
 
-    
+

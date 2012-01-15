@@ -1,2 +1,3 @@
 from .. import rospy #@UnresolvedImport
-from .wrap import * 
+from .rospy_logger import *
+from .wrap import *
