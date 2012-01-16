@@ -18,4 +18,5 @@ def isodate_with_secs():
 def unique_timestamp_string():
     now = datetime.datetime.now()
     s = now.isoformat()
-    return s.replace('-', '').replace(':', '').replace('T', '_').replace('.', '_')
+    return s.replace('-', '').replace(':', '').replace('T', '_').replace('.',
+                                                                         '_')

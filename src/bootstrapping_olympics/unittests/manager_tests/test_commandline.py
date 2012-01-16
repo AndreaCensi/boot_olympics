@@ -1,7 +1,7 @@
 from .. import for_all_pairs
 from ...logs import LogsFormat
 from ...programs.manager.command_line.main import boot_olympics_manager
-from ...programs.manager.meat.data_central import DataCentral
+from ...programs.manager.meat import DataCentral
 from ...utils import assert_allclose
 from contextlib import contextmanager
 from shutil import rmtree
@@ -36,10 +36,11 @@ def check_basic_operations_cmdline(id_agent, agent, id_robot, robot):
         assert log_index.has_streams_for_robot(id_robot)
         n = len(formats)
         assert_allclose(len(log_index.get_streams_for_robot(id_robot)), 2 * n)
-        assert_allclose(len(log_index.get_streams_for(id_robot, id_agent)), 2 * n)
+        assert_allclose(len(log_index.get_streams_for(id_robot,
+                                                      id_agent)), 2 * n)
         assert_allclose(len(log_index.get_episodes_for_robot(id_robot)), 4 * n)
-        assert_allclose(len(log_index.get_episodes_for_robot(id_robot, id_agent)), 4 * n)
-
+        assert_allclose(len(log_index.get_episodes_for_robot(id_robot,
+                                                             id_agent)), 4 * n)
 
         execute_command('learn-log', '-a', id_agent, '-r', id_robot)
         execute_command('servo', '-a', id_agent, '-r', id_robot,
@@ -64,6 +65,7 @@ def check_basic_operations_cmdline(id_agent, agent, id_robot, robot):
         execute_command('list-robots', '-v')
         execute_command('list-states')
         execute_command('list-states', '-v')
+
 
 @contextmanager
 def create_tmp_dir():

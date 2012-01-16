@@ -1,5 +1,5 @@
-import os
 from . import contract
+import os
 
 
 __all__ = ['BootStream', 'EpisodeSummary']
@@ -95,9 +95,11 @@ class BootStream(object):
                                          self._id_robot, self._length,
                                          self._spec)
 
-    def read(self, only_episodes=False, read_extra=False): # TODO: implement
+    def read(self, only_episodes=None, read_extra=False):
         from . import LogsFormat
         reader = LogsFormat.get_reader_for(self._filename)
-        generator = reader.read_stream(self, read_extra=read_extra)
+        # FIXME in ROS
+        generator = reader.read_stream(self, only_episodes=only_episodes,
+                                       read_extra=read_extra)
         for x in generator:
             yield x

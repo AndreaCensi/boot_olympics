@@ -2,7 +2,7 @@ from . import boot_spec_from_ros_message, logger, np
 from ... import ObsKeeper, BootInvalidValue
 
 
-def bag_read(bag_file, topic, spec, substitute_id_episode):
+def bag_read(bag_file, topic, spec, substitute_id_episode, only_episodes=None):
     ''' 
         Reads the log in ROS bag file (only the
         topic given) and converts it to the structure we use internally.
@@ -19,15 +19,20 @@ def bag_read(bag_file, topic, spec, substitute_id_episode):
         for msg in bag.read_messages(topics=[topic]):
             topic, ros_obs, t = msg #@UnusedVariable
 
-            if spec is None: spec = boot_spec_from_ros_message(ros_obs)
-            if ros2python is None: ros2python = ROS2Python(spec=spec)
+            if spec is None:
+                spec = boot_spec_from_ros_message(ros_obs)
+            if ros2python is None:
+                ros2python = ROS2Python(spec=spec)
 
+            if only_episodes and not ros_obs.id_episode in only_episodes:
+                continue
 
             if ros_obs.id_episode == 'id-episode-not-set':
                 if not warned:
                     warned = True
                     # XXX
-                    logger.info('Changing id_episode to %s' % substitute_id_episode)
+                    logger.info('Changing id_episode to %s'
+                                % substitute_id_episode)
                 ros_obs.id_episode = substitute_id_episode
 
             obs = ros2python.convert(ros_obs)

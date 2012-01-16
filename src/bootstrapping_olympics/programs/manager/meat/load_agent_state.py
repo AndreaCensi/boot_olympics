@@ -1,5 +1,5 @@
 from . import logger
-from bootstrapping_olympics.agent_states.learning_state import LearningState
+from ....agent_states import LearningState
 
 
 def load_agent_state(data_central, id_agent, id_robot,

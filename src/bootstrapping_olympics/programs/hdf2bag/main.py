@@ -12,27 +12,26 @@ usage = """
     
 Creates a .bag file from a .h5 file.
   
-"""  
+"""
 
 def hdf2bag(pargs):
-
     import roslib; roslib.load_manifest('bootstrapping_adapter') #@UnresolvedImport
 
     parser = OptionParser(usage=usage)
     parser.disable_interspersed_args()
 
     (options, args) = parser.parse_args(pargs) #@UnusedVariable
-    
+
     if len(args) != 1:
         msg = 'I expect only one filename.'
-        raise Exception(msg) 
-    
+        raise Exception(msg)
+
 
     basedir = args[0]
     global_config_file = os.path.join(basedir, 'robot_info.yaml')
     if not os.path.exists(global_config_file):
         raise Exception('Configuration file %r not found.' % global_config_file)
-    
+
     global_config = yaml.load(open(global_config_file))
     print global_config.__repr__()
     for hdf_filename in glob(os.path.join(basedir, '*.h5')):
@@ -56,7 +55,7 @@ def main():
     except Exception as e:
         logger.error(str(e))
         logger.error(traceback.format_exc())
-        sys.exit(-2) 
-    
+        sys.exit(-2)
+
 if __name__ == '__main__':
     main()

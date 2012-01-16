@@ -57,40 +57,45 @@ class LogIndex:
         ''' Returns the spec of the robot as stored in the files. '''
         return self.robots2streams[id_robot][0].get_spec()
 
+    # TODO: implement has_extra
     def get_episodes_for_robot(self, id_robot, id_agent=None):
         ''' Returns a list of all episodes for the given robot (and
             agent if it is given). ''' # TODO: implement this
         episodes = []
         for stream in self.get_streams_for_robot(id_robot):
-            if id_agent is None:
+            if not id_agent:
                 episodes.extend(stream.get_id_episodes())
             else:
                 if id_agent in stream.get_id_agents():
                     episodes.extend(stream.get_id_episodes())
         return natsorted(episodes)
 
+    # TODO: implement has_extra
     def read_all_robot_streams(self, id_robot,
                                id_agent=None, read_extra=False):
         ''' Reads all the data corresponding to a robot.
             If agent is not None, it filters by agent.
          '''
         for stream in self.get_streams_for_robot(id_robot):
-            if id_agent is None:
+            if not id_agent:
                 do_this = True
             else:
                 do_this = id_agent in stream.get_id_agents()
             if not do_this: continue
 
             for obs in stream.read(read_extra=read_extra):
-                    yield obs
+                yield obs
 
     def read_robot_episode(self, id_robot, id_episode, read_extra=False):
         ''' Reads only one episode. '''
         for stream in self.get_streams_for_robot(id_robot):
             if id_episode in stream.get_id_episodes():
-                for obs in stream.read(read_extra=read_extra):
-                    if obs['id_episode'].item() == id_episode:
-                        yield obs
+
+                for obs in stream.read(read_extra=read_extra,
+                                       only_episodes=[id_episode]):
+                    assert obs['id_episode'].item() == id_episode
+                    yield obs
+
                 break
         else:
             msg = 'found:\n'

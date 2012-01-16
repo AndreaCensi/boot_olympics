@@ -1,5 +1,6 @@
 from string import Template
 
+
 def substitute(template, **kwargs):
     ''' Wrapper around Template.substitute for better error display. '''
     try:
@@ -8,4 +9,4 @@ def substitute(template, **kwargs):
         msg = ('Error while substituting in string %r. Key %s not found: '
                'available keys are %s.' % (template, e, kwargs.keys()))
         raise Exception(msg)
-    
+

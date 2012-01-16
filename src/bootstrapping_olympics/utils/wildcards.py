@@ -3,6 +3,7 @@ import re
 
 __all__ = ['expand_string']
 
+
 def flatten(seq):
     res = []
     for l in seq: res.extend(l)

@@ -1,14 +1,11 @@
-from tempfile import mkdtemp
+from ...logs import LogsFormat
+from ...programs.manager.meat import (DataCentral, learn_log, simulate,
+    task_predict, task_servo)
+from ...utils import assert_allclose
 from contextlib import contextmanager
 from shutil import rmtree
-from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
-from bootstrapping_olympics.programs.manager.meat import simulate
-from bootstrapping_olympics.programs.manager.meat.log_learn import learn_log
-from bootstrapping_olympics.utils import assert_allclose
+from tempfile import mkdtemp
 import os
-from bootstrapping_olympics.programs.manager.meat.servo import task_servo
-from bootstrapping_olympics.programs.manager.meat.predict import task_predict
-from bootstrapping_olympics.logs.logs_format import LogsFormat
 
 
 def check_basic_operations(id_agent, id_robot):
@@ -38,7 +35,6 @@ def check_basic_operations(id_agent, id_robot):
             simulate_some(2)
             simulate_some(2)
 
-
         assert not log_index.has_streams_for_robot(id_robot)
         log_index.reindex()
         assert log_index.has_streams_for_robot(id_robot)
@@ -51,7 +47,8 @@ def check_basic_operations(id_agent, id_robot):
 
         assert_allclose(len(log_index.get_episodes_for_robot(id_robot)),
                         4 * len(formats))
-        assert_allclose(len(log_index.get_episodes_for_robot(id_robot, id_agent)),
+        assert_allclose(len(log_index.get_episodes_for_robot(id_robot,
+                                                              id_agent)),
                         4 * len(formats))
 
         learn_log(data_central, id_robot=id_robot, id_agent=id_agent)
@@ -73,6 +70,7 @@ def check_basic_operations(id_agent, id_robot):
 
 def test_basic_operations_1():
     check_basic_operations(id_agent='random_agent', id_robot='random_1_4')
+
 
 @contextmanager
 def create_tmp_dir():

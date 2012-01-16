@@ -34,11 +34,11 @@ class LogsFormat:
         return res
 
     @abstractmethod
-    def read_stream(self, boot_stream):
+    def read_stream(self, boot_stream, only_episodes=None):
         ''' Yields observations from the stream. '''
 
     @abstractmethod
-    def read_from_stream(self, filename, id_stream):
+    def read_from_stream(self, filename, id_stream, only_episodes=None):
         ''' Yields observations from the stream. '''
 
     @abstractmethod
