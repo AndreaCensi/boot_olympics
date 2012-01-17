@@ -60,7 +60,12 @@ def episode_summary(boot_stream, extra_table, id_episode):
     num_observations = len(stream)
     timestamp = stream[0]['timestamp']
 
-    extra_string = str(extra_table[sel][0])
+    first_moment = np.nonzero(sel)[0][0]
+    # there might be different lengths of extra_table and sel
+    # print len(extra_table)
+    # print len(sel)
+
+    extra_string = str(extra_table[first_moment])
     extra = yaml_load(extra_string)
     extras = list(extra.keys())
     return EpisodeSummary(id_episode=id_episode,
