@@ -13,7 +13,8 @@ def load_agent_state(data_central, id_agent, id_robot,
     '''
     logger.info('Loading state %s/%s reset=%s ' % (id_agent,
                                                    id_robot, reset_state))
-    agent = data_central.get_bo_config().agents.instance(id_agent) #@UndefinedVariable
+    config = data_central.get_bo_config()
+    agent = config.agents.instance(id_agent) #@UndefinedVariable
 
     index = data_central.get_log_index()
     boot_spec = index.get_robot_spec(id_robot)

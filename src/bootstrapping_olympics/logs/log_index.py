@@ -40,16 +40,20 @@ class LogIndex:
     @contract(returns='list')
     def get_streams_for_robot(self, id_robot):
         if not id_robot in self.robots2streams:
-            raise ValueError('No streams for robot %r.' % id_robot)
+            raise ValueError('No streams for robot %r; available %s.' %
+                             (id_robot, self.robots2streams.keys()))
         return self.robots2streams[id_robot]
 
     @contract(returns='list')
-    def get_streams_for(self, id_robot, id_agent):
+    def get_streams_for(self, id_robot, id_agent=None):
         if not id_robot in self.robots2streams:
             raise ValueError('No streams for robot %r.' % id_robot)
         streams = []
         for stream in self.robots2streams[id_robot]:
-            if id_agent in stream.get_id_agents():
+            if id_agent:
+                if id_agent in stream.get_id_agents():
+                    streams.append(stream)
+            else:
                 streams.append(stream)
         return streams
 

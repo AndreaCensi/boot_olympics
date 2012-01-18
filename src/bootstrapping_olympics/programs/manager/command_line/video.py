@@ -2,9 +2,9 @@ from . import check_mandatory, check_no_spurious, OptionParser, declare_command
 from ..meat import create_video
 
 
-@declare_command('video', 'video -a <agent> -r <robot> [-z zoom]')
+@declare_command('video', 'video -a <agent> -r <robot> -e <episode> [-z zoom]')
 def cmd_video(data_central, argv):
-    '''Runs the learning for a given agent and log. '''
+    '''Creates the video  for a given agent and log. '''
     parser = OptionParser(prog='video', usage=cmd_video.short_usage)
     parser.disable_interspersed_args()
     parser.add_option("-r", "--robot", dest='robot', help="Robot ID")
@@ -12,9 +12,9 @@ def cmd_video(data_central, argv):
                       default="")
     parser.add_option("-e", "--episode", dest='id_episode', help="Episode ID",
                       default="")
-    parser.add_option("-z", "--zoom", dest='zoom', type='float',
-                      default=0,
-                       help="Zoom in m (0: whole map) [%default]")
+#    parser.add_option("-z", "--zoom", dest='zoom', type='float',
+#                      default=0,
+#                       help="Zoom in m (0: whole map) [%default]")
     parser.add_option("-m", "--model", dest='model', default='boot_log2movie',
                       help="Procgraph model used for visualization. "
                             "[%default]")
@@ -28,6 +28,6 @@ def cmd_video(data_central, argv):
               id_agent=options.agent,
               id_robot=options.robot,
               id_episode=options.id_episode,
-              zoom=options.zoom,
+              #zoom=options.zoom,
               model=options.model)
 

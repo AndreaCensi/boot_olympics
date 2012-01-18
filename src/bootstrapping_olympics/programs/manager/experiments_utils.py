@@ -9,6 +9,53 @@ import os
 import shutil
 
 
+default_expl_videos = [
+
+      dict(model='boot_log2movie_cairo',
+           model_params={'plotter.zoom': 2},
+           id='pdfz2sb'),
+
+      dict(model='boot_log2movie_cairo',
+           model_params={'plotter.zoom': 0},
+           id='pdfz0sb'),
+
+      dict(model='boot_log2movie_cairo',
+           model_params={'plotter.zoom': 2,
+                         'plotter.display_sidebar': False},
+           id='pdfz2no'),
+
+      dict(model='boot_log2movie_cairo',
+           model_params={'plotter.zoom': 0,
+                         'plotter.display_sidebar': False},
+           id='pdfz0no'),
+
+
+      dict(model='boot_log2movie_cairo_avi',
+           model_params={'plotter.zoom': 2,
+                         'plotter.display_sidebar': True},
+           id='aviz2sb'),
+
+      dict(model='boot_log2movie_cairo_avi',
+           model_params={'plotter.zoom': 0,
+                         'plotter.display_sidebar': True},
+           id='aviz0sb'),
+
+      dict(model='boot_log2movie_cairo_avi',
+           model_params={'plotter.zoom': 2,
+                         'plotter.display_sidebar': False},
+           id='aviz2no'),
+
+      dict(model='boot_log2movie_cairo_avi',
+           model_params={'plotter.zoom': 0,
+                         'plotter.display_sidebar': False},
+           id='aviz0no'),
+
+#      dict(model='boot_log2movie',
+#           model_params={'zoom': 2},
+#           id='aviz2')
+]
+
+
 def experiment_explore_learn_main(proj_root,
                                   explorer, agents, robots,
                                   args):
@@ -114,7 +161,9 @@ def experiment_explore_learn_compmake(data_central,
                              servo_displacement=1,
                              servo_max_episode_len=5,
                              reset=False,
-                             episodes_per_tranche=10):
+                             episodes_per_tranche=10,
+                             expl_videos=default_expl_videos):
+
     from compmake import comp
 
     if not robots:
@@ -161,7 +210,8 @@ def experiment_explore_learn_compmake(data_central,
                                id_robot=id_robot,
                                id_agent=explorer,
                                episode2tranche=episode2tranche,
-                               num_ep_expl_v=num_ep_expl_v)
+                               num_ep_expl_v=num_ep_expl_v,
+                               videos=expl_videos)
 
         for id_agent in agents:
             # Learn tranche by tranche
@@ -250,8 +300,11 @@ def experiment_explore_learn_compmake(data_central,
                          id_episode=episode_id_servoing(i),
                          id_agent=id_agent,
                          id_robot=id_robot,
+                         suffix='z2',
+
                          model='boot_log2movie_servo',
-                         zoom=2,
+                         model_params={'plotter.zoom': 2},
+
                          job_id='video-serv-%s-%s-%s' %
                             (id_robot, id_agent, episode_id_servoing(i)),
                          extra_dep=all_servo)
@@ -270,36 +323,30 @@ def experiment_explore_learn_compmake(data_central,
 
 
 def add_exploration_videos(data_central, id_robot, id_agent,
-                            episode2tranche, num_ep_expl_v):
+                            episode2tranche, num_ep_expl_v, videos):
 
     from compmake import comp
 
     for i in range(num_ep_expl_v):
         id_episode = episode_id_exploration(i)
 
-        for pref, model in [('avi', 'boot_log2movie'),
-                            ('pdf', 'boot_log2movie_cairo')]:
+        for video in videos:
+            id_video = video['id']
+            model = video['model']
+            model_params = video['model_params']
+
             comp(create_video,
                  data_central=data_central,
                  id_episode=id_episode,
                  id_robot=id_robot,
                  id_agent=id_agent,
-                 zoom=0,
+
+                 suffix=id_video,
                  model=model,
+                 model_params=model_params,
 
-                 job_id='video-expl-%s-%s-%s' % (id_robot, id_episode, pref),
-                 extra_dep=episode2tranche[id_episode])
-
-            comp(create_video,
-                 zoom=1.5,
-                 data_central=data_central,
-                 id_episode=id_episode,
-                 id_robot=id_robot,
-                 id_agent=id_agent,
-                 model=model,
-
-                 job_id='video-expl-%s-%s-%s-zoom' % (id_robot,
-                                                      id_episode, pref),
+                 job_id='video-expl-%s-%s-%s' % (id_robot,
+                                                 id_episode, id_video),
                  extra_dep=episode2tranche[id_episode])
 
 

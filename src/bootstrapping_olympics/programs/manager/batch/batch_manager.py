@@ -6,6 +6,7 @@ from bootstrapping_olympics.utils.filesystem_utils import (safe_makedirs,
     safe_symlink)
 from conf_tools import import_name
 import os
+from compmake import batch_command
 
 
 try:
@@ -15,7 +16,7 @@ except:
                  'processes not available.')
 
 
-def batch_process_manager(data_central, which_sets):
+def batch_process_manager(data_central, which_sets, command=None):
     from compmake import comp_prefix, use_filesystem, compmake_console
 
     batch_config = BatchConfigMaster()
@@ -70,7 +71,10 @@ def batch_process_manager(data_central, which_sets):
             comp_prefix(id_set)
         batch_set(data_central_set, id_set, batch_config.sets[x])
 
-    compmake_console()
+    if command:
+        return batch_command(command)
+    else:
+        compmake_console()
 
 
 def batch_set(data_central, id_set, spec):
