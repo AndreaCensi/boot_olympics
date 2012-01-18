@@ -30,28 +30,39 @@ def check_basic_operations(id_agent, agent, id_robot, robot):
         stream_orig = log_index.get_streams_for(id_robot, id_agent)[0]
 
         for logs_format, interface in LogsFormat.formats.items():
-            print('Formatting with %r' % logs_format)
-            dirname = os.path.join(root, logs_format)
-            safe_makedirs(dirname)
-            filename = os.path.join(dirname, 'example.%s' % logs_format)
-            written = []
-            with interface.write_stream(filename, 'example',
-                                        robot.get_spec()) as writer:
-                for observations in stream_orig.read():
-                    writer.push_observations(observations)
-                    written.append(observations)
+            try:
+                dirname = os.path.join(root, logs_format)
+                safe_makedirs(dirname)
+                filename = os.path.join(dirname, 'example.%s' % logs_format)
+                written = []
+                id_stream = 'example'
+                with interface.write_stream(filename, id_stream,
+                                            robot.get_spec()) as writer:
+                    for observations in stream_orig.read():
+                        writer.push_observations(observations)
+                        written.append(observations)
 
-            count = 0
-            for obs_read in interface.read_from_stream(filename, 'example'):
-                original = written[count]
+                count = 0
+                for obs_read in interface.read_from_stream(filename,
+                                                           id_stream):
+                    original = written[count]
 
-                assert_allclose(obs_read['timestamp'], original['timestamp'])
-                assert_allclose(obs_read['observations'],
-                                original['observations'])
-                assert_allclose(obs_read['commands'], original['commands'])
-
-                count += 1
-
+#                    try:
+                    assert_allclose(obs_read['timestamp'],
+                                    original['timestamp'])
+                    assert_allclose(obs_read['observations'],
+                                    original['observations'])
+                    assert_allclose(obs_read['commands'],
+                                    original['commands'])
+#                    except:
+#                        print('Error at count = %d' % count)
+#                        print('original: %s' % original)
+#                        print('obs_read: %s' % obs_read)
+#                        raise
+                    count += 1
+            except:
+                print('Could not pass tests for format %r.' % logs_format)
+                raise
         # FIXME: ROS does not allow writing extras
 
         # Write in every format

@@ -5,12 +5,13 @@ import os
 
 __all__ = ['LearningState', 'LearningStateDB']
 
+
 class LearningState(object):
     ''' 
         A learning state is the agent state + the IDs 
         of the episodes used to learn
     '''
-    
+
     @contract(id_agent='str', id_robot='str')
     def __init__(self, id_agent, id_robot):
         self.id_agent = id_agent
@@ -18,21 +19,27 @@ class LearningState(object):
         self.id_episodes = set()
         self.num_observations = 0
         self.agent_state = None
-        
-        self.id_state = isodate() 
-         
+
+        self.id_state = isodate()
+
+
 def key2tuple(key):
     return tuple(key.split(","))
+
+
 def tuple2key(t):
     return ",".join(t)
+
+
 def isakey(t):
     return ',' in t
 
+
 class LearningStateDB(object):
-    
+
     def __init__(self, datadir):
         datadir = expand_environment(datadir)
-            
+
         #dbdir = os.path.join(datadir, 'agent_states')
         dbdir = datadir
         logger.debug('Using dir %r as directory.' % dbdir)
@@ -41,17 +48,15 @@ class LearningStateDB(object):
             os.makedirs(datadir)
 
         self.storage = StorageFilesystem(datadir)
-        
+
     def list_states(self):
-#        logger.debug('Keys: %s' % [ key2tuple(x) for x in  self.storage.keys()])
-        return [ key2tuple(x) for x in  self.storage.keys() if isakey(x)]
-        
-        
+        return [key2tuple(x) for x in  self.storage.keys() if isakey(x)]
+
     def has_state(self, id_agent, id_robot):
         ''' Returns true if the learning state is already present. '''
         key = tuple2key((id_agent, id_robot))
         return  key in list(self.storage.keys())
-    
+
     def get_state(self, id_agent, id_robot):
         ''' Returns the learning state for the given combination. '''
         key = tuple2key((id_agent, id_robot))
@@ -61,16 +66,16 @@ class LearningStateDB(object):
         ''' Sets the learning state for the given combination. '''
         key = tuple2key((id_agent, id_robot))
         return self.storage.set(key, state)
-    
+
     def reload_state_for_agent(self, id_agent, id_robot, agent):
         state = self.get_state(id_agent, id_robot)
-    
-        logger.debug('State after learning %d episodes.' % 
+
+        logger.debug('State after learning %d episodes.' %
                      len(state.id_episodes))
         try:
             agent.set_state(state.agent_state)
         except:
             logger.error('Could not set agent to previous state.')
-            raise     
+            raise
         return state
 

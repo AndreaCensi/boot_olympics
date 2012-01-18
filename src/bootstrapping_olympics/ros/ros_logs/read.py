@@ -74,14 +74,18 @@ class ROS2Python():
                     (ros_obs.id_episode, ros_obs.counter, ros_obs.timestamp))
 
         # FIXME: this assumes we use floats 
-        sensel_values_reshaped = np.array(ros_obs.sensel_values, dtype='float32')
-        sensel_values_reshaped = sensel_values_reshaped.reshape(ros_obs.sensel_shape)
+        sensel_values_reshaped = np.array(ros_obs.sensel_values,
+                                          dtype='float32')
+        sensel_values_reshaped = sensel_values_reshaped.reshape(
+                                                        ros_obs.sensel_shape)
         commands = np.array(ros_obs.commands)
         try:
             self.spec.get_commands().check_valid_value(commands)
-            self.spec.get_observations().check_valid_value(sensel_values_reshaped)
+            self.spec.get_observations().check_valid_value(
+                                                        sensel_values_reshaped)
         except BootInvalidValue as e:
-            logger.error('%s: Skipping invalid data.' % current_data_description)
+            logger.error('%s: Skipping invalid data.' %
+                         current_data_description)
             logger.error(e)
             return None
 

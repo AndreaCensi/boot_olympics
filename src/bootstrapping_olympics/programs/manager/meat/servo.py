@@ -4,7 +4,6 @@ from ....interfaces import RobotInterface, RobotObservations, ObsKeeper
 from ....logs import LogsFormat
 from ....utils import InAWhile, isodate_with_secs, natsorted
 from geometry.yaml import to_yaml
-#from geometry import SE3, SE3_from_SE2, SE2_from_translation_angle
 
 
 @contract(interval_print='None|>=0')
@@ -232,14 +231,18 @@ class BookkeepingServo():
 
         if self.cumulative:
             log_index = data_central.get_log_index()
-            self.done_before = log_index.get_episodes_for_robot(id_robot, id_agent)
+            self.done_before = log_index.get_episodes_for_robot(id_robot,
+                                                                id_agent)
             self.num_episodes_done_before = len(self.done_before)
-            self.num_episodes_todo = num_episodes - self.num_episodes_done_before
+            self.num_episodes_todo = (num_episodes -
+                                      self.num_episodes_done_before)
             logger.info('Preparing to do %d episodes (already done %d).' %
-                        (self.num_episodes_todo, self.num_episodes_done_before))
+                        (self.num_episodes_todo,
+                         self.num_episodes_done_before))
         else:
             self.num_episodes_todo = num_episodes
-            logger.info('Preparing to do %d episodes.' % self.num_episodes_todo)
+            logger.info('Preparing to do %d episodes.' %
+                        self.num_episodes_todo)
         self.num_episodes_done = 0
         self.num_observations = 0
         self.num_observations_episode = 0

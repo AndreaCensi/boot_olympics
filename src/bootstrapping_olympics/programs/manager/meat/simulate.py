@@ -24,9 +24,10 @@ def simulate(data_central, id_agent, id_robot,
             raise ValueError('Expected correct number of IDs.')
 
     # Instance agent object    
-    agent = data_central.get_bo_config().agents.instance(id_agent) #@UndefinedVariable
+    config = data_central.get_bo_config()
+    agent = config.agents.instance(id_agent) #@UndefinedVariable
     # Instance robot object
-    robot = data_central.get_bo_config().robots.instance(id_robot) #@UndefinedVariable
+    robot = config.robots.instance(id_robot) #@UndefinedVariable
 
     logger = logging.getLogger("BO:%s(%s)" % (id_agent, id_robot))
     logger.setLevel(logging.DEBUG)
@@ -110,12 +111,15 @@ class Bookkeeping():
             else:
                 self.done_before = set()
                 self.num_episodes_done_before = 0
-            self.num_episodes_todo = num_episodes - self.num_episodes_done_before
+            self.num_episodes_todo = (num_episodes -
+                                      self.num_episodes_done_before)
             logger.info('Preparing to do %d episodes (already done %d).' %
-                        (self.num_episodes_todo, self.num_episodes_done_before))
+                        (self.num_episodes_todo,
+                         self.num_episodes_done_before))
         else:
             self.num_episodes_todo = num_episodes
-            logger.info('Preparing to do %d episodes.' % self.num_episodes_todo)
+            logger.info('Preparing to do %d episodes.' %
+                        self.num_episodes_todo)
         self.num_episodes_done = 0
         self.num_observations = 0
         self.num_observations_episode = 0
