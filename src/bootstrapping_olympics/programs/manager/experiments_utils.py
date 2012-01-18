@@ -29,7 +29,6 @@ default_expl_videos = [
                          'plotter.display_sidebar': False},
            id='pdfz0no'),
 
-
       dict(model='boot_log2movie_cairo_avi',
            model_params={'plotter.zoom': 2,
                          'plotter.display_sidebar': True},

@@ -16,9 +16,11 @@ except ImportError:
 def yaml_load(yaml_string):
     return load(yaml_string, Loader=Loader)
 
+
 @contract(returns='str')
 def yaml_dump(ob):
     return dump(ob, Dumper=Dumper)
+
 
 @contract(returns='str')
 def yaml_dump_inline(ob):

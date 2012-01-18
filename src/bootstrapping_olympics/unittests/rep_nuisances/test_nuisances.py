@@ -7,7 +7,8 @@ from ...utils import assert_allclose
 @for_all_robots
 def check_nuisances(id_robot, robot):
     for id_nuisance in all_nuisances():
-        nuisance = BootOlympicsConfig.nuisances.instance(id_nuisance) #@UndefinedVariable
+
+        nuisance = BootOlympicsConfig.specs['nuisances'].instance(id_nuisance)
         boot_spec = robot.get_spec()
         check_conversions(boot_spec.get_commands(), nuisance)
         check_conversions(boot_spec.get_observations(), nuisance)

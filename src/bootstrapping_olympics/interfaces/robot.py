@@ -3,6 +3,7 @@ from abc import abstractmethod, ABCMeta
 
 __all__ = ['EpisodeDesc', 'RobotObservations', 'RobotInterface']
 
+
 class EpisodeDesc:
     ''' Structure that must be returned by new_episode(). '''
     @contract(id_episode='str', id_environment='str', extra='None|dict')
@@ -10,9 +11,10 @@ class EpisodeDesc:
         self.id_episode = id_episode
         self.id_environment = id_environment
         self.extra = extra # TODO: is this stored on file?
-        
+
     def __str__(self):
         return "EpisodeDesc(%s,%s)" % (self.id_episode, self.id_environment)
+
 
 class RobotObservations:
     ''' Structure that must be returned by get_observations(). '''
@@ -28,7 +30,8 @@ class RobotObservations:
             - ``episode_end`` should indicate whether the episode ended
               due to, e.g., user intervention or collision
               (commands not accepted anymore).
-            - ``robot_pose`` should be either None or a 4x4 Numpy matrix representing
+            - ``robot_pose`` should be either None or a 4x4 Numpy matrix 
+                representing
               an element of SE(3). This is used for tasks such as servoing,
               where we need to know the pose of the robot for assessing
               performance.
@@ -39,7 +42,8 @@ class RobotObservations:
         self.commands_source = commands_source
         self.episode_end = episode_end
         self.robot_pose = robot_pose
-        
+
+
 class RobotInterface:
     ''' This is the basic class for robot simulators. 
     
@@ -49,13 +53,13 @@ class RobotInterface:
     
     '''
     __metaclass__ = ABCMeta
-          
+
     @abstractmethod
     @contract(returns=BootSpec)
     def get_spec(self):
         ''' Returns the sensorimotor spec for this robot
             (a BootSpec object). '''
-        
+
     @abstractmethod
     @contract(returns=EpisodeDesc)
     def new_episode(self):
@@ -72,13 +76,12 @@ class RobotInterface:
     @contract(commands='array', commands_source='str')
     def set_commands(self, commands, commands_source):
         ''' Send the given commands. '''
-    
+
     @abstractmethod
     @contract(returns=RobotObservations)
     def get_observations(self):
         ''' Get observations. Must return an instance of RobotObservations. '''
-        
-    
+
     @contract(returns='None|dict')
     def get_state(self):
         ''' 
@@ -87,9 +90,9 @@ class RobotInterface:
             or None.
         '''
         return None
-    
+
     @contract(state='dict')
     def set_state(self, state):
         ''' Load the given state (obtained by 'get_state'). '''
         pass
-    
+

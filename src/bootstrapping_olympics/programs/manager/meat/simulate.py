@@ -3,7 +3,6 @@ from .... import AgentInterface
 from ....logs import LogsFormat
 from ....utils import InAWhile, isodate_with_secs, natsorted
 import logging
-import time
 
 
 def simulate(data_central, id_agent, id_robot,

@@ -66,7 +66,8 @@ class ROS2Python():
             self.keeper = ObsKeeper(self.spec, ros_obs.id_robot)
 
         if filter_doubles:
-            if self.last is not None and self.last['counter'] == ros_obs.counter:
+            if (self.last is not None and
+                self.last['counter'] == ros_obs.counter):
                 return None
 
         current_data_description = ('[%s#%s at %s]' %
