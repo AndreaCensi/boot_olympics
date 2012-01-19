@@ -9,52 +9,6 @@ import os
 import shutil
 
 
-default_expl_videos = [
-
-      dict(model='boot_log2movie_cairo',
-           model_params={'plotter.zoom': 2},
-           id='pdfz2sb'),
-
-      dict(model='boot_log2movie_cairo',
-           model_params={'plotter.zoom': 0},
-           id='pdfz0sb'),
-
-      dict(model='boot_log2movie_cairo',
-           model_params={'plotter.zoom': 2,
-                         'plotter.display_sidebar': False},
-           id='pdfz2no'),
-
-      dict(model='boot_log2movie_cairo',
-           model_params={'plotter.zoom': 0,
-                         'plotter.display_sidebar': False},
-           id='pdfz0no'),
-
-      dict(model='boot_log2movie_cairo_avi',
-           model_params={'plotter.zoom': 2,
-                         'plotter.display_sidebar': True},
-           id='aviz2sb'),
-
-      dict(model='boot_log2movie_cairo_avi',
-           model_params={'plotter.zoom': 0,
-                         'plotter.display_sidebar': True},
-           id='aviz0sb'),
-
-      dict(model='boot_log2movie_cairo_avi',
-           model_params={'plotter.zoom': 2,
-                         'plotter.display_sidebar': False},
-           id='aviz2no'),
-
-      dict(model='boot_log2movie_cairo_avi',
-           model_params={'plotter.zoom': 0,
-                         'plotter.display_sidebar': False},
-           id='aviz0no'),
-
-#      dict(model='boot_log2movie',
-#           model_params={'zoom': 2},
-#           id='aviz2')
-]
-
-
 def experiment_explore_learn_main(proj_root,
                                   explorer, agents, robots,
                                   args):
@@ -161,7 +115,7 @@ def experiment_explore_learn_compmake(data_central,
                              servo_max_episode_len=5,
                              reset=False,
                              episodes_per_tranche=10,
-                             expl_videos=default_expl_videos):
+                             expl_videos=None):
 
     from compmake import comp
 
@@ -285,11 +239,14 @@ def experiment_explore_learn_compmake(data_central,
                                 job_id='servo-%s-%s' % (id_robot, id_agent),
                                 extra_dep=all_tranches)
 
-                summaries = comp(servo_stats_summaries, data_central, id_agent, id_robot,
-                                 job_id='servo-summary-%s-%s' % (id_robot, id_agent),
+                summaries = comp(servo_stats_summaries, data_central,
+                                 id_agent, id_robot,
+                                 job_id=('servo-summary-%s-%s' %
+                                          (id_robot, id_agent)),
                                  extra_dep=all_servo)
 
-                comp(servo_stats_report, data_central, id_agent, id_robot, summaries,
+                comp(servo_stats_report, data_central, id_agent,
+                     id_robot, summaries,
                      job_id='servo-report-%s-%s' % (id_robot, id_agent))
 
                 # todo: temporary videos
@@ -310,7 +267,8 @@ def experiment_explore_learn_compmake(data_central,
 
             has_predictor = agent_has_predictor(data_central, id_agent)
             if not has_predictor:
-                logger.debug('Agent %s does not support predicting.' % id_agent)
+                logger.debug('Agent %s does not support predicting.'
+                             % id_agent)
 
             if has_predictor:
                 # FIXME: here we are using *all* streams 
@@ -322,17 +280,25 @@ def experiment_explore_learn_compmake(data_central,
 
 
 def add_exploration_videos(data_central, id_robot, id_agent,
-                            episode2tranche, num_ep_expl_v, videos):
+                            episode2tranche, num_ep_expl_v, videos=None):
 
     from compmake import comp
+
+    config = data_central.get_bo_config()
+
+    if videos is None:
+        videos = config.specs['videos'].keys()
 
     for i in range(num_ep_expl_v):
         id_episode = episode_id_exploration(i)
 
         for video in videos:
-            id_video = video['id']
-            model = video['model']
-            model_params = video['model_params']
+
+            code_spec = config.specs['videos'][video]
+
+            id_video = code_spec['id']
+            model = code_spec['code'][0]
+            model_params = code_spec['code'][1]
 
             comp(create_video,
                  data_central=data_central,

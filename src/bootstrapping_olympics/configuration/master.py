@@ -4,6 +4,11 @@ from .. import Constants
 from ..interfaces import AgentInterface, RobotInterface, RepresentationNuisance
 from conf_tools import ConfigMaster, GenericInstance
 import os
+from conf_tools.code_desc import check_generic_code_desc
+
+
+def check_valid_videos_config(spec):
+    check_generic_code_desc(spec, 'video')
 
 
 class BootConfigMaster(ConfigMaster):
@@ -12,12 +17,18 @@ class BootConfigMaster(ConfigMaster):
 
         self.add_class('robots', '*.robots.yaml', check_valid_robot_config,
                        GenericInstance(RobotInterface))
+
         self.add_class('agents', '*.agents.yaml', check_valid_agent_config,
                        GenericInstance(AgentInterface))
+
         self.add_class('nuisances', '*.nuisances.yaml',
                        check_valid_nuisance_config,
                        GenericInstance(RepresentationNuisance))
 
+        self.add_class('videos', '*.videos.yaml',
+                       check_valid_videos_config)
+
+        self.videos = self.specs['videos']
         self.robots = self.specs['robots']
         self.agents = self.specs['agents']
         self.nuisances = self.specs['nuisances']

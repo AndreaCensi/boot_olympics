@@ -20,6 +20,7 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
 
     if id_episode is None:
         id_episode = episode.id_episode
+
     id_world = episode.id_environment
 
     #keeper.new_episode_started(id_episode, episode.id_environment)
@@ -49,13 +50,10 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
 
         return observations, obs.episode_end
 
-    commands = agent.choose_commands() # repeated
+#    commands = agent.choose_commands() # repeated
+
     while counter < max_observations:
 
-        if check_valid_values:
-            cmd_spec.check_valid_value(commands)
-
-        robot.set_commands(commands, id_agent)
         observations, episode_end = get_observations()
 
         yield observations
@@ -68,6 +66,11 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
 
         agent.process_observations(observations)
         commands = agent.choose_commands() # repeated
+
+        if check_valid_values:
+            cmd_spec.check_valid_value(commands)
+
+        robot.set_commands(commands, id_agent)
 
         counter += 1
 

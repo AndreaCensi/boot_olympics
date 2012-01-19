@@ -1,0 +1,56 @@
+- id: pdfz2sb
+  desc: ''
+  code: 
+  - boot_log2movie_cairo
+  - 'plotter.zoom': 2
+    'plotter.display_sidebar': true
+
+- id: pdfz0sb
+  desc: ''
+  code: 
+  - boot_log2movie_cairo
+  - 'plotter.zoom': 0
+    'plotter.display_sidebar': true
+
+- id: pdfz2no
+  desc: ''
+  code: 
+  - boot_log2movie_cairo
+  - 'plotter.zoom': 2
+    'plotter.display_sidebar': false
+
+- id: pdfz0no
+  desc: ''
+  code: 
+  - boot_log2movie_cairo
+  - 'plotter.zoom': 0
+    'plotter.display_sidebar': false
+
+- id: aviz2sb
+  desc: ''
+  code: 
+  - boot_log2movie_cairo_avi
+  - 'plotter.zoom': 2
+    'plotter.display_sidebar': true
+
+- id: aviz0sb
+  desc: ''
+  code: 
+  - boot_log2movie_cairo_avi
+  - 'plotter.zoom': 0
+    'plotter.display_sidebar': true
+
+- id: aviz2no
+  desc: ''
+  code: 
+  - boot_log2movie_cairo_avi
+  - 'plotter.zoom': 2
+    'plotter.display_sidebar': false
+
+- id: aviz0no
+  desc: ''
+  code: 
+  - boot_log2movie_cairo_avi
+  - 'plotter.zoom': 0
+    'plotter.display_sidebar': false
+ 
