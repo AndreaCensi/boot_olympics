@@ -54,3 +54,11 @@
   - 'plotter.zoom': 0
     'plotter.display_sidebar': false
  
+
+- id: avisrvz0
+  desc: ''
+  code: 
+  - boot_log2movie_servo
+  - zoom: 0
+    width_map: 768
+    width_right: 200

@@ -45,8 +45,9 @@ class BootConfigMaster(ConfigMaster):
                     logger.info('Using additional dir %r' % dirname)
                     self.load(dirname)
         else:
-            logger.debug('You can use the environment variable %r to preload '
-                         'the configuration in that directory.' % v)
+            #logger.debug('You can use the environment variable %r to preload '
+            #             'the configuration in that directory.' % v)
+            pass
 
     def get_default_dir(self):
         from pkg_resources import resource_filename #@UnresolvedImport

@@ -115,7 +115,10 @@ def experiment_explore_learn_compmake(data_central,
                              servo_max_episode_len=5,
                              reset=False,
                              episodes_per_tranche=10,
-                             expl_videos=None):
+                             expl_videos=['pdfz2sb', 'pdfz0sb', 'pdfz2no',
+                                          'pdfz0no', 'aviz2sb', 'aviz0sb',
+                                          'aviz2no', 'aviz0no'],
+                             servo_videos=['avisrvz0']):
 
     from compmake import comp
 
@@ -229,7 +232,7 @@ def experiment_explore_learn_compmake(data_central,
                      cumulative=False,
                      displacement=servo_displacement,
                      interval_print=5,
-                     num_episodes_with_robot_state=num_episodes_with_robot_state,
+                num_episodes_with_robot_state=num_episodes_with_robot_state,
                      job_id='servo-%s-%s-%s' % (id_robot, id_agent, st + 1),
                      extra_dep=all_learned)
 
@@ -251,19 +254,23 @@ def experiment_explore_learn_compmake(data_central,
 
                 # todo: temporary videos
                 for i in range(num_ep_serv_v):
-                    comp(create_video,
-                         data_central=data_central,
-                         id_episode=episode_id_servoing(i),
-                         id_agent=id_agent,
-                         id_robot=id_robot,
-                         suffix='z2',
+                    for id_video in servo_videos:
+                        config = data_central.get_bo_config()
+                        code_spec = config.specs['videos'][id_video]
+                        model = code_spec['code'][0]
+                        model_params = code_spec['code'][1]
 
-                         model='boot_log2movie_servo',
-                         model_params={'plotter.zoom': 2},
-
-                         job_id='video-serv-%s-%s-%s' %
-                            (id_robot, id_agent, episode_id_servoing(i)),
-                         extra_dep=all_servo)
+                        comp(create_video,
+                             data_central=data_central,
+                             id_episode=episode_id_servoing(i),
+                             id_agent=id_agent,
+                             id_robot=id_robot,
+                             suffix=id_video,
+                             model=model,
+                             model_params=model_params,
+                             job_id='video-serv-%s-%s-%s' %
+                                (id_robot, id_agent, episode_id_servoing(i)),
+                             extra_dep=all_servo)
 
             has_predictor = agent_has_predictor(data_central, id_agent)
             if not has_predictor:
@@ -285,7 +292,6 @@ def add_exploration_videos(data_central, id_robot, id_agent,
     from compmake import comp
 
     config = data_central.get_bo_config()
-
     if videos is None:
         videos = config.specs['videos'].keys()
 
