@@ -30,8 +30,9 @@ class HDFLogWriter():
         copy_from(row, observations)
 
         row = row.copy().reshape((1,))
+        extras = yaml_dump(extra)
         self.table.append(row)
-        self.extra.append(yaml_dump(extra))
+        self.extra.append(extras)
 
     def create_table(self, dtype):
         filters = tables.Filters(complevel=9, complib='zlib',
@@ -45,11 +46,27 @@ class HDFLogWriter():
                         filters=filters,
                         createparents=True
                     )
-        self.table.attrs['boot_spec'] = yaml_dump(self.boot_spec.to_yaml())
+        structure = self.boot_spec.to_yaml()
+        yaml_spec = yaml_dump(structure)
 
         self.extra = self.hf.createVLArray(group, 'extra',
                                            tables.VLUnicodeAtom(),
                                            filters=filters)
+
+        if False:
+            # old version
+            self.table.attrs['boot_spec'] = yaml_spec
+        else:
+            boot_spec_table = self.hf.createVLArray(group, 'boot_spec',
+                                                tables.VLUnicodeAtom(),
+                                                filters=filters)
+            boot_spec_table.append(yaml_spec)
+
+    def cleanup(self):
+        """ There was an error; this is not a valid log file; delete. """
+        self.hf.close()
+        if os.path.exists(self.tmp_filename):
+            os.unlink(self.tmp_filename)
 
     def close(self):
         if self.table is None:

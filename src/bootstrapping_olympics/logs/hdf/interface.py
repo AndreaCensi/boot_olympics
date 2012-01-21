@@ -34,7 +34,10 @@ class HDFLogsFormat(LogsFormat):
         writer = HDFLogWriter(filename, id_stream, boot_spec)
         try:
             yield writer
-        finally:
+        except:
+            writer.cleanup()
+            raise
+        else:
             writer.close()
 
 LogsFormat.formats['h5'] = HDFLogsFormat()

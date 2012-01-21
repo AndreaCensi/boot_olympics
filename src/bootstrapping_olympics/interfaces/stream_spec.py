@@ -198,27 +198,40 @@ class StreamSpec:
     @contract(returns='dict')
     def to_yaml(self):
         arange = []
-        if self.streamels.ndim == 1:
-            for i in range(self.streamels.size):
-                arange.append(get_streamel_range(self.streamels[i]))
-        elif self.streamels.ndim == 2:
-            for i in range(self.streamels.shape[0]):
-                row = []
-                for j in range(self.streamels.shape[1]):
-                    row.append(get_streamel_range(self.streamels[i, j]))
-                arange.append(row)
-        else: assert False
 
         data = {
-            'shape': list(self.streamels.shape),
-            'format': self.streamels['kind'].tolist(),
-            'default': self.streamels['default'].tolist(),
-            'range': arange,
             'id': self.id_stream,
             'desc': self.desc,
             'extra': self.extra,
-            'filtered': self.filtered
+            'filtered': self.filtered,
+            'shape': list(self.streamels.shape)
         }
+
+        if all_same_spec(self.streamels):
+            #print("OK, we can optimize for %s" % self.streamels)
+            # We can optimize the representation
+            s = self.streamels.flat[0]
+            data['format'] = s['kind'].item()
+            data['default'] = s['default'].item()
+            data['range'] = [s['lower'].item(), s['upper'].item()]
+
+        else:
+            #print("Sorry, we can't optimize for %s" % self.streamels)
+            if self.streamels.ndim == 1:
+                for i in range(self.streamels.size):
+                    arange.append(get_streamel_range(self.streamels[i]))
+            elif self.streamels.ndim == 2:
+                for i in range(self.streamels.shape[0]):
+                    row = []
+                    for j in range(self.streamels.shape[1]):
+                        row.append(get_streamel_range(self.streamels[i, j]))
+                    arange.append(row)
+            else: assert False
+
+            data['format'] = self.streamels['kind'].tolist()
+            data['default'] = self.streamels['default'].tolist()
+            data['range'] = arange
+
         return data
 
     def __str__(self):
@@ -257,6 +270,24 @@ class StreamSpec:
 
     def get_id_stream(self):
         return self.id_stream
+
+
+def all_same_spec(streamels):
+    ''' Checks that all streamels have the same attributes. '''
+    for s in ['upper', 'lower', 'kind', 'default']:
+        if not only_one_value(streamels[s]):
+            #print('Cannot optimize because of %s' % s)
+            return False
+    return True
+
+def only_one_value(array):
+    """ Checks that the array has only one value. """
+    un = np.unique(array)
+    if len(un) == 1:
+        return True
+    else:
+        #print('Different values: %s' % un)
+        return False
 
 def check_valid_bounds(bounds):
     if not isinstance(bounds, (list, np.ndarray)):

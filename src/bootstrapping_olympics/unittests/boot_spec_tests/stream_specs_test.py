@@ -82,3 +82,16 @@ def test_default_values_5():
     assert_allclose(spec.get_default_value(), [[4, 4], [4, 4]])
 
 
+def test_compression1():
+    spec = StreamSpec.from_yaml(
+        {'shape': [100, 100], 'format': 'C', 'range': [0, 5], 'default': 4})
+
+    yaml2 = spec.to_yaml()
+    assert yaml2['format'] == 'C'
+    assert yaml2['range'] == [0, 5]
+    assert yaml2['default'] == 4
+
+
+
+
+

@@ -43,7 +43,6 @@ class PopCode(RepresentationNuisance):
                                        self.resolution)
 
 #        print 'old default', streamels['default']
-#
 #        print 'new default', streamels2['default']
 
         return StreamSpec(id_stream=None, # XXX

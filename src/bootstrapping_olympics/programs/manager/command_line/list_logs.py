@@ -1,7 +1,7 @@
 from . import check_no_spurious, logger, OptionParser, declare_command
 
 
-@declare_command('list-logs', 'list-logs [-v] [-vv]')
+@declare_command('list-logs', 'list-logs [-R] [-e] [-s] [-l]')
 def cmd_list_logs(data_central, argv):
     '''Shows information about every log. '''
 

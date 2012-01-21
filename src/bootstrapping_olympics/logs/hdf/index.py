@@ -4,7 +4,7 @@ from ... import BootSpec
 from ...utils import yaml_load
 import os
 
-__all__ = ['hdf_list_streams', 'spec_from_table']
+__all__ = ['hdf_list_streams', 'spec_from_group']
 
 
 def hdf_list_streams(filename):
@@ -18,7 +18,7 @@ def hdf_list_streams(filename):
         for sid in ids:
             table = group._v_children[sid].boot_stream
             extra = group._v_children[sid].extra
-            spec = spec_from_table(table)
+            spec = spec_from_group(group._v_children[sid])
             id_episodes = set(np.unique(table[:]['id_episode']))
 
             summaries = [episode_summary(table, extra, id_episode)
@@ -43,9 +43,21 @@ def hdf_list_streams(filename):
         f.close()
 
 
-def spec_from_table(table):
-    ''' Loads the spec from the boot_stream table. '''
-    spec = BootSpec.from_yaml(yaml_load(str(table.attrs['boot_spec'])))
+#def spec_from_table(table):
+#    ''' Loads the spec from the boot_stream table. '''
+#    
+#    spec = BootSpec.from_yaml(yaml_load(str(table.attrs['boot_spec'])))
+#    return spec
+
+
+def spec_from_group(group):
+    data_table = group.boot_stream
+    if 'boot_spec' in data_table.attrs:
+        # Old version
+        specs = str(data_table.attrs['boot_spec'])
+    else:
+        specs = str(group.boot_spec[0])
+    spec = BootSpec.from_yaml(yaml_load(specs))
     return spec
 
 

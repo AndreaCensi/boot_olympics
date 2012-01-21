@@ -1,7 +1,8 @@
-from . import logger, np, tables, spec_from_table
+from . import logger, np, tables, spec_from_group
 from ... import get_observations_dtype
 from ...utils import yaml_load
 import time
+
 
 __all__ = ['hdf_read']
 
@@ -11,9 +12,12 @@ def hdf_read(filename, id_stream, boot_spec=None, read_extra=False,
     f = tables.openFile(filename)
     try:
         # TODO: check table exists
-        table = f.root.boot_olympics.streams._v_children[id_stream].boot_stream
-        if boot_spec is None: boot_spec = spec_from_table(table)
-        extra = f.root.boot_olympics.streams._v_children[id_stream].extra
+        stream_group = f.root.boot_olympics.streams._v_children[id_stream]
+        table = stream_group.boot_stream
+        extra = stream_group.extra
+        if boot_spec is None:
+            boot_spec = spec_from_group(stream_group)
+
         n = len(table)
         n_extra = len(extra)
         if n != n_extra:
