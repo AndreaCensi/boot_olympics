@@ -1,5 +1,6 @@
 from . import contract, np
 from contracts import check
+from bootstrapping_olympics.utils import show_differences
 
 
 class ValueFormats:
@@ -20,20 +21,24 @@ def check_valid_streamels(streamels):
     assert streamels.dtype == np.dtype(streamel_dtype)
 
     # XXX: how about invalid values?
-    def check(which, msg):
+    def check(which, msg, a, b):
         if not np.all(which):
-            raise ValueError(msg)
+            error = show_differences(a, b, is_failure=(~which), condition=msg)
+            raise ValueError(error)
+
     not_discrete = streamels['kind'] != ValueFormats.Discrete
     invalid = streamels['kind'] == ValueFormats.Invalid
 
     check(np.logical_or(invalid, streamels['lower'] < streamels['upper']),
-          'lower<upper')
+          'lower<upper', streamels['lower'], streamels['upper'])
     check(np.logical_or(invalid, streamels['default'] <= streamels['upper']),
-          'default<=upper')
+          'default<=upper', streamels['default'], streamels['upper'])
     check(np.logical_or(invalid, streamels['lower'] <= streamels['default']),
-          'default<=upper')
+          'default<=upper', streamels['lower'], streamels['default'])
 
     check(np.logical_or(not_discrete,
                     np.round(streamels['default']) == streamels['default']),
-                        'default is discrete')
+                        'default is discrete',
+                        np.round(streamels['default']),
+                        streamels['default'])
 

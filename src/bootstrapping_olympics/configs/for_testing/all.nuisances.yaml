@@ -27,3 +27,10 @@
   code:
   - bootstrapping_olympics.examples.RandomScaling
   - seed: 300
+
+- id: n_popcode
+  desc: Population code
+  code:
+  - bootstrapping_olympics.examples.PopCode
+  - resolution: 128
+

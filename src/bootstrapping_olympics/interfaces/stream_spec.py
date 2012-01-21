@@ -1,9 +1,9 @@
 from . import (check_valid_streamels, ValueFormats, streamel_dtype, logger,
     contract, np)
+from bootstrapping_olympics.utils import (assert_allequal_verbose,
+    assert_allclose_verbose)
 from contracts import check, describe_type, describe_value
 from numbers import Number
-
-from ..utils import assert_allclose
 
 
 class BootInvalidValue(ValueError):
@@ -35,9 +35,10 @@ class StreamSpec:
     def check_same_spec(spec1, spec2):
         s1 = spec1.get_streamels()
         s2 = spec2.get_streamels()
-        assert np.all(s1['kind'] == s2['kind'])
-        assert_allclose(s1['lower'], s2['lower'])
-        assert_allclose(s1['upper'], s2['upper'])
+        assert_allequal_verbose(s1['kind'], s2['kind'])
+        assert_allclose_verbose(s1['lower'], s2['lower'])
+        assert_allclose_verbose(s1['upper'], s2['upper'])
+        assert_allclose_verbose(s1['default'], s2['default'])
 
     def get_streamels(self):
         return self.streamels.copy()
@@ -386,3 +387,5 @@ def streamels_from_spec(shape, format, range, default): #@ReservedAssignment
         msg = 'Could not interpret default value %s.' % describe_value(default)
         raise ValueError(msg)
     return streamels
+
+

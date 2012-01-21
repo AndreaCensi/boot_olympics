@@ -8,7 +8,11 @@ develop:
 test:
 	nosetests
 
-docs: epydoc
+test-parallel:
+	nosetests --parallel=10
 
-epydoc:
-	epydoc --config epydoc.cfg --introspect-only  -v --exclude-introspect=bootstrapping_olympics.unittests --debug
+docs: 
+	make -C docs
+
+print-config:
+	boot_olympics_print_config --outdir docs/source/my_static/config/

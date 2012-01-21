@@ -24,7 +24,7 @@ def add_robot_f(f, id_robot):
         robot = get_robot(id_robot)
         wrap_with_desc(f, (id_robot, robot), agent=None, robot=robot)
 
-    name = '%s_%s' % (f.__name__, id_robot)
+    name = 'test_%s_%s' % (f.__name__, id_robot)
     test_caller.__name__ = name
     test_caller.robot = id_robot
 
@@ -42,7 +42,7 @@ def add_agent_f(f, id_agent):
         agent = get_agent(id_agent)
         wrap_with_desc(f, (id_agent, agent), agent=agent, robot=None)
 
-    name = '%s_%s' % (f.__name__, id_agent)
+    name = 'test_%s_%s' % (f.__name__, id_agent)
     test_caller.__name__ = name
     test_caller.agent = id_agent
 
@@ -62,7 +62,7 @@ def add_pair_f(f, id_robot, id_agent):
         wrap_with_desc(f, (id_agent, agent, id_robot, robot),
                        agent=agent, robot=robot)
 
-    name = '%s_%s_%s' % (f.__name__, id_agent, id_robot)
+    name = 'test_%s_%s_%s' % (f.__name__, id_agent, id_robot)
     test_caller.__name__ = name
     test_caller.agent = id_agent
     test_caller.robot = id_robot
@@ -88,6 +88,7 @@ def wrap_with_desc(function, arguments, agent=None, robot=None):
         if robot is not None:
             msg += '\nRobot: %s' % robot
             msg += '\n Obs spec: %s' % robot.get_spec().get_observations()
+#            msg += '\n  default: %s' % robot.get_spec().get_observations().get_default_value()
             msg += '\n Cmd spec: %s' % robot.get_spec().get_commands()
         if agent is not None:
             msg += '\nAgent: %s' % agent

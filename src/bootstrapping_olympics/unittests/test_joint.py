@@ -2,8 +2,8 @@ from . import for_all_pairs
 from StringIO import StringIO
 from bootstrapping_olympics import UnsupportedSpec
 from bootstrapping_olympics.display import ReprepPublisher
-import cPickle as pickle
 from bootstrapping_olympics.programs.manager import run_simulation
+import cPickle as pickle
 
 
 @for_all_pairs

@@ -10,8 +10,10 @@ class UserError(Exception):
 
 def wrap_script_entry_point(function, logger):
     try:
-        function(sys.argv[1:])
-        sys.exit(0)
+        ret = function(sys.argv[1:])
+        if ret is None:
+            ret = 0
+        sys.exit(ret)
     except UserError as e:
         logger.error(str(e))
         sys.exit(1)

@@ -7,6 +7,7 @@ from optparse import OptionParser
 import contracts
 import os
 import shutil
+from bootstrapping_olympics.interfaces.agent import UnsupportedSpec
 
 
 def experiment_explore_learn_main(proj_root,
@@ -170,6 +171,12 @@ def experiment_explore_learn_compmake(data_central,
                                videos=expl_videos)
 
         for id_agent in agents:
+            compatible = are_compatible(data_central,
+                                       id_robot=id_robot, id_agent=id_agent)
+            if not compatible:
+                logger.info('Avoiding combination %s / %s' %
+                             (id_robot, id_agent))
+                continue
             # Learn tranche by tranche
             previous_state = None
             for t, tranche in enumerate(tranches):
@@ -329,6 +336,18 @@ def agent_has_predictor(data_central, id_agent):
 def agent_has_servo(data_central, id_agent):
     agent = data_central.get_bo_config().agents.instance(id_agent)
     return hasattr(agent, 'get_servo')
+
+
+def are_compatible(data_central, id_robot, id_agent):
+    # XXX: this is wasteful
+    robot = data_central.get_bo_config().robots.instance(id_robot)
+    agent = data_central.get_bo_config().agents.instance(id_agent)
+    try:
+        agent.init(robot.get_spec())
+    except UnsupportedSpec as e:
+        logger.debug('%s/%s: %s' % (id_robot, id_agent, e))
+        return False
+    return True
 
 
 def checkpoint(msg):

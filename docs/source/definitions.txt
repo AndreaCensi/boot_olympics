@@ -1,0 +1,10 @@
+.. |BootOlympics| raw:: html
+      
+      <span class="brand">BootOlympics</span>
+
+
+.. |towrite| raw:: html
+
+     <span style="font-weight:bold">This section must still be written.</span>
+	 
+	 

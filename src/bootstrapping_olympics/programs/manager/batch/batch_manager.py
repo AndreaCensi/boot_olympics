@@ -1,12 +1,11 @@
 from . import BatchConfigMaster, logger
 from bootstrapping_olympics.programs.manager.meat.data_central import (
     DataCentral)
-from bootstrapping_olympics.utils import UserError, expand_string
-from bootstrapping_olympics.utils.filesystem_utils import (safe_makedirs,
-    safe_symlink)
+from bootstrapping_olympics.utils import (safe_makedirs, safe_symlink, UserError,
+    expand_string)
+from compmake import batch_command
 from conf_tools import import_name
 import os
-from compmake import batch_command
 
 
 try:
@@ -75,6 +74,7 @@ def batch_process_manager(data_central, which_sets, command=None):
         return batch_command(command)
     else:
         compmake_console()
+        return 0
 
 
 def batch_set(data_central, id_set, spec):

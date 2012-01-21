@@ -16,6 +16,7 @@
 
 """
 
+print("Initializing tests")
 
 _multiprocess_can_split_ = True # Run parallel tests
 
@@ -27,7 +28,9 @@ from .test_robot import *
 from .test_joint import *
 
 
-from .logs  import *
+from .logs_tests  import *
+from .rep_nuisances_tests  import *
+from .boot_spec_tests  import *
 
 
 

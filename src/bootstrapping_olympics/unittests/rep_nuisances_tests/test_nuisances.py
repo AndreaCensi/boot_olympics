@@ -2,12 +2,13 @@ from .. import all_nuisances, for_all_robots
 from ... import BootOlympicsConfig, StreamSpec
 from ...interfaces import UnsupportedSpec
 from ...utils import assert_allclose
+from .. import logger
 
 
 @for_all_robots
 def check_nuisances(id_robot, robot):
     for id_nuisance in all_nuisances():
-
+        #print('Testing %s / %s ' % (id_robot, id_nuisance))
         nuisance = BootOlympicsConfig.specs['nuisances'].instance(id_nuisance)
         boot_spec = robot.get_spec()
         check_conversions(boot_spec.get_commands(), nuisance)
@@ -15,12 +16,14 @@ def check_nuisances(id_robot, robot):
 
 
 def check_conversions(stream_spec1, nuisance):
+    #print('Checking %s / %s ' % (stream_spec1, nuisance))
     nuisance_inv = nuisance.inverse()
     try:
         try:
             stream_spec2 = nuisance.transform_spec(stream_spec1)
         except UnsupportedSpec as e:
-            print(e)
+            logger.info('Skipping %s/%s because incompatible: %s' %
+                        (stream_spec1, nuisance, e))
             return
         stream_spec1b = nuisance_inv.transform_spec(stream_spec2)
         StreamSpec.check_same_spec(stream_spec1, stream_spec1b)
@@ -38,7 +41,9 @@ def check_conversions(stream_spec1, nuisance):
         assert_allclose(value1, value1b)
 
     except:
-        print('Nuisance:     %s' % nuisance)
-        print('Nuisance_inv: %s' % nuisance_inv)
+        logger.error('Error while testing:')
+        logger.error(' stream_spec:  %s ' % stream_spec1)
+        logger.error(' nuisance:     %s' % nuisance)
+        logger.error(' nuisance_inv: %s' % nuisance_inv)
         raise
 

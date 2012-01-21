@@ -88,7 +88,7 @@ def boot_olympics_manager(arguments):
 
 
 def manager_main():
-    wrap_script_entry_point(boot_olympics_manager, logger)
+    return wrap_script_entry_point(boot_olympics_manager, logger)
 
 if __name__ == '__main__':
     manager_main()
