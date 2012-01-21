@@ -1,5 +1,7 @@
 # v. 1.0
-
+webdir=website
+webgit=git --git-dir $(webdir)/.git --work-tree=$(webdir)/ 
+	
 all: compile-website 
 	
 compile-website: website epydoc
@@ -11,13 +13,13 @@ compile:
 	
 website: distclean
 	# Check out the website
-	git clone git@github.com:AndreaCensi/boot_olympics.git  $@
-	git --git-dir $@/.git --work-tree=$@/ checkout origin/gh-pages -b gh-pages
-	git --git-dir $@/.git --work-tree=$@/ branch -D master
+	git clone git@github.com:AndreaCensi/boot_olympics.git  $(webdir)
+	$(webgit) checkout origin/gh-pages -b gh-pages
+	$(webgit) branch -D master
 
 upload:
-	git --git-dir $@/.git --work-tree=$@/ commit -m "updated website" -a 
-	git --git-dir $@/.git --work-tree=$@/ push
+	$(webgit) commit -m "updated website" -a 
+	$(webgit) push
 
 distclean:
 	rm -rf website/
