@@ -112,6 +112,7 @@ def experiment_explore_learn_compmake(data_central,
                              num_ep_expl_v=1,
                              num_ep_serv=1,
                              num_ep_serv_v=1,
+                             publish_progress=False,
                              servo_displacement=1,
                              servo_max_episode_len=5,
                              reset=False,
@@ -120,6 +121,12 @@ def experiment_explore_learn_compmake(data_central,
                                           'pdfz0no', 'aviz2sb', 'aviz0sb',
                                           'aviz2no', 'aviz0no'],
                              servo_videos=['avisrvz0']):
+    """
+        
+        
+        :param:publish_progress: publish results after each tranche is learned
+
+    """
 
     from compmake import comp
 
@@ -198,10 +205,11 @@ def experiment_explore_learn_compmake(data_central,
                                       job_id='learn-%s-%s-%s' %
                                                 (id_robot, id_agent, t))
 
-                comp(publish_once, data_central, id_agent, id_robot,
-                     phase='learn', progress='t%03d' % t,
-                     job_id='publish-%s-%s-%s' % (id_robot, id_agent, t),
-                     extra_dep=previous_state)
+                if publish_progress:
+                    comp(publish_once, data_central, id_agent, id_robot,
+                         phase='learn', progress='t%03d' % t,
+                         job_id='publish-%s-%s-%s' % (id_robot, id_agent, t),
+                         extra_dep=previous_state)
 
             all_learned = comp(checkpoint, 'all learned',
                                 job_id='learn-%s-%s' % (id_robot, id_agent),

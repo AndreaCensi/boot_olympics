@@ -243,9 +243,9 @@ class StreamSpec:
         assert isinstance(obs1, StreamSpec)
         assert isinstance(obs2, StreamSpec)
         if len(obs1.streamels.shape) != 1:
-            raise Exception('Not implemented for 2D signals')
+            raise Exception('join() not implemented for 2D signals')
         if len(obs2.streamels.shape) != 1:
-            raise Exception('Not implemented for 2D signals')
+            raise Exception('join() not implemented for 2D signals')
         joint = np.hstack((obs1.streamels, obs2.streamels))
         assert len(joint.shape) == 1
 
@@ -262,8 +262,9 @@ class StreamSpec:
         filtered = dict(filter='join', original=[obs1.to_yaml(), obs2.to_yaml()])
         desc = 'Join of %s and %s' % (obs1.id_stream, obs2.id_stream)  #@UnusedVariable
 
-        streamels = streamels_from_spec(shape, format, mrange)
-
+        default = joint['default'].tolist() # XXX --- not tested
+        streamels = streamels_from_spec(shape=shape, format=format,
+                                        range=mrange, default=default)
         return StreamSpec(id_stream=id_stream,
                           streamels=streamels, extra=extra,
                           filtered=filtered, desc=desc)
