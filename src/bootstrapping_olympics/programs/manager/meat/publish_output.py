@@ -30,7 +30,7 @@ def publish_agent_output(state, agent, pd, basename):
 
     stats = ("Num episodes: %s\nNum observations: %s" %
              (len(state.id_episodes), state.num_observations))
-    report.text('learning statistics', stats)
+    report.text('learning_statistics', stats)
 
     report.text('report_date', isodate())
 

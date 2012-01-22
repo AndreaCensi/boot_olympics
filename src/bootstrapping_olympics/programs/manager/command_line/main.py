@@ -1,9 +1,9 @@
-from . import Storage, OptionParser, logger
+from . import Storage, OptionParser, logger, np
 from ....utils import wrap_script_entry_point, UserError, substitute
 from ..meat import DataCentral, DirectoryStructure
-import contracts
-from bootstrapping_olympics.logs.logs_format import LogsFormat
 from bootstrapping_olympics.constants import BootOlympicsConstants
+from bootstrapping_olympics.logs import LogsFormat
+import contracts
 
 
 commands_list = "\n".join(['  %-15s  %s\n  %-15s  Usage: %s' %
@@ -35,15 +35,15 @@ def boot_olympics_manager(arguments):
     parser.add_option("--contracts", default=False, action='store_true',
                       help="Activate PyContracts (disabled by default)")
 
+    parser.add_option("--seterr", dest='seterr', default="warn",
+                      help="Sets np.seterr. "
+                      "Possible values: ignore, warn, raise, print, log")
+
     available = LogsFormat.formats.keys()
     parser.add_option("--logformat", dest='log_format',
                       default=BootOlympicsConstants.DEFAULT_LOG_FORMAT,
                       help="Choose format for writing logs in %s. [%%default]"
                         % str(available))
-
-#    def add_log_dir(option, opt, value, parser):
-#
-#    parser.add_option("-c", action="callback", callback=my_callback)
 
     (options, args) = parser.parse_args(arguments)
 
@@ -60,10 +60,15 @@ def boot_olympics_manager(arguments):
                (cmd, ", ".join(Storage.commands.keys())))
         raise UserError(msg)
 
-    # TODO: option
-    # np.seterr(all='raise')
+    np.seterr(all=options.seterr)
+
     if not options.contracts:
         contracts.disable_all()
+
+    if options.boot_root is None:
+        options.boot_root = DirectoryStructure.DEFAULT_ROOT
+        logger.info('Using %r as default root directory '
+                    '(use -d <dir> to change)' % options.boot_root)
 
     # TODO: make more elegant
     # FIXME: remove this dependency
@@ -74,15 +79,8 @@ def boot_olympics_manager(arguments):
     except ImportError:
         pass
 
-    if options.boot_root is None:
-        options.boot_root = DirectoryStructure.DEFAULT_ROOT
-        logger.info('Using %r as default root directory '
-                    '(use -d <dir> to change)' % options.boot_root)
-
     data_central = DataCentral(options.boot_root)
     data_central.get_dir_structure().set_log_format(options.log_format)
-    # TODO: additional directories
-    # TODO: read from environment variables    
 
     return Storage.commands[cmd](data_central, cmd_options)
 
