@@ -61,6 +61,8 @@ def boot_olympics_manager(arguments):
         raise UserError(msg)
 
     np.seterr(all=options.seterr)
+    # underflow is very common in all libraries (e.g. matplotlib)
+    np.seterr(under='warn')
 
     if not options.contracts:
         contracts.disable_all()

@@ -88,7 +88,6 @@ def wrap_with_desc(function, arguments, agent=None, robot=None):
         if robot is not None:
             msg += '\nRobot: %s' % robot
             msg += '\n Obs spec: %s' % robot.get_spec().get_observations()
-#            msg += '\n  default: %s' % robot.get_spec().get_observations().get_default_value()
             msg += '\n Cmd spec: %s' % robot.get_spec().get_commands()
         if agent is not None:
             msg += '\nAgent: %s' % agent
