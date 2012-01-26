@@ -4,6 +4,7 @@ __all__ = ['RandomAgent']
 
 
 class RandomAgent(AgentInterface):
+    ''' This agent gives random commands. '''
 
     def init(self, boot_spec):
         self.boot_spec = boot_spec
