@@ -1,10 +1,10 @@
-- id: random_1_4
+- id: random_1_6
   desc: random robot
   code:
   - bootstrapping_olympics.examples.RandomRobot
   - boot_spec:
       observations:
-        shape: [4]
+        shape: [6]
         format: C
         range: [0,1]
       commands:
@@ -13,13 +13,13 @@
         range: [-1,+1]
         default: [0]
 
-- id: random_1_2x3
+- id: random_1_6x5
   desc: 'Random robot (2D observations)'
   code:
   - bootstrapping_olympics.examples.RandomRobot
   - boot_spec:
       observations:
-        shape: [2,3]
+        shape: [6,5]
         format: C
         range: [0,1]
       commands:
@@ -32,6 +32,6 @@
   desc: "A perturbed version of the random robot."
   code:
   - bootstrapping_olympics.examples.EquivRobot
-  - robot: random_1_4
+  - robot: random_1_6
     cmd_nuisance: [n_rpermB, n_rscaleA]
     obs_nuisance: [n_rscaleA, n_rpermA]

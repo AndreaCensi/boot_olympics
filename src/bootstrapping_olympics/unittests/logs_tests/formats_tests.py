@@ -1,11 +1,10 @@
 from ...logs import LogsFormat
-from ...programs.manager.meat import simulate
-from ...programs.manager.meat.data_central import DataCentral
+from ...programs.manager.meat import DataCentral, simulate
 from ...utils import assert_allclose, safe_makedirs
 from ..manager_tests.test_basic_operations import create_tmp_dir
 from ..tests_generation import for_all_pairs
 import os
-
+from .. import logger
 
 @for_all_pairs
 def check_basic_operations(id_agent, agent, id_robot, robot):
@@ -47,21 +46,26 @@ def check_basic_operations(id_agent, agent, id_robot, robot):
                                                            id_stream):
                     original = written[count]
 
-#                    try:
-                    assert_allclose(obs_read['timestamp'],
-                                    original['timestamp'])
-                    assert_allclose(obs_read['observations'],
-                                    original['observations'])
-                    assert_allclose(obs_read['commands'],
-                                    original['commands'])
-#                    except:
-#                        print('Error at count = %d' % count)
-#                        print('original: %s' % original)
-#                        print('obs_read: %s' % obs_read)
-#                        raise
+                    try:
+                        if obs_read['counter'] != original['counter']:
+                            msg = ('Not even the counter is the same! %s vs %s' %
+                                   (obs_read['counter'], original['counter']))
+                            raise Exception(msg)
+
+                        assert_allclose(obs_read['timestamp'],
+                                        original['timestamp'])
+                        assert_allclose(obs_read['observations'],
+                                        original['observations'])
+                        assert_allclose(obs_read['commands'],
+                                        original['commands'])
+                    except:
+                        logger.error('Error at count = %d' % count)
+                        logger.error('  original: %s' % original)
+                        logger.error('  obs_read: %s' % obs_read)
+                        raise
                     count += 1
             except:
-                print('Could not pass tests for format %r.' % logs_format)
+                logger.error('Could not pass tests for format %r.' % logs_format)
                 raise
         # FIXME: ROS does not allow writing extras
 

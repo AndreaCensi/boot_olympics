@@ -4,6 +4,15 @@
   - boot_log2movie_cairo
   - 'plotter.zoom': 2
     'plotter.display_sidebar': true
+    'plotter.fp': false
+
+- id: pdff2sb
+  desc: ''
+  code: 
+  - boot_log2movie_cairo
+  - 'plotter.zoom': 2
+    'plotter.display_sidebar': true
+    'plotter.fp': true
 
 - id: pdfz0sb
   desc: ''
@@ -11,6 +20,7 @@
   - boot_log2movie_cairo
   - 'plotter.zoom': 0
     'plotter.display_sidebar': true
+    'plotter.fp': false
 
 - id: pdfz2no
   desc: ''
@@ -18,6 +28,15 @@
   - boot_log2movie_cairo
   - 'plotter.zoom': 2
     'plotter.display_sidebar': false
+    'plotter.fp': false
+
+- id: pdff2no
+  desc: ''
+  code: 
+  - boot_log2movie_cairo
+  - 'plotter.zoom': 2
+    'plotter.display_sidebar': false
+    'plotter.fp': true
 
 - id: pdfz0no
   desc: ''
@@ -25,35 +44,58 @@
   - boot_log2movie_cairo
   - 'plotter.zoom': 0
     'plotter.display_sidebar': false
+    'plotter.fp': false
 
-- id: aviz2sb
+
+- id: mp4z2sb
   desc: ''
   code: 
   - boot_log2movie_cairo_avi
   - 'plotter.zoom': 2
     'plotter.display_sidebar': true
+    'plotter.fp': false
 
-- id: aviz0sb
+- id: mp4f2sb
+  desc: ''
+  code: 
+  - boot_log2movie_cairo_avi
+  - 'plotter.zoom': 2
+    'plotter.display_sidebar': true
+    'plotter.fp': true
+
+- id: mp4z0sb
   desc: ''
   code: 
   - boot_log2movie_cairo_avi
   - 'plotter.zoom': 0
     'plotter.display_sidebar': true
+    'plotter.fp': false
 
-- id: aviz2no
+- id: mp4z2no
   desc: ''
   code: 
   - boot_log2movie_cairo_avi
   - 'plotter.zoom': 2
     'plotter.display_sidebar': false
+    'plotter.fp': false
 
-- id: aviz0no
+- id: mp4f2no
+  desc: ''
+  code: 
+  - boot_log2movie_cairo_avi
+  - 'plotter.zoom': 2
+    'plotter.display_sidebar': false
+    'plotter.fp': true
+
+- id: mp4z0no
   desc: ''
   code: 
   - boot_log2movie_cairo_avi
   - 'plotter.zoom': 0
     'plotter.display_sidebar': false
- 
+    'plotter.fp': false
+
+
 
 - id: avisrvz0
   desc: ''

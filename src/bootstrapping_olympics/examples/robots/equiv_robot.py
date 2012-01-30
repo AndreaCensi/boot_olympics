@@ -1,6 +1,5 @@
 from .. import contract
-from ... import BootSpec, RobotInterface, BootOlympicsConfig
-from bootstrapping_olympics.interfaces.stream_spec import StreamSpec
+from ... import BootSpec, RobotInterface, BootOlympicsConfig, StreamSpec
 
 __all__ = ['EquivRobot']
 

@@ -69,7 +69,7 @@ def check_basic_operations(id_agent, id_robot):
 
 
 def test_basic_operations_1():
-    check_basic_operations(id_agent='random_agent', id_robot='random_1_4')
+    check_basic_operations(id_agent='random_agent', id_robot='random_1_6')
 
 
 @contextmanager

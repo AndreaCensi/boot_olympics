@@ -43,11 +43,14 @@ def check_basic_operations_cmdline(id_agent, agent, id_robot, robot):
                                                              id_agent)), 4 * n)
 
         execute_command('learn-log', '-a', id_agent, '-r', id_robot)
-        execute_command('servo', '-a', id_agent, '-r', id_robot,
-                        '--num_episodes', '1',
-                        '--max_episode_len', '1')
 
-        execute_command('predict', '-a', id_agent, '-r', id_robot)
+        if hasattr(agent, 'get_servo'): #XXX not elegant         
+            execute_command('servo', '-a', id_agent, '-r', id_robot,
+                                '--num_episodes', '1',
+                                '--max_episode_len', '1')
+
+        if hasattr(agent, 'get_predictor'):
+            execute_command('predict', '-a', id_agent, '-r', id_robot)
 
         execute_command('list-logs')
         execute_command('list-logs', '-e')

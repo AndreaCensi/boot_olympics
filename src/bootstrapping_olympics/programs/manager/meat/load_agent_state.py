@@ -17,6 +17,10 @@ def load_agent_state(data_central, id_agent, id_robot,
     agent = config.agents.instance(id_agent) #@UndefinedVariable
 
     index = data_central.get_log_index()
+    if not index.has_streams_for_robot(id_robot):
+        msg = ('Cannot load agent state for %r as I cannot find logs for %r.' %
+               (id_agent, id_robot))
+        raise Exception(msg)
     boot_spec = index.get_robot_spec(id_robot)
     agent.init(boot_spec)
 

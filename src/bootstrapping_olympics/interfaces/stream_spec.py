@@ -272,6 +272,10 @@ class StreamSpec:
     def get_id_stream(self):
         return self.id_stream
 
+def streamels_all_of_kind(streamels, kind):
+    """ Returns True if all streamels are of the same given kind ('C','D') """
+    return np.all(streamels['kind'] == kind)
+
 
 def all_same_spec(streamels):
     ''' Checks that all streamels have the same attributes. '''

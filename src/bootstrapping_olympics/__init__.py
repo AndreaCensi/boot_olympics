@@ -22,3 +22,6 @@ from .ros import *
 if not boot_has_ros:
     logger.error('ROS support not available (%s).' % ros_error)
 
+
+# XXX, to help nose find tests
+from . import unittests

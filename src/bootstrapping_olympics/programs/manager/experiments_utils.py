@@ -7,7 +7,7 @@ from optparse import OptionParser
 import contracts
 import os
 import shutil
-from bootstrapping_olympics.interfaces.agent import UnsupportedSpec
+from bootstrapping_olympics.interfaces import UnsupportedSpec
 
 
 def experiment_explore_learn_main(proj_root,
@@ -117,9 +117,18 @@ def experiment_explore_learn_compmake(data_central,
                              servo_max_episode_len=5,
                              reset=False,
                              episodes_per_tranche=10,
-                             expl_videos=['pdfz2sb', 'pdfz0sb', 'pdfz2no',
-                                          'pdfz0no', 'aviz2sb', 'aviz0sb',
-                                          'aviz2no', 'aviz0no'],
+                             expl_videos=['pdfz2sb',
+                                          'pdff2sb',
+                                          'pdfz0sb',
+                                          'pdfz2no',
+                                          'pdff2no',
+                                          'pdfz0no',
+                                          'mp4z2sb',
+                                          'mp4f2sb',
+                                          'mp4z0sb',
+                                          'mp4z2no',
+                                          'mp4f2no',
+                                          'mp4z0no'],
                              servo_videos=['avisrvz0']):
     """
         

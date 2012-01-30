@@ -1,21 +1,26 @@
 from . import all_robots, get_robot, all_agents, get_agent, logger
 import sys
 from nose.tools import istest
+from bootstrapping_olympics.interfaces.agent import UnsupportedSpec
 
 
 def add_to_module(function, module_name):
     module = sys.modules[module_name]
-    if not 'test' in module_name:
-        logger.error('Warning: Nose will not find tests in %r.' % module_name)
-    name = '%s_%s' % ('test', function.__name__)
-    if name in module.__dict__:
-        raise Exception('Already created test %r.' % name)
-    module.__dict__[name] = function
+    name = function.__name__
+
+    if not 'test' in name:
+        raise Exception('No "test" in function name %r' % name)
 
     if not 'test' in module_name:
         raise Exception('While adding %r in %r: module does not have "test"'
                         ' in it, so nose will not find the test.' %
                         (name, module_name))
+
+    if name in module.__dict__:
+        raise Exception('Already created test %r.' % name)
+
+    module.__dict__[name] = function
+
 
 
 def add_robot_f(f, id_robot):
@@ -59,6 +64,14 @@ def add_pair_f(f, id_robot, id_agent):
     def test_caller():
         agent = get_agent(id_agent)
         robot = get_robot(id_robot)
+
+        try:
+            agent1 = get_agent(id_agent)
+            agent1.init(robot.get_spec())
+        except UnsupportedSpec:
+            print('Unsupported combination (%s,%s)' % (id_robot, id_agent))
+            return
+
         wrap_with_desc(f, (id_agent, agent, id_robot, robot),
                        agent=agent, robot=robot)
 

@@ -20,6 +20,7 @@ print("Initializing tests")
 
 _multiprocess_can_split_ = True # Run parallel tests
 
+
 from .. import logger, np
 from .instantiation import *
 from .tests_generation import *

@@ -41,11 +41,13 @@ from . import list_robots
 from . import list_states
 from . import c_simulate
 from . import servo
+from . import servonav
 from . import video
 from . import batch
 from . import servo_stats
 from . import clean_states
 from . import clean_simulations
+
 
 
 from .main import *

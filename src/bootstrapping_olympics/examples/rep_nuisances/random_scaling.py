@@ -1,5 +1,6 @@
 from . import contract, np
 from ...interfaces import StreamSpec, UnsupportedSpec, RepresentationNuisance
+from bootstrapping_olympics.interfaces.stream_spec import streamels_all_of_kind
 
 __all__ = ['RandomScaling']
 
@@ -19,6 +20,11 @@ class RandomScaling(RepresentationNuisance):
     @contract(stream_spec=StreamSpec)
     def transform_spec(self, stream_spec):
         # FIXME: check this only for float values
+
+        if not streamels_all_of_kind(streamels=stream_spec.get_streamels(),
+                                     kind='C'): #XXX
+            msg = 'RandomScaling only supports continuous streams.'
+
         if len(stream_spec.shape()) != 1:
             msg = 'RandomScaling only supports 1D streams.'
             raise UnsupportedSpec(msg)
@@ -27,13 +33,9 @@ class RandomScaling(RepresentationNuisance):
         n = stream_spec.size()
         self.scale = np.random.exponential(scale=1.0, size=n)
 
-#        print('seed %s scale %s' % (self.seed, self.scale)) 
         if self.inverted:
             self.scale = 1.0 / self.scale
 
-        self.scale = self.scale.astype('float32')
-
-        # TODO: default values        
         streamels = stream_spec.get_streamels()
         streamels2 = streamels.copy()
         streamels2['lower'] *= self.scale
@@ -51,13 +53,22 @@ class RandomScaling(RepresentationNuisance):
                                   filtered=filtered,
                                   desc="%s (scaled)" % stream_spec.desc)
 
-        # Doesn't change the spec
+        # Save this so we can enforce it later
+        self.lower = streamels2['lower'].copy()
+        self.upper = streamels2['upper'].copy()
+
         return stream_spec2
 
     def transform_value(self, values):
         if self.scale is None:
             raise ValueError('Please call transform_spec() first.')
-        return values * self.scale
+
+        value2 = values * self.scale
+        # enforce upper/lower bounds, to account for numerical errors
+        value2 = value2.astype('float32')
+        value2 = np.minimum(self.upper, value2)
+        value2 = np.maximum(self.lower, value2)
+        return value2
 
     def __str__(self):
         if self.scale is None:
