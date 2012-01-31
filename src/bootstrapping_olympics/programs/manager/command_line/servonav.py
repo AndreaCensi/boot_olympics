@@ -29,7 +29,6 @@ def cmd_task_servonav(data_central, argv):
     task_servonav(data_central=data_central,
              id_agent=id_agent,
              id_robot=id_robot,
-             displacement=options.displacement,
              max_episode_len=options.max_episode_len,
              num_episodes=options.num_episodes,
              cumulative=options.cumulative,

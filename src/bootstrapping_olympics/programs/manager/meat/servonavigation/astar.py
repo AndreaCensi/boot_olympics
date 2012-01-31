@@ -9,12 +9,14 @@ def astar(start, target, node2children, heuristics):
         start, target: nodes
         node2children: given a node, returns a list of tuples (children, cost)
         Returns a tuple (path, cost).     
+        
+        heuristics(node, target)
     """
     cost_to_come = {}
 
     nodes = {}
     nodes[target] = NodeInfo(None, np.inf, np.inf)
-    nodes[start] = NodeInfo(None, 0, heuristics(start))
+    nodes[start] = NodeInfo(None, 0, heuristics(start, target))
     open_nodes = set([start])
 
     while open_nodes:
@@ -27,7 +29,7 @@ def astar(start, target, node2children, heuristics):
             cost_to_come = nodes[parent].cost_to_come + action_cost
             if not np.isfinite(cost_to_come): continue
 
-            min_cost_to_go = cost_to_come + heuristics(child)
+            min_cost_to_go = cost_to_come + heuristics(child, target)
 
             if ((not child in nodes) or
                 (cost_to_come < nodes[child].cost_to_come and
@@ -62,7 +64,7 @@ def node2children_grid(node, shape, cell_free, cost):
         if not ((0 <= a < shape[0]) and(0 <= b < shape[1])):
             return
         if cell_free((a, b)):
-            nodes.append(((a, b), 1))
+            nodes.append(((a, b), cost(node, (a, b))))
 
     i, j = node
 

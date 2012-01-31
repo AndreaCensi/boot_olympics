@@ -6,7 +6,7 @@ from contracts import contract
 import logging
 from conf_tools.utils import col_logging # colored logging
 
-logger = logging.getLogger("BootOlympics")
+logger = logging.getLogger("BO")
 logger.setLevel(logging.DEBUG)
 
 from .constants import *

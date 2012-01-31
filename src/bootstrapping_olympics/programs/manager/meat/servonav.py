@@ -1,17 +1,17 @@
 from . import load_agent_state, logger, contract, np
-from .... import BootOlympicsConstants
 from ....interfaces import RobotInterface, ObsKeeper
 from ....logs import LogsFormat
 from ....utils import isodate_with_secs
 from bootstrapping_olympics.programs.manager.meat.servo import BookkeepingServo
+from bootstrapping_olympics.programs.manager.meat.servonavigation.astar import (
+    astar, node2children_grid)
 from geometry import SE2_from_xytheta, SE3_from_SE2
+from geometry import SE3
+from geometry import (SE2_from_SE3, translation_from_SE2,
+    SE2_from_translation_angle, angle_from_SE2)
 from geometry.yaml import to_yaml
-import itertools
-from bootstrapping_olympics.programs.manager.meat.servonavigation.astar import astar, \
-    node2children_grid
-from geometry.poses import SE2_from_SE3, translation_from_SE2, \
-    SE2_from_translation_angle
 from vehicles.simulation.collision import collides_with
+import itertools
 
 
 
@@ -19,9 +19,9 @@ from vehicles.simulation.collision import collides_with
 def task_servonav(data_central, id_agent, id_robot,
                max_episode_len,
                num_episodes,
-               displacement,
                id_episodes=None, # if None, just use the ID given by the world
                cumulative=False,
+               resolution=1,
                interval_print=None,
                interval_write=10, # write every 10 frames
                num_episodes_with_robot_state=0):
@@ -80,9 +80,10 @@ def task_servonav(data_central, id_agent, id_robot,
             save_robot_state = counter < num_episodes_with_robot_state
 
             servonav_episode(id_robot=id_robot, robot=robot,
-                 id_servo_agent=id_agent_servo, servo_agent=servo_agent,
+                 id_servo_agent=id_agent_servo,
+                 servo_agent=servo_agent,
                  writer=writer, id_episode=id_episode,
-                 displacement=displacement,
+                 resolution=resolution,
                  max_episode_len=max_episode_len,
                  save_robot_state=save_robot_state,
                  interval_write=interval_write,
@@ -118,46 +119,86 @@ def get_grid(robot, world, vehicle, resolution):
         y = by[0] + (j + 0.5) * cy
         theta = 0
         pose = SE3_from_SE2(SE2_from_xytheta([x, y, theta]))
-
-        if True: # safer version
-            collision = collides_with(primitives, center=[x, y],
-                                  radius=vehicle.radius * 2.5)
-        else:
-            collision = vehicle.colliding_pose(pose)
-
-        collided = collision.collided
-        if collided: continue
-
         loc = dict(cell=(i, j), pose=pose)
-
         grid[i, j] = len(locations)
         locations.append(loc)
 
+    def collision_at(pose):
+        center = translation_from_SE2(SE2_from_SE3(pose))
+        collision = collides_with(primitives, center=center,
+                                  radius=vehicle.radius * 2.5)
+        #print('center %s: %s' % (center, collision))
+        return collision.collided
 
-    cell_free = lambda node: grid[node] != -1
-    cost = lambda node1, node2: np.linalg.norm(np.array(node1) - np.array(node2))
-    node2children = lambda node: node2children_grid(node,
-                                                    shape=grid.shape,
-                                                    cell_free=cell_free,
-                                                    cost=cost)
-    heuristics = lambda node: np.linalg.norm(np.array(node) - np.array(target))
+    def cell_free(node):
+        loc = locations[grid[node]]
+        if not 'collision' in loc:
+            loc['collision'] = collision_at(loc['pose'])
+            #print('Checking %s: %s' % (node, loc['collision']))
+
+        return not loc['collision']
+
+    def cost(node1, node2):
+        p1 = np.array(node1)
+        p2 = np.array(node2)
+        dist = np.linalg.norm(p1 - p2)
+        return dist
+
+    def node2children(node):
+        return node2children_grid(node, shape=grid.shape,
+                                        cell_free=cell_free,
+                                        cost=cost)
+
+    def heuristics(node, target):
+        return cost(node, target)
+
+
+    def get_start_cell():
+        for a in range(len(locations)):
+            cell = locations[a]['cell']
+            if cell_free(cell):
+                return cell
+        else:
+            raise Exception("No free space at all")
+
+    def get_target_cells():
+        """ Enumerate end cells rom the bottom """
+        found = False
+        for a in range(len(locations)):
+            k = len(locations) - 1 - a
+            cell = locations[k]['cell']
+            if cell_free(cell):
+                found = True
+                yield cell
+        if not found:
+            raise Exception("No free space at all")
+
+    start = get_start_cell()
 
     # Find a long path 
-    for a in range(0, len(locations) - 1):
-        start = locations[0]['cell']
-        k = len(locations) - 1 - a
-        target = locations[k]['cell']
-        path, cost = astar(start, target, node2children, heuristics)
+    for target in get_target_cells():
+        path, _ = astar(start, target, node2children, heuristics)
 
         if path is not None:
             break
+    else:
+        raise Exception('Could not find any path.')
 
     locations = [locations[grid[c]] for c in path]
 
     # adjust poses angle
     for i in range(len(locations) - 1):
+#        if i == 0:
+#            loc1 = locations[i - 1]
+#        else:
         loc1 = locations[i]
         loc2 = locations[i + 1]
+
+#        if i == len(locations) - 1:
+#            loc1 = locations[-2]
+#            loc2 = locations[-1]
+#        else:
+
         t1 = translation_from_SE2(SE2_from_SE3(loc1['pose']))
         t2 = translation_from_SE2(SE2_from_SE3(loc2['pose']))
         d = t2 - t1
@@ -166,11 +207,11 @@ def get_grid(robot, world, vehicle, resolution):
         loc1['pose'] = np.dot(loc1['pose'], diff)
 
     # compute observations
+    print('Found path of length %s' % len(locations))
     for loc in locations:
         pose = loc['pose']
         robot.vehicle.set_pose(pose)
-        loc['observations'] = mean_observations(robot, n=1)
-
+        loc['observations'] = mean_observations(robot, n=5)
 
     return locations
 
@@ -193,48 +234,24 @@ def mean_observations(robot, n):
 
 def servonav_episode(id_robot, robot,
                      id_servo_agent, servo_agent,
-                     writer, id_episode, displacement,
+                     writer, id_episode,
                      max_episode_len, save_robot_state,
                      interval_write=1,
+                     resolution=0.5, # grid resolution
                      max_tries=10000):
     '''
     
         :arg:displacement: Time in seconds to displace the robot.
     '''
 
-
-    def robot_pose():
-        return robot.get_observations().robot_pose
-
-    def timestamp():
-        return robot.get_observations().timestamp
-
-    def episode_ended():
-        return robot.get_observations().episode_end
-
-    def simulate_hold(cmd0, displacement):
-        t0 = timestamp()
-        nsteps = 0
-        while timestamp() < t0 + displacement:
-            nsteps += 1
-            source = BootOlympicsConstants.CMD_SOURCE_SERVO_DISPLACEMENT
-            robot.set_commands(cmd0, source)
-            if episode_ended():
-                logger.debug('Collision after %d steps' % ntries)
-                return False
-
-        logger.debug('%d steps of simulation to displace by %s' %
-                    (nsteps, displacement))
-        return True
-
     MIN_PATH_LENGTH = 8
 
-    for ntries in xrange(max_tries):
+    for _ in xrange(max_tries):
         # iterate until we can do this correctly
         episode = robot.new_episode()
         locations = get_grid(robot=robot,
                         world=robot.world,
-                        vehicle=robot.vehicle, resolution=0.6)
+                        vehicle=robot.vehicle, resolution=resolution)
 
         if len(locations) < MIN_PATH_LENGTH:
             print('Path too short, trying again')
@@ -256,8 +273,8 @@ def servonav_episode(id_robot, robot,
     counter = 0
     time_last_switch = None
 
-    MAX_TIME_FOR_SWITCH = 20.0
-    SWITCH_THRESHOLD = 0.5
+    MAX_TIME_FOR_SWITCH = 30.0
+    #SWITCH_THRESHOLD = 0.5
 
     num_written = 0
     for observations in run_simulation_servonav(id_robot, robot,
@@ -275,13 +292,27 @@ def servonav_episode(id_robot, robot,
         def obs_distance(obs1, obs2):
             return float(np.linalg.norm(obs1 - obs2))
 
+        curr_pose = robot.get_observations().robot_pose
         curr_obs = observations['observations']
         curr_goal = locations[current_goal]['observations']
         prev_goal = locations[current_goal - 1]['observations']
         curr_err = obs_distance(curr_goal, curr_obs)
         prev_err = obs_distance(prev_goal, curr_obs)
-        logger.debug(' curr_err/prev_err: %10f ' % (curr_err / prev_err))
-        if curr_err < SWITCH_THRESHOLD * prev_err:
+        current_goal_pose = locations[current_goal]['pose']
+        current_goal_obs = locations[current_goal]['observations']
+
+        delta = SE2_from_SE3(SE3.multiply(SE3.inverse(curr_pose), current_goal_pose))
+        delta_t = np.linalg.norm(translation_from_SE2(delta))
+        delta_th = np.abs(angle_from_SE2(delta))
+
+        logger.debug((' curr_err/prev_err: %10f ' % (curr_err / prev_err))
+                    + ('  deltaT: %.2fm  deltaTh: %.1fdeg' % (delta_t, np.rad2deg(delta_th))))
+
+        delta_t_threshold = 0.4
+        time_to_switch = delta_t < delta_t_threshold
+        # curr_err < SWITCH_THRESHOLD * prev_err:
+
+        if time_to_switch:
             current_goal += 1
             logger.info('Switched to goal %d.' % current_goal)
 
@@ -295,14 +326,12 @@ def servonav_episode(id_robot, robot,
             logger.error('breaking because too much time passed')
             break
 
-        current_goal_pose = locations[current_goal]['pose']
-        current_goal_obs = locations[current_goal]['observations']
         servo_agent.set_goal_observations(current_goal_obs)
 
         def represent_pose(x):
             return to_yaml('SE3', x)
 
-        servonav = dict(poseK=represent_pose(robot_pose()),
+        servonav = dict(poseK=represent_pose(curr_pose),
                         obsK=observations['observations'].tolist(),
                         pose1=represent_pose(current_goal_pose),
                         locations=locations_yaml,
@@ -344,7 +373,7 @@ def run_simulation_servonav(id_robot, robot, id_agent, agent,
 
     #keeper.new_episode_started(id_episode, id_environment)
 
-    obs_spec = robot.get_spec().get_observations()
+    #obs_spec = robot.get_spec().get_observations()
     cmd_spec = robot.get_spec().get_commands()
 
     def get_observations():
