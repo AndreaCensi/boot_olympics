@@ -36,7 +36,7 @@ class EpisodeSummary:
         return self._num_observations
 
     def __str__(self):
-        return ('Episode(%s,%s,%s,%ss,%s)' %
+        return ('Episode(%s,%s,%s,%.2fs,%s)' %
                  (self._id_episode, self._id_agent, self._id_world,
                   self._length, self._extras))
 

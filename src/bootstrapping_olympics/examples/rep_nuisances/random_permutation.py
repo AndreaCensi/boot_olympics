@@ -1,5 +1,5 @@
 from . import contract, np
-from ...interfaces import StreamSpec, RepresentationNuisance, UnsupportedSpec
+from ... import StreamSpec, RepresentationNuisance, UnsupportedSpec
 
 __all__ = ['RandomPermutation']
 

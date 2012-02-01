@@ -16,12 +16,14 @@
 
 """
 
-print("Initializing tests")
-
 _multiprocess_can_split_ = True # Run parallel tests
 
 
-from .. import logger, np
+
+from .. import np, getLogger
+
+logger = getLogger("BO.unittests")
+
 from .instantiation import *
 from .tests_generation import *
 from .test_agent import *

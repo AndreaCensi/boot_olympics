@@ -1,34 +1,24 @@
-from . import contract, logger
-from bootstrapping_olympics import (RobotInterface, RobotObservations,
-    AgentInterface, ObsKeeper)
+from . import logger, contract
+from bootstrapping_olympics import RobotInterface, RobotObservations, ObsKeeper
 
+# FIXME: should be the same as run_simulation()
 
 @contract(id_robot='str', id_agent='str',
-          robot=RobotInterface, agent=AgentInterface, max_observations='>=1',
+          robot=RobotInterface, max_observations='>=1',
           max_time='>0')
-def run_simulation(id_robot, robot, id_agent, agent, max_observations,
-                   max_time,
-                   check_valid_values=True, id_episode=None):
-    ''' 
-        Runs an episode of the simulation. The agent should already been
-        init()ed. 
-    '''
-    episode = robot.new_episode()
+def run_simulation_servo(id_robot, robot, id_agent, agent,
+                         max_observations, max_time,
+                         id_episode, id_environment,
+                         check_valid_values=True):
+    ''' Runs an episode of the simulation. The agent should already been
+        init()ed. '''
 
     keeper = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
 
-    if id_episode is None:
-        id_episode = episode.id_episode
+    #keeper.new_episode_started(id_episode, id_environment)
 
-    id_world = episode.id_environment
-
-    counter = 0
     obs_spec = robot.get_spec().get_observations()
     cmd_spec = robot.get_spec().get_commands()
-
-    logger.debug('Episode %s started (%s)' % (id_episode, episode))
-    logger.debug('max_observations: %s' % max_observations)
-    logger.debug('max_time: %s' % max_time)
 
     def get_observations():
         obs = robot.get_observations()
@@ -42,13 +32,15 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
                                    commands=obs.commands,
                                    commands_source=obs.commands_source,
                                    id_episode=id_episode,
-                                   id_world=id_world)
+                                   id_world=id_environment)
 
         if check_valid_values:
             obs_spec.check_valid_value(observations['observations'])
             cmd_spec.check_valid_value(observations['commands'])
+        episode_end = obs.episode_end
+        return observations, episode_end
 
-        return observations, obs.episode_end
+    counter = 0
 
     while counter < max_observations:
 
@@ -76,4 +68,3 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
         robot.set_commands(commands, id_agent)
 
         counter += 1
-

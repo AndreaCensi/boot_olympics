@@ -1,14 +1,14 @@
 '''Some functions to help in writing experiments scripts'''
 
+from . import DataCentral, logger
+from .batch import TaskRegister
 from optparse import OptionParser
 import contracts
 import os
 import shutil
-from bootstrapping_olympics.programs.manager.batch import default_expl_videos
-from . import logger
-from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
-from bootstrapping_olympics.programs.manager.batch.batch_learn import TaskRegister
 
+
+# TODO: move this away
 
 def experiment_explore_learn_main(proj_root,
                                   explorer, agents, robots,

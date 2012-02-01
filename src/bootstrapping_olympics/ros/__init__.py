@@ -1,4 +1,8 @@
-from .. import logger, np, contract
+from .. import np, contract, getLogger
+
+
+logger = getLogger("BO.ros")
+
 
 BootstrappingObservations_datatype = \
         'bootstrapping_adapter/BootstrappingObservations'
@@ -24,6 +28,7 @@ try:
 except ImportError as e:
     boot_has_ros = False
     ros_error = e
+    logger.error('ROS support not available (%s).' % ros_error)
 
 else:
 
@@ -31,6 +36,7 @@ else:
     from .ros_script_utils import *
     from .launch_xml import *
     from .create_launch import *
+
 
 
 

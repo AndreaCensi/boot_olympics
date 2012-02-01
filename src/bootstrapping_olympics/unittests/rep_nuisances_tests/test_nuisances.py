@@ -1,8 +1,8 @@
+from . import logger
 from .. import all_nuisances, for_all_robots
-from ... import BootOlympicsConfig, StreamSpec
-from ...interfaces import UnsupportedSpec
-from ...utils import assert_allclose
-from .. import logger
+from bootstrapping_olympics import (BootOlympicsConfig, StreamSpec,
+    UnsupportedSpec)
+from bootstrapping_olympics.utils import assert_allclose
 
 
 @for_all_robots

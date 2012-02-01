@@ -1,10 +1,12 @@
-from ...interfaces import AgentInterface
+''' A dummy agent that gives random commands. '''
+
+from ... import AgentInterface
 
 __all__ = ['RandomAgent']
 
 
 class RandomAgent(AgentInterface):
-    ''' This agent gives random commands. '''
+    ''' A dummy agent that gives random commands. '''
 
     def __init__(self):
         self.inited = False

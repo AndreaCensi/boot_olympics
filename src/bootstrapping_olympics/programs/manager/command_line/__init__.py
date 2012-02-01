@@ -1,9 +1,11 @@
 ''' Command-line interface to the functions in "meat". '''
-from .. import  np, contract, logger
+from .. import  np, contract
 
 from .common import *
 from .commands_list import *
 
+import logging
+logger = logging.getLogger("BO.cmdline")
 
 # TODO: put in utils/
 import optparse

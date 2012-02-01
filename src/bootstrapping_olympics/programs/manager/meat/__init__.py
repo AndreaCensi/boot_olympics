@@ -3,7 +3,11 @@
     minimal infrastraccture. 
 '''
 
-from .. import logger, OptionParser, np, contract
+from .. import np, contract
+
+import logging
+logger = logging.getLogger("BO.meat")
+
 from .directory_structure import *
 from .data_central import *
 from .load_agent_state import *
@@ -15,4 +19,3 @@ from .servonav import *
 from .publish_output import *
 from .log_learn import *
 from .predict import *
-from .servo_stats import *

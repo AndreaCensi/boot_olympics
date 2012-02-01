@@ -1,5 +1,5 @@
 from . import BagLogWriter, bag_get_bootstrapping_stream, bag_read
-from ...logs import LogsFormat
+from bootstrapping_olympics import LogsFormat
 from contextlib import contextmanager
 import os
 

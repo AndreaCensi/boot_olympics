@@ -1,5 +1,5 @@
 from . import logger
-from .. import BootOlympicsConfig
+from bootstrapping_olympics import BootOlympicsConfig
 import os
 
 

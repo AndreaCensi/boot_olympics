@@ -1,12 +1,10 @@
 from . import logger
-from ....configuration import  BootOlympicsConfig
-from ....utils import expand_environment, substitute
+from bootstrapping_olympics import (BootOlympicsConfig, BootOlympicsConstants,
+    LogsFormat)
+from bootstrapping_olympics.utils import (check_contained, expand_environment,
+    substitute, mkdirs_thread_safe)
 import os
 import tempfile
-from bootstrapping_olympics.constants import BootOlympicsConstants
-from bootstrapping_olympics.logs import LogsFormat
-from bootstrapping_olympics.utils import check_contained
-from bootstrapping_olympics.utils import mkdirs_thread_safe
 
 
 class DirectoryStructure:

@@ -1,7 +1,6 @@
 from . import DirectoryStructure, logger, np, run_simulation
-from .... import AgentInterface
-from ....logs import LogsFormat
-from ....utils import InAWhile, isodate_with_secs, natsorted
+from bootstrapping_olympics import AgentInterface, LogsFormat
+from bootstrapping_olympics.utils import InAWhile, isodate_with_secs, natsorted
 import logging
 
 

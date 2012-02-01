@@ -1,10 +1,10 @@
-from ...logs import LogsFormat
+from . import logger
 from ...programs.manager.meat import DataCentral, simulate
-from ...utils import assert_allclose, safe_makedirs
 from ..manager_tests.test_basic_operations import create_tmp_dir
 from ..tests_generation import for_all_pairs
+from bootstrapping_olympics import LogsFormat
+from bootstrapping_olympics.utils import assert_allclose, safe_makedirs
 import os
-from .. import logger
 
 @for_all_pairs
 def check_basic_operations(id_agent, agent, id_robot, robot):

@@ -1,6 +1,6 @@
 from . import load_agent_state, publish_agent_output, logger
-from ....interfaces import AgentInterface
-from ....utils import InAWhile, UserError
+from bootstrapping_olympics import AgentInterface
+from bootstrapping_olympics.utils import InAWhile, UserError
 import logging
 
 
@@ -27,7 +27,7 @@ def learn_log(data_central, id_agent, id_robot,
                % (id_agent, ", ".join(bo_config.agents.keys())))
         raise UserError(msg)
 
-    agent_logger = logging.getLogger("BO:%s(%s)" % (id_agent, id_robot))
+    agent_logger = logging.getLogger("BO.learn:%s(%s)" % (id_agent, id_robot))
     agent_logger.setLevel(logging.DEBUG)
     AgentInterface.logger = agent_logger
 
@@ -37,16 +37,6 @@ def learn_log(data_central, id_agent, id_robot,
                                     reset_state=reset)
 
     db = data_central.get_agent_state_db()
-
-    # TODO: move this somewhere else
-#    if True:
-#        from matplotlib import rc
-##        rc('font', **{'family':'sans-serif', 'sans-serif':['Helvetica']})
-#        ## for Palatino and other serif fonts use:
-#        rc('font', **{'family':'serif', 'serif':['Times', 'Times New Roman',
-#                                                 'Palatino'],
-#                       'size': 9.0})
-##        rc('text', usetex=True)
 
     if publish_interval is not None or publish_once:
         ds = data_central.get_dir_structure()

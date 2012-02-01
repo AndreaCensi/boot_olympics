@@ -1,6 +1,11 @@
 ''' Functions for dealing with HDF logs. '''
 
-from .. import logger, np, contract
+from .. import np, contract
+
+
+import logging
+logger = logging.getLogger("BO.logs.hdf")
+
 
 try:
     import tables

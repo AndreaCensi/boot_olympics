@@ -1,7 +1,7 @@
 from . import all_robots, get_robot, all_agents, get_agent, logger
-import sys
+from bootstrapping_olympics import UnsupportedSpec
 from nose.tools import istest
-from bootstrapping_olympics.interfaces.agent import UnsupportedSpec
+import sys
 
 
 def add_to_module(function, module_name):

@@ -1,5 +1,5 @@
 from . import contract, logger, observations2ros
-from ... import BootSpec
+from bootstrapping_olympics import BootSpec
 import os
 
 

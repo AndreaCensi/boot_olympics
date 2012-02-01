@@ -1,9 +1,8 @@
-from . import load_agent_state, logger, contract, np
-from .... import BootOlympicsConstants
-from ....interfaces import RobotInterface, RobotObservations, ObsKeeper
-from ....logs import LogsFormat
-from ....utils import InAWhile, isodate_with_secs, natsorted
-from geometry.yaml import to_yaml
+from . import BookkeepingServo, run_simulation_servo
+from .. import load_agent_state, logger, contract, np
+from bootstrapping_olympics import LogsFormat, BootOlympicsConstants
+from bootstrapping_olympics.utils import isodate_with_secs
+from geometry import SE3
 
 
 @contract(interval_print='None|>=0')
@@ -143,22 +142,27 @@ def servoing_episode(id_robot, robot,
                            100000, max_episode_len,
                            id_episode=id_episode,
                            id_environment=episode.id_environment):
-        # bk.observations(observations) XXX
 
-        def represent_pose(x):
+        def pose_to_yaml(x):
+            ''' Converts to yaml, or sets None. '''
             if x is None:
-                return x
+                return None
             else:
-                return to_yaml('SE3', x)
+                return SE3.to_yaml(x)
 
-        servoing = dict(obs0=obs0.tolist(),
-                        pose0=represent_pose(pose0),
-                        poseK=represent_pose(robot_pose()),
-                        obsK=observations['observations'].tolist(),
-                        displacement=displacement,
-                        cmd0=cmd0.tolist(),
-                        pose1=represent_pose(pose1))
-        extra = dict(servoing=servoing)
+        extra = {}
+
+        extra['servoing_base'] = dict(goal=obs0.tolist(),
+                                current=observations['observations'].tolist())
+
+        # TODO: make it not overlapping
+        extra['servoing'] = dict(obs0=obs0.tolist(),
+                                pose0=pose_to_yaml(pose0),
+                                poseK=pose_to_yaml(robot_pose()),
+                                obsK=observations['observations'].tolist(),
+                                displacement=displacement,
+                                cmd0=cmd0.tolist(),
+                                pose1=pose_to_yaml(pose1))
 
         if save_robot_state:
             extra['robot_state'] = robot.get_state()
@@ -220,133 +224,5 @@ def servoing_episode(id_robot, robot,
 #                                             extra=extra)
 
 
-class BookkeepingServo():
-    ''' Simple class to keep track of how many we have to simulate. '''
-    @contract(interval_print='None|>=0')
-    def __init__(self, data_central, id_robot, id_agent, num_episodes,
-                 cumulative=True, interval_print=5):
-        self.data_central = data_central
-        self.id_robot = id_robot
-        self.cumulative = cumulative
 
-        if self.cumulative:
-            log_index = data_central.get_log_index()
-            self.done_before = log_index.get_episodes_for_robot(id_robot,
-                                                                id_agent)
-            self.num_episodes_done_before = len(self.done_before)
-            self.num_episodes_todo = (num_episodes -
-                                      self.num_episodes_done_before)
-            logger.info('Preparing to do %d episodes (already done %d).' %
-                        (self.num_episodes_todo,
-                         self.num_episodes_done_before))
-        else:
-            self.num_episodes_todo = num_episodes
-            logger.info('Preparing to do %d episodes.' %
-                        self.num_episodes_todo)
-        self.num_episodes_done = 0
-        self.num_observations = 0
-        self.num_observations_episode = 0
-        self.observations_per_episode = []
-
-        self.interval_print = interval_print
-        self.tracker = InAWhile(interval_print)
-        self.id_episodes = set()
-
-    def observations(self, observations):
-        self.id_episodes.add(observations['id_episode'].item())
-
-        self.num_observations_episode += 1
-        self.num_observations += 1
-        if self.tracker.its_time():
-            msg = ('simulating %d/%d episodes obs %d (%5.1f fps)' %
-                   (self.num_episodes_done,
-                    self.num_episodes_todo,
-                    self.num_observations, self.tracker.fps()))
-            if self.num_episodes_done > 0:
-                msg += (' (mean obs/ep: %.1f)' %
-                        (np.mean(self.observations_per_episode)))
-            logger.info(msg)
-
-    def get_id_episodes(self):
-        ''' Returns the list of episodes simulated. '''
-        return natsorted(self.id_episodes)
-
-    def get_all_episodes(self):
-        ''' Returns the list of all episodes, both the already present
-            and the simulated. '''
-        eps = []
-        eps.extend(self.id_episodes)
-        eps.extend(self.done_before)
-        return natsorted(set(eps))
-
-    def episode_done(self):
-        self.num_episodes_done += 1
-        self.observations_per_episode.append(self.num_observations_episode)
-        self.num_observations_episode = 0
-
-    def another_episode_todo(self):
-        return self.num_episodes_done < self.num_episodes_todo
-
-
-# FIXME: should be the same as run_simulation()
-
-@contract(id_robot='str', id_agent='str',
-          robot=RobotInterface, max_observations='>=1',
-          max_time='>0')
-def run_simulation_servo(id_robot, robot, id_agent, agent,
-                         max_observations, max_time,
-                         id_episode, id_environment,
-                   check_valid_values=True):
-    ''' Runs an episode of the simulation. The agent should already been
-        init()ed. '''
-
-    keeper = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
-
-    #keeper.new_episode_started(id_episode, id_environment)
-
-    obs_spec = robot.get_spec().get_observations()
-    cmd_spec = robot.get_spec().get_commands()
-
-    def get_observations():
-        obs = robot.get_observations()
-        if check_valid_values:
-            assert isinstance(obs, RobotObservations)
-            obs_spec.check_valid_value(obs.observations)
-            cmd_spec.check_valid_value(obs.commands)
-
-        observations = keeper.push(timestamp=obs.timestamp,
-                                   observations=obs.observations,
-                                   commands=obs.commands,
-                                   commands_source=obs.commands_source,
-                                   id_episode=id_episode,
-                                   id_world=id_environment)
-
-        if check_valid_values:
-            obs_spec.check_valid_value(observations['observations'])
-            cmd_spec.check_valid_value(observations['commands'])
-        episode_end = obs.episode_end
-        return observations, episode_end
-
-    commands = agent.choose_commands() # repeated
-    counter = 0
-    while counter < max_observations:
-
-        if check_valid_values:
-            cmd_spec.check_valid_value(commands)
-
-        robot.set_commands(commands, id_agent)
-        observations, episode_end = get_observations()
-
-        yield observations
-
-        if observations['time_from_episode_start'] > max_time:
-            break
-
-        if episode_end: # Fishy
-            break
-
-        agent.process_observations(observations)
-        commands = agent.choose_commands() # repeated
-
-        counter += 1
 

@@ -1,7 +1,7 @@
 from . import DirectoryStructure
-from .... import BootOlympicsConfig
-from ....agent_states import LearningStateDB
-from ....logs import LogIndex
+from bootstrapping_olympics import (BootOlympicsConfig, LearningStateDB,
+    LogIndex)
+
 
 
 class DataCentral:

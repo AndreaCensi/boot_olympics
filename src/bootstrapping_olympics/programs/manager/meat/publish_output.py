@@ -1,6 +1,5 @@
-from . import load_agent_state
-from .. import logger
-from ....utils import isodate, safe_symlink
+from . import load_agent_state, logger
+from bootstrapping_olympics.utils import isodate, safe_symlink
 import os
 
 

@@ -1,6 +1,6 @@
 from . import contract, np
-from ...interfaces import StreamSpec, UnsupportedSpec, RepresentationNuisance
-from bootstrapping_olympics.interfaces.stream_spec import streamels_all_of_kind
+from ... import (StreamSpec, UnsupportedSpec, RepresentationNuisance,
+    streamels_all_of_kind)
 
 __all__ = ['RandomScaling']
 

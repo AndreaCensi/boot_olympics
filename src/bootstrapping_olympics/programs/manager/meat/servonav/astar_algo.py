@@ -1,5 +1,6 @@
+from . import np, contract
 from collections import namedtuple
-import numpy as np
+
 
 NodeInfo = namedtuple('NodeInfo', 'parent cost_to_come min_cost_to_go')
 
@@ -52,7 +53,6 @@ def argmin(seq, key):
 
 
 
-from contracts import contract
 @contract(node='tuple(int,int)', shape='tuple((int,>0),(int,>0))')
 def node2children_grid(node, shape, cell_free, cost):
     ''' 

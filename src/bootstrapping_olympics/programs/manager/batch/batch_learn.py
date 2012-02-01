@@ -1,11 +1,10 @@
 '''Some functions to help in writing experiments scripts'''
 from . import (default_expl_videos, default_servo_videos,
-    default_servonav_videos, comp)
+    default_servonav_videos, comp, contract)
 from .. import (create_video, servo_stats_report, servo_stats_summaries,
     simulate, task_predict, logger, learn_log, publish_once, np, task_servo,
     task_servonav)
-from .... import UnsupportedSpec
-from contracts import contract
+from bootstrapping_olympics import UnsupportedSpec
 import itertools
 
 
@@ -35,13 +34,13 @@ class TaskRegister:
         return hasattr(agent, 'get_servo')
 
 
-    def get_tranches(self, ids):
+    def get_tranches(self, ids, episodes_per_tranche=10):
         """ Returns a list of list """
         l = []
-        num_tranches = int(np.ceil(len(ids) * 1.0 / self.episodes_per_tranche))
+        num_tranches = int(np.ceil(len(ids) * 1.0 / episodes_per_tranche))
         for t in range(num_tranches):
-            e_from = t * self.episodes_per_tranche
-            e_to = min(len(ids), e_from + self.episodes_per_tranche)
+            e_from = t * episodes_per_tranche
+            e_to = min(len(ids), e_from + episodes_per_tranche)
             l.append([ ids[i] for i in range(e_from, e_to)])
         return l
 
@@ -76,11 +75,8 @@ class TaskRegister:
               servonav='None|dict',
               predict='None|dict')
     def main(self, agents, robots,
-                    episodes_per_tranche=10,
                     explore=None,
                     servo=None, servonav=None, predict=None):
-
-        self.episodes_per_tranche = episodes_per_tranche
 
 
         if not robots:
@@ -262,6 +258,7 @@ class TaskRegister:
 
     def add_tasks_servonav(self, id_agent, id_robot,
                                  num_episodes,
+                                 episodes_per_tranche=1,
                                  num_episodes_videos=0,
                                  max_episode_len=10,
                                  resolution=1,
@@ -290,7 +287,8 @@ class TaskRegister:
                            for i in range(num_episodes_videos)]
 
         all_tranches = []
-        episodes_tranches = self.get_tranches(all_id_episodes)
+        episodes_tranches = self.get_tranches(all_id_episodes,
+                                              episodes_per_tranche)
         for st, id_episodes in enumerate(episodes_tranches):
             num_episodes_with_robot_state = len(set(id_episodes) &
                                                 set(id_episodes_with_extra))
@@ -396,7 +394,8 @@ class TaskRegister:
                         extra_dep=all_tranches)
 
         summaries = comp(servo_stats_summaries, self.data_central,
-                         id_agent, id_robot,
+                         id_agent=id_agent, id_robot=id_robot,
+                         id_episodes=all_id_episodes,
                          job_id=('servo-%s-%s-summary' %
                                   (id_robot, id_agent)),
                          extra_dep=all_servo)

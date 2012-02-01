@@ -1,12 +1,10 @@
 from . import logger, np
-from .. import  rosbag
-from ... import BootInvalidValue, BootSpec
-from ...logs import EpisodeSummary
-from ...utils import yaml_load
+from .. import BootstrappingObservations_datatype, rosbag
+from bootstrapping_olympics import (BootInvalidValue, BootSpec, EpisodeSummary,
+    BootStream)
+from bootstrapping_olympics.utils import yaml_load
 import os
 import warnings
-from bootstrapping_olympics.logs.boot_stream import BootStream
-from bootstrapping_olympics.ros import BootstrappingObservations_datatype
 
 
 #def episode_summary(boot_stream, extra_table, id_episode):

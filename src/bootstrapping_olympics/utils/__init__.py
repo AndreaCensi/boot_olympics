@@ -2,6 +2,9 @@
 
 from .. import logger, np, contract
 
+import logging
+logging.getLogger("BO.utils")
+
 from .dict_utils import *
 from .in_a_while import *
 from .isodate import *

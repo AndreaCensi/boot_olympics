@@ -1,4 +1,6 @@
-from bootstrapping_olympics import AgentInterface
+'''A simple agent useful for testing.'''
+
+from ... import AgentInterface
 import numpy as np
 
 __all__ = ['TestAgent']
@@ -6,7 +8,7 @@ __all__ = ['TestAgent']
 
 class TestAgent(AgentInterface):
     ''' 
-        This is a simple agent useful for testing.
+        A simple agent useful for testing.
     
         It executes any command specified on the constructor. If the command
         is a string, then it is evaluated. You can use the variable "t" for 

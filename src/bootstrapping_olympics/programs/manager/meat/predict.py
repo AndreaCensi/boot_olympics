@@ -1,7 +1,6 @@
 from . import load_agent_state, logger, np
-from ....display import ReprepPublisher
+from bootstrapping_olympics.display import ReprepPublisher
 from contracts import describe_type
-from reprep import Report # TODO: be safe
 import os
 
 
@@ -34,6 +33,7 @@ def task_predict(data_central, id_agent, id_robot,
         #print('sample: %s' % (sample['errors']))
 
     basename = 'pred-%s-%s' % (id_agent, id_robot)
+    from reprep import Report
     r = Report(basename)
     publisher = ReprepPublisher(report=r)
 

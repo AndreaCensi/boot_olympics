@@ -1,5 +1,5 @@
 from . import np
-from ...interfaces import (RepresentationNuisance, StreamSpec, streamel_dtype,
+from ... import (RepresentationNuisance, StreamSpec, streamel_dtype,
     ValueFormats, UnsupportedSpec)
 from .popcode_functions import popcode, popcode_inv
 

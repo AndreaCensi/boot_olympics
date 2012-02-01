@@ -3,25 +3,20 @@ __version__ = '1.1'
 import numpy as np
 from contracts import contract
 
-import logging
+from logging import getLogger
 from conf_tools.utils import col_logging # colored logging
 
-logger = logging.getLogger("BO")
-logger.setLevel(logging.DEBUG)
+logger = getLogger("BO")
 
 from .constants import *
 
 
 from .interfaces import *
+from .agent_states import *
+from .logs import *
 from .configuration import BootOlympicsConfig
 
 
 # Try to load ROS components
 from .ros import *
 
-if not boot_has_ros:
-    logger.error('ROS support not available (%s).' % ros_error)
-
-
-# XXX, to help nose find tests
-from . import unittests

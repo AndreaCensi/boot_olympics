@@ -1,6 +1,6 @@
 from . import contract
-from ...utils import yaml_dump_inline
 from .. import BootstrappingObservations
+from bootstrapping_olympics.utils import yaml_dump_inline
 
 
 class Cache:

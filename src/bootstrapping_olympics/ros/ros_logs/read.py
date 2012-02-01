@@ -1,5 +1,5 @@
 from . import boot_spec_from_ros_message, logger, np
-from ... import ObsKeeper, BootInvalidValue
+from bootstrapping_olympics import ObsKeeper, BootInvalidValue
 
 
 def bag_read(bag_file, topic, spec, substitute_id_episode, only_episodes=None):
@@ -52,12 +52,17 @@ class ROS2Python():
         other check by the agents. 
     '''
 
-    def __init__(self, spec, max_dt=1):
+    def __init__(self, spec, max_dt=1, tolerant=True):
         self.last = None
         self.spec = spec
         self.max_dt = max_dt
 
         self.keeper = None
+
+        self.tolerant = tolerant
+
+        self.commands_spec = self.spec.get_commands()
+        self.observations_spec = self.spec.get_observations()
 
     def convert(self, ros_obs, filter_doubles=True):
         ''' Returns None if the same message is repeated. '''
@@ -80,13 +85,15 @@ class ROS2Python():
                                                         ros_obs.sensel_shape)
         commands = np.array(ros_obs.commands)
         try:
-            self.spec.get_commands().check_valid_value(commands)
-            self.spec.get_observations().check_valid_value(
-                                                        sensel_values_reshaped)
+            self.commands_spec.check_valid_value(commands)
+            self.observations_spec.check_valid_value(sensel_values_reshaped)
         except BootInvalidValue as e:
-            logger.error('%s: Skipping invalid data.' %
+            if self.tolerant:
+                logger.error('%s: Skipping invalid data.' %
                          current_data_description)
-            logger.error(e)
+                logger.error(e)
+            else:
+                logger.error('I am not tolerating')
             return None
 
 #        obs = Observations()

@@ -13,8 +13,8 @@ def cmd_task_servonav(data_central, argv):
                       help="Number of episodes to simulate [%default]")
     parser.add_option("--cumulative", default=False, action='store_true',
                       help="Count already simulated episodes.")
-    parser.add_option("--displacement", default=1.0, type='float',
-                      help="Initial robot displacement (seconds) [%default].")
+#    parser.add_option("--displacement", default=1.0, type='float',
+#                      help="Initial robot displacement (seconds) [%default].")
     parser.add_option("--max_episode_len", type='float', default=30,
                       help="Maximum len of episode (seconds) [%default]")
     parser.add_option("--interval_print", type='float', default=5,

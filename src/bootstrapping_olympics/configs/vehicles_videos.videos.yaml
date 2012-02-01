@@ -4,6 +4,7 @@
   - boot_log2movie_cairo
   - 'plotter.zoom': 2
     'plotter.display_sidebar': true
+    'plotter.show_sensor_data_compact': true
     'plotter.fp': false
 
 - id: pdff2sb
@@ -12,6 +13,7 @@
   - boot_log2movie_cairo
   - 'plotter.zoom': 2
     'plotter.display_sidebar': true
+    'plotter.show_sensor_data_compact': true
     'plotter.fp': true
 
 - id: pdfz0sb
@@ -20,6 +22,7 @@
   - boot_log2movie_cairo
   - 'plotter.zoom': 0
     'plotter.display_sidebar': true
+    'plotter.show_sensor_data_compact': false
     'plotter.fp': false
 
 - id: pdfz2no
@@ -28,6 +31,7 @@
   - boot_log2movie_cairo
   - 'plotter.zoom': 2
     'plotter.display_sidebar': false
+    'plotter.show_sensor_data_compact': true
     'plotter.fp': false
 
 - id: pdff2no
@@ -36,6 +40,7 @@
   - boot_log2movie_cairo
   - 'plotter.zoom': 2
     'plotter.display_sidebar': false
+    'plotter.show_sensor_data_compact': true
     'plotter.fp': true
 
 - id: pdfz0no
@@ -44,6 +49,7 @@
   - boot_log2movie_cairo
   - 'plotter.zoom': 0
     'plotter.display_sidebar': false
+    'plotter.show_sensor_data_compact': false
     'plotter.fp': false
 
 
@@ -53,6 +59,7 @@
   - boot_log2movie_cairo_avi
   - 'plotter.zoom': 2
     'plotter.display_sidebar': true
+    'plotter.show_sensor_data_compact': true
     'plotter.fp': false
 
 - id: mp4f2sb
@@ -61,6 +68,7 @@
   - boot_log2movie_cairo_avi
   - 'plotter.zoom': 2
     'plotter.display_sidebar': true
+    'plotter.show_sensor_data_compact': true
     'plotter.fp': true
 
 - id: mp4z0sb
@@ -69,6 +77,7 @@
   - boot_log2movie_cairo_avi
   - 'plotter.zoom': 0
     'plotter.display_sidebar': true
+    'plotter.show_sensor_data_compact': false
     'plotter.fp': false
 
 - id: mp4z2no
@@ -77,6 +86,7 @@
   - boot_log2movie_cairo_avi
   - 'plotter.zoom': 2
     'plotter.display_sidebar': false
+    'plotter.show_sensor_data_compact': true
     'plotter.fp': false
 
 - id: mp4f2no
@@ -85,6 +95,7 @@
   - boot_log2movie_cairo_avi
   - 'plotter.zoom': 2
     'plotter.display_sidebar': false
+    'plotter.show_sensor_data_compact': true
     'plotter.fp': true
 
 - id: mp4z0no
@@ -94,15 +105,17 @@
   - 'plotter.zoom': 0
     'plotter.display_sidebar': false
     'plotter.fp': false
+    'plotter.show_sensor_data_compact': false
 
 
 - id: avisrvz0
   desc: ''
   code: 
   - boot_log2movie_servo
-  - zoom: 0
-    width_map: 768
-    width_right: 200
+  - 'plotter.zoom': 0
+    'plotter.display_sidebar': false
+    'plotter.fp': false
+    'plotter.show_sensor_data_compact': false
 
 
 - id: mp4z0nosrv
@@ -112,4 +125,5 @@
   - 'plotter.zoom': 0
     'plotter.display_sidebar': false
     'plotter.fp': false
+    'plotter.show_sensor_data_compact': false
 
