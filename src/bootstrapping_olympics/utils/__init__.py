@@ -1,9 +1,8 @@
 ''' Miscellaneous utilities not specific to the project. '''
 
-from .. import logger, np, contract
+from .. import getLogger, np, contract
 
-import logging
-logging.getLogger("BO.utils")
+logger = getLogger(__name__)
 
 from .dict_utils import *
 from .in_a_while import *

@@ -1,9 +1,9 @@
 from . import logger
-from ...utils import wrap_script_entry_point
 from optparse import OptionParser
 import os
 import tables
-from bootstrapping_olympics.logs.log_index import LogIndex
+from bootstrapping_olympics import LogIndex
+from bootstrapping_olympics.utils import wrap_script_entry_point
 
 usage = """
 
@@ -12,6 +12,7 @@ usage = """
 Creates a .h5 file for each .bag file.
   
 """
+
 
 def rosbag2h5(pargs):
     parser = OptionParser(usage=usage)
@@ -38,6 +39,7 @@ def rosbag2h5(pargs):
             continue
         convert(streams[0])
 
+
 def convert(stream):
     filename = stream.bag_file
     h5 = os.path.splitext(filename)[0] + '.h5'
@@ -46,6 +48,7 @@ def convert(stream):
 
     # XXX: to finish
     f.close()
+
 
 def main():
     wrap_script_entry_point(rosbag2h5, logger)

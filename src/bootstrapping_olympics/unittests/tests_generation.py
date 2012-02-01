@@ -22,7 +22,6 @@ def add_to_module(function, module_name):
     module.__dict__[name] = function
 
 
-
 def add_robot_f(f, id_robot):
     @istest
     def test_caller():

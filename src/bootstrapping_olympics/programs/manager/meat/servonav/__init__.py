@@ -1,10 +1,10 @@
-from .. import contract, np
+from .. import contract, np, getLogger
 
-import logging
-logger = logging.getLogger('BO.servonav')
+logger = getLogger(__name__)
 
 from .astar_algo import *
 from .find_path import *
 from .task import *
+
 
 __all__ = ['task_servonav']

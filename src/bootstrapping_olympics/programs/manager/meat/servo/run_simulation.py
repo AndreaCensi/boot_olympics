@@ -3,6 +3,7 @@ from bootstrapping_olympics import RobotInterface, RobotObservations, ObsKeeper
 
 # FIXME: should be the same as run_simulation()
 
+
 @contract(id_robot='str', id_agent='str',
           robot=RobotInterface, max_observations='>=1',
           max_time='>0')

@@ -18,11 +18,9 @@
 
 _multiprocess_can_split_ = True # Run parallel tests
 
-
-
 from .. import np, getLogger
 
-logger = getLogger("BO.unittests")
+logger = getLogger(__name__)
 
 from .instantiation import *
 from .tests_generation import *

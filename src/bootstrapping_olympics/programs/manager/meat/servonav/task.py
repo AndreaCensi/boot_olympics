@@ -12,10 +12,10 @@ def task_servonav(data_central, id_agent, id_robot,
                num_episodes,
                id_episodes=None, # if None, just use the ID given by the world
                cumulative=False,
-               resolution=1,
                interval_print=None,
                interval_write=10, # write every 10 frames
-               num_episodes_with_robot_state=0):
+               num_episodes_with_robot_state=0,
+                resolution=1):
     ''' Returns the list of the episodes IDs simulated. '''
 
     if id_episodes is not None:
@@ -143,7 +143,8 @@ def servonav_episode(id_robot, robot,
                            id_servo_agent, servo_agent,
                            100000, max_episode_len,
                            id_episode=id_episode,
-                           id_environment=episode.id_environment):
+                           id_environment=episode.id_environment,
+                           raise_error_on_collision=True):
 
         current_time = observations['timestamp'].item()
         if time_last_switch is None:
@@ -163,7 +164,8 @@ def servonav_episode(id_robot, robot,
         current_goal_pose = locations[current_goal]['pose']
         current_goal_obs = locations[current_goal]['observations']
 
-        delta = SE2_from_SE3(SE3.multiply(SE3.inverse(curr_pose), current_goal_pose))
+        delta = SE2_from_SE3(SE3.multiply(SE3.inverse(curr_pose),
+                                          current_goal_pose))
         delta_t = np.linalg.norm(translation_from_SE2(delta))
         delta_th = np.abs(angle_from_SE2(delta))
 
@@ -191,10 +193,12 @@ def servonav_episode(id_robot, robot,
 
         servo_agent.set_goal_observations(current_goal_obs)
 
-
         extra = {}
         extra['servoing_base'] = dict(goal=curr_goal.tolist(),
                                       current=curr_obs.tolist())
+
+        extra['servoing_poses'] = dict(goal=SE3.to_yaml(current_goal_pose),
+                                       current=SE3.to_yaml(curr_pose))
 
         extra['servonav'] = dict(poseK=SE3.to_yaml(curr_pose),
                         obsK=observations['observations'].tolist(),
@@ -207,11 +211,9 @@ def servonav_episode(id_robot, robot,
                         time_since_last_switch=time_since_last_switch
                         )
 
-
         if counter % interval_write == 0:
             if save_robot_state:
                 extra['robot_state'] = robot.get_state()
-
 
             writer.push_observations(observations=observations,
                                      extra=extra)
@@ -219,7 +221,8 @@ def servonav_episode(id_robot, robot,
         counter += 1
 
     if num_written == 0:
-        msg = ('This log was too short to be written (%d observations)' % counter)
+        msg = ('This log was too short to be written (%d observations)'
+               % counter)
         raise Exception(msg)
 
 
@@ -227,21 +230,24 @@ def servonav_episode(id_robot, robot,
           robot=RobotInterface, max_observations='>=1',
           max_time='>0')
 def run_simulation_servonav(id_robot, robot, id_agent, agent,
-                         max_observations, max_time,
-                         id_episode, id_environment,
-                   check_valid_values=True):
+                            max_observations, max_time,
+                            id_episode, id_environment,
+                            check_valid_values=True,
+                            raise_error_on_collision=True):
     ''' Runs an episode of the simulation. The agent should already been
         init()ed. '''
 
     keeper = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
 
-    #keeper.new_episode_started(id_episode, id_environment)
-
-    #obs_spec = robot.get_spec().get_observations()
+    obs_spec = robot.get_spec().get_observations()
     cmd_spec = robot.get_spec().get_commands()
 
-    def get_observations():
+    counter = 0
+    while True:
         obs = robot.get_observations()
+
+        if check_valid_values:
+            obs_spec.check_valid_value(obs.observations)
 
         observations = keeper.push(timestamp=obs.timestamp,
                                    observations=obs.observations,
@@ -250,15 +256,10 @@ def run_simulation_servonav(id_robot, robot, id_agent, agent,
                                    id_episode=id_episode,
                                    id_world=id_environment)
         episode_end = obs.episode_end
-        return observations, episode_end
-
-    counter = 0
-    while True:
-        observations, episode_end = get_observations()
 
         yield observations
 
-        now = '%s' % counter
+        now = 'step %s' % counter
 
         if counter >= max_observations:
             logger.info('Finished at %s because %s >= %s' %
@@ -267,12 +268,18 @@ def run_simulation_servonav(id_robot, robot, id_agent, agent,
 
         if observations['time_from_episode_start'] > max_time:
             logger.info('Finished at %s because of max_time: %s > %s' %
-                        (now, observations['time_from_episode_start'], max_time))
+                        (now, observations['time_from_episode_start'],
+                         max_time))
             break
 
         if episode_end: # Fishy
-            logger.info('Finished at %s because of robot driver.' % now)
-            break
+            msg = 'Finished at %s because of robot driver.' % now
+
+            if raise_error_on_collision:
+                raise Exception(msg)
+            else:
+                logger.info(msg)
+                break
 
         agent.process_observations(observations)
         commands = agent.choose_commands() # repeated

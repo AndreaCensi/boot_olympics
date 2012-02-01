@@ -1,9 +1,8 @@
-from .. import np, contract
+from .. import np, contract, getLogger
 
-import logging
-logger = logging.getLogger('BO.servo')
+logger = getLogger(__name__)
 
-from .bookkeeping import  *
+from .bookkeeping import *
 from .run_simulation import *
 from .summaries import *
 from .report import *

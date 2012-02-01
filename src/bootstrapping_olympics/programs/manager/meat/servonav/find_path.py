@@ -3,6 +3,7 @@ from geometry import (SE2_from_SE3, translation_from_SE2,
     SE2_from_translation_angle, SE2_from_xytheta, SE3_from_SE2)
 import itertools
 
+
 @contract(resolution='float,>0')
 def get_grid(robot, world, vehicle, resolution):
     from vehicles.simulation.collision import collides_with
@@ -63,7 +64,6 @@ def get_grid(robot, world, vehicle, resolution):
 
     def heuristics(node, target):
         return cost(node, target)
-
 
     def get_start_cell():
         for a in range(len(locations)):
@@ -126,6 +126,7 @@ def get_grid(robot, world, vehicle, resolution):
         loc['observations'] = mean_observations(robot, n=5)
 
     return locations
+
 
 def mean_observations(robot, n):
     """ Averages the robot's observations at the given place. """

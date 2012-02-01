@@ -1,8 +1,7 @@
 from .. import np, contract, getLogger
 
 
-logger = getLogger("BO.ros")
-
+logger = getLogger(__name__)
 
 BootstrappingObservations_datatype = \
         'bootstrapping_adapter/BootstrappingObservations'

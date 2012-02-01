@@ -1,8 +1,8 @@
 ''' Loading and saving an agent's state. '''
-from .. import logger, np, contract
+from .. import getLogger, np, contract
 
-import logging
-logger = logging.getLogger("BO.states")
+logger = getLogger(__name__)
+
 
 from .filesystem_storage import *
 from .learning_state import *

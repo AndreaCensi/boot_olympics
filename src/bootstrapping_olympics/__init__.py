@@ -6,7 +6,13 @@ from contracts import contract
 from logging import getLogger
 from conf_tools.utils import col_logging # colored logging
 
-logger = getLogger("BO")
+import logging
+logging.basicConfig()
+logger = logging.getLogger("BO")
+
+logger.setLevel(logging.DEBUG)
+# XXX: let everybody use the same logger
+getLogger = lambda name: logger
 
 from .constants import *
 

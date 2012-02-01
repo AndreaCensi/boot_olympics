@@ -5,8 +5,8 @@
 
 from .. import np, contract
 
-import logging
-logger = logging.getLogger("BO.meat")
+from .. import getLogger
+logger = getLogger(__name__)
 
 from .directory_structure import *
 from .data_central import *

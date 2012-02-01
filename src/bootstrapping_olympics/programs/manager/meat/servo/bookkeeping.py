@@ -1,6 +1,7 @@
 from . import  logger, contract, np
 from bootstrapping_olympics.utils import InAWhile, natsorted
 
+
 class BookkeepingServo():
     ''' Simple class to keep track of how many we have to simulate. '''
     @contract(interval_print='None|>=0')

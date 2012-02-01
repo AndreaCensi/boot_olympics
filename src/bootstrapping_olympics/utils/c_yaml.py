@@ -40,6 +40,7 @@ def check_pure_structure(s):
         pprint(s)
         check_pure_structure_detailed(s)
 
+
 def check_pure_structure_fast(s):
     if isinstance(s, (str, int, float, NoneType)):
         return

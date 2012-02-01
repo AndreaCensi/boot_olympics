@@ -8,6 +8,7 @@ from numpy.testing.utils import assert_equal
 import shutil
 import tempfile
 
+
 @for_all_pairs
 def check_writing_logs(id_agent, agent, id_robot, robot):
     try:

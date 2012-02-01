@@ -8,7 +8,9 @@ __all__ = ['ReprepPublisher']
 
 class ReprepPublisher(Publisher):
 
-    def __init__(self, rid=None, report=None, cols=None):
+    default_max_cols = 5
+
+    def __init__(self, rid=None, report=None, cols=default_max_cols):
         # TODO: clear up this interface
         if report is None:
             self.r = Report(rid)
@@ -26,11 +28,11 @@ class ReprepPublisher(Publisher):
 
     @contract(name='str', caption='None|str')
     def array(self, name, value, caption=None): # XXX to change
-        self.fig().data(name, value)
+        self.fig().data(name, value, caption=caption)
 
     @contract(name='str', value='array', filter='str', caption='None|str')
     def array_as_image(self, name, value,
-                       filter='posneg', #@ReservedAssignment
+                       filter='posneg', #@ReservedAssignment # XXX: config
                        filter_params={},
                        caption=None): #@ReservedAssignment
         # try image XXX check uint8
@@ -38,7 +40,7 @@ class ReprepPublisher(Publisher):
             # zoom images smaller than 50
 #            if value.shape[0] < 50:
 #                value = zoom(value, 10)
-            self.fig().data_rgb(name, value)
+            self.fig().data_rgb(name, value, caption=caption)
         else:
             node = self.r.data(name, value, mime=MIME_PYTHON, caption=caption)
             m = node.display(filter, **filter_params)
@@ -56,7 +58,7 @@ class ReprepPublisher(Publisher):
         with self.fig().plot(name, caption=caption, **args) as pylab:
             yield pylab
 
-    def section(self, section_name, cols=None):
+    def section(self, section_name, cols=default_max_cols):
         child = self.r.node(section_name)
         return ReprepPublisher(report=child, cols=cols)
 

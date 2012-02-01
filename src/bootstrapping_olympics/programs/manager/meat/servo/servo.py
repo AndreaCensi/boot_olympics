@@ -150,15 +150,20 @@ def servoing_episode(id_robot, robot,
             else:
                 return SE3.to_yaml(x)
 
+        current_pose = robot_pose()
+
         extra = {}
 
         extra['servoing_base'] = dict(goal=obs0.tolist(),
                                 current=observations['observations'].tolist())
 
+        extra['servoing_poses'] = dict(goal=pose_to_yaml(pose0),
+                                       current=pose_to_yaml(current_pose))
+
         # TODO: make it not overlapping
         extra['servoing'] = dict(obs0=obs0.tolist(),
                                 pose0=pose_to_yaml(pose0),
-                                poseK=pose_to_yaml(robot_pose()),
+                                poseK=pose_to_yaml(current_pose),
                                 obsK=observations['observations'].tolist(),
                                 displacement=displacement,
                                 cmd0=cmd0.tolist(),

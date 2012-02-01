@@ -1,9 +1,9 @@
 ''' Abstractions for reading and writing logs in various formats. '''
 
-from .. import np, contract
+from .. import np, contract, getLogger
 
-import logging
-logger = logging.getLogger("BO.logs")
+
+logger = getLogger(__name__)
 
 from .boot_stream import *
 from .logs_format import *

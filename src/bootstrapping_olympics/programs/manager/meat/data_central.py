@@ -3,7 +3,6 @@ from bootstrapping_olympics import (BootOlympicsConfig, LearningStateDB,
     LogIndex)
 
 
-
 class DataCentral:
     def __init__(self, boot_root=None):
         self.root = boot_root

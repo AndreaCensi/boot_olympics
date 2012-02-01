@@ -44,10 +44,8 @@ def servo_stats_summaries(data_central, id_agent, id_robot, id_episodes=None):
             dist_xy.append(np.linalg.norm(translation_from_SE2(poseK)))
             dist_th.append(np.abs(angle_from_SE2(poseK)))
 
-
             #obs1 = np.array(servoing['obs1'])
             obsK = np.array(servoing['obsK'])
-
 
             err_L2 = np.linalg.norm(obs0 - obsK)
 

@@ -1,7 +1,7 @@
 from . import BatchConfigMaster, logger
 from ..meat import DataCentral
-from bootstrapping_olympics.utils import (safe_makedirs, safe_symlink, UserError,
-    expand_string)
+from bootstrapping_olympics.utils import (safe_makedirs, safe_symlink,
+                                          UserError, expand_string)
 from compmake import batch_command
 from conf_tools import import_name
 import os

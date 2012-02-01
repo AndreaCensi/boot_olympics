@@ -2,9 +2,9 @@
     Functions that deal with the configuration system. The heavy work
     is done by the ConfTools module. 
 '''
-from .. import logging
+from .. import getLogger
 
-logger = logging.getLogger('BO.config')
+logger = getLogger(__name__)
 
 
 from .agents import *
