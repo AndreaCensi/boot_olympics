@@ -1,9 +1,8 @@
 from . import logger, np
-from geometry import (SE2, SE2_from_SE3, translation_from_SE2, angle_from_SE2,
-    SE3)
 
 
 def servo_stats_summaries(data_central, id_agent, id_robot, id_episodes=None):
+    from geometry import (SE2, SE2_from_SE3, translation_from_SE2, angle_from_SE2, SE3)
     log_index = data_central.get_log_index()
 
     if id_episodes is None:

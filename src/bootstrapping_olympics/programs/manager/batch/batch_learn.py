@@ -1,11 +1,17 @@
 '''Some functions to help in writing experiments scripts'''
 from . import (default_expl_videos, default_servo_videos,
-    default_servonav_videos, comp, contract)
+    default_servonav_videos, contract)
 from .. import (create_video, servo_stats_report, servo_stats_summaries,
     simulate, task_predict, logger, learn_log, publish_once, np, task_servo,
     task_servonav)
 from bootstrapping_olympics import UnsupportedSpec
 import itertools
+
+try:
+    from compmake import comp
+except ImportError:
+    pass
+    # TODO: add message
 
 
 def batch_jobs1(data_central, **kwargs):

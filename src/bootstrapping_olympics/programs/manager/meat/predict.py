@@ -1,5 +1,4 @@
 from . import load_agent_state, logger, np
-from bootstrapping_olympics.display import ReprepPublisher
 from contracts import describe_type
 import os
 
@@ -13,7 +12,8 @@ def task_predict(data_central, id_agent, id_robot,
     # Instance agent object    
     # TODO FIXME: remove dependency on boot_agents
     from boot_agents.utils import PredictionStats
-
+    from bootstrapping_olympics.display import ReprepPublisher
+    
     agent, state = load_agent_state(data_central, id_agent, id_robot,
                              reset_state=False,
                              raise_if_no_state=True)

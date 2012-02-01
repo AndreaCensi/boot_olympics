@@ -1,11 +1,11 @@
 from . import astar, node2children_grid, contract, np
-from geometry import (SE2_from_SE3, translation_from_SE2,
-    SE2_from_translation_angle, SE2_from_xytheta, SE3_from_SE2)
 import itertools
 
 
 @contract(resolution='float,>0')
 def get_grid(robot, world, vehicle, resolution):
+    from geometry import (SE2_from_SE3, translation_from_SE2,
+        SE2_from_translation_angle, SE2_from_xytheta, SE3_from_SE2)
     from vehicles.simulation.collision import collides_with
     # TODO: check Vehicle
     bounds = world.bounds

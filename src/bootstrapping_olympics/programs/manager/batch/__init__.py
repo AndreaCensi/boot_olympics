@@ -4,7 +4,6 @@ from .. import np, logger, contract
 from .batch_config import *
 from .batch_manager import *
 
-from compmake import comp
 
 first_person = ['pdff2sb',
                'pdff2no',
