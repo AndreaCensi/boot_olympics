@@ -26,3 +26,5 @@ from .configuration import BootOlympicsConfig
 # Try to load ROS components
 from .ros import *
 
+from .programs.manager.batch.batch_learn import batch_jobs1
+

@@ -8,6 +8,18 @@ from bootstrapping_olympics import UnsupportedSpec
 import itertools
 
 
+def batch_jobs1(data_central, **kwargs):
+    """
+        
+        
+        :param:publish_progress: publish results after each tranche is learned
+
+    """
+
+    tr = TaskRegister(data_central)
+
+    tr.main(**kwargs)
+
 
 class TaskRegister:
 
@@ -33,7 +45,6 @@ class TaskRegister:
         agent = self.data_central.get_bo_config().agents.instance(id_agent)
         return hasattr(agent, 'get_servo')
 
-
     def get_tranches(self, ids, episodes_per_tranche=10):
         """ Returns a list of list """
         l = []
@@ -41,7 +52,7 @@ class TaskRegister:
         for t in range(num_tranches):
             e_from = t * episodes_per_tranche
             e_to = min(len(ids), e_from + episodes_per_tranche)
-            l.append([ ids[i] for i in range(e_from, e_to)])
+            l.append([ids[i] for i in range(e_from, e_to)])
         return l
 
     #
@@ -78,7 +89,6 @@ class TaskRegister:
                     explore=None,
                     servo=None, servonav=None, predict=None):
 
-
         if not robots:
             raise Exception('Please specify at least one robot.')
 
@@ -88,7 +98,6 @@ class TaskRegister:
         if explore is not None:
             for id_robot in robots:
                 self.add_tasks_explore(id_robot=id_robot, **explore)
-
 
         for id_robot, id_agent in  itertools.product(robots, agents):
             compatible = are_compatible(data_central=self.data_central,
@@ -132,11 +141,10 @@ class TaskRegister:
              job_id='predict-%s-%s' % (id_robot, id_agent),
              extra_dep=extra_dep)
 
-
     def add_learning(self, id_robot, id_agent, num_ep_expl,
                      publish_progress=False):
-        all_id_episodes = [ self.episode_id_exploration(i)
-                        for i in range(num_ep_expl)]
+        all_id_episodes = [self.episode_id_exploration(i)
+                           for i in range(num_ep_expl)]
 
         def get_deps_for_episodes(id_episodes):
             """ Gets all dependencies for the episodes. """
@@ -183,7 +191,6 @@ class TaskRegister:
              job_id='publish-%s-%s' % (id_robot, id_agent),
              extra_dep=all_learned)
 
-
     def add_tasks_explore(self, id_robot, explorer,
                                 num_episodes,
                                    num_episodes_videos=1,
@@ -224,14 +231,12 @@ class TaskRegister:
             for id_episode in id_episodes:
                 self.set_dep_episode_done(id_robot, id_episode, tranche)
 
-
         comp(checkpoint, 'all simulations',
                          job_id='simulate-%s' % (id_robot),
                          extra_dep=tranches)
 
         self.add_videos(id_agent=explorer, id_robot=id_robot,
                         id_episodes=id_episodes_with_extra, videos=videos)
-
 
     def add_videos(self, id_agent, id_robot, id_episodes, videos):
         # todo: temporary videos
@@ -255,7 +260,6 @@ class TaskRegister:
                     (id_robot, id_agent, id_episode, id_video),
                  extra_dep=extra_dep)
 
-
     def add_tasks_servonav(self, id_agent, id_robot,
                                  num_episodes,
                                  episodes_per_tranche=1,
@@ -267,7 +271,6 @@ class TaskRegister:
         logger.info('Adding servonav for %s/%s %s %s' %
                     (id_agent, id_robot, num_episodes,
                      num_episodes_videos))
-
 
         has_servo = self.agent_has_servo(id_agent)
         if not has_servo:
@@ -332,7 +335,6 @@ class TaskRegister:
                           id_episodes=id_episodes_with_extra,
                           videos=videos)
 
-
     def add_tasks_servo(self, id_agent, id_robot,
                         num_episodes,
                         num_episodes_videos=0,
@@ -387,7 +389,6 @@ class TaskRegister:
 
             for id_episode in id_episodes:
                 self.set_dep_episode_done(id_robot, id_episode, tranche)
-
 
         all_servo = comp(checkpoint, 'all servo',
                         job_id='servo-%s-%s' % (id_robot, id_agent),
