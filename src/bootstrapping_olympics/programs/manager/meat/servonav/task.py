@@ -3,7 +3,6 @@ from .. import load_agent_state
 from ..servo import BookkeepingServo
 from bootstrapping_olympics import RobotInterface, ObsKeeper, LogsFormat
 from bootstrapping_olympics.utils import isodate_with_secs
-from geometry import SE2_from_SE3, translation_from_SE2, angle_from_SE2, SE3
 
 
 @contract(interval_print='None|>=0')
@@ -17,6 +16,7 @@ def task_servonav(data_central, id_agent, id_robot,
                interval_write=10, # write every 10 frames
                num_episodes_with_robot_state=0):
     ''' Returns the list of the episodes IDs simulated. '''
+    from geometry import SE2_from_SE3, translation_from_SE2, angle_from_SE2, SE3
 
     if id_episodes is not None:
         if len(id_episodes) != num_episodes:
@@ -105,6 +105,8 @@ def servonav_episode(id_robot, robot,
     
         :arg:displacement: Time in seconds to displace the robot.
     '''
+    from geometry import SE2_from_SE3, translation_from_SE2, angle_from_SE2, SE3
+    
 
     MIN_PATH_LENGTH = 8
 

@@ -1,12 +1,17 @@
 '''Some functions to help in writing experiments scripts'''
 from . import (default_expl_videos, default_servo_videos,
-    default_servonav_videos, comp, contract)
+    default_servonav_videos, contract)
 from .. import (create_video, servo_stats_report, servo_stats_summaries,
     simulate, task_predict, logger, learn_log, publish_once, np, task_servo,
     task_servonav)
 from bootstrapping_olympics import UnsupportedSpec
 import itertools
 
+try:
+ from compmake import comp
+except ImportError:
+ pass
+ # TODO: add message
 
 
 class TaskRegister:
@@ -91,7 +96,7 @@ class TaskRegister:
 
 
         for id_robot, id_agent in  itertools.product(robots, agents):
-            compatible = are_compatible(data_central=self.data_central,
+            are_compatible = are_compatible(data_central=self.data_central,
                                         id_robot=id_robot, id_agent=id_agent)
             if not compatible:
                 logger.info('Avoiding combination %s / %s' %

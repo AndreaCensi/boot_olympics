@@ -2,7 +2,6 @@ from . import BookkeepingServo, run_simulation_servo
 from .. import load_agent_state, logger, contract, np
 from bootstrapping_olympics import LogsFormat, BootOlympicsConstants
 from bootstrapping_olympics.utils import isodate_with_secs
-from geometry import SE3
 
 
 @contract(interval_print='None|>=0')
@@ -15,6 +14,7 @@ def task_servo(data_central, id_agent, id_robot,
                interval_print=None,
                num_episodes_with_robot_state=0):
     ''' Returns the list of the episodes IDs simulated. '''
+    from geometry import SE3
 
     if id_episodes is not None:
         if len(id_episodes) != num_episodes:
@@ -89,6 +89,7 @@ def servoing_episode(id_robot, robot,
     
         :arg:displacement: Time in seconds to displace the robot.
     '''
+    from geometry import SE3
 
     def mean_observations(n=10):
         obss = []

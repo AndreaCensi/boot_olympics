@@ -2,7 +2,6 @@ from . import BatchConfigMaster, logger
 from ..meat import DataCentral
 from bootstrapping_olympics.utils import (safe_makedirs, safe_symlink, UserError,
     expand_string)
-from compmake import batch_command
 from conf_tools import import_name
 import os
 
@@ -15,7 +14,7 @@ except:
 
 
 def batch_process_manager(data_central, which_sets, command=None):
-    from compmake import comp_prefix, use_filesystem, compmake_console
+    from compmake import comp_prefix, use_filesystem, compmake_console, batch_command
 
     batch_config = BatchConfigMaster()
     configs = data_central.get_dir_structure().get_config_directories()
