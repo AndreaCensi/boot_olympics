@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.programs.manager.command_line.batch</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.programs-module.html">Package&nbsp;programs</a> ::
+        <a href="bootstrapping_olympics.programs.manager-module.html">Package&nbsp;manager</a> ::
+        <a href="bootstrapping_olympics.programs.manager.command_line-module.html">Package&nbsp;command_line</a> ::
+        Module&nbsp;batch
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.programs.manager.command_line.batch-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.programs.manager.command_line.batch-module.html">Module bootstrapping_olympics.programs.manager.command_line.batch</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt>  <tt id="link-0" class="py-name" targets="Function bootstrapping_olympics.programs.manager.command_line.OptionParser()=bootstrapping_olympics.programs.manager.command_line-module.html#OptionParser"><a title="bootstrapping_olympics.programs.manager.command_line.OptionParser" class="py-name" href="#" onclick="return doclink('link-0', 'OptionParser', 'link-0');">OptionParser</a></tt><tt class="py-op">,</tt> <tt id="link-1" class="py-name" targets="Function bootstrapping_olympics.programs.manager.command_line.commands_list'.declare_command()=bootstrapping_olympics.programs.manager.command_line.commands_list%27-module.html#declare_command"><a title="bootstrapping_olympics.programs.manager.command_line.commands_list'.declare_command" class="py-name" href="#" onclick="return doclink('link-1', 'declare_command', 'link-1');">declare_command</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module bootstrapping_olympics.programs.manager.command_line.batch=bootstrapping_olympics.programs.manager.command_line.batch-module.html"><a title="bootstrapping_olympics.programs.manager.command_line.batch" class="py-name" href="#" onclick="return doclink('link-2', 'batch', 'link-2');">batch</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">batch_process_manager</tt> </tt>
+<a name="cmd_batch"></a><div id="cmd_batch-def"><a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">declare_command</tt><tt class="py-op">(</tt><tt class="py-string">'batch'</tt><tt class="py-op">,</tt> <tt class="py-string">'batch [set1,set2]'</tt><tt class="py-op">)</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt> <a class="py-toggle" href="#" id="cmd_batch-toggle" onclick="return toggle('cmd_batch');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.programs.manager.command_line.batch-module.html#cmd_batch">cmd_batch</a><tt class="py-op">(</tt><tt class="py-param">data_central</tt><tt class="py-op">,</tt> <tt class="py-param">argv</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="cmd_batch-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="cmd_batch-expanded"><a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">    <tt class="py-docstring">'''Runs the learning for a given agent and log. '''</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">    <tt class="py-name">parser</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name"><a title="bootstrapping_olympics.programs.manager.command_line.OptionParser" class="py-name" href="#" onclick="return doclink('link-3', 'OptionParser', 'link-0');">OptionParser</a></tt><tt class="py-op">(</tt><tt class="py-name">prog</tt><tt class="py-op">=</tt><tt class="py-string">'batch'</tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Variable bootstrapping_olympics.programs.hdf2bag.main.usage=bootstrapping_olympics.programs.hdf2bag.main-module.html#usage,Variable bootstrapping_olympics.programs.print_config.main'.usage=bootstrapping_olympics.programs.print_config.main%27-module.html#usage,Variable bootstrapping_olympics.programs.rosbag2h5.main'.usage=bootstrapping_olympics.programs.rosbag2h5.main%27-module.html#usage,Variable bootstrapping_olympics.programs.rosbag2h5.usage=bootstrapping_olympics.programs.rosbag2h5-module.html#usage"><a title="bootstrapping_olympics.programs.hdf2bag.main.usage
+bootstrapping_olympics.programs.print_config.main'.usage
+bootstrapping_olympics.programs.rosbag2h5.main'.usage
+bootstrapping_olympics.programs.rosbag2h5.usage" class="py-name" href="#" onclick="return doclink('link-4', 'usage', 'link-4');">usage</a></tt><tt class="py-op">=</tt><tt id="link-5" class="py-name" targets="Function bootstrapping_olympics.programs.manager.command_line.batch.cmd_batch()=bootstrapping_olympics.programs.manager.command_line.batch-module.html#cmd_batch"><a title="bootstrapping_olympics.programs.manager.command_line.batch.cmd_batch" class="py-name" href="#" onclick="return doclink('link-5', 'cmd_batch', 'link-5');">cmd_batch</a></tt><tt class="py-op">.</tt><tt class="py-name">short_usage</tt><tt class="py-op">)</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">    <tt class="py-name">parser</tt><tt class="py-op">.</tt><tt class="py-name">add_option</tt><tt class="py-op">(</tt><tt class="py-string">"--command"</tt><tt class="py-op">,</tt> <tt class="py-name">dest</tt><tt class="py-op">=</tt><tt class="py-string">'command'</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">                      <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"Compmake command to execute"</tt><tt class="py-op">)</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-comment">#    parser.disable_interspersed_args()</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt class="py-op">(</tt><tt class="py-name">options</tt><tt class="py-op">,</tt> <tt class="py-name">args</tt><tt class="py-op">)</tt> <tt class="py-op">=</tt> <tt class="py-name">parser</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method bootstrapping_olympics.programs.manager.command_line.LenientOptionParser.parse_args()=bootstrapping_olympics.programs.manager.command_line.LenientOptionParser-class.html#parse_args"><a title="bootstrapping_olympics.programs.manager.command_line.LenientOptionParser.parse_args" class="py-name" href="#" onclick="return doclink('link-6', 'parse_args', 'link-6');">parse_args</a></tt><tt class="py-op">(</tt><tt class="py-name">argv</tt><tt class="py-op">)</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">    <tt class="py-name">which_sets</tt> <tt class="py-op">=</tt> <tt class="py-name">args</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">batch_process_manager</tt><tt class="py-op">(</tt><tt id="link-7" class="py-name" targets="Module bootstrapping_olympics.programs.manager.meat.data_central=bootstrapping_olympics.programs.manager.meat.data_central-module.html"><a title="bootstrapping_olympics.programs.manager.meat.data_central" class="py-name" href="#" onclick="return doclink('link-7', 'data_central', 'link-7');">data_central</a></tt><tt class="py-op">=</tt><tt id="link-8" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.data_central" class="py-name" href="#" onclick="return doclink('link-8', 'data_central', 'link-7');">data_central</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">                          <tt class="py-name">which_sets</tt><tt class="py-op">=</tt><tt class="py-name">which_sets</tt><tt class="py-op">,</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">                          <tt class="py-name">command</tt><tt class="py-op">=</tt><tt class="py-name">options</tt><tt class="py-op">.</tt><tt class="py-name">command</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Feb  1 14:39:56 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.interfaces.streamels</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.interfaces-module.html">Package&nbsp;interfaces</a> ::
+        Module&nbsp;streamels
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.interfaces.streamels-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.interfaces.streamels-module.html">Module bootstrapping_olympics.interfaces.streamels</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt class="py-name">contract</tt><tt class="py-op">,</tt> <tt class="py-name">np</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">contracts</tt> <tt class="py-keyword">import</tt> <tt class="py-name">check</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package bootstrapping_olympics=bootstrapping_olympics-module.html"><a title="bootstrapping_olympics" class="py-name" href="#" onclick="return doclink('link-0', 'bootstrapping_olympics', 'link-0');">bootstrapping_olympics</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package bootstrapping_olympics.utils=bootstrapping_olympics.utils-module.html"><a title="bootstrapping_olympics.utils" class="py-name" href="#" onclick="return doclink('link-1', 'utils', 'link-1');">utils</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Function bootstrapping_olympics.utils.np_comparisons.show_differences()=bootstrapping_olympics.utils.np_comparisons-module.html#show_differences"><a title="bootstrapping_olympics.utils.np_comparisons.show_differences" class="py-name" href="#" onclick="return doclink('link-2', 'show_differences', 'link-2');">show_differences</a></tt> </tt>
+<a name="ValueFormats"></a><div id="ValueFormats-def"><a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt> <a class="py-toggle" href="#" id="ValueFormats-toggle" onclick="return toggle('ValueFormats');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="bootstrapping_olympics.interfaces.streamels.ValueFormats-class.html">ValueFormats</a><tt class="py-op">:</tt> </tt>
+</div><div id="ValueFormats-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="ValueFormats-expanded"><a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">    <tt id="link-3" class="py-name" targets="Variable bootstrapping_olympics.interfaces.streamels.ValueFormats.Continuous=bootstrapping_olympics.interfaces.streamels.ValueFormats-class.html#Continuous"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Continuous" class="py-name" href="#" onclick="return doclink('link-3', 'Continuous', 'link-3');">Continuous</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'C'</tt> <tt class="py-comment"># range is [min, max]</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">    <tt id="link-4" class="py-name" targets="Variable bootstrapping_olympics.interfaces.streamels.ValueFormats.Discrete=bootstrapping_olympics.interfaces.streamels.ValueFormats-class.html#Discrete"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Discrete" class="py-name" href="#" onclick="return doclink('link-4', 'Discrete', 'link-4');">Discrete</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'D'</tt> <tt class="py-comment"># finite number of elements </tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">    <tt id="link-5" class="py-name" targets="Variable bootstrapping_olympics.interfaces.streamels.ValueFormats.Invalid=bootstrapping_olympics.interfaces.streamels.ValueFormats-class.html#Invalid"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Invalid" class="py-name" href="#" onclick="return doclink('link-5', 'Invalid', 'link-5');">Invalid</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'I'</tt> <tt class="py-comment"># invalid/not used # TODO: tests for invalid values</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">    <tt id="link-6" class="py-name" targets="Variable bootstrapping_olympics.interfaces.streamels.ValueFormats.valid=bootstrapping_olympics.interfaces.streamels.ValueFormats-class.html#valid"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.valid" class="py-name" href="#" onclick="return doclink('link-6', 'valid', 'link-6');">valid</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-7" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Continuous" class="py-name" href="#" onclick="return doclink('link-7', 'Continuous', 'link-3');">Continuous</a></tt><tt class="py-op">,</tt> <tt id="link-8" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Discrete" class="py-name" href="#" onclick="return doclink('link-8', 'Discrete', 'link-4');">Discrete</a></tt><tt class="py-op">,</tt> <tt id="link-9" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Invalid" class="py-name" href="#" onclick="return doclink('link-9', 'Invalid', 'link-5');">Invalid</a></tt><tt class="py-op">]</tt> </tt>
+</div><a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt id="link-10" class="py-name" targets="Variable bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.streamel_dtype=bootstrapping_olympics.examples-module.html#streamel_dtype,Variable bootstrapping_olympics.interfaces.stream_spec.streamel_dtype=bootstrapping_olympics.interfaces.stream_spec-module.html#streamel_dtype,Variable bootstrapping_olympics.interfaces.streamel_dtype=bootstrapping_olympics.interfaces-module.html#streamel_dtype,Variable bootstrapping_olympics.interfaces.streamels.streamel_dtype=bootstrapping_olympics.interfaces.streamels-module.html#streamel_dtype,Variable bootstrapping_olympics.streamel_dtype=bootstrapping_olympics-module.html#streamel_dtype"><a title="bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.streamel_dtype
+bootstrapping_olympics.examples.streamel_dtype
+bootstrapping_olympics.interfaces.stream_spec.streamel_dtype
+bootstrapping_olympics.interfaces.streamel_dtype
+bootstrapping_olympics.interfaces.streamels.streamel_dtype
+bootstrapping_olympics.streamel_dtype" class="py-name" href="#" onclick="return doclink('link-10', 'streamel_dtype', 'link-10');">streamel_dtype</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-string">'kind'</tt><tt class="py-op">,</tt> <tt class="py-string">'S1'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-comment"># 'I','D','C'</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">                  <tt class="py-op">(</tt><tt class="py-string">'lower'</tt><tt class="py-op">,</tt> <tt class="py-string">'float'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">                  <tt class="py-op">(</tt><tt class="py-string">'upper'</tt><tt class="py-op">,</tt> <tt class="py-string">'float'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">                  <tt class="py-op">(</tt><tt class="py-string">'default'</tt><tt class="py-op">,</tt> <tt class="py-string">'float'</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="check_valid_streamels"></a><div id="check_valid_streamels-def"><a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">contract</tt><tt class="py-op">(</tt><tt id="link-11" class="py-name" targets="Module bootstrapping_olympics.interfaces.streamels=bootstrapping_olympics.interfaces.streamels-module.html"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-11', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">=</tt><tt class="py-string">'array'</tt><tt class="py-op">)</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt> <a class="py-toggle" href="#" id="check_valid_streamels-toggle" onclick="return toggle('check_valid_streamels');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.interfaces.streamels-module.html#check_valid_streamels">check_valid_streamels</a><tt class="py-op">(</tt><tt class="py-param">streamels</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="check_valid_streamels-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="check_valid_streamels-expanded"><a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">    <tt class="py-docstring">''' Raises a ValueError if the data in the structure is not coherent. '''</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">    <tt class="py-keyword">assert</tt> <tt id="link-12" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-12', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">.</tt><tt class="py-name">dtype</tt> <tt class="py-op">==</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">dtype</tt><tt class="py-op">(</tt><tt id="link-13" class="py-name"><a title="bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.streamel_dtype
+bootstrapping_olympics.examples.streamel_dtype
+bootstrapping_olympics.interfaces.stream_spec.streamel_dtype
+bootstrapping_olympics.interfaces.streamel_dtype
+bootstrapping_olympics.interfaces.streamels.streamel_dtype
+bootstrapping_olympics.streamel_dtype" class="py-name" href="#" onclick="return doclink('link-13', 'streamel_dtype', 'link-10');">streamel_dtype</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt class="py-comment"># XXX: how about invalid values?</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">check</tt><tt class="py-op">(</tt><tt class="py-param">which</tt><tt class="py-op">,</tt> <tt class="py-param">msg</tt><tt class="py-op">,</tt> <tt class="py-param">a</tt><tt class="py-op">,</tt> <tt class="py-param">b</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">(</tt><tt class="py-name">which</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">            <tt id="link-14" class="py-name" targets="Method bootstrapping_olympics.programs.manager.command_line.LenientOptionParser.error()=bootstrapping_olympics.programs.manager.command_line.LenientOptionParser-class.html#error,Method bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.error()=bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger-class.html#error"><a title="bootstrapping_olympics.programs.manager.command_line.LenientOptionParser.error
+bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.error" class="py-name" href="#" onclick="return doclink('link-14', 'error', 'link-14');">error</a></tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name"><a title="bootstrapping_olympics.utils.np_comparisons.show_differences" class="py-name" href="#" onclick="return doclink('link-15', 'show_differences', 'link-2');">show_differences</a></tt><tt class="py-op">(</tt><tt class="py-name">a</tt><tt class="py-op">,</tt> <tt class="py-name">b</tt><tt class="py-op">,</tt> <tt class="py-name">is_failure</tt><tt class="py-op">=</tt><tt class="py-op">(</tt><tt class="py-op">~</tt><tt class="py-name">which</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">condition</tt><tt class="py-op">=</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">ValueError</tt><tt class="py-op">(</tt><tt id="link-16" class="py-name"><a title="bootstrapping_olympics.programs.manager.command_line.LenientOptionParser.error
+bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.error" class="py-name" href="#" onclick="return doclink('link-16', 'error', 'link-14');">error</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">    <tt class="py-name">not_discrete</tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-17', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'kind'</tt><tt class="py-op">]</tt> <tt class="py-op">!=</tt> <tt id="link-18" class="py-name" targets="Class bootstrapping_olympics.interfaces.streamels.ValueFormats=bootstrapping_olympics.interfaces.streamels.ValueFormats-class.html"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats" class="py-name" href="#" onclick="return doclink('link-18', 'ValueFormats', 'link-18');">ValueFormats</a></tt><tt class="py-op">.</tt><tt id="link-19" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Discrete" class="py-name" href="#" onclick="return doclink('link-19', 'Discrete', 'link-4');">Discrete</a></tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">    <tt class="py-name">invalid</tt> <tt class="py-op">=</tt> <tt id="link-20" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-20', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'kind'</tt><tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt id="link-21" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats" class="py-name" href="#" onclick="return doclink('link-21', 'ValueFormats', 'link-18');">ValueFormats</a></tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Invalid" class="py-name" href="#" onclick="return doclink('link-22', 'Invalid', 'link-5');">Invalid</a></tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line"> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">    <tt class="py-name">check</tt><tt class="py-op">(</tt><tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">logical_or</tt><tt class="py-op">(</tt><tt class="py-name">invalid</tt><tt class="py-op">,</tt> <tt id="link-23" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-23', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt> <tt class="py-op">&lt;</tt> <tt id="link-24" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-24', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">          <tt class="py-string">'lower&lt;upper'</tt><tt class="py-op">,</tt> <tt id="link-25" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-25', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt id="link-26" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-26', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">    <tt class="py-name">check</tt><tt class="py-op">(</tt><tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">logical_or</tt><tt class="py-op">(</tt><tt class="py-name">invalid</tt><tt class="py-op">,</tt> <tt id="link-27" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-27', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt> <tt class="py-op">&lt;=</tt> <tt id="link-28" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-28', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">          <tt class="py-string">'default&lt;=upper'</tt><tt class="py-op">,</tt> <tt id="link-29" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-29', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt id="link-30" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-30', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">    <tt class="py-name">check</tt><tt class="py-op">(</tt><tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">logical_or</tt><tt class="py-op">(</tt><tt class="py-name">invalid</tt><tt class="py-op">,</tt> <tt id="link-31" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-31', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt> <tt class="py-op">&lt;=</tt> <tt id="link-32" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-32', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">          <tt class="py-string">'default&lt;=upper'</tt><tt class="py-op">,</tt> <tt id="link-33" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-33', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt id="link-34" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-34', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line"> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">    <tt class="py-name">check</tt><tt class="py-op">(</tt><tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">logical_or</tt><tt class="py-op">(</tt><tt class="py-name">not_discrete</tt><tt class="py-op">,</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">                    <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">round</tt><tt class="py-op">(</tt><tt id="link-35" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-35', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt id="link-36" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-36', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">                        <tt class="py-string">'default is discrete'</tt><tt class="py-op">,</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">                        <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">round</tt><tt class="py-op">(</tt><tt id="link-37" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-37', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">                        <tt id="link-38" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-38', 'streamels', 'link-11');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Feb  1 14:39:58 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

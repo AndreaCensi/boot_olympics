@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.examples.agents.test_agent</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.examples-module.html">Package&nbsp;examples</a> ::
+        <a href="bootstrapping_olympics.examples.agents-module.html">Package&nbsp;agents</a> ::
+        Module&nbsp;test_agent
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.examples.agents.test_agent-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.examples.agents.test_agent-module.html">Module bootstrapping_olympics.examples.agents.test_agent</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''A simple agent useful for testing.'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-op">.</tt><tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Class bootstrapping_olympics.interfaces.agent.AgentInterface=bootstrapping_olympics.interfaces.agent.AgentInterface-class.html"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface" class="py-name" href="#" onclick="return doclink('link-0', 'AgentInterface', 'link-0');">AgentInterface</a></tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">numpy</tt> <tt class="py-keyword">as</tt> <tt class="py-name">np</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'TestAgent'</tt><tt class="py-op">]</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"> </tt>
+<a name="TestAgent"></a><div id="TestAgent-def"><a name="L9"></a><tt class="py-lineno"> 9</tt> <a class="py-toggle" href="#" id="TestAgent-toggle" onclick="return toggle('TestAgent');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html">TestAgent</a><tt class="py-op">(</tt><tt class="py-base-class">AgentInterface</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TestAgent-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="TestAgent-expanded"><a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">    <tt class="py-docstring">''' </tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-docstring">        A simple agent useful for testing.</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-docstring">        It executes any command specified on the constructor. If the command</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-docstring">        is a string, then it is evaluated. You can use the variable "t" for </tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-docstring">        time.        </tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"> </tt>
+<a name="TestAgent.__init__"></a><div id="TestAgent.__init__-def"><a name="L18"></a><tt class="py-lineno">18</tt> <a class="py-toggle" href="#" id="TestAgent.__init__-toggle" onclick="return toggle('TestAgent.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">cmd</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TestAgent.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="TestAgent.__init__-expanded"><a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Variable bootstrapping_olympics.programs.manager.cmd=bootstrapping_olympics.programs.manager-module.html#cmd,Variable bootstrapping_olympics.programs.manager.command_line.cmd=bootstrapping_olympics.programs.manager.command_line-module.html#cmd,Variable bootstrapping_olympics.programs.manager.command_line.main.cmd=bootstrapping_olympics.programs.manager.command_line.main-module.html#cmd"><a title="bootstrapping_olympics.programs.manager.cmd
+bootstrapping_olympics.programs.manager.command_line.cmd
+bootstrapping_olympics.programs.manager.command_line.main.cmd" class="py-name" href="#" onclick="return doclink('link-1', 'cmd', 'link-1');">cmd</a></tt> <tt class="py-op">=</tt> <tt id="link-2" class="py-name"><a title="bootstrapping_olympics.programs.manager.cmd
+bootstrapping_olympics.programs.manager.command_line.cmd
+bootstrapping_olympics.programs.manager.command_line.main.cmd" class="py-name" href="#" onclick="return doclink('link-2', 'cmd', 'link-1');">cmd</a></tt> </tt>
+</div><a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"> </tt>
+<a name="TestAgent.init"></a><div id="TestAgent.init-def"><a name="L21"></a><tt class="py-lineno">21</tt> <a class="py-toggle" href="#" id="TestAgent.init-toggle" onclick="return toggle('TestAgent.init');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#init">init</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">boot_spec</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TestAgent.init-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="TestAgent.init-expanded"><a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">default_cmd</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name" targets="Module bootstrapping_olympics.interfaces.boot_spec=bootstrapping_olympics.interfaces.boot_spec-module.html"><a title="bootstrapping_olympics.interfaces.boot_spec" class="py-name" href="#" onclick="return doclink('link-3', 'boot_spec', 'link-3');">boot_spec</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method bootstrapping_olympics.interfaces.boot_spec.BootSpec.get_commands()=bootstrapping_olympics.interfaces.boot_spec.BootSpec-class.html#get_commands"><a title="bootstrapping_olympics.interfaces.boot_spec.BootSpec.get_commands" class="py-name" href="#" onclick="return doclink('link-4', 'get_commands', 'link-4');">get_commands</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_default_value()=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#get_default_value"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_default_value" class="py-name" href="#" onclick="return doclink('link-5', 'get_default_value', 'link-5');">get_default_value</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"> </tt>
+<a name="TestAgent.process_observations"></a><div id="TestAgent.process_observations-def"><a name="L24"></a><tt class="py-lineno">24</tt> <a class="py-toggle" href="#" id="TestAgent.process_observations-toggle" onclick="return toggle('TestAgent.process_observations');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#process_observations">process_observations</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">observations</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TestAgent.process_observations-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="TestAgent.process_observations-expanded"><a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">timestamp</tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name" targets="Module bootstrapping_olympics.interfaces.observations=bootstrapping_olympics.interfaces.observations-module.html,Method bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.observations()=bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo-class.html#observations,Method bootstrapping_olympics.programs.manager.meat.simulate'.Bookkeeping.observations()=bootstrapping_olympics.programs.manager.meat.simulate%27.Bookkeeping-class.html#observations,Variable bootstrapping_olympics.ros.adapters.boot_agent_adapter.Global.observations=bootstrapping_olympics.ros.adapters.boot_agent_adapter.Global-class.html#observations"><a title="bootstrapping_olympics.interfaces.observations
+bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.observations
+bootstrapping_olympics.programs.manager.meat.simulate'.Bookkeeping.observations
+bootstrapping_olympics.ros.adapters.boot_agent_adapter.Global.observations" class="py-name" href="#" onclick="return doclink('link-6', 'observations', 'link-6');">observations</a></tt><tt class="py-op">[</tt><tt class="py-string">'timestamp'</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"> </tt>
+<a name="TestAgent.choose_commands"></a><div id="TestAgent.choose_commands-def"><a name="L27"></a><tt class="py-lineno">27</tt> <a class="py-toggle" href="#" id="TestAgent.choose_commands-toggle" onclick="return toggle('TestAgent.choose_commands');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#choose_commands">choose_commands</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TestAgent.choose_commands-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="TestAgent.choose_commands-expanded"><a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="bootstrapping_olympics.programs.manager.cmd
+bootstrapping_olympics.programs.manager.command_line.cmd
+bootstrapping_olympics.programs.manager.command_line.main.cmd" class="py-name" href="#" onclick="return doclink('link-7', 'cmd', 'link-1');">cmd</a></tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">            <tt class="py-name">t</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">timestamp</tt> <tt class="py-comment">#@UnusedVariable</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">            <tt id="link-8" class="py-name"><a title="bootstrapping_olympics.programs.manager.cmd
+bootstrapping_olympics.programs.manager.command_line.cmd
+bootstrapping_olympics.programs.manager.command_line.main.cmd" class="py-name" href="#" onclick="return doclink('link-8', 'cmd', 'link-1');">cmd</a></tt> <tt class="py-op">=</tt> <tt class="py-name">eval</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name"><a title="bootstrapping_olympics.programs.manager.cmd
+bootstrapping_olympics.programs.manager.command_line.cmd
+bootstrapping_olympics.programs.manager.command_line.main.cmd" class="py-name" href="#" onclick="return doclink('link-9', 'cmd', 'link-1');">cmd</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">            <tt class="py-name">value</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method bootstrapping_olympics.display.reprep_publisher.ReprepPublisher.array()=bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#array,Method bootstrapping_olympics.interfaces.publisher.Publisher.array()=bootstrapping_olympics.interfaces.publisher.Publisher-class.html#array,Method bootstrapping_olympics.interfaces.publisher.Section.array()=bootstrapping_olympics.interfaces.publisher.Section-class.html#array,Method bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.array()=bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#array"><a title="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher.array
+bootstrapping_olympics.interfaces.publisher.Publisher.array
+bootstrapping_olympics.interfaces.publisher.Section.array
+bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.array" class="py-name" href="#" onclick="return doclink('link-10', 'array', 'link-10');">array</a></tt><tt class="py-op">(</tt><tt id="link-11" class="py-name"><a title="bootstrapping_olympics.programs.manager.cmd
+bootstrapping_olympics.programs.manager.command_line.cmd
+bootstrapping_olympics.programs.manager.command_line.main.cmd" class="py-name" href="#" onclick="return doclink('link-11', 'cmd', 'link-1');">cmd</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">            <tt class="py-name">value</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher.array
+bootstrapping_olympics.interfaces.publisher.Publisher.array
+bootstrapping_olympics.interfaces.publisher.Section.array
+bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.array" class="py-name" href="#" onclick="return doclink('link-12', 'array', 'link-10');">array</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="bootstrapping_olympics.programs.manager.cmd
+bootstrapping_olympics.programs.manager.command_line.cmd
+bootstrapping_olympics.programs.manager.command_line.main.cmd" class="py-name" href="#" onclick="return doclink('link-13', 'cmd', 'link-1');">cmd</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">value</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape()=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#shape"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape" class="py-name" href="#" onclick="return doclink('link-14', 'shape', 'link-14');">shape</a></tt> <tt class="py-op">!=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">default_cmd</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape" class="py-name" href="#" onclick="return doclink('link-15', 'shape', 'link-14');">shape</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">            <tt class="py-comment">#self.info('Invalid shape; patching up.')</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">            <tt class="py-name">n</tt> <tt class="py-op">=</tt> <tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Method bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size()=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#size"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size" class="py-name" href="#" onclick="return doclink('link-16', 'size', 'link-16');">size</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">default_cmd</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size" class="py-name" href="#" onclick="return doclink('link-17', 'size', 'link-16');">size</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">default_cmd</tt><tt class="py-op">.</tt><tt class="py-name">flat</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-name">n</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">value</tt><tt class="py-op">.</tt><tt class="py-name">flat</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-name">n</tt><tt class="py-op">]</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">default_cmd</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">value</tt> </tt>
+</div><a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"> </tt>
+<a name="TestAgent.__repr__"></a><div id="TestAgent.__repr__-def"><a name="L43"></a><tt class="py-lineno">43</tt> <a class="py-toggle" href="#" id="TestAgent.__repr__-toggle" onclick="return toggle('TestAgent.__repr__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#__repr__">__repr__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TestAgent.__repr__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="TestAgent.__repr__-expanded"><a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">"TestAgent"</tt> </tt>
+</div></div><a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Feb  1 14:39:56 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

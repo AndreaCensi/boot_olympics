@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.ros.ros_logs.interface</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.ros-module.html">Package&nbsp;ros</a> ::
+        <a href="bootstrapping_olympics.ros.ros_logs-module.html">Package&nbsp;ros_logs</a> ::
+        Module&nbsp;interface
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.ros.ros_logs.interface-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.ros.ros_logs.interface-module.html">Module bootstrapping_olympics.ros.ros_logs.interface</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Class bootstrapping_olympics.ros.ros_logs.write.BagLogWriter=bootstrapping_olympics.ros.ros_logs.write.BagLogWriter-class.html"><a title="bootstrapping_olympics.ros.ros_logs.write.BagLogWriter" class="py-name" href="#" onclick="return doclink('link-0', 'BagLogWriter', 'link-0');">BagLogWriter</a></tt><tt class="py-op">,</tt> <tt id="link-1" class="py-name" targets="Function bootstrapping_olympics.ros.ros_logs.index.bag_get_bootstrapping_stream()=bootstrapping_olympics.ros.ros_logs.index-module.html#bag_get_bootstrapping_stream"><a title="bootstrapping_olympics.ros.ros_logs.index.bag_get_bootstrapping_stream" class="py-name" href="#" onclick="return doclink('link-1', 'bag_get_bootstrapping_stream', 'link-1');">bag_get_bootstrapping_stream</a></tt><tt class="py-op">,</tt> <tt id="link-2" class="py-name" targets="Function bootstrapping_olympics.ros.ros_logs.read.bag_read()=bootstrapping_olympics.ros.ros_logs.read-module.html#bag_read"><a title="bootstrapping_olympics.ros.ros_logs.read.bag_read" class="py-name" href="#" onclick="return doclink('link-2', 'bag_read', 'link-2');">bag_read</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name" targets="Package bootstrapping_olympics=bootstrapping_olympics-module.html"><a title="bootstrapping_olympics" class="py-name" href="#" onclick="return doclink('link-3', 'bootstrapping_olympics', 'link-3');">bootstrapping_olympics</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class bootstrapping_olympics.logs.logs_format.LogsFormat=bootstrapping_olympics.logs.logs_format.LogsFormat-class.html"><a title="bootstrapping_olympics.logs.logs_format.LogsFormat" class="py-name" href="#" onclick="return doclink('link-4', 'LogsFormat', 'link-4');">LogsFormat</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">contextlib</tt> <tt class="py-keyword">import</tt> <tt class="py-name">contextmanager</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="ROSLogsFormat"></a><div id="ROSLogsFormat-def"><a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt> <a class="py-toggle" href="#" id="ROSLogsFormat-toggle" onclick="return toggle('ROSLogsFormat');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat-class.html">ROSLogsFormat</a><tt class="py-op">(</tt><tt class="py-base-class">LogsFormat</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ROSLogsFormat-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="ROSLogsFormat-expanded"><a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"> </tt>
+<a name="ROSLogsFormat.index_file"></a><div id="ROSLogsFormat.index_file-def"><a name="L9"></a><tt class="py-lineno"> 9</tt> <a class="py-toggle" href="#" id="ROSLogsFormat.index_file-toggle" onclick="return toggle('ROSLogsFormat.index_file');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat-class.html#index_file">index_file</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ROSLogsFormat.index_file-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="ROSLogsFormat.index_file-expanded"><a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">        <tt class="py-docstring">''' Returns a list of BootStream objects. '''</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-5" class="py-name"><a title="bootstrapping_olympics.ros.ros_logs.index.bag_get_bootstrapping_stream" class="py-name" href="#" onclick="return doclink('link-5', 'bag_get_bootstrapping_stream', 'link-1');">bag_get_bootstrapping_stream</a></tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"> </tt>
+<a name="ROSLogsFormat.read_stream"></a><div id="ROSLogsFormat.read_stream-def"><a name="L13"></a><tt class="py-lineno">13</tt> <a class="py-toggle" href="#" id="ROSLogsFormat.read_stream-toggle" onclick="return toggle('ROSLogsFormat.read_stream');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat-class.html#read_stream">read_stream</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">stream</tt><tt class="py-op">,</tt> <tt class="py-param">read_extra</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-param">only_episodes</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ROSLogsFormat.read_stream-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="ROSLogsFormat.read_stream-expanded"><a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">        <tt class="py-docstring">''' Yields observations from the stream. '''</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">read_extra</tt><tt class="py-op">:</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">ValueError</tt><tt class="py-op">(</tt><tt class="py-string">'Cannot read extras in ROS format yet.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">        <tt id="link-6" class="py-name" targets="Module bootstrapping_olympics.utils.subst=bootstrapping_olympics.utils.subst-module.html"><a title="bootstrapping_olympics.utils.subst" class="py-name" href="#" onclick="return doclink('link-6', 'subst', 'link-6');">subst</a></tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">splitext</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">basename</tt><tt class="py-op">(</tt><tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.BootStream.get_filename()=bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_filename"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_filename" class="py-name" href="#" onclick="return doclink('link-7', 'get_filename', 'link-7');">get_filename</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt id="link-8" class="py-name"><a title="bootstrapping_olympics.ros.ros_logs.read.bag_read" class="py-name" href="#" onclick="return doclink('link-8', 'bag_read', 'link-2');">bag_read</a></tt><tt class="py-op">(</tt><tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_filename" class="py-name" href="#" onclick="return doclink('link-9', 'get_filename', 'link-7');">get_filename</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">                          <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.BootStream.get_topic()=bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_topic"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_topic" class="py-name" href="#" onclick="return doclink('link-10', 'get_topic', 'link-10');">get_topic</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">                          <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method bootstrapping_olympics.examples.robots.equiv_robot.EquivRobot.get_spec()=bootstrapping_olympics.examples.robots.equiv_robot.EquivRobot-class.html#get_spec,Method bootstrapping_olympics.examples.robots.random_robot.RandomRobot.get_spec()=bootstrapping_olympics.examples.robots.random_robot.RandomRobot-class.html#get_spec,Method bootstrapping_olympics.interfaces.robot.RobotInterface.get_spec()=bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#get_spec,Method bootstrapping_olympics.logs.boot_stream.BootStream.get_spec()=bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_spec"><a title="bootstrapping_olympics.examples.robots.equiv_robot.EquivRobot.get_spec
+bootstrapping_olympics.examples.robots.random_robot.RandomRobot.get_spec
+bootstrapping_olympics.interfaces.robot.RobotInterface.get_spec
+bootstrapping_olympics.logs.boot_stream.BootStream.get_spec" class="py-name" href="#" onclick="return doclink('link-11', 'get_spec', 'link-11');">get_spec</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">                          <tt class="py-name">only_episodes</tt><tt class="py-op">=</tt><tt class="py-name">only_episodes</tt><tt class="py-op">,</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">                          <tt class="py-name">substitute_id_episode</tt><tt class="py-op">=</tt><tt id="link-12" class="py-name"><a title="bootstrapping_olympics.utils.subst" class="py-name" href="#" onclick="return doclink('link-12', 'subst', 'link-6');">subst</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-comment"># XXX</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">            <tt class="py-keyword">yield</tt> <tt class="py-name">x</tt> </tt>
+</div><a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"> </tt>
+<a name="ROSLogsFormat.read_from_stream"></a><div id="ROSLogsFormat.read_from_stream-def"><a name="L26"></a><tt class="py-lineno">26</tt> <a class="py-toggle" href="#" id="ROSLogsFormat.read_from_stream-toggle" onclick="return toggle('ROSLogsFormat.read_from_stream');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat-class.html#read_from_stream">read_from_stream</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">,</tt> <tt class="py-param">id_stream</tt><tt class="py-op">,</tt> <tt class="py-param">read_extra</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">,</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">                                <tt class="py-param">only_episodes</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ROSLogsFormat.read_from_stream-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="ROSLogsFormat.read_from_stream-expanded"><a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-docstring">''' Yields observations from the stream. '''</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">read_extra</tt><tt class="py-op">:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">ValueError</tt><tt class="py-op">(</tt><tt class="py-string">'Cannot read extras in ROS format yet.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt id="link-13" class="py-name"><a title="bootstrapping_olympics.utils.subst" class="py-name" href="#" onclick="return doclink('link-13', 'subst', 'link-6');">subst</a></tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">splitext</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">basename</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt id="link-14" class="py-name"><a title="bootstrapping_olympics.ros.ros_logs.read.bag_read" class="py-name" href="#" onclick="return doclink('link-14', 'bag_read', 'link-2');">bag_read</a></tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-name">id_stream</tt><tt class="py-op">,</tt> <tt class="py-name">spec</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">                          <tt class="py-name">only_episodes</tt><tt class="py-op">=</tt><tt class="py-name">only_episodes</tt><tt class="py-op">,</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">                          <tt class="py-name">substitute_id_episode</tt><tt class="py-op">=</tt><tt id="link-15" class="py-name"><a title="bootstrapping_olympics.utils.subst" class="py-name" href="#" onclick="return doclink('link-15', 'subst', 'link-6');">subst</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-comment"># XXX</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">            <tt class="py-keyword">yield</tt> <tt class="py-name">x</tt> </tt>
+</div><a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line"> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">contextmanager</tt> </tt>
+<a name="ROSLogsFormat.write_stream"></a><div id="ROSLogsFormat.write_stream-def"><a name="L40"></a><tt class="py-lineno">40</tt> <a class="py-toggle" href="#" id="ROSLogsFormat.write_stream-toggle" onclick="return toggle('ROSLogsFormat.write_stream');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat-class.html#write_stream">write_stream</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">,</tt> <tt class="py-param">id_stream</tt><tt class="py-op">,</tt> <tt class="py-param">boot_spec</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ROSLogsFormat.write_stream-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="ROSLogsFormat.write_stream-expanded"><a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt class="py-name">writer</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="bootstrapping_olympics.ros.ros_logs.write.BagLogWriter" class="py-name" href="#" onclick="return doclink('link-16', 'BagLogWriter', 'link-0');">BagLogWriter</a></tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-name">id_stream</tt><tt class="py-op">,</tt> <tt id="link-17" class="py-name" targets="Module bootstrapping_olympics.interfaces.boot_spec=bootstrapping_olympics.interfaces.boot_spec-module.html"><a title="bootstrapping_olympics.interfaces.boot_spec" class="py-name" href="#" onclick="return doclink('link-17', 'boot_spec', 'link-17');">boot_spec</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">            <tt class="py-keyword">yield</tt> <tt class="py-name">writer</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">        <tt class="py-keyword">finally</tt><tt class="py-op">:</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">            <tt class="py-name">writer</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method bootstrapping_olympics.logs.hdf.write.HDFLogWriter.close()=bootstrapping_olympics.logs.hdf.write.HDFLogWriter-class.html#close,Method bootstrapping_olympics.ros.ros_logs.write.BagLogWriter.close()=bootstrapping_olympics.ros.ros_logs.write.BagLogWriter-class.html#close"><a title="bootstrapping_olympics.logs.hdf.write.HDFLogWriter.close
+bootstrapping_olympics.ros.ros_logs.write.BagLogWriter.close" class="py-name" href="#" onclick="return doclink('link-18', 'close', 'link-18');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line"> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line"><tt id="link-19" class="py-name"><a title="bootstrapping_olympics.logs.logs_format.LogsFormat" class="py-name" href="#" onclick="return doclink('link-19', 'LogsFormat', 'link-4');">LogsFormat</a></tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Variable bootstrapping_olympics.logs.logs_format.LogsFormat.formats=bootstrapping_olympics.logs.logs_format.LogsFormat-class.html#formats"><a title="bootstrapping_olympics.logs.logs_format.LogsFormat.formats" class="py-name" href="#" onclick="return doclink('link-20', 'formats', 'link-20');">formats</a></tt><tt class="py-op">[</tt><tt class="py-string">'bag'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-21" class="py-name" targets="Class bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat=bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat-class.html"><a title="bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat" class="py-name" href="#" onclick="return doclink('link-21', 'ROSLogsFormat', 'link-21');">ROSLogsFormat</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Feb  1 14:39:57 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

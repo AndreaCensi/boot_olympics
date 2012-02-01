@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.logs.boot_stream</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.logs-module.html">Package&nbsp;logs</a> ::
+        Module&nbsp;boot_stream
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.logs.boot_stream-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.logs.boot_stream-module.html">Module bootstrapping_olympics.logs.boot_stream</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt class="py-name">contract</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'BootStream'</tt><tt class="py-op">,</tt> <tt class="py-string">'EpisodeSummary'</tt><tt class="py-op">]</tt> </tt>
+<a name="EpisodeSummary"></a><div id="EpisodeSummary-def"><a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt> <a class="py-toggle" href="#" id="EpisodeSummary-toggle" onclick="return toggle('EpisodeSummary');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html">EpisodeSummary</a><tt class="py-op">:</tt> </tt>
+</div><div id="EpisodeSummary-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="EpisodeSummary-expanded"><a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">contract</tt><tt class="py-op">(</tt><tt class="py-name">id_episode</tt><tt class="py-op">=</tt><tt class="py-string">'str'</tt><tt class="py-op">,</tt> <tt class="py-name">id_agent</tt><tt class="py-op">=</tt><tt class="py-string">'str'</tt><tt class="py-op">,</tt> <tt class="py-name">id_world</tt><tt class="py-op">=</tt><tt class="py-string">'str'</tt><tt class="py-op">,</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line">              <tt class="py-name">extras</tt><tt class="py-op">=</tt><tt class="py-string">'list(str)'</tt><tt class="py-op">,</tt> <tt class="py-name">timestamp</tt><tt class="py-op">=</tt><tt class="py-string">'float'</tt><tt class="py-op">,</tt> <tt class="py-name">length</tt><tt class="py-op">=</tt><tt class="py-string">'&gt;0'</tt><tt class="py-op">,</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line">              <tt class="py-name">num_observations</tt><tt class="py-op">=</tt><tt class="py-string">'int,&gt;0'</tt><tt class="py-op">)</tt> </tt>
+<a name="EpisodeSummary.__init__"></a><div id="EpisodeSummary.__init__-def"><a name="L12"></a><tt class="py-lineno"> 12</tt> <a class="py-toggle" href="#" id="EpisodeSummary.__init__-toggle" onclick="return toggle('EpisodeSummary.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">id_episode</tt><tt class="py-op">,</tt> <tt class="py-param">id_agent</tt><tt class="py-op">,</tt> <tt class="py-param">id_world</tt><tt class="py-op">,</tt> <tt class="py-param">num_observations</tt><tt class="py-op">,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line">                       <tt class="py-param">length</tt><tt class="py-op">,</tt> <tt class="py-param">extras</tt><tt class="py-op">,</tt> <tt class="py-param">timestamp</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EpisodeSummary.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="EpisodeSummary.__init__-expanded"><a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_episode</tt> <tt class="py-op">=</tt> <tt class="py-name">id_episode</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_agent</tt> <tt class="py-op">=</tt> <tt class="py-name">id_agent</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_world</tt> <tt class="py-op">=</tt> <tt class="py-name">id_world</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_extras</tt> <tt class="py-op">=</tt> <tt class="py-name">extras</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_timestamp</tt> <tt class="py-op">=</tt> <tt class="py-name">timestamp</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_length</tt> <tt class="py-op">=</tt> <tt class="py-name">length</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_num_observations</tt> <tt class="py-op">=</tt> <tt class="py-name">num_observations</tt> </tt>
+</div><a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"> </tt>
+<a name="EpisodeSummary.get_id_episode"></a><div id="EpisodeSummary.get_id_episode-def"><a name="L23"></a><tt class="py-lineno"> 23</tt> <a class="py-toggle" href="#" id="EpisodeSummary.get_id_episode-toggle" onclick="return toggle('EpisodeSummary.get_id_episode');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#get_id_episode">get_id_episode</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EpisodeSummary.get_id_episode-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="EpisodeSummary.get_id_episode-expanded"><a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_episode</tt> </tt>
+</div><a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"> </tt>
+<a name="EpisodeSummary.get_id_agent"></a><div id="EpisodeSummary.get_id_agent-def"><a name="L26"></a><tt class="py-lineno"> 26</tt> <a class="py-toggle" href="#" id="EpisodeSummary.get_id_agent-toggle" onclick="return toggle('EpisodeSummary.get_id_agent');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#get_id_agent">get_id_agent</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EpisodeSummary.get_id_agent-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="EpisodeSummary.get_id_agent-expanded"><a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_agent</tt> </tt>
+</div><a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"> </tt>
+<a name="EpisodeSummary.get_timestamp"></a><div id="EpisodeSummary.get_timestamp-def"><a name="L29"></a><tt class="py-lineno"> 29</tt> <a class="py-toggle" href="#" id="EpisodeSummary.get_timestamp-toggle" onclick="return toggle('EpisodeSummary.get_timestamp');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#get_timestamp">get_timestamp</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EpisodeSummary.get_timestamp-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="EpisodeSummary.get_timestamp-expanded"><a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_timestamp</tt> </tt>
+</div><a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"> </tt>
+<a name="EpisodeSummary.get_length"></a><div id="EpisodeSummary.get_length-def"><a name="L32"></a><tt class="py-lineno"> 32</tt> <a class="py-toggle" href="#" id="EpisodeSummary.get_length-toggle" onclick="return toggle('EpisodeSummary.get_length');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#get_length">get_length</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EpisodeSummary.get_length-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="EpisodeSummary.get_length-expanded"><a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_length</tt> </tt>
+</div><a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"> </tt>
+<a name="EpisodeSummary.get_num_observations"></a><div id="EpisodeSummary.get_num_observations-def"><a name="L35"></a><tt class="py-lineno"> 35</tt> <a class="py-toggle" href="#" id="EpisodeSummary.get_num_observations-toggle" onclick="return toggle('EpisodeSummary.get_num_observations');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#get_num_observations">get_num_observations</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EpisodeSummary.get_num_observations-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="EpisodeSummary.get_num_observations-expanded"><a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_num_observations</tt> </tt>
+</div><a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="EpisodeSummary.__str__"></a><div id="EpisodeSummary.__str__-def"><a name="L38"></a><tt class="py-lineno"> 38</tt> <a class="py-toggle" href="#" id="EpisodeSummary.__str__-toggle" onclick="return toggle('EpisodeSummary.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EpisodeSummary.__str__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="EpisodeSummary.__str__-expanded"><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-op">(</tt><tt class="py-string">'Episode(%s,%s,%s,%.2fs,%s)'</tt> <tt class="py-op">%</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">                 <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_episode</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_agent</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_world</tt><tt class="py-op">,</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">                  <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_length</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_extras</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"> </tt>
+<a name="BootStream"></a><div id="BootStream-def"><a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt> <a class="py-toggle" href="#" id="BootStream-toggle" onclick="return toggle('BootStream');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html">BootStream</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="BootStream-expanded"><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">    <tt class="py-docstring">''' This class represents the structure used in the .bag index. '''</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">contract</tt><tt class="py-op">(</tt><tt id="link-0" class="py-name" targets="Module bootstrapping_olympics.programs.manager.meat.servo.summaries=bootstrapping_olympics.programs.manager.meat.servo.summaries-module.html"><a title="bootstrapping_olympics.programs.manager.meat.servo.summaries" class="py-name" href="#" onclick="return doclink('link-0', 'summaries', 'link-0');">summaries</a></tt><tt class="py-op">=</tt><tt class="py-string">'list'</tt><tt class="py-op">)</tt> </tt>
+<a name="BootStream.__init__"></a><div id="BootStream.__init__-def"><a name="L48"></a><tt class="py-lineno"> 48</tt> <a class="py-toggle" href="#" id="BootStream.__init__-toggle" onclick="return toggle('BootStream.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">id_robot</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">,</tt> <tt class="py-param">topic</tt><tt class="py-op">,</tt> <tt class="py-param">spec</tt><tt class="py-op">,</tt> <tt class="py-param">summaries</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BootStream.__init__-expanded"><a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_robot</tt> <tt class="py-op">=</tt> <tt class="py-name">id_robot</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_spec</tt> <tt class="py-op">=</tt> <tt class="py-name">spec</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_episodes</tt> <tt class="py-op">=</tt> <tt id="link-1" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.servo.summaries" class="py-name" href="#" onclick="return doclink('link-1', 'summaries', 'link-0');">summaries</a></tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_episodes</tt> <tt class="py-op">=</tt> <tt id="link-2" class="py-name" targets="Method bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.set()=bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem-class.html#set"><a title="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.set" class="py-name" href="#" onclick="return doclink('link-2', 'set', 'link-2');">set</a></tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_id_episode()=bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#get_id_episode"><a title="bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_id_episode" class="py-name" href="#" onclick="return doclink('link-3', 'get_id_episode', 'link-3');">get_id_episode</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_episodes</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_agents</tt> <tt class="py-op">=</tt> <tt id="link-4" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.set" class="py-name" href="#" onclick="return doclink('link-4', 'set', 'link-2');">set</a></tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_id_agent()=bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#get_id_agent"><a title="bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_id_agent" class="py-name" href="#" onclick="return doclink('link-5', 'get_id_agent', 'link-5');">get_id_agent</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_episodes</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_timestamp</tt> <tt class="py-op">=</tt> <tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_timestamp()=bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#get_timestamp"><a title="bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_timestamp" class="py-name" href="#" onclick="return doclink('link-6', 'get_timestamp', 'link-6');">get_timestamp</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_episodes</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_length</tt> <tt class="py-op">=</tt> <tt class="py-name">sum</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.BootStream.get_length()=bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_length,Method bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_length()=bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#get_length"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_length
+bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_length" class="py-name" href="#" onclick="return doclink('link-7', 'get_length', 'link-7');">get_length</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_episodes</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_num_observations</tt> <tt class="py-op">=</tt> <tt class="py-name">sum</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.BootStream.get_num_observations()=bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_num_observations,Method bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_num_observations()=bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#get_num_observations"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_num_observations
+bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_num_observations" class="py-name" href="#" onclick="return doclink('link-8', 'get_num_observations', 'link-8');">get_num_observations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">                                      <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_episodes</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">filename</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_topic</tt> <tt class="py-op">=</tt> <tt class="py-name">topic</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-comment"># Visualization only</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_short_file</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">splitext</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">basename</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"> </tt>
+<a name="BootStream.get_episodes"></a><div id="BootStream.get_episodes-def"><a name="L66"></a><tt class="py-lineno"> 66</tt> <a class="py-toggle" href="#" id="BootStream.get_episodes-toggle" onclick="return toggle('BootStream.get_episodes');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_episodes">get_episodes</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream.get_episodes-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BootStream.get_episodes-expanded"><a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_episodes</tt> </tt>
+</div><a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"> </tt>
+<a name="BootStream.get_id_episodes"></a><div id="BootStream.get_id_episodes-def"><a name="L69"></a><tt class="py-lineno"> 69</tt> <a class="py-toggle" href="#" id="BootStream.get_id_episodes-toggle" onclick="return toggle('BootStream.get_id_episodes');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_id_episodes">get_id_episodes</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream.get_id_episodes-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BootStream.get_id_episodes-expanded"><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_episodes</tt> </tt>
+</div><a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"> </tt>
+<a name="BootStream.get_id_agents"></a><div id="BootStream.get_id_agents-def"><a name="L72"></a><tt class="py-lineno"> 72</tt> <a class="py-toggle" href="#" id="BootStream.get_id_agents-toggle" onclick="return toggle('BootStream.get_id_agents');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_id_agents">get_id_agents</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream.get_id_agents-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BootStream.get_id_agents-expanded"><a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_agents</tt> </tt>
+</div><a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"> </tt>
+<a name="BootStream.get_id_robot"></a><div id="BootStream.get_id_robot-def"><a name="L75"></a><tt class="py-lineno"> 75</tt> <a class="py-toggle" href="#" id="BootStream.get_id_robot-toggle" onclick="return toggle('BootStream.get_id_robot');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_id_robot">get_id_robot</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream.get_id_robot-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BootStream.get_id_robot-expanded"><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_robot</tt> </tt>
+</div><a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"> </tt>
+<a name="BootStream.get_spec"></a><div id="BootStream.get_spec-def"><a name="L78"></a><tt class="py-lineno"> 78</tt> <a class="py-toggle" href="#" id="BootStream.get_spec-toggle" onclick="return toggle('BootStream.get_spec');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_spec">get_spec</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream.get_spec-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BootStream.get_spec-expanded"><a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_spec</tt> </tt>
+</div><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"> </tt>
+<a name="BootStream.get_num_observations"></a><div id="BootStream.get_num_observations-def"><a name="L81"></a><tt class="py-lineno"> 81</tt> <a class="py-toggle" href="#" id="BootStream.get_num_observations-toggle" onclick="return toggle('BootStream.get_num_observations');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_num_observations">get_num_observations</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream.get_num_observations-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BootStream.get_num_observations-expanded"><a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_num_observations</tt> </tt>
+</div><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"> </tt>
+<a name="BootStream.get_filename"></a><div id="BootStream.get_filename-def"><a name="L84"></a><tt class="py-lineno"> 84</tt> <a class="py-toggle" href="#" id="BootStream.get_filename-toggle" onclick="return toggle('BootStream.get_filename');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_filename">get_filename</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream.get_filename-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BootStream.get_filename-expanded"><a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_filename</tt> </tt>
+</div><a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"> </tt>
+<a name="BootStream.get_topic"></a><div id="BootStream.get_topic-def"><a name="L87"></a><tt class="py-lineno"> 87</tt> <a class="py-toggle" href="#" id="BootStream.get_topic-toggle" onclick="return toggle('BootStream.get_topic');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_topic">get_topic</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream.get_topic-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BootStream.get_topic-expanded"><a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_topic</tt> </tt>
+</div><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"> </tt>
+<a name="BootStream.get_length"></a><div id="BootStream.get_length-def"><a name="L90"></a><tt class="py-lineno"> 90</tt> <a class="py-toggle" href="#" id="BootStream.get_length-toggle" onclick="return toggle('BootStream.get_length');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_length">get_length</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream.get_length-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BootStream.get_length-expanded"><a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_length</tt> </tt>
+</div><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"> </tt>
+<a name="BootStream.__repr__"></a><div id="BootStream.__repr__-def"><a name="L93"></a><tt class="py-lineno"> 93</tt> <a class="py-toggle" href="#" id="BootStream.__repr__-toggle" onclick="return toggle('BootStream.__repr__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html#__repr__">__repr__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream.__repr__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BootStream.__repr__-expanded"><a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'BootStream(%s,%s,T=%s,spec=%s)'</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_short_file</tt><tt class="py-op">,</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">                                         <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_id_robot</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_length</tt><tt class="py-op">,</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">                                         <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_spec</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"> </tt>
+<a name="BootStream.read"></a><div id="BootStream.read-def"><a name="L98"></a><tt class="py-lineno"> 98</tt> <a class="py-toggle" href="#" id="BootStream.read-toggle" onclick="return toggle('BootStream.read');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.boot_stream.BootStream-class.html#read">read</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">only_episodes</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">read_extra</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BootStream.read-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BootStream.read-expanded"><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt id="link-9" class="py-name" targets="Class bootstrapping_olympics.logs.logs_format.LogsFormat=bootstrapping_olympics.logs.logs_format.LogsFormat-class.html"><a title="bootstrapping_olympics.logs.logs_format.LogsFormat" class="py-name" href="#" onclick="return doclink('link-9', 'LogsFormat', 'link-9');">LogsFormat</a></tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-name">reader</tt> <tt class="py-op">=</tt> <tt id="link-10" class="py-name"><a title="bootstrapping_olympics.logs.logs_format.LogsFormat" class="py-name" href="#" onclick="return doclink('link-10', 'LogsFormat', 'link-9');">LogsFormat</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Static Method bootstrapping_olympics.logs.logs_format.LogsFormat.get_reader_for()=bootstrapping_olympics.logs.logs_format.LogsFormat-class.html#get_reader_for"><a title="bootstrapping_olympics.logs.logs_format.LogsFormat.get_reader_for" class="py-name" href="#" onclick="return doclink('link-11', 'get_reader_for', 'link-11');">get_reader_for</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">        <tt class="py-comment"># FIXME in ROS</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt class="py-name">generator</tt> <tt class="py-op">=</tt> <tt class="py-name">reader</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Method bootstrapping_olympics.logs.hdf.interface.HDFLogsFormat.read_stream()=bootstrapping_olympics.logs.hdf.interface.HDFLogsFormat-class.html#read_stream,Method bootstrapping_olympics.logs.logs_format.LogsFormat.read_stream()=bootstrapping_olympics.logs.logs_format.LogsFormat-class.html#read_stream,Method bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat.read_stream()=bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat-class.html#read_stream"><a title="bootstrapping_olympics.logs.hdf.interface.HDFLogsFormat.read_stream
+bootstrapping_olympics.logs.logs_format.LogsFormat.read_stream
+bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat.read_stream" class="py-name" href="#" onclick="return doclink('link-12', 'read_stream', 'link-12');">read_stream</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">only_episodes</tt><tt class="py-op">=</tt><tt class="py-name">only_episodes</tt><tt class="py-op">,</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">                                       <tt class="py-name">read_extra</tt><tt class="py-op">=</tt><tt class="py-name">read_extra</tt><tt class="py-op">)</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">generator</tt><tt class="py-op">:</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">            <tt class="py-keyword">yield</tt> <tt class="py-name">x</tt> </tt>
+</div></div><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Feb  1 14:39:58 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

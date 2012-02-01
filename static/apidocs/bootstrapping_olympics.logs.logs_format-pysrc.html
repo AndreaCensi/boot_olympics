@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.logs.logs_format</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.logs-module.html">Package&nbsp;logs</a> ::
+        Module&nbsp;logs_format
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.logs.logs_format-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.logs.logs_format-module.html">Module bootstrapping_olympics.logs.logs_format</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Class bootstrapping_olympics.logs.boot_stream.BootStream=bootstrapping_olympics.logs.boot_stream.BootStream-class.html"><a title="bootstrapping_olympics.logs.boot_stream.BootStream" class="py-name" href="#" onclick="return doclink('link-0', 'BootStream', 'link-0');">BootStream</a></tt><tt class="py-op">,</tt> <tt id="link-1" class="py-name" targets="Variable bootstrapping_olympics.agent_states.filesystem_storage.logger=bootstrapping_olympics.agent_states.filesystem_storage-module.html#logger,Variable bootstrapping_olympics.agent_states.learning_state.logger=bootstrapping_olympics.agent_states.learning_state-module.html#logger,Variable bootstrapping_olympics.agent_states.logger=bootstrapping_olympics.agent_states-module.html#logger,Variable bootstrapping_olympics.configuration.logger=bootstrapping_olympics.configuration-module.html#logger,Variable bootstrapping_olympics.configuration.master.logger=bootstrapping_olympics.configuration.master-module.html#logger,Variable bootstrapping_olympics.examples.logger=bootstrapping_olympics.examples-module.html#logger,Variable bootstrapping_olympics.examples.rep_nuisances.logger=bootstrapping_olympics.examples.rep_nuisances-module.html#logger,Variable bootstrapping_olympics.interfaces.agent.AgentInterface.logger=bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#logger,Variable bootstrapping_olympics.interfaces.boot_spec.logger=bootstrapping_olympics.interfaces.boot_spec-module.html#logger,Variable bootstrapping_olympics.interfaces.logger=bootstrapping_olympics.interfaces-module.html#logger,Variable bootstrapping_olympics.interfaces.stream_spec.logger=bootstrapping_olympics.interfaces.stream_spec-module.html#logger,Variable bootstrapping_olympics.logger=bootstrapping_olympics-module.html#logger,Variable bootstrapping_olympics.logs.hdf.index.logger=bootstrapping_olympics.logs.hdf.index-module.html#logger,Variable bootstrapping_olympics.logs.hdf.logger=bootstrapping_olympics.logs.hdf-module.html#logger,Variable bootstrapping_olympics.logs.hdf.read.logger=bootstrapping_olympics.logs.hdf.read-module.html#logger,Variable bootstrapping_olympics.logs.hdf.write.logger=bootstrapping_olympics.logs.hdf.write-module.html#logger,Variable bootstrapping_olympics.logs.log_index.logger=bootstrapping_olympics.logs.log_index-module.html#logger,Variable bootstrapping_olympics.logs.logger=bootstrapping_olympics.logs-module.html#logger,Variable bootstrapping_olympics.logs.logs_format.logger=bootstrapping_olympics.logs.logs_format-module.html#logger,Variable bootstrapping_olympics.programs.hdf2bag.logger=bootstrapping_olympics.programs.hdf2bag-module.html#logger,Variable bootstrapping_olympics.programs.hdf2bag.main.logger=bootstrapping_olympics.programs.hdf2bag.main-module.html#logger,Variable bootstrapping_olympics.programs.manager.batch'.logger=bootstrapping_olympics.programs.manager.batch%27-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.clean_simulations.logger=bootstrapping_olympics.programs.manager.command_line.clean_simulations-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.clean_states.logger=bootstrapping_olympics.programs.manager.command_line.clean_states-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.learn.logger=bootstrapping_olympics.programs.manager.command_line.learn-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.list_agents.logger=bootstrapping_olympics.programs.manager.command_line.list_agents-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.list_logs.logger=bootstrapping_olympics.programs.manager.command_line.list_logs-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.list_robots.logger=bootstrapping_olympics.programs.manager.command_line.list_robots-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.list_states.logger=bootstrapping_olympics.programs.manager.command_line.list_states-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.logger=bootstrapping_olympics.programs.manager.command_line-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.main.logger=bootstrapping_olympics.programs.manager.command_line.main-module.html#logger,Variable bootstrapping_olympics.programs.manager.logger=bootstrapping_olympics.programs.manager-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.directory_structure.logger=bootstrapping_olympics.programs.manager.meat.directory_structure-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.load_agent_state'.logger=bootstrapping_olympics.programs.manager.meat.load_agent_state%27-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.log_learn.logger=bootstrapping_olympics.programs.manager.meat.log_learn-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.logger=bootstrapping_olympics.programs.manager.meat-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.predict.logger=bootstrapping_olympics.programs.manager.meat.predict-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.publish_output.logger=bootstrapping_olympics.programs.manager.meat.publish_output-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.run_simulation'.logger=bootstrapping_olympics.programs.manager.meat.run_simulation%27-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.logger=bootstrapping_olympics.programs.manager.meat.servo.bookkeeping-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.logger=bootstrapping_olympics.programs.manager.meat.servo-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.report.logger=bootstrapping_olympics.programs.manager.meat.servo.report-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.run_simulation.logger=bootstrapping_olympics.programs.manager.meat.servo.run_simulation-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.servo.logger=bootstrapping_olympics.programs.manager.meat.servo.servo-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.summaries.logger=bootstrapping_olympics.programs.manager.meat.servo.summaries-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servonav.logger=bootstrapping_olympics.programs.manager.meat.servonav-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servonav.task.logger=bootstrapping_olympics.programs.manager.meat.servonav.task-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.simulate'.logger=bootstrapping_olympics.programs.manager.meat.simulate%27-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.video.logger=bootstrapping_olympics.programs.manager.meat.video-module.html#logger,Variable bootstrapping_olympics.programs.print_config.logger=bootstrapping_olympics.programs.print_config-module.html#logger,Variable bootstrapping_olympics.programs.print_config.main'.logger=bootstrapping_olympics.programs.print_config.main%27-module.html#logger,Variable bootstrapping_olympics.programs.rosbag2h5.logger=bootstrapping_olympics.programs.rosbag2h5-module.html#logger,Variable bootstrapping_olympics.programs.rosbag2h5.main'.logger=bootstrapping_olympics.programs.rosbag2h5.main%27-module.html#logger,Variable bootstrapping_olympics.ros.adapters.boot_agent_adapter.Global.logger=bootstrapping_olympics.ros.adapters.boot_agent_adapter.Global-class.html#logger,Variable bootstrapping_olympics.ros.create_launch.command_line.logger=bootstrapping_olympics.ros.create_launch.command_line-module.html#logger,Variable bootstrapping_olympics.ros.create_launch.logger=bootstrapping_olympics.ros.create_launch-module.html#logger,Variable bootstrapping_olympics.ros.logger=bootstrapping_olympics.ros-module.html#logger,Variable bootstrapping_olympics.ros.ros_logs.index.logger=bootstrapping_olympics.ros.ros_logs.index-module.html#logger,Variable bootstrapping_olympics.ros.ros_logs.logger=bootstrapping_olympics.ros.ros_logs-module.html#logger,Variable bootstrapping_olympics.ros.ros_logs.read.logger=bootstrapping_olympics.ros.ros_logs.read-module.html#logger,Variable bootstrapping_olympics.ros.ros_logs.write.logger=bootstrapping_olympics.ros.ros_logs.write-module.html#logger,Variable bootstrapping_olympics.utils.c_yaml.logger=bootstrapping_olympics.utils.c_yaml-module.html#logger,Variable bootstrapping_olympics.utils.logger=bootstrapping_olympics.utils-module.html#logger,Variable bootstrapping_olympics.utils.try_until.logger=bootstrapping_olympics.utils.try_until-module.html#logger"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
+bootstrapping_olympics.agent_states.learning_state.logger
+bootstrapping_olympics.agent_states.logger
+bootstrapping_olympics.configuration.logger
+bootstrapping_olympics.configuration.master.logger
+bootstrapping_olympics.examples.logger
+bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.interfaces.agent.AgentInterface.logger
+bootstrapping_olympics.interfaces.boot_spec.logger
+bootstrapping_olympics.interfaces.logger
+bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.logger
+bootstrapping_olympics.logs.hdf.index.logger
+bootstrapping_olympics.logs.hdf.logger
+bootstrapping_olympics.logs.hdf.read.logger
+bootstrapping_olympics.logs.hdf.write.logger
+bootstrapping_olympics.logs.log_index.logger
+bootstrapping_olympics.logs.logger
+bootstrapping_olympics.logs.logs_format.logger
+bootstrapping_olympics.programs.hdf2bag.logger
+bootstrapping_olympics.programs.hdf2bag.main.logger
+bootstrapping_olympics.programs.manager.batch'.logger
+bootstrapping_olympics.programs.manager.command_line.clean_simulations.logger
+bootstrapping_olympics.programs.manager.command_line.clean_states.logger
+bootstrapping_olympics.programs.manager.command_line.learn.logger
+bootstrapping_olympics.programs.manager.command_line.list_agents.logger
+bootstrapping_olympics.programs.manager.command_line.list_logs.logger
+bootstrapping_olympics.programs.manager.command_line.list_robots.logger
+bootstrapping_olympics.programs.manager.command_line.list_states.logger
+bootstrapping_olympics.programs.manager.command_line.logger
+bootstrapping_olympics.programs.manager.command_line.main.logger
+bootstrapping_olympics.programs.manager.logger
+bootstrapping_olympics.programs.manager.meat.directory_structure.logger
+bootstrapping_olympics.programs.manager.meat.load_agent_state'.logger
+bootstrapping_olympics.programs.manager.meat.log_learn.logger
+bootstrapping_olympics.programs.manager.meat.logger
+bootstrapping_olympics.programs.manager.meat.predict.logger
+bootstrapping_olympics.programs.manager.meat.publish_output.logger
+bootstrapping_olympics.programs.manager.meat.run_simulation'.logger
+bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.logger
+bootstrapping_olympics.programs.manager.meat.servo.logger
+bootstrapping_olympics.programs.manager.meat.servo.report.logger
+bootstrapping_olympics.programs.manager.meat.servo.run_simulation.logger
+bootstrapping_olympics.programs.manager.meat.servo.servo.logger
+bootstrapping_olympics.programs.manager.meat.servo.summaries.logger
+bootstrapping_olympics.programs.manager.meat.servonav.logger
+bootstrapping_olympics.programs.manager.meat.servonav.task.logger
+bootstrapping_olympics.programs.manager.meat.simulate'.logger
+bootstrapping_olympics.programs.manager.meat.video.logger
+bootstrapping_olympics.programs.print_config.logger
+bootstrapping_olympics.programs.print_config.main'.logger
+bootstrapping_olympics.programs.rosbag2h5.logger
+bootstrapping_olympics.programs.rosbag2h5.main'.logger
+bootstrapping_olympics.ros.adapters.boot_agent_adapter.Global.logger
+bootstrapping_olympics.ros.create_launch.command_line.logger
+bootstrapping_olympics.ros.create_launch.logger
+bootstrapping_olympics.ros.logger
+bootstrapping_olympics.ros.ros_logs.index.logger
+bootstrapping_olympics.ros.ros_logs.logger
+bootstrapping_olympics.ros.ros_logs.read.logger
+bootstrapping_olympics.ros.ros_logs.write.logger
+bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.logger
+bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-1', 'logger', 'link-1');">logger</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">abc</tt> <tt class="py-keyword">import</tt> <tt class="py-name">abstractmethod</tt><tt class="py-op">,</tt> <tt id="link-2" class="py-name" targets="Class abc.ABCMeta=abc.ABCMeta-class.html"><a title="abc.ABCMeta" class="py-name" href="#" onclick="return doclink('link-2', 'ABCMeta', 'link-2');">ABCMeta</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">pickle</tt> </tt>
+<a name="LogsFormat"></a><div id="LogsFormat-def"><a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt> <a class="py-toggle" href="#" id="LogsFormat-toggle" onclick="return toggle('LogsFormat');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.logs_format.LogsFormat-class.html">LogsFormat</a><tt class="py-op">:</tt> </tt>
+</div><div id="LogsFormat-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="LogsFormat-expanded"><a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">    <tt class="py-name">__metaclass__</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name"><a title="abc.ABCMeta" class="py-name" href="#" onclick="return doclink('link-3', 'ABCMeta', 'link-2');">ABCMeta</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">    <tt class="py-comment"># extension -&gt; LogsFormat</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">    <tt id="link-4" class="py-name" targets="Variable bootstrapping_olympics.logs.logs_format.LogsFormat.formats=bootstrapping_olympics.logs.logs_format.LogsFormat-class.html#formats"><a title="bootstrapping_olympics.logs.logs_format.LogsFormat.formats" class="py-name" href="#" onclick="return doclink('link-4', 'formats', 'link-4');">formats</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">abstractmethod</tt> </tt>
+<a name="LogsFormat.index_file"></a><div id="LogsFormat.index_file-def"><a name="L14"></a><tt class="py-lineno">14</tt> <a class="py-toggle" href="#" id="LogsFormat.index_file-toggle" onclick="return toggle('LogsFormat.index_file');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.logs_format.LogsFormat-class.html#index_file">index_file</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LogsFormat.index_file-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="LogsFormat.index_file-expanded"><a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">        <tt class="py-docstring">''' Returns a list of BootStream objects. '''</tt> </tt>
+</div><a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt class="py-comment"># TODO: uniform mechanism for this</tt> </tt>
+<a name="LogsFormat.index_file_cached"></a><div id="LogsFormat.index_file_cached-def"><a name="L18"></a><tt class="py-lineno">18</tt> <a class="py-toggle" href="#" id="LogsFormat.index_file_cached-toggle" onclick="return toggle('LogsFormat.index_file_cached');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.logs_format.LogsFormat-class.html#index_file_cached">index_file_cached</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">,</tt> <tt class="py-param">ignore_cache</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LogsFormat.index_file_cached-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="LogsFormat.index_file_cached-expanded"><a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">        <tt class="py-name">cache</tt> <tt class="py-op">=</tt> <tt class="py-string">'%s.index_cache'</tt> <tt class="py-op">%</tt> <tt class="py-name">filename</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.exists()=bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem-class.html#exists"><a title="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.exists" class="py-name" href="#" onclick="return doclink('link-5', 'exists', 'link-5');">exists</a></tt><tt class="py-op">(</tt><tt class="py-name">cache</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-keyword">not</tt> <tt class="py-name">ignore_cache</tt><tt class="py-op">:</tt> <tt class="py-comment"># TODO: mtime</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">pickle</tt><tt class="py-op">.</tt><tt class="py-name">load</tt><tt class="py-op">(</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">cache</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt> <tt class="py-keyword">as</tt> <tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">                <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-string">'Could not unpickle cache %r, deleting.'</tt> <tt class="py-op">%</tt> <tt class="py-name">cache</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">                <tt class="py-name">msg</tt> <tt class="py-op">+=</tt> <tt class="py-string">'\n%s'</tt> <tt class="py-op">%</tt> <tt class="py-name">e</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">                <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">unlink</tt><tt class="py-op">(</tt><tt class="py-name">cache</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">                <tt id="link-6" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
+bootstrapping_olympics.agent_states.learning_state.logger
+bootstrapping_olympics.agent_states.logger
+bootstrapping_olympics.configuration.logger
+bootstrapping_olympics.configuration.master.logger
+bootstrapping_olympics.examples.logger
+bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.interfaces.agent.AgentInterface.logger
+bootstrapping_olympics.interfaces.boot_spec.logger
+bootstrapping_olympics.interfaces.logger
+bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.logger
+bootstrapping_olympics.logs.hdf.index.logger
+bootstrapping_olympics.logs.hdf.logger
+bootstrapping_olympics.logs.hdf.read.logger
+bootstrapping_olympics.logs.hdf.write.logger
+bootstrapping_olympics.logs.log_index.logger
+bootstrapping_olympics.logs.logger
+bootstrapping_olympics.logs.logs_format.logger
+bootstrapping_olympics.programs.hdf2bag.logger
+bootstrapping_olympics.programs.hdf2bag.main.logger
+bootstrapping_olympics.programs.manager.batch'.logger
+bootstrapping_olympics.programs.manager.command_line.clean_simulations.logger
+bootstrapping_olympics.programs.manager.command_line.clean_states.logger
+bootstrapping_olympics.programs.manager.command_line.learn.logger
+bootstrapping_olympics.programs.manager.command_line.list_agents.logger
+bootstrapping_olympics.programs.manager.command_line.list_logs.logger
+bootstrapping_olympics.programs.manager.command_line.list_robots.logger
+bootstrapping_olympics.programs.manager.command_line.list_states.logger
+bootstrapping_olympics.programs.manager.command_line.logger
+bootstrapping_olympics.programs.manager.command_line.main.logger
+bootstrapping_olympics.programs.manager.logger
+bootstrapping_olympics.programs.manager.meat.directory_structure.logger
+bootstrapping_olympics.programs.manager.meat.load_agent_state'.logger
+bootstrapping_olympics.programs.manager.meat.log_learn.logger
+bootstrapping_olympics.programs.manager.meat.logger
+bootstrapping_olympics.programs.manager.meat.predict.logger
+bootstrapping_olympics.programs.manager.meat.publish_output.logger
+bootstrapping_olympics.programs.manager.meat.run_simulation'.logger
+bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.logger
+bootstrapping_olympics.programs.manager.meat.servo.logger
+bootstrapping_olympics.programs.manager.meat.servo.report.logger
+bootstrapping_olympics.programs.manager.meat.servo.run_simulation.logger
+bootstrapping_olympics.programs.manager.meat.servo.servo.logger
+bootstrapping_olympics.programs.manager.meat.servo.summaries.logger
+bootstrapping_olympics.programs.manager.meat.servonav.logger
+bootstrapping_olympics.programs.manager.meat.servonav.task.logger
+bootstrapping_olympics.programs.manager.meat.simulate'.logger
+bootstrapping_olympics.programs.manager.meat.video.logger
+bootstrapping_olympics.programs.print_config.logger
+bootstrapping_olympics.programs.print_config.main'.logger
+bootstrapping_olympics.programs.rosbag2h5.logger
+bootstrapping_olympics.programs.rosbag2h5.main'.logger
+bootstrapping_olympics.ros.adapters.boot_agent_adapter.Global.logger
+bootstrapping_olympics.ros.create_launch.command_line.logger
+bootstrapping_olympics.ros.create_launch.logger
+bootstrapping_olympics.ros.logger
+bootstrapping_olympics.ros.ros_logs.index.logger
+bootstrapping_olympics.ros.ros_logs.logger
+bootstrapping_olympics.ros.ros_logs.read.logger
+bootstrapping_olympics.ros.ros_logs.write.logger
+bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.logger
+bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-6', 'logger', 'link-1');">logger</a></tt><tt class="py-op">.</tt><tt class="py-name">warning</tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">        <tt class="py-name">res</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method bootstrapping_olympics.logs.hdf.interface.HDFLogsFormat.index_file()=bootstrapping_olympics.logs.hdf.interface.HDFLogsFormat-class.html#index_file,Method bootstrapping_olympics.logs.logs_format.LogsFormat.index_file()=bootstrapping_olympics.logs.logs_format.LogsFormat-class.html#index_file,Method bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat.index_file()=bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat-class.html#index_file"><a title="bootstrapping_olympics.logs.hdf.interface.HDFLogsFormat.index_file
+bootstrapping_olympics.logs.logs_format.LogsFormat.index_file
+bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat.index_file" class="py-name" href="#" onclick="return doclink('link-7', 'index_file', 'link-7');">index_file</a></tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">stream</tt> <tt class="py-keyword">in</tt> <tt class="py-name">res</tt><tt class="py-op">:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">            <tt class="py-keyword">assert</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">stream</tt><tt class="py-op">,</tt> <tt id="link-8" class="py-name"><a title="bootstrapping_olympics.logs.boot_stream.BootStream" class="py-name" href="#" onclick="return doclink('link-8', 'BootStream', 'link-0');">BootStream</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt class="py-keyword">with</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">cache</tt><tt class="py-op">,</tt> <tt class="py-string">'wb'</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt class="py-name">f</tt><tt class="py-op">:</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">            <tt class="py-name">pickle</tt><tt class="py-op">.</tt><tt class="py-name">dump</tt><tt class="py-op">(</tt><tt class="py-name">res</tt><tt class="py-op">,</tt> <tt class="py-name">f</tt><tt class="py-op">,</tt> <tt class="py-name">protocol</tt><tt class="py-op">=</tt><tt class="py-name">pickle</tt><tt class="py-op">.</tt><tt class="py-name">HIGHEST_PROTOCOL</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">res</tt> </tt>
+</div><a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">abstractmethod</tt> </tt>
+<a name="LogsFormat.read_stream"></a><div id="LogsFormat.read_stream-def"><a name="L37"></a><tt class="py-lineno">37</tt> <a class="py-toggle" href="#" id="LogsFormat.read_stream-toggle" onclick="return toggle('LogsFormat.read_stream');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.logs_format.LogsFormat-class.html#read_stream">read_stream</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">boot_stream</tt><tt class="py-op">,</tt> <tt class="py-param">only_episodes</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LogsFormat.read_stream-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="LogsFormat.read_stream-expanded"><a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">        <tt class="py-docstring">''' Yields observations from the stream. '''</tt> </tt>
+</div><a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line"> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">abstractmethod</tt> </tt>
+<a name="LogsFormat.read_from_stream"></a><div id="LogsFormat.read_from_stream-def"><a name="L41"></a><tt class="py-lineno">41</tt> <a class="py-toggle" href="#" id="LogsFormat.read_from_stream-toggle" onclick="return toggle('LogsFormat.read_from_stream');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.logs_format.LogsFormat-class.html#read_from_stream">read_from_stream</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">,</tt> <tt class="py-param">id_stream</tt><tt class="py-op">,</tt> <tt class="py-param">only_episodes</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LogsFormat.read_from_stream-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="LogsFormat.read_from_stream-expanded"><a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">        <tt class="py-docstring">''' Yields observations from the stream. '''</tt> </tt>
+</div><a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line"> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">abstractmethod</tt> </tt>
+<a name="LogsFormat.write_stream"></a><div id="LogsFormat.write_stream-def"><a name="L45"></a><tt class="py-lineno">45</tt> <a class="py-toggle" href="#" id="LogsFormat.write_stream-toggle" onclick="return toggle('LogsFormat.write_stream');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.logs_format.LogsFormat-class.html#write_stream">write_stream</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">,</tt> <tt class="py-param">id_stream</tt><tt class="py-op">,</tt> <tt class="py-param">boot_spec</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LogsFormat.write_stream-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="LogsFormat.write_stream-expanded"><a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">        <tt class="py-docstring">''' Yields a writer object (interface TBD). '''</tt> </tt>
+</div><a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line"> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="LogsFormat.get_reader_for"></a><div id="LogsFormat.get_reader_for-def"><a name="L49"></a><tt class="py-lineno">49</tt> <a class="py-toggle" href="#" id="LogsFormat.get_reader_for-toggle" onclick="return toggle('LogsFormat.get_reader_for');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.logs_format.LogsFormat-class.html#get_reader_for">get_reader_for</a><tt class="py-op">(</tt><tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LogsFormat.get_reader_for-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="LogsFormat.get_reader_for-expanded"><a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">        <tt class="py-name">extension</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">splitext</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">extension</tt> <tt class="py-keyword">in</tt> <tt id="link-9" class="py-name" targets="Class bootstrapping_olympics.logs.logs_format.LogsFormat=bootstrapping_olympics.logs.logs_format.LogsFormat-class.html"><a title="bootstrapping_olympics.logs.logs_format.LogsFormat" class="py-name" href="#" onclick="return doclink('link-9', 'LogsFormat', 'link-9');">LogsFormat</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="bootstrapping_olympics.logs.logs_format.LogsFormat.formats" class="py-name" href="#" onclick="return doclink('link-10', 'formats', 'link-4');">formats</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">            <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-string">'Cannot read %r, no reader for %r.'</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-name">extension</tt><tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">ValueError</tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-11" class="py-name"><a title="bootstrapping_olympics.logs.logs_format.LogsFormat" class="py-name" href="#" onclick="return doclink('link-11', 'LogsFormat', 'link-9');">LogsFormat</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="bootstrapping_olympics.logs.logs_format.LogsFormat.formats" class="py-name" href="#" onclick="return doclink('link-12', 'formats', 'link-4');">formats</a></tt><tt class="py-op">[</tt><tt class="py-name">extension</tt><tt class="py-op">]</tt> </tt>
+</div></div><a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Feb  1 14:39:57 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

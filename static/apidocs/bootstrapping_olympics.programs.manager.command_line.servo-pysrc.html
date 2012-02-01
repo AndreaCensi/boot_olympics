@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.programs.manager.command_line.servo</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.programs-module.html">Package&nbsp;programs</a> ::
+        <a href="bootstrapping_olympics.programs.manager-module.html">Package&nbsp;manager</a> ::
+        <a href="bootstrapping_olympics.programs.manager.command_line-module.html">Package&nbsp;command_line</a> ::
+        Module&nbsp;servo
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.programs.manager.command_line.servo-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.programs.manager.command_line.servo-module.html">Module bootstrapping_olympics.programs.manager.command_line.servo</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Function bootstrapping_olympics.programs.manager.command_line.OptionParser()=bootstrapping_olympics.programs.manager.command_line-module.html#OptionParser"><a title="bootstrapping_olympics.programs.manager.command_line.OptionParser" class="py-name" href="#" onclick="return doclink('link-0', 'OptionParser', 'link-0');">OptionParser</a></tt><tt class="py-op">,</tt> <tt id="link-1" class="py-name" targets="Function bootstrapping_olympics.programs.manager.command_line.common.check_no_spurious()=bootstrapping_olympics.programs.manager.command_line.common-module.html#check_no_spurious"><a title="bootstrapping_olympics.programs.manager.command_line.common.check_no_spurious" class="py-name" href="#" onclick="return doclink('link-1', 'check_no_spurious', 'link-1');">check_no_spurious</a></tt><tt class="py-op">,</tt> <tt id="link-2" class="py-name" targets="Function bootstrapping_olympics.programs.manager.command_line.common.check_mandatory()=bootstrapping_olympics.programs.manager.command_line.common-module.html#check_mandatory"><a title="bootstrapping_olympics.programs.manager.command_line.common.check_mandatory" class="py-name" href="#" onclick="return doclink('link-2', 'check_mandatory', 'link-2');">check_mandatory</a></tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name" targets="Function bootstrapping_olympics.programs.manager.command_line.commands_list'.declare_command()=bootstrapping_olympics.programs.manager.command_line.commands_list%27-module.html#declare_command"><a title="bootstrapping_olympics.programs.manager.command_line.commands_list'.declare_command" class="py-name" href="#" onclick="return doclink('link-3', 'declare_command', 'link-3');">declare_command</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Package bootstrapping_olympics.programs.manager.meat=bootstrapping_olympics.programs.manager.meat-module.html"><a title="bootstrapping_olympics.programs.manager.meat" class="py-name" href="#" onclick="return doclink('link-4', 'meat', 'link-4');">meat</a></tt> <tt class="py-keyword">import</tt> <tt id="link-5" class="py-name" targets="Function bootstrapping_olympics.programs.manager.meat.servo.servo.task_servo()=bootstrapping_olympics.programs.manager.meat.servo.servo-module.html#task_servo"><a title="bootstrapping_olympics.programs.manager.meat.servo.servo.task_servo" class="py-name" href="#" onclick="return doclink('link-5', 'task_servo', 'link-5');">task_servo</a></tt> </tt>
+<a name="cmd_task_servo"></a><div id="cmd_task_servo-def"><a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">declare_command</tt><tt class="py-op">(</tt><tt class="py-string">'servo'</tt><tt class="py-op">,</tt> <tt class="py-string">"servo  -a &lt;agent&gt; -r &lt;robot&gt;"</tt><tt class="py-op">)</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt> <a class="py-toggle" href="#" id="cmd_task_servo-toggle" onclick="return toggle('cmd_task_servo');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.programs.manager.command_line.servo-module.html#cmd_task_servo">cmd_task_servo</a><tt class="py-op">(</tt><tt class="py-param">data_central</tt><tt class="py-op">,</tt> <tt class="py-param">argv</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="cmd_task_servo-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="cmd_task_servo-expanded"><a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">    <tt class="py-docstring">'''Simulate the interaction of an agent and a robot. '''</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">    <tt class="py-name">parser</tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name"><a title="bootstrapping_olympics.programs.manager.command_line.OptionParser" class="py-name" href="#" onclick="return doclink('link-6', 'OptionParser', 'link-0');">OptionParser</a></tt><tt class="py-op">(</tt><tt class="py-name">prog</tt><tt class="py-op">=</tt><tt class="py-string">'servo'</tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name" targets="Variable bootstrapping_olympics.programs.hdf2bag.main.usage=bootstrapping_olympics.programs.hdf2bag.main-module.html#usage,Variable bootstrapping_olympics.programs.print_config.main'.usage=bootstrapping_olympics.programs.print_config.main%27-module.html#usage,Variable bootstrapping_olympics.programs.rosbag2h5.main'.usage=bootstrapping_olympics.programs.rosbag2h5.main%27-module.html#usage,Variable bootstrapping_olympics.programs.rosbag2h5.usage=bootstrapping_olympics.programs.rosbag2h5-module.html#usage"><a title="bootstrapping_olympics.programs.hdf2bag.main.usage
+bootstrapping_olympics.programs.print_config.main'.usage
+bootstrapping_olympics.programs.rosbag2h5.main'.usage
+bootstrapping_olympics.programs.rosbag2h5.usage" class="py-name" href="#" onclick="return doclink('link-7', 'usage', 'link-7');">usage</a></tt><tt class="py-op">=</tt><tt id="link-8" class="py-name" targets="Function bootstrapping_olympics.programs.manager.command_line.servo.cmd_task_servo()=bootstrapping_olympics.programs.manager.command_line.servo-module.html#cmd_task_servo"><a title="bootstrapping_olympics.programs.manager.command_line.servo.cmd_task_servo" class="py-name" href="#" onclick="return doclink('link-8', 'cmd_task_servo', 'link-8');">cmd_task_servo</a></tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt><tt class="py-op">)</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">    <tt class="py-name">parser</tt><tt class="py-op">.</tt><tt class="py-name">disable_interspersed_args</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">    <tt class="py-name">parser</tt><tt class="py-op">.</tt><tt class="py-name">add_option</tt><tt class="py-op">(</tt><tt class="py-string">"-a"</tt><tt class="py-op">,</tt> <tt class="py-string">"--agent"</tt><tt class="py-op">,</tt> <tt class="py-name">dest</tt><tt class="py-op">=</tt><tt class="py-string">'agent'</tt><tt class="py-op">,</tt> <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"Agent ID"</tt><tt class="py-op">)</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">    <tt class="py-name">parser</tt><tt class="py-op">.</tt><tt class="py-name">add_option</tt><tt class="py-op">(</tt><tt class="py-string">"-r"</tt><tt class="py-op">,</tt> <tt class="py-string">"--robot"</tt><tt class="py-op">,</tt> <tt class="py-name">dest</tt><tt class="py-op">=</tt><tt class="py-string">'robot'</tt><tt class="py-op">,</tt> <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"Robot ID"</tt><tt class="py-op">)</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt class="py-name">parser</tt><tt class="py-op">.</tt><tt class="py-name">add_option</tt><tt class="py-op">(</tt><tt class="py-string">"--num_episodes"</tt><tt class="py-op">,</tt> <tt class="py-name">type</tt><tt class="py-op">=</tt><tt class="py-string">'int'</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">=</tt><tt class="py-number">10</tt><tt class="py-op">,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">                      <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"Number of episodes to simulate [%default]"</tt><tt class="py-op">)</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">    <tt class="py-name">parser</tt><tt class="py-op">.</tt><tt class="py-name">add_option</tt><tt class="py-op">(</tt><tt class="py-string">"--cumulative"</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-name">action</tt><tt class="py-op">=</tt><tt class="py-string">'store_true'</tt><tt class="py-op">,</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">                      <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"Count already simulated episodes."</tt><tt class="py-op">)</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">    <tt class="py-name">parser</tt><tt class="py-op">.</tt><tt class="py-name">add_option</tt><tt class="py-op">(</tt><tt class="py-string">"--displacement"</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">=</tt><tt class="py-number">1.0</tt><tt class="py-op">,</tt> <tt class="py-name">type</tt><tt class="py-op">=</tt><tt class="py-string">'float'</tt><tt class="py-op">,</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">                      <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"Initial robot displacement (seconds) [%default]."</tt><tt class="py-op">)</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">    <tt class="py-name">parser</tt><tt class="py-op">.</tt><tt class="py-name">add_option</tt><tt class="py-op">(</tt><tt class="py-string">"--max_episode_len"</tt><tt class="py-op">,</tt> <tt class="py-name">type</tt><tt class="py-op">=</tt><tt class="py-string">'float'</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">=</tt><tt class="py-number">30</tt><tt class="py-op">,</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">                      <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"Maximum len of episode (seconds) [%default]"</tt><tt class="py-op">)</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">    <tt class="py-name">parser</tt><tt class="py-op">.</tt><tt class="py-name">add_option</tt><tt class="py-op">(</tt><tt class="py-string">"--interval_print"</tt><tt class="py-op">,</tt> <tt class="py-name">type</tt><tt class="py-op">=</tt><tt class="py-string">'float'</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">=</tt><tt class="py-number">5</tt><tt class="py-op">,</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">                      <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">'Frequency of debug messages [%default]'</tt><tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">    <tt class="py-op">(</tt><tt class="py-name">options</tt><tt class="py-op">,</tt> <tt class="py-name">args</tt><tt class="py-op">)</tt> <tt class="py-op">=</tt> <tt class="py-name">parser</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Method bootstrapping_olympics.programs.manager.command_line.LenientOptionParser.parse_args()=bootstrapping_olympics.programs.manager.command_line.LenientOptionParser-class.html#parse_args"><a title="bootstrapping_olympics.programs.manager.command_line.LenientOptionParser.parse_args" class="py-name" href="#" onclick="return doclink('link-9', 'parse_args', 'link-9');">parse_args</a></tt><tt class="py-op">(</tt><tt class="py-name">argv</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">    <tt id="link-10" class="py-name"><a title="bootstrapping_olympics.programs.manager.command_line.common.check_no_spurious" class="py-name" href="#" onclick="return doclink('link-10', 'check_no_spurious', 'link-1');">check_no_spurious</a></tt><tt class="py-op">(</tt><tt class="py-name">args</tt><tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">    <tt id="link-11" class="py-name"><a title="bootstrapping_olympics.programs.manager.command_line.common.check_mandatory" class="py-name" href="#" onclick="return doclink('link-11', 'check_mandatory', 'link-2');">check_mandatory</a></tt><tt class="py-op">(</tt><tt class="py-name">options</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-string">'agent'</tt><tt class="py-op">,</tt> <tt class="py-string">'robot'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">    <tt class="py-name">id_agent</tt> <tt class="py-op">=</tt> <tt class="py-name">options</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Module bootstrapping_olympics.interfaces.agent=bootstrapping_olympics.interfaces.agent-module.html"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-12', 'agent', 'link-12');">agent</a></tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">    <tt class="py-name">id_robot</tt> <tt class="py-op">=</tt> <tt class="py-name">options</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Module bootstrapping_olympics.interfaces.robot=bootstrapping_olympics.interfaces.robot-module.html"><a title="bootstrapping_olympics.interfaces.robot" class="py-name" href="#" onclick="return doclink('link-13', 'robot', 'link-13');">robot</a></tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">    <tt id="link-14" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.servo.servo.task_servo" class="py-name" href="#" onclick="return doclink('link-14', 'task_servo', 'link-5');">task_servo</a></tt><tt class="py-op">(</tt><tt id="link-15" class="py-name" targets="Module bootstrapping_olympics.programs.manager.meat.data_central=bootstrapping_olympics.programs.manager.meat.data_central-module.html"><a title="bootstrapping_olympics.programs.manager.meat.data_central" class="py-name" href="#" onclick="return doclink('link-15', 'data_central', 'link-15');">data_central</a></tt><tt class="py-op">=</tt><tt id="link-16" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.data_central" class="py-name" href="#" onclick="return doclink('link-16', 'data_central', 'link-15');">data_central</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">             <tt class="py-name">id_agent</tt><tt class="py-op">=</tt><tt class="py-name">id_agent</tt><tt class="py-op">,</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">             <tt class="py-name">id_robot</tt><tt class="py-op">=</tt><tt class="py-name">id_robot</tt><tt class="py-op">,</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">             <tt class="py-name">displacement</tt><tt class="py-op">=</tt><tt class="py-name">options</tt><tt class="py-op">.</tt><tt class="py-name">displacement</tt><tt class="py-op">,</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">             <tt class="py-name">max_episode_len</tt><tt class="py-op">=</tt><tt class="py-name">options</tt><tt class="py-op">.</tt><tt class="py-name">max_episode_len</tt><tt class="py-op">,</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">             <tt class="py-name">num_episodes</tt><tt class="py-op">=</tt><tt class="py-name">options</tt><tt class="py-op">.</tt><tt class="py-name">num_episodes</tt><tt class="py-op">,</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">             <tt class="py-name">cumulative</tt><tt class="py-op">=</tt><tt class="py-name">options</tt><tt class="py-op">.</tt><tt class="py-name">cumulative</tt><tt class="py-op">,</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">             <tt class="py-name">interval_print</tt><tt class="py-op">=</tt><tt class="py-name">options</tt><tt class="py-op">.</tt><tt class="py-name">interval_print</tt><tt class="py-op">,</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">             <tt class="py-name">num_episodes_with_robot_state</tt><tt class="py-op">=</tt><tt class="py-name">options</tt><tt class="py-op">.</tt><tt class="py-name">num_episodes</tt><tt class="py-op">)</tt> <tt class="py-comment"># xXX</tt> </tt>
+</div><a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Feb  1 14:39:58 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
