@@ -4,18 +4,22 @@ from .. import np, logger, contract
 from .batch_config import *
 from .batch_manager import *
 
+pdfs_first = ['pdff2sb',
+               'pdff2no']
 
-first_person = ['pdff2sb',
-               'pdff2no',
+
+first_person = [
                'mp4f2sb',
                'mp4f2no']
 
-default_expl_videos = ['pdfz2sb',
+pdfs = ['pdfz2sb',
                       'pdff2sb',
                       'pdfz0sb',
                       'pdfz2no',
                       'pdff2no',
-                      'pdfz0no',
+                      'pdfz0no']
+
+default_expl_videos = [
                       'mp4z2sb',
                       'mp4f2sb',
                       'mp4z0sb',

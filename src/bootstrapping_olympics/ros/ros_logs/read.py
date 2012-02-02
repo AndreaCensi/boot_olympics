@@ -52,7 +52,7 @@ class ROS2Python():
         other check by the agents. 
     '''
 
-    def __init__(self, spec, max_dt=1, tolerant=True):
+    def __init__(self, spec, max_dt=1, tolerant=False):
         self.last = None
         self.spec = spec
         self.max_dt = max_dt

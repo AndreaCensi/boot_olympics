@@ -1,6 +1,6 @@
 from . import contract, np
 from ... import (StreamSpec, UnsupportedSpec, RepresentationNuisance,
-    streamels_all_of_kind)
+    streamels_all_of_kind, ValueFormats)
 
 __all__ = ['RandomScaling']
 
@@ -19,10 +19,8 @@ class RandomScaling(RepresentationNuisance):
 
     @contract(stream_spec=StreamSpec)
     def transform_spec(self, stream_spec):
-        # FIXME: check this only for float values
-
         if not streamels_all_of_kind(streamels=stream_spec.get_streamels(),
-                                     kind='C'): #XXX
+                                     kind=ValueFormats.Continuous):
             msg = 'RandomScaling only supports continuous streams.'
 
         if len(stream_spec.shape()) != 1:
@@ -35,6 +33,8 @@ class RandomScaling(RepresentationNuisance):
 
         if self.inverted:
             self.scale = 1.0 / self.scale
+
+        self.scale = np.float32(self.scale)
 
         streamels = stream_spec.get_streamels()
         streamels2 = streamels.copy()
@@ -54,6 +54,8 @@ class RandomScaling(RepresentationNuisance):
                                   desc="%s (scaled)" % stream_spec.desc)
 
         # Save this so we can enforce it later
+        self.lower_old = streamels['lower'].copy()
+        self.upper_old = streamels['upper'].copy()
         self.lower = streamels2['lower'].copy()
         self.upper = streamels2['upper'].copy()
 
@@ -66,8 +68,8 @@ class RandomScaling(RepresentationNuisance):
         value2 = values * self.scale
         # enforce upper/lower bounds, to account for numerical errors
         value2 = value2.astype('float32')
-        value2 = np.minimum(self.upper, value2)
-        value2 = np.maximum(self.lower, value2)
+        value2 = np.clip(value2, self.lower, self.upper)
+
         return value2
 
     def __str__(self):
