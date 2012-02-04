@@ -2,9 +2,8 @@ from . import (check_valid_agent_config, check_valid_robot_config,
     check_valid_nuisance_config, logger)
 from .. import Constants
 from ..interfaces import AgentInterface, RobotInterface, RepresentationNuisance
-from conf_tools import ConfigMaster, GenericInstance
+from conf_tools import ConfigMaster, GenericInstance, check_generic_code_desc
 import os
-from conf_tools.code_desc import check_generic_code_desc
 
 
 def check_valid_videos_config(spec):

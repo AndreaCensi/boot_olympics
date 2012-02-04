@@ -1,10 +1,11 @@
 from . import astar, node2children_grid, contract, np
+from geometry import SE3, SE2, angle_from_SE2, SE2_from_SE3
 import itertools
 
 
 @contract(resolution='float,>0')
-def get_grid(robot, world, vehicle, resolution):
-    from geometry import (SE2_from_SE3, translation_from_SE2,
+def get_grid(robot, world, vehicle, resolution, debug=False):
+    from geometry import (translation_from_SE2,
         SE2_from_translation_angle, SE2_from_xytheta, SE3_from_SE2)
     from vehicles.simulation.collision import collides_with
     # TODO: check Vehicle
@@ -73,19 +74,24 @@ def get_grid(robot, world, vehicle, resolution):
         else:
             raise Exception("No free space at all")
 
+    start = get_start_cell()
+
     def get_target_cells():
         """ Enumerate end cells rom the bottom """
+        def goodness(cell):
+            return cost(start, cell)
+
+        order = np.argsort([-goodness(l['cell']) for l in locations])
+
         found = False
-        for a in range(len(locations)):
-            k = len(locations) - 1 - a
+        for k in order[::5]:
             cell = locations[k]['cell']
             if cell_free(cell):
                 found = True
+                print('TRying %s (%s)' % (str(cell), goodness(cell)))
                 yield cell
         if not found:
             raise Exception("No free space at all")
-
-    start = get_start_cell()
 
     # Find a long path 
     for target in get_target_cells():
@@ -118,15 +124,58 @@ def get_grid(robot, world, vehicle, resolution):
         diff = SE3_from_SE2(SE2_from_translation_angle(t=[0, 0], theta=theta))
         loc1['pose'] = np.dot(loc1['pose'], diff)
 
+    poses = [l['pose'] for l in locations]
+
+    # project to SE2
+    poses_se2 = map(SE2_from_SE3, poses)
+    # smooth path
+    poses_se2 = elastic(SE2, poses_se2, alpha=0.1, num_iterations=20)
+    poses = map(SE3_from_SE2, poses_se2)
+
     # compute observations
-    print('Found path of length %s' % len(locations))
+    print('Found path of length %s' % len(poses))
+
+    #poses = interpolate_sequence(poses, max_theta_diff_deg=30)
+    # compute observations
+    print('Upsampled at %s' % len(poses))
+
+    locations = [dict(pose=pose) for pose in poses]
     for loc in locations:
         pose = loc['pose']
         robot.vehicle.set_pose(pose)
-        loc['observations'] = mean_observations(robot, n=5)
+        if not debug:
+            loc['observations'] = mean_observations(robot, n=5)
 
     return locations
 
+
+@contract(pose1='SE3', pose2='SE3', max_theta_diff_deg='>0')
+def step_too_big(pose1, pose2, max_theta_diff_deg):
+    diff = SE3.multiply(SE3.inverse(pose1), pose2)
+    diff_theta = np.abs(angle_from_SE2(SE2_from_SE3(diff)))
+    return diff_theta > np.deg2rad(max_theta_diff_deg)
+
+
+@contract(pose1='SE3', pose2='SE3', returns='SE3')
+def interpolate(pose1, pose2):
+    return SE3.geodesic(pose1, pose2, 0.5)
+
+
+@contract(poses='list[N,>=2](SE3)', returns='list[>=N](SE3)')
+def interpolate_sequence(poses, max_theta_diff_deg):
+    poses = list(poses)
+    inter = []
+    inter.append(poses.pop(0))
+    while True:
+        if not poses: break
+        current_pose = inter[-1]
+        next_pose = poses[0]
+        if step_too_big(current_pose, next_pose, max_theta_diff_deg):
+            interpolated = interpolate(current_pose, next_pose)
+            inter.append(interpolated)
+        else:
+            inter.append(poses.pop(0))
+    return inter
 
 def mean_observations(robot, n):
     """ Averages the robot's observations at the given place. """
@@ -135,4 +184,26 @@ def mean_observations(robot, n):
     for _ in range(n): # XXX: fixed threshold
         obss.append(robot.get_observations().observations)
     return np.mean(obss, axis=0)
+
+
+
+@contract(poses='list[>=3](array[KxK])')
+def elastic(manifold, poses, alpha=0.1, num_iterations=20):
+    poses2 = [x.copy() for x in poses]
+
+    for _ in range(num_iterations):
+        for i, cur in enumerate(list(poses2)):
+            if i == 0 or i == len(poses2) - 1: continue
+
+            pA = poses2[i - 1]
+            pB = poses2[i + 1]
+            target = manifold.geodesic(pA, pB, 0.5)
+            moved = manifold.geodesic(cur, target, alpha)
+#            if i == 5:
+#                print('Now: %s' % SE2.friendly(SE2_from_SE3(moved)))
+#            moved[:2, 3] = cur[:2, 3] # don't move 
+            poses2[i] = moved
+
+    return poses2
+
 

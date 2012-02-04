@@ -4,6 +4,7 @@ from ..meat import DataCentral, DirectoryStructure
 from bootstrapping_olympics.constants import BootOlympicsConstants
 from bootstrapping_olympics.logs import LogsFormat
 import contracts
+from conf_tools import ConfToolsException
 
 
 commands_list = "\n".join(['  %-15s  %s\n  %-15s  Usage: %s' %
@@ -88,7 +89,10 @@ def boot_olympics_manager(arguments):
 
 
 def manager_main():
-    return wrap_script_entry_point(boot_olympics_manager, logger)
+    exceptions_no_traceback = (UserError, ConfToolsException)
+    return wrap_script_entry_point(boot_olympics_manager, logger,
+                        exceptions_no_traceback=exceptions_no_traceback)
+
 
 if __name__ == '__main__':
     manager_main()

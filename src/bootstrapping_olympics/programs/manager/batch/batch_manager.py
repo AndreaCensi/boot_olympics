@@ -2,8 +2,9 @@ from . import BatchConfigMaster, logger
 from ..meat import DataCentral
 from bootstrapping_olympics.utils import (safe_makedirs, safe_symlink,
                                           UserError, expand_string)
-from conf_tools import import_name
+from conf_tools import import_name, ConfToolsException
 import os
+from pprint import pformat
 
 
 try:
@@ -14,7 +15,8 @@ except:
 
 
 def batch_process_manager(data_central, which_sets, command=None):
-    from compmake import comp_prefix, use_filesystem, compmake_console, batch_command
+    from compmake import (comp_prefix, use_filesystem,
+                          compmake_console, batch_command)
 
     batch_config = BatchConfigMaster()
     configs = data_central.get_dir_structure().get_config_directories()
@@ -66,7 +68,15 @@ def batch_process_manager(data_central, which_sets, command=None):
     for id_set in which_sets:
         if len(which_sets) > 1:
             comp_prefix(id_set)
-        batch_set(data_central_set, id_set, batch_config.sets[x])
+
+        try:
+            spec = batch_config.sets[x]
+            batch_set(data_central_set, id_set, spec)
+        except ConfToolsException:
+            msg = ('Bad configuration for the set %r with spec\n %s' %
+                   (id_set, pformat(spec)))
+            logger.error(msg)
+            raise
 
     if command:
         return batch_command(command)
@@ -79,8 +89,7 @@ def batch_set(data_central, id_set, spec):
     function_name = spec['code'][0]
     args = spec['code'][1]
     function = import_name(function_name)
-    args['data_central'] = data_central
-    function(**args)
+    function(data_central=data_central, **args)
 
 
 

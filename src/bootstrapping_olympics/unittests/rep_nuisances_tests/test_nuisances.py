@@ -38,7 +38,7 @@ def check_conversions(stream_spec1, nuisance):
         stream_spec1.check_valid_value(value1b)
 
         # TODO: if exact
-        assert_allclose(value1, value1b)
+        assert_allclose(value1, value1b, rtol=1e-5)
 
     except:
         logger.error('Error while testing:')

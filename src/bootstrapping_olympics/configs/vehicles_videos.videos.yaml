@@ -2,128 +2,158 @@
   desc: ''
   code: 
   - boot_log2movie_cairo
-  - 'plotter.zoom': 2
-    'plotter.display_sidebar': true
+  - 'plotter.display_sidebar': true
     'plotter.show_sensor_data_compact': true
-    'plotter.fp': false
+    'plotter.plotting_params':
+        first_person: False
+        zoom: 2
+        
+    
 
 - id: pdff2sb
   desc: ''
   code: 
   - boot_log2movie_cairo
-  - 'plotter.zoom': 2
-    'plotter.display_sidebar': true
-    'plotter.show_sensor_data_compact': true
-    'plotter.fp': true
-
+  - 'plotter.display_sidebar': true
+    'plotter.plotting_params':
+        first_person: True
+        zoom: 2
+        show_sensor_data_compact: True
+    
 - id: pdfz0sb
   desc: ''
   code: 
   - boot_log2movie_cairo
-  - 'plotter.zoom': 0
-    'plotter.display_sidebar': true
-    'plotter.show_sensor_data_compact': false
-    'plotter.fp': false
-
+  - 'plotter.display_sidebar': true
+    'plotter.plotting_params':
+        first_person: False
+        show_sensor_data_compact: False
+        zoom: 0
+  
 - id: pdfz2no
   desc: ''
   code: 
   - boot_log2movie_cairo
-  - 'plotter.zoom': 2
-    'plotter.display_sidebar': false
-    'plotter.show_sensor_data_compact': true
-    'plotter.fp': false
+  - 'plotter.display_sidebar': false
+    'plotter.plotting_params':
+        first_person: false
+        zoom: 2
+        show_sensor_data_compact: True
+    
+    
 
 - id: pdff2no
   desc: ''
   code: 
   - boot_log2movie_cairo
-  - 'plotter.zoom': 2
-    'plotter.display_sidebar': false
-    'plotter.show_sensor_data_compact': true
-    'plotter.fp': true
+  - 'plotter.display_sidebar': false
+    'plotter.plotting_params':
+        first_person: True
+        zoom: 2
+        show_sensor_data_compact: True
+    
 
 - id: pdfz0no
   desc: ''
   code: 
   - boot_log2movie_cairo
-  - 'plotter.zoom': 0
-    'plotter.display_sidebar': false
-    'plotter.show_sensor_data_compact': false
-    'plotter.fp': false
+  - 'plotter.display_sidebar': false
+    'plotter.plotting_params':
+        first_person: False
+        zoom: 0
+        show_sensor_data_compact: False
+    
 
 
 - id: mp4z2sb
   desc: ''
   code: 
   - boot_log2movie_cairo_avi
-  - 'plotter.zoom': 2
-    'plotter.display_sidebar': true
-    'plotter.show_sensor_data_compact': true
-    'plotter.fp': false
+  - 'plotter.display_sidebar': true
+    'plotter.plotting_params':
+        first_person: False
+        zoom: 2
+        show_sensor_data_compact: True
+    
+    
 
 - id: mp4f2sb
   desc: ''
   code: 
   - boot_log2movie_cairo_avi
-  - 'plotter.zoom': 2
-    'plotter.display_sidebar': true
-    'plotter.show_sensor_data_compact': true
-    'plotter.fp': true
+  - 'plotter.display_sidebar': true
+    'plotter.plotting_params':
+        first_person: True
+        zoom: 2
+        show_sensor_data_compact: True
+    
 
 - id: mp4z0sb
   desc: ''
   code: 
   - boot_log2movie_cairo_avi
-  - 'plotter.zoom': 0
-    'plotter.display_sidebar': true
-    'plotter.show_sensor_data_compact': false
-    'plotter.fp': false
+  - 'plotter.display_sidebar': true
+    'plotter.plotting_params':
+        first_person: false
+        zoom: 0
+        show_sensor_data_compact: False
+    
+    
 
 - id: mp4z2no
   desc: ''
   code: 
   - boot_log2movie_cairo_avi
-  - 'plotter.zoom': 2
-    'plotter.display_sidebar': false
-    'plotter.show_sensor_data_compact': true
-    'plotter.fp': false
+  - 'plotter.display_sidebar': false
+    'plotter.plotting_params':
+        first_person: false
+        zoom: 2
+        show_sensor_data_compact: True
+    
 
 - id: mp4f2no
   desc: ''
   code: 
   - boot_log2movie_cairo_avi
-  - 'plotter.zoom': 2
-    'plotter.display_sidebar': false
-    'plotter.show_sensor_data_compact': true
-    'plotter.fp': true
+  - 'plotter.display_sidebar': false
+    'plotter.plotting_params':
+        first_person: True
+        zoom: 2
+        show_sensor_data_compact: True
+    
 
 - id: mp4z0no
   desc: ''
   code: 
   - boot_log2movie_cairo_avi
-  - 'plotter.zoom': 0
-    'plotter.display_sidebar': false
-    'plotter.fp': false
-    'plotter.show_sensor_data_compact': false
+  - 'plotter.display_sidebar': false
+    'plotter.plotting_params':
+        first_person: False
+        zoom: 0
+        show_sensor_data_compact: False
+    
 
 
 - id: avisrvz0
   desc: ''
   code: 
   - boot_log2movie_servo
-  - 'plotter.zoom': 0
-    'plotter.display_sidebar': false
-    'plotter.fp': false
-    'plotter.show_sensor_data_compact': false
+  - 'plotter.display_sidebar': false
+    'plotter.plotting_params':
+        first_person: False
+        zoom: 0
+        show_sensor_data_compact: False
+    
 
 
 - id: mp4z0nosrv
   desc: ''
   code: 
   - boot_log2movie_servonav
-  - 'plotter.zoom': 0
-    'plotter.display_sidebar': false
-    'plotter.fp': false
-    'plotter.show_sensor_data_compact': false
+  - 'plotter.display_sidebar': false
+    'plotter.plotting_params':
+        first_person: False
+        zoom: 0
+        show_sensor_data_compact: False
+    
 

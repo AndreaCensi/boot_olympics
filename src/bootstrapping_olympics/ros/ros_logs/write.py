@@ -28,6 +28,10 @@ class BagLogWriter():
         self.bag.write(self.topic, msg, t)
         self.num += 1
 
+    def cleanup(self):
+        self.bag.close()
+        os.unlink(self.tmp_filename)
+
     def close(self):
         if self.num == 0:
             logger.error('No data given for writing; deleting tmp file.')

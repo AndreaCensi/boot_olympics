@@ -14,7 +14,9 @@ def task_servo(data_central, id_agent, id_robot,
                interval_print=None,
                num_episodes_with_robot_state=0):
     ''' Returns the list of the episodes IDs simulated. '''
-    from geometry import SE3
+
+    # Reseed the generator (otherwise multiprocessing will use the same)
+    np.random.seed()
 
     if id_episodes is not None:
         if len(id_episodes) != num_episodes:

@@ -17,7 +17,14 @@ except ImportError:
 
 @contract(yaml_string='str')
 def yaml_load(yaml_string):
-    return load(yaml_string, Loader=Loader)
+    try:
+        return load(yaml_string, Loader=Loader)
+    except:
+        emergency = '/home/andrea/yaml_load.yaml' # XXX
+        with open(emergency, 'w') as f:
+            f.write(yaml_string)
+        logger.error('String written to %r.' % emergency)
+        raise
 
 
 @contract(returns='str')

@@ -91,7 +91,7 @@ class BootStream(object):
         return self._length
 
     def __repr__(self):
-        return 'BootStream(%s,%s,T=%s,spec=%s)' % (self._short_file,
+        return 'BootStream(%s,%s,T=%.2fs,spec=%s)' % (self._short_file,
                                          self._id_robot, self._length,
                                          self._spec)
 

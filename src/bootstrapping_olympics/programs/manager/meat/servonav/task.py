@@ -9,6 +9,7 @@ from bootstrapping_olympics.utils import isodate_with_secs
 def task_servonav(data_central, id_agent, id_robot,
                max_episode_len,
                num_episodes,
+               fail_if_not_working,
                id_episodes=None, # if None, just use the ID given by the world
                cumulative=False,
                interval_print=None,
@@ -16,6 +17,9 @@ def task_servonav(data_central, id_agent, id_robot,
                num_episodes_with_robot_state=0,
                 resolution=1):
     ''' Returns the list of the episodes IDs simulated. '''
+
+    # Reseed the generator (otherwise multiprocessing will use the same)
+    np.random.seed()
 
     if id_episodes is not None:
         if len(id_episodes) != num_episodes:
@@ -77,6 +81,7 @@ def task_servonav(data_central, id_agent, id_robot,
                  max_episode_len=max_episode_len,
                  save_robot_state=save_robot_state,
                  interval_write=interval_write,
+                 fail_if_not_working=fail_if_not_working,
                  max_tries=10000)
 
             bk.episode_done()
@@ -90,7 +95,6 @@ def convert_to_yaml(locations):
         loc = dict(**loc)
         loc['pose'] = SE3.to_yaml(loc['pose'])
         loc['observations'] = loc['observations'].tolist()
-        loc['cell'] = list(loc['cell'])
         return loc
     return [convert(l) for l in locations]
 
@@ -101,6 +105,7 @@ def servonav_episode(id_robot, robot,
                      max_episode_len, save_robot_state,
                      interval_write=1,
                      resolution=0.5, # grid resolution
+                     fail_if_not_working=False,
                      max_tries=10000):
     '''
     
@@ -147,7 +152,7 @@ def servonav_episode(id_robot, robot,
                            100000, max_episode_len,
                            id_episode=id_episode,
                            id_environment=episode.id_environment,
-                           raise_error_on_collision=True):
+                           raise_error_on_collision=fail_if_not_working):
 
         current_time = observations['timestamp'].item()
         if time_last_switch is None:
@@ -191,8 +196,12 @@ def servonav_episode(id_robot, robot,
                 break
 
         if time_since_last_switch > MAX_TIME_FOR_SWITCH:
-            logger.error('breaking because too much time passed')
-            break
+            msg = 'Breaking because too much time passed.'
+            if not(fail_if_not_working):
+                logger.error(msg)
+                break
+            else:
+                raise Exception(msg)
 
         servo_agent.set_goal_observations(current_goal_obs)
 
