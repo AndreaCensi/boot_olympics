@@ -20,17 +20,27 @@ def yaml_load(yaml_string):
     try:
         return load(yaml_string, Loader=Loader)
     except:
-        emergency = '/home/andrea/yaml_load.yaml' # XXX
-        with open(emergency, 'w') as f:
-            f.write(yaml_string)
-        logger.error('String written to %r.' % emergency)
+        logger.error('Could not deserialize YAML')
+        dump_emergency_string(yaml_string)
         raise
+
+
+def dump_emergency_string(s):
+    emergency = '/home/andrea/yaml_load.yaml' # XXX
+    with open(emergency, 'w') as f:
+        f.write(s)
+    logger.error('String written to %r.' % emergency)
 
 
 @contract(returns='str')
 def yaml_dump(ob):
     check_pure_structure(ob)
-    return dump(ob, Dumper=Dumper)
+    string = dump(ob, Dumper=Dumper)
+    if '!python/object' in string:
+        dump_emergency_string(string)
+        msg = 'Invalid YAML produced'
+        raise ValueError(msg)
+    return string
 
 
 @contract(returns='str')

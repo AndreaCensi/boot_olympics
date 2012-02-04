@@ -41,7 +41,6 @@ def hdf_read(filename, id_stream, boot_spec=None, read_extra=False,
                 extra_string = str(extra[i])
                 assert isinstance(extra_string, str)
 
-
                 t0 = time.clock()
 
                 observations['extra'] = yaml_load(extra_string)

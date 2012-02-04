@@ -2,6 +2,7 @@ from . import DirectoryStructure, logger, np, run_simulation
 from bootstrapping_olympics import AgentInterface, LogsFormat
 from bootstrapping_olympics.utils import InAWhile, isodate_with_secs, natsorted
 import logging
+from bootstrapping_olympics.utils.isodate import unique_timestamp_string
 
 
 def simulate(data_central, id_agent, id_robot,
@@ -50,11 +51,11 @@ def simulate(data_central, id_agent, id_robot,
     ds = data_central.get_dir_structure()
     assert isinstance(ds, DirectoryStructure)
 
-    id_stream = '%s-%s-%s' % (id_robot, id_agent, isodate_with_secs())
+    id_stream = '%s_%s_%s' % (id_robot, id_agent, unique_timestamp_string())
     filename = ds.get_simlog_filename(id_robot=id_robot,
-                                          id_agent=id_agent,
-                                          id_stream=id_stream)
-    logger.info('Creating stream %r\n in file %r' % (id_stream, filename))
+                                      id_agent=id_agent,
+                                      id_stream=id_stream)
+    #logger.info('Creating stream %r\n in file %r' % (id_stream, filename))
 
     logs_format = LogsFormat.get_reader_for(filename)
 
@@ -128,6 +129,12 @@ class Bookkeeping():
         self.tracker = InAWhile(interval_print)
         self.id_episodes = set()
 
+        try:
+            from compmake import progress
+            progress('Simulating episodes', (0, self.num_episodes_todo))
+        except ImportError:
+            pass
+
     def observations(self, observations):
         self.id_episodes.add(observations['id_episode'].item())
 
@@ -159,6 +166,13 @@ class Bookkeeping():
         self.num_episodes_done += 1
         self.observations_per_episode.append(self.num_observations_episode)
         self.num_observations_episode = 0
+
+        try:
+            from compmake import progress
+            progress('Simulating episodes', (self.num_episodes_done,
+                                             self.num_episodes_todo))
+        except ImportError:
+            pass
 
     def another_episode_todo(self):
         return self.num_episodes_done < self.num_episodes_todo

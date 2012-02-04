@@ -41,7 +41,7 @@ def task_servonav(data_central, id_agent, id_robot,
     id_agent_servo = '%s_servo' % id_agent
 
     ds = data_central.get_dir_structure()
-    id_stream = '%s-%s-%s-servonav' % (id_robot, id_agent, isodate_with_secs())
+    id_stream = '%s_%s_%s_servonav' % (id_robot, id_agent, isodate_with_secs())
     filename = ds.get_simlog_filename(id_robot=id_robot,
                                       id_agent=id_agent,
                                       id_stream=id_stream)
@@ -147,14 +147,15 @@ def servonav_episode(id_robot, robot,
     #SWITCH_THRESHOLD = 0.5
 
     num_written = 0
-    for observations in run_simulation_servonav(id_robot, robot,
+    for robot_observations, boot_observations in \
+        run_simulation_servonav(id_robot, robot,
                            id_servo_agent, servo_agent,
                            100000, max_episode_len,
                            id_episode=id_episode,
                            id_environment=episode.id_environment,
                            raise_error_on_collision=fail_if_not_working):
 
-        current_time = observations['timestamp'].item()
+        current_time = boot_observations['timestamp'].item()
         if time_last_switch is None:
             time_last_switch = current_time
 
@@ -163,8 +164,8 @@ def servonav_episode(id_robot, robot,
         def obs_distance(obs1, obs2):
             return float(np.linalg.norm(obs1 - obs2))
 
-        curr_pose = robot.get_observations().robot_pose
-        curr_obs = observations['observations']
+        curr_pose = robot_observations.robot_pose
+        curr_obs = boot_observations['observations']
         curr_goal = locations[current_goal]['observations']
         prev_goal = locations[current_goal - 1]['observations']
         curr_err = obs_distance(curr_goal, curr_obs)
@@ -181,7 +182,8 @@ def servonav_episode(id_robot, robot,
                     ('  deltaT: %.2fm  deltaTh: %.1fdeg' %
                      (delta_t, np.rad2deg(delta_th))))
 
-        delta_t_threshold = 0.4
+#        delta_t_threshold = 0.4
+        delta_t_threshold = 0.2
         time_to_switch = delta_t < delta_t_threshold
         # curr_err < SWITCH_THRESHOLD * prev_err:
 
@@ -213,7 +215,7 @@ def servonav_episode(id_robot, robot,
                                        current=SE3.to_yaml(curr_pose))
 
         extra['servonav'] = dict(poseK=SE3.to_yaml(curr_pose),
-                        obsK=observations['observations'].tolist(),
+                        obsK=boot_observations['observations'].tolist(),
                         pose1=SE3.to_yaml(current_goal_pose),
                         locations=locations_yaml,
                         current_goal=current_goal,
@@ -227,7 +229,7 @@ def servonav_episode(id_robot, robot,
             if save_robot_state:
                 extra['robot_state'] = robot.get_state()
 
-            writer.push_observations(observations=observations,
+            writer.push_observations(observations=boot_observations,
                                      extra=extra)
             num_written += 1
         counter += 1
@@ -246,8 +248,12 @@ def run_simulation_servonav(id_robot, robot, id_agent, agent,
                             id_episode, id_environment,
                             check_valid_values=True,
                             raise_error_on_collision=True):
-    ''' Runs an episode of the simulation. The agent should already been
-        init()ed. '''
+    ''' 
+        Runs an episode of the simulation. The agent should already been
+        init()ed. 
+        
+        yields robot.get_observations(), boot_observatoions
+    '''
 
     keeper = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
 
@@ -269,7 +275,7 @@ def run_simulation_servonav(id_robot, robot, id_agent, agent,
                                    id_world=id_environment)
         episode_end = obs.episode_end
 
-        yield observations
+        yield obs, observations
 
         now = 'step %s' % counter
 

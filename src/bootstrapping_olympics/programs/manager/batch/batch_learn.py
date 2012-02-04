@@ -28,14 +28,17 @@ class TaskRegister:
 
         self.deps = {}
 
-    def episode_id_exploration(self, K):
-        return 'ep_expl_%05d' % K
+    @contract(id_agent='str', K='int')
+    def episode_id_exploration(self, id_agent, K):
+        return 'ep_expl_%s_%05d' % (id_agent, K)
 
-    def episode_id_servoing(self, K):
-        return 'ep_serv_%05d' % K
+    @contract(id_agent='str', K='int')
+    def episode_id_servoing(self, id_agent, K):
+        return 'ep_serv_%s_%05d' % (id_agent, K)
 
-    def episode_id_servonav(self, K):
-        return 'ep_servonav_%05d' % K
+    @contract(id_agent='str', K='int')
+    def episode_id_servonav(self, id_agent, K):
+        return 'ep_servonav_%s_%05d' % (id_agent, K)
 
     def agent_has_predictor(self, id_agent):
         agent = self.data_central.get_bo_config().agents.instance(id_agent)
@@ -75,12 +78,12 @@ class TaskRegister:
         """ The agent has completed learning """
         return self.get_dep((id_robot, id_agent, 'learn'))
 
-    def dep_episode_done(self, id_robot, id_agent, id_episode):
+    def dep_episode_done(self, id_robot, id_episode):
         """ The given episode was completed """
-        return self.get_dep((id_robot, id_agent, id_episode, 'episode'))
+        return self.get_dep((id_robot, id_episode, 'episode'))
 
-    def set_dep_episode_done(self, id_robot, id_agent, id_episode, job):
-        self.set_dep((id_robot, id_agent, id_episode, 'episode'), job)
+    def set_dep_episode_done(self, id_robot, id_episode, job):
+        self.set_dep((id_robot, id_episode, 'episode'), job)
 
     @contract(servo='None|dict',
               servonav='None|dict',
@@ -144,13 +147,12 @@ class TaskRegister:
 
     def add_learning(self, id_robot, id_agent, num_ep_expl, explorer, # XXX
                      publish_progress=False):
-        all_id_episodes = [self.episode_id_exploration(i)
+        all_id_episodes = [self.episode_id_exploration(explorer, i)
                            for i in range(num_ep_expl)]
 
         def get_deps_for_episodes(id_episodes):
             """ Gets all dependencies for the episodes. """
             return list(set(self.dep_episode_done(id_robot=id_robot,
-                                                  id_agent=explorer,
                                                   id_episode=x)
                             for x in id_episodes))
 
@@ -206,11 +208,11 @@ class TaskRegister:
             raise SemanticMistake(msg)
 
         # Divide the simulation in parallel tranches
-        all_id_episodes = [self.episode_id_exploration(i)
+        all_id_episodes = [self.episode_id_exploration(explorer, i)
                            for i in range(num_episodes)]
 
         # These are episodes for which we want to save extra information
-        id_episodes_with_extra = [self.episode_id_exploration(i)
+        id_episodes_with_extra = [self.episode_id_exploration(explorer, i)
                                   for i in range(num_episodes_videos)]
 
         tranches = []
@@ -238,7 +240,7 @@ class TaskRegister:
             tranches.append(tranche)
 
             for id_episode in id_episodes:
-                self.set_dep_episode_done(id_robot=id_robot, id_agent=explorer,
+                self.set_dep_episode_done(id_robot=id_robot,
                                           id_episode=id_episode, job=tranche)
 
         comp(checkpoint, 'all simulations',
@@ -256,7 +258,7 @@ class TaskRegister:
             model = code_spec['code'][0]
             model_params = code_spec['code'][1]
 
-            extra_dep = self.dep_episode_done(id_robot, id_agent, id_episode)
+            extra_dep = self.dep_episode_done(id_robot, id_episode)
 
             comp(create_video,
                  data_central=self.data_central,
@@ -295,9 +297,9 @@ class TaskRegister:
             logger.debug('No servonav episodes')
             return
 
-        all_id_episodes = [self.episode_id_servonav(i)
+        all_id_episodes = [self.episode_id_servonav(id_agent, i)
                            for i in range(num_episodes)]
-        id_episodes_with_extra = [self.episode_id_servonav(i)
+        id_episodes_with_extra = [self.episode_id_servonav(id_agent, i)
                            for i in range(num_episodes_videos)]
 
         all_tranches = []
@@ -324,8 +326,7 @@ class TaskRegister:
             all_tranches.append(tranche)
 
             for id_episode in id_episodes:
-                self.set_dep_episode_done(id_robot, id_agent,
-                                          id_episode, tranche)
+                self.set_dep_episode_done(id_robot, id_episode, tranche)
 
 #        logger.info('Tranches: %s' % all_tranches)
 
@@ -375,9 +376,9 @@ class TaskRegister:
 
         logger.debug('Creating servo episodes')
 
-        all_id_episodes = [self.episode_id_servoing(i)
+        all_id_episodes = [self.episode_id_servoing(id_agent, i)
                            for i in range(num_episodes)]
-        id_episodes_with_extra = [self.episode_id_servoing(i)
+        id_episodes_with_extra = [self.episode_id_servoing(id_agent, i)
                            for i in range(num_episodes_videos)]
 
         all_tranches = []
@@ -385,8 +386,6 @@ class TaskRegister:
         for st, id_episodes in enumerate(episodes_tranches):
             num_episodes_with_robot_state = len(set(id_episodes) &
                                                 set(id_episodes_with_extra))
-
-            logger.info('Adding: %s' % id_episodes)
 
             tranche = comp(task_servo, data_central=self.data_central,
              id_agent=id_agent, id_robot=id_robot,
@@ -404,8 +403,7 @@ class TaskRegister:
             all_tranches.append(tranche)
 
             for id_episode in id_episodes:
-                self.set_dep_episode_done(id_robot, id_agent,
-                                          id_episode, tranche)
+                self.set_dep_episode_done(id_robot, id_episode, tranche)
 
         all_servo = comp(checkpoint, 'all servo',
                         job_id='servo-%s-%s' % (id_robot, id_agent),

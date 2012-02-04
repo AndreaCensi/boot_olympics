@@ -40,7 +40,7 @@ def task_servo(data_central, id_agent, id_robot,
     id_agent_servo = '%s_servo' % id_agent
 
     ds = data_central.get_dir_structure()
-    id_stream = '%s-%s-%s-servo' % (id_robot, id_agent, isodate_with_secs())
+    id_stream = '%s_%s_%s_servo' % (id_robot, id_agent, isodate_with_secs())
     filename = ds.get_simlog_filename(id_robot=id_robot,
                                           id_agent=id_agent,
                                           id_stream=id_stream)

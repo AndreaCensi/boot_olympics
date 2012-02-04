@@ -1,6 +1,7 @@
 from . import logger, np, tables, contract
-from ... import BootSpec
-from ...utils import copy_from, yaml_dump
+from bootstrapping_olympics import BootSpec
+from bootstrapping_olympics.utils import (warn_good_identifier,
+    warn_good_filename, copy_from, yaml_dump)
 import os
 import warnings
 
@@ -10,6 +11,9 @@ warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 class HDFLogWriter():
 
     def __init__(self, filename, id_stream, boot_spec):
+        warn_good_filename(filename)
+        warn_good_identifier(id_stream)
+
         assert isinstance(boot_spec, BootSpec)
         self.filename = filename
         # XXX: check that we are not given the same filename
@@ -49,17 +53,19 @@ class HDFLogWriter():
         structure = self.boot_spec.to_yaml()
         yaml_spec = yaml_dump(structure)
 
+        filters_text = tables.Filters(complevel=9, complib='zlib')
+
         self.extra = self.hf.createVLArray(group, 'extra',
-                                           tables.VLUnicodeAtom(),
-                                           filters=filters)
+                                           tables.VLStringAtom(),
+                                           filters=filters_text)
 
         if False:
             # old version
             self.table.attrs['boot_spec'] = yaml_spec
         else:
             boot_spec_table = self.hf.createVLArray(group, 'boot_spec',
-                                                tables.VLUnicodeAtom(),
-                                                filters=filters)
+                                                tables.VLStringAtom(),
+                                                filters=filters_text)
             boot_spec_table.append(yaml_spec)
 
     def cleanup(self):

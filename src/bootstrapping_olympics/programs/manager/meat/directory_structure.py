@@ -2,13 +2,16 @@ from . import logger
 from bootstrapping_olympics import (BootOlympicsConfig, BootOlympicsConstants,
     LogsFormat)
 from bootstrapping_olympics.utils import (check_contained, expand_environment,
-    substitute, mkdirs_thread_safe)
+    substitute, mkdirs_thread_safe, warn_good_identifier, warn_good_filename)
 import os
 import tempfile
 
 
 class DirectoryStructure:
-
+    ''' 
+        This class knows how to organize the output of the various programs
+        on the filesystem.
+    '''
     DEFAULT_ROOT = '.'
 
     DIR_REPORTS = 'reports'
@@ -17,6 +20,12 @@ class DirectoryStructure:
     DIR_LOGS = 'logs'
     DIR_STORAGE = 'storage'
     DIR_STATES = 'states'
+
+    # XXX: use generic separator
+    pattern_simulation = 'simulations/${id_robot}/${id_agent}/'
+    pattern_report = '${id_robot}/${id_agent}'
+    pattern_video = ('${id_robot}/${id_agent}'
+                     '/${id_robot}-${id_agent}-${id_episode}')
 
     def __init__(self, root=None):
         if root is None:
@@ -61,11 +70,14 @@ class DirectoryStructure:
 
     def get_simlog_filename(self, id_agent, id_robot, id_stream,
                                   logs_format=None):
+
+        warn_good_identifier(id_stream)
+
         if logs_format is None:
             logs_format = self.log_format
         check_contained(logs_format, LogsFormat.formats, 'format')
 
-        pattern = 'simulations/${id_robot}/${id_agent}/'
+        pattern = DirectoryStructure.pattern_simulation
         dirname = os.path.join(self.root, DirectoryStructure.DIR_LOGS,
                                substitute(pattern,
                                           id_agent=id_agent,
@@ -74,9 +86,10 @@ class DirectoryStructure:
         mkdirs_thread_safe(dirname)
         assert os.path.exists(dirname)
 
+        # Add a unique string to the file
         tmpfile = tempfile.NamedTemporaryFile(
                                           suffix='.%s.active' % logs_format,
-                                          prefix=id_stream,
+                                          prefix='%s-' % id_stream,
                                           dir=dirname, delete=False)
         tmpfile.write('To be used')
 
@@ -86,11 +99,14 @@ class DirectoryStructure:
         tmpfile.close()
         logger.debug('Writing on file %r' % filename)
 
+        warn_good_filename(filename)
+        warn_good_filename(tmp_filename)
+
         return filename
 
     def get_report_dir(self, id_agent, id_robot, id_state, phase='learn',
                         add_last=False):
-        pattern = '${id_robot}/${id_agent}'
+        pattern = DirectoryStructure.pattern_report
         dirname = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
                                phase,
                                substitute(pattern,
@@ -119,7 +135,7 @@ class DirectoryStructure:
         return dirname
 
     def get_video_basename(self, id_robot, id_agent, id_episode):
-        pattern = '${id_robot}/${id_robot}-${id_agent}-${id_episode}'
+        pattern = DirectoryStructure.pattern_video
 
         if not id_episode:
             id_episode = "alleps"
@@ -131,5 +147,6 @@ class DirectoryStructure:
                                           id_robot=id_robot,
                                           id_agent=id_agent,
                                           id_episode=id_episode))
+        warn_good_filename(filename)
         return filename
 

@@ -14,8 +14,10 @@ logger.setLevel(logging.DEBUG)
 # XXX: let everybody use the same logger
 getLogger = lambda name: logger
 
-from .constants import *
 
+from . import utils
+
+from .constants import *
 
 from .interfaces import *
 from .agent_states import *

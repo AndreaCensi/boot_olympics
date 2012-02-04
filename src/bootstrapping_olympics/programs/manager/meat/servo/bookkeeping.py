@@ -34,6 +34,12 @@ class BookkeepingServo():
         self.tracker = InAWhile(interval_print)
         self.id_episodes = set()
 
+        try:
+            from compmake import progress
+            progress('Simulating episodes', (0, self.num_episodes_todo))
+        except ImportError:
+            pass
+
     def observations(self, observations):
         self.id_episodes.add(observations['id_episode'].item())
 
@@ -65,6 +71,13 @@ class BookkeepingServo():
         self.num_episodes_done += 1
         self.observations_per_episode.append(self.num_observations_episode)
         self.num_observations_episode = 0
+
+        try:
+            from compmake import progress
+            progress('servoing', (self.num_episodes_done,
+                                 self.num_episodes_todo))
+        except ImportError:
+            pass
 
     def another_episode_todo(self):
         return self.num_episodes_done < self.num_episodes_todo

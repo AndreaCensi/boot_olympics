@@ -1,5 +1,7 @@
 from . import np, logger
 import os
+from reprep.plot_utils.styles import style_ieee_fullcol_xy, \
+    style_ieee_halfcol_xy
 
 
 def servo_stats_report(data_central, id_agent, id_robot, summaries):
@@ -35,25 +37,30 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries):
     f = r.figure(cols=3)
 
     with f.plot('image_L2_error') as pylab:
+        style_ieee_fullcol_xy(pylab)
         for s in summaries:
             errors = s['errors']
             pylab.plot(errors, s['color'])
 
     with f.plot('dist_xy') as pylab:
+        style_ieee_fullcol_xy(pylab)
         for s in summaries:
             pylab.plot(s['dist_xy'], s['color'] + '-')
 
     with f.plot('dist_th') as pylab:
+        style_ieee_fullcol_xy(pylab)
         for s in summaries:
             pylab.plot(s['dist_th'], s['color'] + '-')
 
     with f.plot('dist_xy_th') as pl:
+        style_ieee_fullcol_xy(pylab)
         for s in summaries:
             pl.plot(s['dist_xy'], s['dist_th_deg'], s['color'] + '-')
         pl.xlabel('dist x-y')
         pl.ylabel('dist th (deg)')
 
     with f.plot('dist_xy_th_log') as pl:
+        style_ieee_fullcol_xy(pylab)
         for s in summaries:
             pl.semilogx(s['dist_xy'],
                         s['dist_th_deg'], s['color'] + '.')
@@ -66,6 +73,7 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries):
     with f.plot('dist_xy_th_start',
                 caption="Initial error (blue: converged)"
                 ) as pl:
+        style_ieee_fullcol_xy(pylab)
         for s in summaries:
             pl.plot([s['dist_xy'][0], s['dist_xy'][-1]],
                      [s['dist_th_deg'][0],
@@ -82,6 +90,7 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries):
                 caption="Trajectories. If converged, plot square at beginning"
                 " and cross at end. If not converged, plot trajectory (red)."
                 ) as pl:
+        style_ieee_fullcol_xy(pylab)
         for s in summaries:
             if  s['converged']: continue
 
@@ -97,11 +106,13 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries):
 
 
     with f.plot('initial_rotation') as pylab:
+        style_ieee_halfcol_xy(pylab)
         pylab.hist(np.rad2deg(initial_rotation))
         x_axis_balanced(pylab)
         pylab.xlabel('Initial rotation (deg)')
 
     with f.plot('initial_distance') as pylab:
+        style_ieee_halfcol_xy(pylab)
         pylab.hist(initial_distance)
         pylab.xlabel('Initial distance (m)')
 
