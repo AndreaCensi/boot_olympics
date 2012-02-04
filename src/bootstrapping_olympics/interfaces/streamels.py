@@ -1,6 +1,6 @@
 from . import contract, np
 from contracts import check
-from bootstrapping_olympics.utils import show_differences
+from ..utils import show_differences
 
 
 class ValueFormats:

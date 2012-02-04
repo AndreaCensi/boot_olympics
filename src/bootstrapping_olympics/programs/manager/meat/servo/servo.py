@@ -140,7 +140,8 @@ def servoing_episode(id_robot, robot,
 
     servo_agent.set_goal_observations(obs0)
 
-    for observations in run_simulation_servo(id_robot, robot,
+    for robot_observations, boot_observations in \
+        run_simulation_servo(id_robot, robot,
                            id_servo_agent, servo_agent,
                            100000, max_episode_len,
                            id_episode=id_episode,
@@ -153,12 +154,12 @@ def servoing_episode(id_robot, robot,
             else:
                 return SE3.to_yaml(x)
 
-        current_pose = robot_pose()
+        current_pose = robot_observations.robot_pose
 
         extra = {}
 
         extra['servoing_base'] = dict(goal=obs0.tolist(),
-                                current=observations['observations'].tolist())
+                                current=boot_observations['observations'].tolist())
 
         extra['servoing_poses'] = dict(goal=pose_to_yaml(pose0),
                                        current=pose_to_yaml(current_pose))
@@ -167,7 +168,7 @@ def servoing_episode(id_robot, robot,
         extra['servoing'] = dict(obs0=obs0.tolist(),
                                 pose0=pose_to_yaml(pose0),
                                 poseK=pose_to_yaml(current_pose),
-                                obsK=observations['observations'].tolist(),
+                                obsK=boot_observations['observations'].tolist(),
                                 displacement=displacement,
                                 cmd0=cmd0.tolist(),
                                 pose1=pose_to_yaml(pose1))
@@ -175,7 +176,7 @@ def servoing_episode(id_robot, robot,
         if save_robot_state:
             extra['robot_state'] = robot.get_state()
 
-        writer.push_observations(observations=observations,
+        writer.push_observations(observations=boot_observations,
                                  extra=extra)
 #    
 #    # TODO: add intrinsic notion here
