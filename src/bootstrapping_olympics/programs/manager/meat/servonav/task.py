@@ -105,6 +105,9 @@ def servonav_episode(id_robot, robot,
                      max_episode_len, save_robot_state,
                      interval_write=1,
                      resolution=0.5, # grid resolution
+                     delta_t_threshold=0.2, # when to switch
+                     MIN_PATH_LENGTH=8,
+                     MAX_TIME_FOR_SWITCH=30.0,
                      fail_if_not_working=False,
                      max_tries=10000):
     '''
@@ -113,8 +116,6 @@ def servonav_episode(id_robot, robot,
     '''
     from geometry import (SE2_from_SE3, translation_from_SE2,
                           angle_from_SE2, SE3)
-
-    MIN_PATH_LENGTH = 8
 
     for _ in xrange(max_tries):
         # iterate until we can do this correctly
@@ -142,9 +143,6 @@ def servonav_episode(id_robot, robot,
 
     counter = 0
     time_last_switch = None
-
-    MAX_TIME_FOR_SWITCH = 30.0
-    #SWITCH_THRESHOLD = 0.5
 
     num_written = 0
     for robot_observations, boot_observations in \
@@ -182,10 +180,14 @@ def servonav_episode(id_robot, robot,
                     ('  deltaT: %.2fm  deltaTh: %.1fdeg' %
                      (delta_t, np.rad2deg(delta_th))))
 
-#        delta_t_threshold = 0.4
-        delta_t_threshold = 0.2
+        # If at the final goal, go closer
+        is_final_goal = current_goal == len(locations) - 1
+        if is_final_goal:
+            delta_t_threshold *= 0.3
+
+        # TODO: should we care also about delta_th?
         time_to_switch = delta_t < delta_t_threshold
-        # curr_err < SWITCH_THRESHOLD * prev_err:
+        # does not work: curr_err < SWITCH_THRESHOLD * prev_err:
 
         if time_to_switch:
             current_goal += 1

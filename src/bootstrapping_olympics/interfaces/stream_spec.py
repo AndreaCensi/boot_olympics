@@ -69,7 +69,8 @@ class StreamSpec:
                 val = np.random.randint(lower, upper)
             elif kind == ValueFormats.Invalid:
                 val = np.NaN
-            else: assert False
+            else:
+                assert False
             x.flat[i] = val
         return x
 
@@ -84,27 +85,6 @@ class StreamSpec:
             msg += '\n  stream: %s' % self
             msg += '\n   value: %s' % describe_value(x)
             raise BootInvalidValue(msg)
-
-        def display_some(x, select, max_to_display=4):
-            ''' Displays some of the elements in x (array) given
-                by select (array of bool). '''
-            how_many = np.sum(select)
-            to_display = min(how_many, max_to_display)
-            s = 'First %s of %s/%s: %s' % (to_display, how_many, x.size,
-                                           x[select][:to_display])
-            return s
-
-        def display_some_extended(x, streamels, select, max_to_display=4):
-            ''' Displays some of the elements in x (array) given
-                by select (array of bool). '''
-            how_many = np.sum(select)
-            to_display = min(how_many, max_to_display)
-            values = x[select][:to_display]
-            s = 'First %s of %s/%s: %s' % (to_display, how_many, x.size, values)
-            s += '\n lower: %s' % streamels['lower'][select][:to_display]
-            s += '\n upper: %s' % streamels['upper'][select][:to_display]
-            return s
-
 
         if not isinstance(x, np.ndarray):
             msg = 'Type is %s instead of numpy array.' % describe_type(x)
@@ -145,7 +125,8 @@ class StreamSpec:
         out_of_range = np.logical_or(xv < lv, xv > uv)
         if np.any(out_of_range):
             msg = ('Found elements out of range. %s' %
-                   display_some_extended(xv, self.streamels[valid], out_of_range))
+                   display_some_extended(xv,
+                                         self.streamels[valid], out_of_range))
             bail(msg)
 
     @contract(returns='int,>0')
@@ -226,7 +207,8 @@ class StreamSpec:
                     for j in range(self.streamels.shape[1]):
                         row.append(get_streamel_range(self.streamels[i, j]))
                     arange.append(row)
-            else: assert False
+            else:
+                assert False
 
             data['format'] = self.streamels['kind'].tolist()
             data['default'] = self.streamels['default'].tolist()
@@ -259,8 +241,9 @@ class StreamSpec:
         mrange[..., 1] = joint['upper']
         mrange = mrange.tolist()
         extra = {}
-        filtered = dict(filter='join', original=[obs1.to_yaml(), obs2.to_yaml()])
-        desc = 'Join of %s and %s' % (obs1.id_stream, obs2.id_stream)  #@UnusedVariable
+        filtered = dict(filter='join',
+                        original=[obs1.to_yaml(), obs2.to_yaml()])
+        desc = 'Join of %s and %s' % (obs1.id_stream, obs2.id_stream)
 
         default = joint['default'].tolist() # XXX --- not tested
         streamels = streamels_from_spec(shape=shape, format=format,
@@ -271,6 +254,7 @@ class StreamSpec:
 
     def get_id_stream(self):
         return self.id_stream
+
 
 def streamels_all_of_kind(streamels, kind):
     """ Returns True if all streamels are of the same given kind ('C','D') """
@@ -285,6 +269,7 @@ def all_same_spec(streamels):
             return False
     return True
 
+
 def only_one_value(array):
     """ Checks that the array has only one value. """
     un = np.unique(array)
@@ -294,6 +279,7 @@ def only_one_value(array):
         #print('Different values: %s' % un)
         return False
 
+
 def check_valid_bounds(bounds):
     if not isinstance(bounds, (list, np.ndarray)):
         msg = 'Expect list or array, got %s.' % bounds
@@ -302,6 +288,7 @@ def check_valid_bounds(bounds):
     if not bounds[0] < bounds[1]:
         raise ValueError('Invalid bounds lower: %s upper: %s (lower>=upper)' %
                          (bounds[0], bounds[1]))
+
 
 def expect_one_of(x, options):
     if not x in options:
@@ -321,12 +308,14 @@ def set_streamel_range(streamel, bounds):
             msg = ('Incorrect bounds spec for invalid streamel: %r (%s).'
                    % (bounds, (bounds is None)))
             raise ValueError(msg)
-        streamel['lower'] = np.inf # do not use nan, otherwise streamels!=streamels
+        # do not use nan, otherwise streamels!=streamels
+        streamel['lower'] = np.inf
         streamel['upper'] = np.inf
     else:
         check_valid_bounds(bounds)
         streamel['lower'] = bounds[0]
         streamel['upper'] = bounds[1]
+
 
 def get_streamel_range(streamel):
     if streamel['kind'] == ValueFormats.Invalid:
@@ -354,7 +343,8 @@ def streamels_from_spec(shape, format, range, default): #@ReservedAssignment
     else:
         # If the format is not a string, then it must be a list
         if not isinstance(format, list):
-            msg = 'Expected list for "format", got %s.' % describe_value(format)
+            msg = ('Expected list for "format", got %s.'
+                   % describe_value(format))
             raise ValueError(msg)
 
         # And it must have the same number of elements
@@ -416,7 +406,8 @@ def streamels_from_spec(shape, format, range, default): #@ReservedAssignment
             raise ValueError(msg)
         if not (np.issubdtype(defaults.dtype, int) or
                 np.issubdtype(defaults.dtype, float)):
-            msg = 'Expect an array of numbers, not %s.' % describe_value(defaults)
+            msg = ('Expect an array of numbers, not %s.'
+                   % describe_value(defaults))
             raise ValueError(msg)
         streamels['default'].flat[:] = defaults.flat
     else:
@@ -424,4 +415,26 @@ def streamels_from_spec(shape, format, range, default): #@ReservedAssignment
         raise ValueError(msg)
     return streamels
 
+
+def display_some(x, select, max_to_display=4):
+    ''' Displays some of the elements in x (array) given
+        by select (array of bool). '''
+    how_many = np.sum(select)
+    to_display = min(how_many, max_to_display)
+    s = 'First %s of %s/%s: %s' % (to_display, how_many, x.size,
+                                   x[select][:to_display])
+    return s
+
+
+def display_some_extended(x, streamels, select, max_to_display=4):
+    ''' Displays some of the elements in x (array) given
+        by select (array of bool). '''
+    how_many = np.sum(select)
+    to_display = min(how_many, max_to_display)
+    values = x[select][:to_display]
+    s = 'First %s of %s/%s: %s' % (to_display, how_many,
+                                   x.size, values)
+    s += '\n lower: %s' % streamels['lower'][select][:to_display]
+    s += '\n upper: %s' % streamels['upper'][select][:to_display]
+    return s
 

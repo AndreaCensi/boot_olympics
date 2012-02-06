@@ -29,9 +29,11 @@ ${xml_remap}
 
 
 def create_params_xml(params):
-    if not params: return '<!-- No parameters specified -->'
+    if not params:
+        return '<!-- No parameters specified -->'
     return "\n".join([create_param_xml(name, value)
                       for name, value in params.items()])
+
 
 def create_param_xml(name, value):
     if isinstance(value, (int, float, str)):
@@ -39,6 +41,7 @@ def create_param_xml(name, value):
     else:
         yaml_value = yaml_dump_inline(value).strip()
         return "<rosparam param='%s'>%s</rosparam>" % (name, yaml_value)
+
 
 def create_remaps_xml(remap):
     if not remap:

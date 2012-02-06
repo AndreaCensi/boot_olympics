@@ -92,6 +92,14 @@ def learn_log(data_central, id_agent, id_robot,
             #logger.info('Stream %s already completely learned.' % stream)
             continue
 
+        # TODO
+        # 
+#        try:
+#            from compmake import progress
+#            progress('Simulating episodes', (0, self.num_episodes_todo))
+#        except ImportError:
+#            pass
+
         cur_stream_observations = 0
         for obs in stream.read(only_episodes=to_learn):
             state.num_observations += 1

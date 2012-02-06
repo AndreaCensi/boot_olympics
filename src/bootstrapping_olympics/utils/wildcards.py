@@ -6,8 +6,10 @@ __all__ = ['expand_string']
 
 def flatten(seq):
     res = []
-    for l in seq: res.extend(l)
+    for l in seq:
+        res.extend(l)
     return res
+
 
 @contract(x='str|list(str)', options='list(str)', returns='list(str)')
 def expand_string(x, options):
@@ -22,9 +24,11 @@ def expand_string(x, options):
         else:
             return [x]
 
+
 def wildcard_to_regexp(arg):
     """ Returns a regular expression from a shell wildcard expression. """
     return re.compile('\A' + arg.replace('*', '.*') + '\Z')
+
 
 @contract(wildcard='str', universe='list(str)')
 def expand_wildcard(wildcard, universe):

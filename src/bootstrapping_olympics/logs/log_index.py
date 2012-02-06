@@ -85,7 +85,8 @@ class LogIndex:
                 do_this = True
             else:
                 do_this = id_agent in stream.get_id_agents()
-            if not do_this: continue
+            if not do_this:
+                continue
 
             for obs in stream.read(read_extra=read_extra):
                 yield obs
@@ -106,7 +107,6 @@ class LogIndex:
             for stream in self.get_streams_for_robot(id_robot):
                 msg += ' %s: %s\n' % (stream, stream.get_id_episodes())
             raise Exception('No episode %r found: %s' % (id_episode, msg))
-
 
 
 def index_directory(directory, ignore_cache=False):
@@ -139,11 +139,12 @@ def index_directory(directory, ignore_cache=False):
 
     return file2streams
 
+
 def index_robots(file2streams):
     ''' Groups the streams by robot, making sure the specs are compatible. 
         Returns dict: id_robot -> list of streams.
     '''
-    robot2streams = defaultdict(lambda:[])
+    robot2streams = defaultdict(lambda: [])
     robot2spec = {}
     for _, streams in file2streams.items():
         for stream in streams:
@@ -173,58 +174,5 @@ def index_robots(file2streams):
     return dict(**robot2streams)
 
 
-index_directory_cached = index_directory
+index_directory_cached = index_directory # TODO: remove
 
-#def index_directory_cached(directory, ignore_dir_cache=False,
-#                           ignore_file_cache=False):
-#    ''' Returns dict: filename -> list of BootStreams'''
-#    index_dir = os.path.join(directory, '.log_learn_indices')
-#    if not os.path.exists(index_dir):
-#        os.makedirs(index_dir)
-#    
-#    index_file = os.path.join(index_dir, 'index.pickle')
-#    
-#    needs_recreate = False
-#    
-#    logger.debug('Indexing %s %s' % (directory, ''))
-#    if not os.path.exists(index_file):
-#        #logger.debug('Index file not existing -- will create.')
-#        needs_recreate = True
-#    elif ignore_dir_cache:
-#        #logger.debug('Ignoring existing cache')
-#        needs_recreate = True
-#    elif os.path.getmtime(directory) > os.path.getmtime(index_file):
-#        # TODO: all subdirs
-#        #logger.debug('Index file existing, but new logs added.')
-#        needs_recreate = True
-#        
-#    if needs_recreate:
-#        if os.path.exists(index_file):
-#            os.unlink(index_file)
-#        try:
-#            file2streams = index_directory(directory,
-#                                           ignore_cache=ignore_file_cache)
-#            for x, k in file2streams.items():
-#                assert isinstance(x, str)
-#                assert isinstance(k, list)
-#                
-#            if not ignore_dir_cache:
-#                with open(index_file, 'wb') as f:
-#                    pickle.dump(file2streams, f)
-#            
-#            return file2streams
-#        except:
-#            logger.error('Caught exception while indexing, deleting db.')
-#            if os.path.exists(index_file):
-#                os.unlink(index_file)
-#            raise
-#    else:
-#        logger.debug('Using cached index %r.' % index_file)
-#            
-#        try:
-#            with open(index_file, 'rb') as f:
-#                return pickle.load(f)
-#        except:
-#            logger.error('Index file corrupted; try deleting %r.' % (index_file))
-#            raise
-#        

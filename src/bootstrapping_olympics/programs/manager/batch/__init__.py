@@ -28,8 +28,9 @@ default_expl_videos = [
                       'mp4z0no']
 
 # TODO: check not repeated
-default_servo_videos = ['avisrvz0'] + first_person
-default_servonav_videos = ['avisrvz0', 'mp4z0nosrv'] + first_person
+
+default_servo_videos = ['mp4f2sr', 'mp4z0sr'] + first_person
+default_servonav_videos = ['mp4f2sr', 'mp4z0sr'] + first_person
 
 
 from .batch_learn import *

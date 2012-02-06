@@ -17,10 +17,12 @@ def main():
 
     config = BootOlympicsConfig
     vconfig = VehiclesConfig
-    config.load('/Users/andrea/scm/boot11_env/src/vehicles/src/vehicles/configs')
-    config.load('/Users/andrea/scm/boot11_env/src/bvapps/bo_app1/config')
+    cd1 = '/Users/andrea/scm/boot11_env/src/vehicles/src/vehicles/configs'
+    cd2 = '/Users/andrea/scm/boot11_env/src/bvapps/bo_app1/config'
+    config.load(cd1)
+    config.load(cd2)
     vconfig.load() # Default
-    vconfig.load('/Users/andrea/scm/boot11_env/src/bvapps/bo_app1/config')
+    vconfig.load(cd2)
 
     robot = config.robots.instance(id_robot) #@UndefinedVariable
     robot.new_episode()
@@ -49,7 +51,8 @@ def main():
     plotting_params['extra_draw_world'] = extra_draw_world
 
     print('Writing to: %r' % filename)
-    vehicles_cairo_display_png(filename, width=800, height=800, sim_state=state,
+    vehicles_cairo_display_png(filename, width=800, height=800,
+                                sim_state=state,
                                **plotting_params)
 
     print('... done')

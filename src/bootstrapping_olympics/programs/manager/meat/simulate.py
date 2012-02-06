@@ -1,8 +1,8 @@
 from . import DirectoryStructure, logger, np, run_simulation
 from bootstrapping_olympics import AgentInterface, LogsFormat
-from bootstrapping_olympics.utils import InAWhile, isodate_with_secs, natsorted
+from bootstrapping_olympics.utils import (InAWhile, natsorted,
+    unique_timestamp_string)
 import logging
-from bootstrapping_olympics.utils.isodate import unique_timestamp_string
 
 
 def simulate(data_central, id_agent, id_robot,

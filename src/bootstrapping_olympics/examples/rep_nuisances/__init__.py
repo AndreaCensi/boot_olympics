@@ -4,3 +4,4 @@ from .identity import *
 from .random_permutation import *
 from .random_scaling import *
 from .popcode_nuisance import *
+from .linear import *

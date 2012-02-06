@@ -158,8 +158,8 @@ def servoing_episode(id_robot, robot,
 
         extra = {}
 
-        extra['servoing_base'] = dict(goal=obs0.tolist(),
-                                current=boot_observations['observations'].tolist())
+        sensels_list = boot_observations['observations'].tolist()
+        extra['servoing_base'] = dict(goal=obs0.tolist(), current=sensels_list)
 
         extra['servoing_poses'] = dict(goal=pose_to_yaml(pose0),
                                        current=pose_to_yaml(current_pose))
@@ -168,7 +168,7 @@ def servoing_episode(id_robot, robot,
         extra['servoing'] = dict(obs0=obs0.tolist(),
                                 pose0=pose_to_yaml(pose0),
                                 poseK=pose_to_yaml(current_pose),
-                                obsK=boot_observations['observations'].tolist(),
+                                obsK=sensels_list,
                                 displacement=displacement,
                                 cmd0=cmd0.tolist(),
                                 pose1=pose_to_yaml(pose1))

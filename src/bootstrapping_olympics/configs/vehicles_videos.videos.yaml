@@ -3,10 +3,10 @@
   code: 
   - boot_log2movie_cairo
   - 'plotter.display_sidebar': true
-    'plotter.show_sensor_data_compact': true
     'plotter.plotting_params':
         first_person: False
         zoom: 2
+        show_sensor_data_compact: True
         
     
 
@@ -134,26 +134,50 @@
     
 
 
-- id: avisrvz0
-  desc: ''
+- id: mp4z0sr
+  desc: 'Shows the servo info sidebar on the right.'
   code: 
-  - boot_log2movie_servo
+  - boot_log2movie_servo2
   - 'plotter.display_sidebar': false
     'plotter.plotting_params':
         first_person: False
         zoom: 0
         show_sensor_data_compact: False
-    
+        
 
-
-- id: mp4z0nosrv
-  desc: ''
+- id: mp4f2sr
+  desc: 'Shows the servo info sidebar on the right.'
   code: 
-  - boot_log2movie_servonav
+  - boot_log2movie_servo2
   - 'plotter.display_sidebar': false
     'plotter.plotting_params':
-        first_person: False
-        zoom: 0
-        show_sensor_data_compact: False
-    
+        first_person: True
+        zoom: 2
+        show_sensor_data_compact: True
+
+
+# 
+# - id: avisrvz0
+#   desc: ''
+#   code: 
+#   - boot_log2movie_servo
+#   - 'plotter.display_sidebar': false
+#     'plotter.plotting_params':
+#         first_person: False
+#         zoom: 0
+#         show_sensor_data_compact: False
+#     
+
+# 
+# 
+# - id: mp4z0nosrv
+#   desc: ''
+#   code: 
+#   - boot_log2movie_servonav
+#   - 'plotter.display_sidebar': false
+#     'plotter.plotting_params':
+#         first_person: False
+#         zoom: 0
+#         show_sensor_data_compact: False
+#     
 

@@ -1,5 +1,6 @@
-from .. import contract
+from .. import contract, logger
 from ... import BootSpec, RobotInterface, BootOlympicsConfig, StreamSpec
+from bootstrapping_olympics.utils.strings import indent
 
 __all__ = ['EquivRobot']
 
@@ -17,13 +18,14 @@ class EquivRobot(RobotInterface):
                     % (robot, obs_nuisance, cmd_nuisance))
 
         # convert to (possibly empty) list of strings
-        if isinstance(obs_nuisance, str): obs_nuisance = [obs_nuisance]
-        if isinstance(cmd_nuisance, str): cmd_nuisance = [cmd_nuisance]
+        if isinstance(obs_nuisance, str):
+            obs_nuisance = [obs_nuisance]
+        if isinstance(cmd_nuisance, str):
+            cmd_nuisance = [cmd_nuisance]
 
-        self.obs_nuisances = [BootOlympicsConfig.nuisances.instance(x) #@UndefinedVariable
-                         for x in obs_nuisance]
-        self.cmd_nuisances = [BootOlympicsConfig.nuisances.instance(x) #@UndefinedVariable
-                         for x in cmd_nuisance]
+        instance = BootOlympicsConfig.specs['nuisances'].instance
+        self.obs_nuisances = [instance(x) for x in obs_nuisance]
+        self.cmd_nuisances = [instance(x) for x in cmd_nuisance]
         self.cmd_nuisances_inv = [x.inverse() for x in self.cmd_nuisances]
 
         obs_spec = self.robot.get_spec().get_observations()
@@ -39,8 +41,15 @@ class EquivRobot(RobotInterface):
         for n in reversed(self.cmd_nuisances_inv):
             cmd_spec_i = n.transform_spec(cmd_spec_i)
 
-        StreamSpec.check_same_spec(cmd_spec_i,
+        try:
+            StreamSpec.check_same_spec(cmd_spec_i,
                                    self.robot.get_spec().get_commands())
+            # TODO: why do we do this for commands, not for osbservations?
+        except Exception as e:
+            logger.warning('It seems that this chain of nuisances is not '
+                           'exact, but it could be OK to continue. '
+                           ' The chain is %s; the error is:\n%s' %
+                           (cmd_nuisance, indent(str(e).strip(), '> ')))
 
         self.spec = BootSpec(obs_spec=obs_spec, cmd_spec=cmd_spec)
 

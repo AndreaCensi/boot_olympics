@@ -1,15 +1,20 @@
 from . import DirectoryStructure
 from bootstrapping_olympics import (BootOlympicsConfig, LearningStateDB,
     LogIndex)
+import os
 
 
 class DataCentral:
     def __init__(self, boot_root=None):
-        self.root = boot_root
+        # Important, it can be deserialized from somewhere else
+        self.root = os.path.realpath(boot_root)
         self.dir_structure = DirectoryStructure(self.root)
         self.states_db = None
         self.log_index = None
         self.bo_config = None
+
+    def __repr__(self):
+        return 'DataCentral(root=%r)' % self.root
 
     def get_bo_config(self):
         if self.bo_config is None:

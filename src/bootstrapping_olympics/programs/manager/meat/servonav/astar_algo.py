@@ -28,7 +28,8 @@ def astar(start, target, node2children, heuristics):
 
         for child, action_cost in node2children(parent):
             cost_to_come = nodes[parent].cost_to_come + action_cost
-            if not np.isfinite(cost_to_come): continue
+            if not np.isfinite(cost_to_come):
+                continue
 
             min_cost_to_go = cost_to_come + heuristics(child, target)
 
@@ -48,9 +49,9 @@ def astar(start, target, node2children, heuristics):
 
         return path, nodes[target].cost_to_come
 
+
 def argmin(seq, key):
     return min([(x, key(x)) for x in seq], key=lambda c: c[1])[0]
-
 
 
 @contract(node='tuple(int,int)', shape='tuple((int,>0),(int,>0))')
@@ -60,6 +61,7 @@ def node2children_grid(node, shape, cell_free, cost):
         cost((a,b), (c,d)) returns the cost of the transition
     '''
     nodes = []
+
     def consider(a, b):
         if not ((0 <= a < shape[0]) and(0 <= b < shape[1])):
             return
@@ -68,7 +70,7 @@ def node2children_grid(node, shape, cell_free, cost):
 
     i, j = node
 
-    diff = [ [-1, -1], [-1, 0], [-1, +1],
+    diff = [[-1, -1], [-1, 0], [-1, +1],
              [0, -1], [0, +1],
              [+1, -1], [+1, 0], [+1, +1]]
 

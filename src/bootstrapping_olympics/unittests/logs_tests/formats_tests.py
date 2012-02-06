@@ -6,6 +6,7 @@ from bootstrapping_olympics import LogsFormat
 from bootstrapping_olympics.utils import assert_allclose, safe_makedirs
 import os
 
+
 @for_all_pairs
 def check_basic_operations(id_agent, agent, id_robot, robot):
 
@@ -48,7 +49,8 @@ def check_basic_operations(id_agent, agent, id_robot, robot):
 
                     try:
                         if obs_read['counter'] != original['counter']:
-                            msg = ('Not even the counter is the same! %s vs %s' %
+                            msg = ('Not even the counter is the same!'
+                                   ' %s vs %s' %
                                    (obs_read['counter'], original['counter']))
                             raise Exception(msg)
 
@@ -65,7 +67,8 @@ def check_basic_operations(id_agent, agent, id_robot, robot):
                         raise
                     count += 1
             except:
-                logger.error('Could not pass tests for format %r.' % logs_format)
+                logger.error('Could not pass tests for format %r.'
+                             % logs_format)
                 raise
         # FIXME: ROS does not allow writing extras
 
