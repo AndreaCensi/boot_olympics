@@ -10,9 +10,9 @@ class TestAgent(AgentInterface):
     ''' 
         A simple agent useful for testing.
     
-        It executes any command specified on the constructor. If the command
-        is a string, then it is evaluated. You can use the variable "t" for 
-        time.        
+        It executes any command specified on the constructor. 
+        If the command is a string, then it is evaluated. 
+        You can use the variable "t" for time.        
     '''
 
     def __init__(self, cmd):

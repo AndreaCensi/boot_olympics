@@ -86,3 +86,7 @@ class EquivRobot(RobotInterface):
     def new_episode(self):
         return self.robot.new_episode()
 
+    def get_original_robot(self):
+        """ Returns the robot that we are wrapping with this nuisance. """
+        return self.robot
+

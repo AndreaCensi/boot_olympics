@@ -173,7 +173,7 @@ class TaskRegister:
                                   publish_interval=None,
                                   publish_once=False,
                                   interval_save=300,
-                                  interval_print=5,
+                                  interval_print=30,
                                   extra_dep=extra_dep,
                                   job_id='learn-%s-%s-%sof%s' %
                                     (id_robot, id_agent, t + 1, len(tranches)))

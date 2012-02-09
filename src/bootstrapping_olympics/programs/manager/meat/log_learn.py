@@ -92,13 +92,12 @@ def learn_log(data_central, id_agent, id_robot,
             #logger.info('Stream %s already completely learned.' % stream)
             continue
 
-        # TODO
-        # 
-#        try:
-#            from compmake import progress
-#            progress('Simulating episodes', (0, self.num_episodes_todo))
-#        except ImportError:
-#            pass
+        try:
+            from compmake import progress
+            progress('Learning', (len(state.id_episodes),
+                                  num_episodes_total))
+        except ImportError:
+            pass
 
         cur_stream_observations = 0
         for obs in stream.read(only_episodes=to_learn):
@@ -132,10 +131,11 @@ def learn_log(data_central, id_agent, id_robot,
                                     basename='%05d' % state.num_observations)
 
         state.id_episodes.update(to_learn)
-        # Saving agent state
-        logger.debug('Saving state (end of stream)')
-        state.agent_state = agent.get_state()
-        db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
+
+    # Saving agent state
+    logger.debug('Saving state (end of streams)')
+    state.agent_state = agent.get_state()
+    db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
 
     if publish_interval is not None:
         ds = data_central.get_dir_structure()

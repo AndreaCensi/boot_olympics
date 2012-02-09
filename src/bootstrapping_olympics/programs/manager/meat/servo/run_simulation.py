@@ -60,25 +60,3 @@ def run_simulation_servo(id_robot, robot, id_agent, agent,
         robot.set_commands(commands, id_agent)
 
         counter += 1
-
-
-
-#    def get_observations():
-#        obs = robot.get_observations()
-#        if check_valid_values:
-#            assert isinstance(obs, RobotObservations)
-#            obs_spec.check_valid_value(obs.observations)
-#            cmd_spec.check_valid_value(obs.commands)
-#
-#        observations = keeper.push(timestamp=obs.timestamp,
-#                                   observations=obs.observations,
-#                                   commands=obs.commands,
-#                                   commands_source=obs.commands_source,
-#                                   id_episode=id_episode,
-#                                   id_world=id_environment)
-#
-#        if check_valid_values:
-#            obs_spec.check_valid_value(observations['observations'])
-#            cmd_spec.check_valid_value(observations['commands'])
-#        episode_end = obs.episode_end
-#        return observations, episode_end

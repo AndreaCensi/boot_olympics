@@ -1,8 +1,8 @@
 from . import get_grid, logger, contract, np
 from .. import load_agent_state
-from ..servo import BookkeepingServo
+from ..servo import BookkeepingServo, get_vsim_from_robot
 from bootstrapping_olympics import RobotInterface, ObsKeeper, LogsFormat
-from bootstrapping_olympics.utils import isodate_with_secs
+from bootstrapping_olympics.utils import InAWhile, isodate_with_secs
 
 
 @contract(interval_print='None|>=0')
@@ -104,10 +104,11 @@ def servonav_episode(id_robot, robot,
                      writer, id_episode,
                      max_episode_len, save_robot_state,
                      interval_write=1,
+                     interval_print=5,
                      resolution=0.5, # grid resolution
                      delta_t_threshold=0.2, # when to switch
                      MIN_PATH_LENGTH=8,
-                     MAX_TIME_FOR_SWITCH=30.0,
+                     MAX_TIME_FOR_SWITCH=20.0,
                      fail_if_not_working=False,
                      max_tries=10000):
     '''
@@ -117,20 +118,22 @@ def servonav_episode(id_robot, robot,
     from geometry import (SE2_from_SE3, translation_from_SE2,
                           angle_from_SE2, SE3)
 
+    stats_write = InAWhile(interval_print)
+
+    vsim = get_vsim_from_robot(robot)
+
     for _ in xrange(max_tries):
         # iterate until we can do this correctly
         episode = robot.new_episode()
-        locations = get_grid(robot=robot,
-                        world=robot.world,
-                        vehicle=robot.vehicle, resolution=resolution)
+        locations = get_grid(vsim=vsim, resolution=resolution)
 
         if len(locations) < MIN_PATH_LENGTH:
-            print('Path too short, trying again')
+            logger.info('Path too short, trying again.')
         else:
             break
 
     else:
-        msg = 'Could not do the displacement (%d tries).' % max_tries
+        msg = 'Could not find path in %d tries.' % max_tries
         raise Exception(msg)
 
     locations_yaml = convert_to_yaml(locations)
@@ -176,9 +179,10 @@ def servonav_episode(id_robot, robot,
         delta_t = np.linalg.norm(translation_from_SE2(delta))
         delta_th = np.abs(angle_from_SE2(delta))
 
-        logger.debug(#(' curr_err/prev_err: %10f ' % (curr_err / prev_err))
-                    ('  deltaT: %.2fm  deltaTh: %.1fdeg' %
-                     (delta_t, np.rad2deg(delta_th))))
+        if stats_write.its_time():
+            msg = ('  deltaT: %.2fm  deltaTh: %.1fdeg' %
+                     (delta_t, np.rad2deg(delta_th)))
+            logger.debug(msg)
 
         # If at the final goal, go closer
         is_final_goal = current_goal == len(locations) - 1
@@ -186,7 +190,8 @@ def servonav_episode(id_robot, robot,
             delta_t_threshold *= 0.3
 
         # TODO: should we care also about delta_th?
-        time_to_switch = delta_t < delta_t_threshold
+        time_to_switch = (delta_t < delta_t_threshold) or \
+            (time_since_last_switch > MAX_TIME_FOR_SWITCH)
         # does not work: curr_err < SWITCH_THRESHOLD * prev_err:
 
         if time_to_switch:
@@ -199,8 +204,9 @@ def servonav_episode(id_robot, robot,
                 logger.info('Finished :-)')
                 break
 
-        if time_since_last_switch > MAX_TIME_FOR_SWITCH:
-            msg = 'Breaking because too much time passed.'
+        threshold_lost_m = 3
+        if delta_t > threshold_lost_m:
+            msg = 'Breaking because too far away.'
             if not(fail_if_not_working):
                 logger.error(msg)
                 break

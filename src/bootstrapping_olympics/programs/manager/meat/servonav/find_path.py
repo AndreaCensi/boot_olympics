@@ -1,14 +1,24 @@
 from . import astar, node2children_grid, contract, np
 from geometry import SE3, SE2, angle_from_SE2, SE2_from_SE3
 import itertools
+from contracts import describe_type
 
 
 @contract(resolution='float,>0')
-def get_grid(robot, world, vehicle, resolution, debug=False):
+def get_grid(vsim, resolution, debug=False):
+    from vehicles import VehicleSimulation
+    if not isinstance(vsim, VehicleSimulation):
+        msg = ('I really require a VehicleSimulation; obtained %s.' %
+               describe_type(vsim))
+        raise ValueError(msg)
+
+    world = vsim.world
+    vehicle = vsim.vehicle
+
     from geometry import (translation_from_SE2,
         SE2_from_translation_angle, SE2_from_xytheta, SE3_from_SE2)
     from vehicles.simulation.collision import collides_with
-    # TODO: check Vehicle
+
     bounds = world.bounds
     bx = bounds[0]
     by = bounds[1]
@@ -88,7 +98,7 @@ def get_grid(robot, world, vehicle, resolution, debug=False):
             cell = locations[k]['cell']
             if cell_free(cell):
                 found = True
-                print('TRying %s (%s)' % (str(cell), goodness(cell)))
+                #print('TRying %s (%s)' % (str(cell), goodness(cell)))
                 yield cell
         if not found:
             raise Exception("No free space at all")
@@ -142,9 +152,9 @@ def get_grid(robot, world, vehicle, resolution, debug=False):
     locations = [dict(pose=pose) for pose in poses]
     for loc in locations:
         pose = loc['pose']
-        robot.vehicle.set_pose(pose)
+        vehicle.set_pose(pose)
         if not debug:
-            loc['observations'] = mean_observations(robot, n=5)
+            loc['observations'] = mean_observations(vsim, n=5)
 
     return locations
 

@@ -1,7 +1,7 @@
 from . import np, logger
+from reprep.plot_utils.styles import (style_ieee_fullcol_xy,
+    style_ieee_halfcol_xy)
 import os
-from reprep.plot_utils.styles import style_ieee_fullcol_xy, \
-    style_ieee_halfcol_xy
 
 
 def servo_stats_report(data_central, id_agent, id_robot, summaries):

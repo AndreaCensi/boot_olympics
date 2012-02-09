@@ -150,3 +150,15 @@ class DirectoryStructure:
         warn_good_filename(filename)
         return filename
 
+    def file_is_done(self, filename_or_basename, desc=None):
+        """ 
+            Notifies that some file is done writing. 
+            Used to create a list of recent files that are done.
+        """
+
+
+
+
+
+
+

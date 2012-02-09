@@ -18,18 +18,14 @@ class LogIndex:
 
     def reindex(self):
         for dirname in self.directories_indexed:
-            new_streams = index_directory_cached(dirname,
-                                                ignore_cache=False,
-                                                 #ignore_dir_cache=True
-                                                 )
+            new_streams = \
+                index_directory_cached(dirname, ignore_cache=False)
             self.file2streams.update(new_streams)
         self.robots2streams = index_robots(self.file2streams)
 
     def index(self, directory, ignore_cache=False):
-        new_streams = index_directory_cached(directory,
-                                             ignore_cache=ignore_cache,
-                                             #ignore_dir_cache=True
-                                             ) # XXX
+        new_streams = \
+            index_directory_cached(directory, ignore_cache=ignore_cache)
         self.file2streams.update(new_streams)
         self.directories_indexed.add(directory)
         self.robots2streams = index_robots(self.file2streams)

@@ -1,6 +1,6 @@
 from . import np
 from .popcode_functions import popcode, popcode_inv
-from bootstrapping_olympics.utils.numpy_backported import assert_allclose
+from bootstrapping_olympics.utils import assert_allclose
 
 
 def test_popcode1():

@@ -19,6 +19,8 @@ except ImportError:
 def yaml_load(yaml_string):
     try:
         return load(yaml_string, Loader=Loader)
+    except KeyboardInterrupt:
+        raise
     except:
         logger.error('Could not deserialize YAML')
         dump_emergency_string(yaml_string)

@@ -19,7 +19,6 @@ def create_video(data_central, id_robot, id_agent,
     if suffix:
         basename += '-%s' % suffix
 
-#    filename = basename + '-%s' % model
     logdir = ds.get_simulated_logs_dir()
 
     # TODO: check has_procgraph
@@ -32,4 +31,7 @@ def create_video(data_central, id_robot, id_agent,
                 id_episode=id_episode,
                 output=basename,
                 **model_params)
-    pg(model, config=config)
+    pg(model, config=config, stats=False)
+
+    ds.file_is_done(basename, desc="")
+

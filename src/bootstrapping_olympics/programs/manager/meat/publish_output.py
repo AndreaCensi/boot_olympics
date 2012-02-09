@@ -16,10 +16,14 @@ def publish_once(data_central, id_agent, id_robot,
                                        id_robot=id_robot,
                                        id_state=state.id_state,
                                        phase=phase)
-    publish_agent_output(state, agent, report_dir, basename=progress)
+
+    filename = os.path.join(report_dir, '%s.html' % progress)
+    publish_agent_output(state, agent, filename=filename)
+    ds.file_is_done(filename, desc="publish_once(%s,%s,%s,%s)" %
+                    (id_agent, id_robot, phase, progress))
 
 
-def publish_agent_output(state, agent, pd, basename):
+def publish_agent_output(state, agent, filename, rd=None):
     rid = ('%s-%s-%07d' % (state.id_agent, state.id_robot,
                                state.num_observations))
     from ....display import ReprepPublisher
@@ -34,13 +38,14 @@ def publish_agent_output(state, agent, pd, basename):
     report.text('report_date', isodate())
 
     agent.publish(publisher)
-    filename = os.path.join(pd, '%s.html' % basename)
 
     logger.info('Writing to %r.' % filename)
 
-    rd = os.path.join(pd, 'images')
+    if rd is None:
+        rd = os.path.join(os.path.dirname(filename), 'images')
     report.to_html(filename, resources_dir=rd)
 
-    last = os.path.join(pd, 'last.html')
-    safe_symlink(filename, last)
+#    last = os.path.join(pd, 'last.html')
+#    safe_symlink(filename, last)
+
 

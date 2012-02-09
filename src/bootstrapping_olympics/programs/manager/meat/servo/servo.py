@@ -2,6 +2,7 @@ from . import BookkeepingServo, run_simulation_servo
 from .. import load_agent_state, logger, contract, np
 from bootstrapping_olympics import LogsFormat, BootOlympicsConstants
 from bootstrapping_olympics.utils import isodate_with_secs
+from geometry import translation_from_SE2, angle_from_SE2, SE2_from_SE3
 
 
 @contract(interval_print='None|>=0')
@@ -84,8 +85,12 @@ def task_servo(data_central, id_agent, id_robot,
 
 def servoing_episode(id_robot, robot,
                      id_servo_agent, servo_agent,
-                     writer, id_episode, displacement,
-                     max_episode_len, save_robot_state,
+                     writer, id_episode,
+                     displacement,
+                     max_episode_len,
+                     save_robot_state,
+                     converged_dist_t_m=0.1,
+                     converged_dist_th_deg=1,
                      max_tries=10000):
     '''
     
@@ -164,6 +169,11 @@ def servoing_episode(id_robot, robot,
         extra['servoing_poses'] = dict(goal=pose_to_yaml(pose0),
                                        current=pose_to_yaml(current_pose))
 
+        delta = SE2_from_SE3(SE3.multiply(SE3.inverse(current_pose),
+                                          pose0))
+        dist_t_m = np.linalg.norm(translation_from_SE2(delta))
+        dist_th_deg = np.abs(angle_from_SE2(delta))
+
         # TODO: make it not overlapping
         extra['servoing'] = dict(obs0=obs0.tolist(),
                                 pose0=pose_to_yaml(pose0),
@@ -178,60 +188,9 @@ def servoing_episode(id_robot, robot,
 
         writer.push_observations(observations=boot_observations,
                                  extra=extra)
-#    
-#    # TODO: add intrinsic notion here
-#    @contract(returns='SE2')
-#    def random_displacement():
-#        # ok for rf, cam
-#        # max_angle = np.deg2rad(15)
-#        #max_t = 0.3
-#        # ok for rf, cam
-##        max_angle = np.deg2rad(35)
-##        max_t = 0.1
-#        # 2,30 rf
-#        max_t = 0.2
-#        max_angle = np.deg2rad(35)
-#        # t = max_t * np.random.uniform(-max_t, +max_t, 2)
-#        # theta = np.random.uniform(-max_angle, +max_angle)
-#        phi = np.random.rand() * 2 * np.pi
-#        x = np.cos(phi) * max_t
-#        y = np.sin(phi) * max_t
-#        t = np.array([x, y])
-#        theta = np.sign(np.random.randn()) * max_angle
-#        
-#        return SE2_from_translation_angle(t, theta)
-#         
-#                # OK this only works with Vehicles
-#                vehicle = robot.vehicle
-#                obss = []
-#                # average observations
-#                for _ in range(10): # XXX: fixed threshold
-#                    obss.append(robot.get_observations().observations)
-#                obs0 = np.mean(obss, axis=0)
-#                pose0 = vehicle.get_pose()
-#                displ = SE3_from_SE2(random_displacement())
-#                pose1 = SE3.multiply(pose0, displ)
-#                vehicle.set_pose(pose1)
-#                servo_agent.set_goal_observations(obs0)
-#                     
-#                for observations in run_simulation_servo(id_robot, robot,
-#                                       id_agent_servo, servo_agent,
-#                                       100000, max_episode_len,
-#                                       id_episode=id_episode,
-#                                       id_environment=episode.id_environment):            
-#                    bk.observations(observations)
-#                    
-#                    servoing = dict(obs0=obs0.tolist(),
-#                                    pose0=to_yaml('SE3', pose0),
-#                                    displ=to_yaml('SE3', displ),
-#                                    pose1=to_yaml('SE3', pose1))
-#                    extra = dict(servoing=servoing)
-#                    if counter < num_episodes_with_robot_state:
-#                        extra['robot_state'] = robot.get_state()
-#
-#                    writer.push_observations(observations=observations,
-#                                             extra=extra)
 
-
-
+        if ((dist_t_m <= converged_dist_t_m) and
+            (dist_th_deg <= converged_dist_th_deg)):
+            print('Converged!')
+            break
 
