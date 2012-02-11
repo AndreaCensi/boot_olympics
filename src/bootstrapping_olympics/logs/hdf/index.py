@@ -3,6 +3,7 @@ from .. import EpisodeSummary, BootStream
 from ... import BootSpec
 from ...utils import yaml_load
 import os
+from . import load_extra
 
 __all__ = ['hdf_list_streams', 'spec_from_group']
 
@@ -77,8 +78,9 @@ def episode_summary(boot_stream, extra_table, id_episode):
     # print len(extra_table)
     # print len(sel)
 
-    extra_string = str(extra_table[first_moment])
-    extra = yaml_load(extra_string)
+    extra = load_extra(extra_table, first_moment)
+#    extra_string = str(extra_table[first_moment])
+#    extra = yaml_load(extra_string)
     extras = list(extra.keys())
     return EpisodeSummary(id_episode=id_episode,
                           id_agent=id_agent,

@@ -76,17 +76,16 @@ def get_grid(vsim, resolution, debug=False):
     def heuristics(node, target):
         return cost(node, target)
 
-    def get_start_cell():
-        for a in range(len(locations)):
+    def get_start_cells():
+        order = range(len(locations))[::5]
+        for a in order:
             cell = locations[a]['cell']
             if cell_free(cell):
-                return cell
+                yield cell
         else:
             raise Exception("No free space at all")
 
-    start = get_start_cell()
-
-    def get_target_cells():
+    def get_target_cells(start):
         """ Enumerate end cells rom the bottom """
         def goodness(cell):
             return cost(start, cell)
@@ -104,29 +103,23 @@ def get_grid(vsim, resolution, debug=False):
             raise Exception("No free space at all")
 
     # Find a long path 
-    for target in get_target_cells():
-        path, _ = astar(start, target, node2children, heuristics)
+    def get_path():
+        for start in get_start_cells():
+            for target in get_target_cells(start):
+                path, _ = astar(start, target, node2children, heuristics)
+                if path:
+                    return path
+        else:
+            raise Exception('Could not find any path.')
 
-        if path is not None:
-            break
-    else:
-        raise Exception('Could not find any path.')
+    path = get_path()
 
     locations = [locations[grid[c]] for c in path]
 
     # adjust poses angle
     for i in range(len(locations) - 1):
-#        if i == 0:
-#            loc1 = locations[i - 1]
-#        else:
         loc1 = locations[i]
         loc2 = locations[i + 1]
-
-#        if i == len(locations) - 1:
-#            loc1 = locations[-2]
-#            loc2 = locations[-1]
-#        else:
-
         t1 = translation_from_SE2(SE2_from_SE3(loc1['pose']))
         t2 = translation_from_SE2(SE2_from_SE3(loc2['pose']))
         d = t2 - t1
@@ -157,6 +150,20 @@ def get_grid(vsim, resolution, debug=False):
             loc['observations'] = mean_observations(vsim, n=5)
 
     return locations
+
+
+#def get_random_path(find_path):
+#    ''' Find a path between two cells. 
+#            find_path(start, target)
+#    '''
+#    for start in get_start_cells():
+#        for target in get_target_cells(start):
+#            path, _ = astar(start, target, node2children, heuristics)
+#
+#            if path is not None:
+#                break
+#    else:
+#        raise Exception('Could not find any path.')
 
 
 @contract(pose1='SE3', pose2='SE3', max_theta_diff_deg='>0')

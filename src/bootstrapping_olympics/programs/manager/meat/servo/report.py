@@ -1,7 +1,6 @@
 from . import np, logger
 from reprep.plot_utils.styles import (style_ieee_fullcol_xy,
     style_ieee_halfcol_xy)
-import os
 
 
 def servo_stats_report(data_central, id_agent, id_robot, summaries):
@@ -117,10 +116,14 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries):
         pylab.xlabel('Initial distance (m)')
 
     ds = data_central.get_dir_structure()
-    report_dir = ds.get_report_dir(id_agent=id_agent,
+    filename = ds.get_report_filename(id_agent=id_agent,
                                        id_robot=id_robot,
                                        id_state='servo_stats',
                                        phase='servo_stats')
-    filename = os.path.join(report_dir, 'servo_stats_report.html')
+    res_rd = ds.get_report_res_dir(id_agent=id_agent,
+                                       id_robot=id_robot,
+                                       id_state='servo_stats',
+                                       phase='servo_stats')
+#    filename = os.path.join(report_dir, 'servo_stats_report.html')
     logger.info('Writing output to %r.' % filename)
-    r.to_html(filename, resources_dir=os.path.join(report_dir, 'images'))
+    r.to_html(filename, resources_dir=res_rd)

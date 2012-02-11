@@ -138,7 +138,7 @@ def servonav_episode(id_robot, robot,
 
     locations_yaml = convert_to_yaml(locations)
 
-    robot.vehicle.set_pose(locations[0]['pose'])
+    vsim.vehicle.set_pose(locations[0]['pose'])
 
     current_goal = 1
     current_goal_obs = locations[current_goal]['observations']

@@ -4,6 +4,7 @@ from bootstrapping_olympics.utils import (warn_good_identifier,
     warn_good_filename, copy_from, yaml_dump)
 import os
 import warnings
+import zlib
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 
@@ -19,6 +20,8 @@ class HDFLogWriter():
         # XXX: check that we are not given the same filename
         self.tmp_filename = filename + '.active'
         self.hf = tables.openFile(self.tmp_filename, 'w')
+        # so can we use PyTables' natural naming scheme
+        id_stream = id_stream.replace('-', '_')
         self.id_stream = id_stream
         self.table = None
         self.boot_spec = boot_spec
@@ -34,9 +37,13 @@ class HDFLogWriter():
         copy_from(row, observations)
 
         row = row.copy().reshape((1,))
-        extras = yaml_dump(extra)
         self.table.append(row)
-        self.extra.append(extras)
+
+        extras = yaml_dump(extra)
+        extras_gz = zlib.compress(extras)
+        #ratio = 100.0 * len(extras_gz) / len(extras)
+        #print('Compressed %.1f%%' % (ratio))
+        self.extra.append(extras_gz)
 
     def create_table(self, dtype):
         filters = tables.Filters(complevel=9, complib='zlib',
@@ -53,7 +60,8 @@ class HDFLogWriter():
         structure = self.boot_spec.to_yaml()
         yaml_spec = yaml_dump(structure)
 
-        filters_text = tables.Filters(complevel=9, complib='zlib')
+        filters_text = tables.Filters(complevel=1, shuffle=False,
+                                      fletcher32=False, complib='zlib')
 
         self.extra = self.hf.createVLArray(group, 'extra',
                                            tables.VLStringAtom(),

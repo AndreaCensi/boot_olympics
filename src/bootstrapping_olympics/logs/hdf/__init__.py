@@ -1,10 +1,8 @@
 ''' Functions for dealing with HDF logs. '''
 
-from .. import np, contract
+from .. import np, contract, getLogger
 
-
-import logging
-logger = logging.getLogger("BO.logs.hdf")
+logger = getLogger(__name__)
 
 
 try:
@@ -15,6 +13,7 @@ except ImportError:
                 'HDF log support not available.')
 
 else:
+    from .utils import *
     from .index import *
     from .read import *
     from .write import *

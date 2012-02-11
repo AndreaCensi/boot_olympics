@@ -23,8 +23,9 @@ class DirectoryStructure:
 
     # XXX: use generic separator
     pattern_simulation = 'simulations/${id_robot}/${id_agent}/'
-    pattern_report = '${id_robot}/${id_agent}'
-    pattern_video = ('${id_robot}/${id_agent}'
+    pattern_report = '${id_robot}-${id_agent}-${phase}.html'
+    pattern_report_rd = 'resources'
+    pattern_video = ('${id_robot}-${id_agent}'
                      '/${id_robot}-${id_agent}-${id_episode}')
 
     def __init__(self, root=None):
@@ -104,11 +105,10 @@ class DirectoryStructure:
 
         return filename
 
-    def get_report_dir(self, id_agent, id_robot, id_state, phase='learn',
-                        add_last=False):
-        pattern = DirectoryStructure.pattern_report
+    def get_report_res_dir(self, id_agent, id_robot, id_state, phase):
+        ''' Returns the directory for the resources of the report. '''
+        pattern = DirectoryStructure.pattern_report_rd
         dirname = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
-                               phase,
                                substitute(pattern,
                                           phase=phase,
                                           id_agent=id_agent,
@@ -116,23 +116,36 @@ class DirectoryStructure:
                                           id_state=id_state))
         mkdirs_thread_safe(dirname)
         assert os.path.exists(dirname)
-
-        if add_last:
-            last1 = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
-                                 phase,
-                                   substitute(pattern,
-                                              id_agent=id_agent,
-                                              id_robot=id_robot,
-                                              id_state='last'))
-            last2 = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
-                                 'last')
-
-            for l in [last1, last2]:
-                if os.path.exists(l):
-                    os.unlink(l)
-                os.symlink(dirname, l)
-
         return dirname
+
+    def get_report_filename(self, id_agent, id_robot, id_state, phase):
+        pattern = DirectoryStructure.pattern_report
+        filename = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
+                               substitute(pattern,
+                                          phase=phase,
+                                          id_agent=id_agent,
+                                          id_robot=id_robot,
+                                          id_state=id_state))
+        mkdirs_thread_safe(os.path.dirname(filename))
+        return filename
+#        assert os.path.exists(dirname)
+
+#        if add_last:
+#            last1 = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
+#                                 phase,
+#                                   substitute(pattern,
+#                                              id_agent=id_agent,
+#                                              id_robot=id_robot,
+#                                              id_state='last'))
+#            last2 = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
+#                                 'last')
+#
+#            for l in [last1, last2]:
+#                if os.path.exists(l):
+#                    os.unlink(l)
+#                os.symlink(dirname, l)
+
+#        return dirname
 
     def get_video_basename(self, id_robot, id_agent, id_episode):
         pattern = DirectoryStructure.pattern_video

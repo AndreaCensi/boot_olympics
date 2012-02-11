@@ -15,6 +15,7 @@ class LogsFormat:
         ''' Returns a list of BootStream objects. '''
 
     # TODO: uniform mechanism for this
+    # TODO: this is not really concurrent friendly
     def index_file_cached(self, filename, ignore_cache=False):
         cache = '%s.index_cache' % filename
         if os.path.exists(cache) and not ignore_cache: # TODO: mtime
@@ -23,8 +24,11 @@ class LogsFormat:
             except Exception as e:
                 msg = 'Could not unpickle cache %r, deleting.' % cache
                 msg += '\n%s' % e
-                os.unlink(cache)
                 logger.warning(msg)
+                try:
+                    os.unlink(cache)
+                except:
+                    pass
 
         res = self.index_file(filename)
         for stream in res:

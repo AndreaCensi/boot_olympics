@@ -181,7 +181,7 @@ class TaskRegister:
             if publish_progress:
                 comp(publish_once, self.data_central, id_agent, id_robot,
                      phase='learn', progress='t%03d' % t,
-                     job_id='publish-%s-%s-%s' % (id_robot, id_agent, t),
+                     job_id='report-learn-%s-%s-%s' % (id_robot, id_agent, t),
                      extra_dep=previous_state)
 
         all_learned = comp(checkpoint, 'all learned',
@@ -193,7 +193,7 @@ class TaskRegister:
 
         comp(publish_once, self.data_central, id_agent, id_robot,
              phase='learn', progress='all',
-             job_id='publish-%s-%s' % (id_robot, id_agent),
+             job_id='report-learn-%s-%s' % (id_robot, id_agent),
              extra_dep=all_learned)
 
     def add_tasks_explore(self, id_robot, explorer,
@@ -418,7 +418,7 @@ class TaskRegister:
 
         comp(servo_stats_report, self.data_central, id_agent,
              id_robot, summaries,
-             job_id='servo-%s-%s-report' % (id_robot, id_agent))
+             job_id='report-servo-%s-%s' % (id_robot, id_agent))
 
         self.add_videos(id_agent=id_agent,
                           id_robot=id_robot,

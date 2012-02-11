@@ -1,7 +1,6 @@
 from . import logger, np, tables, spec_from_group
 from ... import get_observations_dtype
-from ...utils import yaml_load
-import time
+from . import load_extra
 
 
 __all__ = ['hdf_read']
@@ -37,20 +36,18 @@ def hdf_read(filename, id_stream, boot_spec=None, read_extra=False,
             for x in dtype.names:
                 if x == 'extra': continue
                 observations[x].flat = row[x].flat # FIXME Strange strange
+
             if read_extra:
-                extra_string = str(extra[i])
-                assert isinstance(extra_string, str)
+                observations['extra'] = load_extra(extra, i)
 
-                t0 = time.clock()
-
-                observations['extra'] = yaml_load(extra_string)
-
-                if False:
-                    logger.debug('read string of len %s in %s' %
-                                 (len(extra_string), time.clock() - t0))
+#                if False:
+#                    logger.debug('read string of len %s in %s' %
+#                                 (len(extra_string), time.clock() - t0))
             else:
                 observations['extra'] = {}
             yield observations
     finally:
         f.close()
+
+
 
