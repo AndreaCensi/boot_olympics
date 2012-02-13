@@ -1,7 +1,5 @@
 from . import load_agent_state, logger, np
 from contracts import describe_type
-import os
-
 
 __all__ = ['task_predict']
 
@@ -13,7 +11,7 @@ def task_predict(data_central, id_agent, id_robot,
     # TODO FIXME: remove dependency on boot_agents
     from boot_agents.utils import PredictionStats
     from bootstrapping_olympics.display import ReprepPublisher
-    
+
     agent, state = load_agent_state(data_central, id_agent, id_robot,
                              reset_state=False,
                              raise_if_no_state=True)
@@ -41,13 +39,16 @@ def task_predict(data_central, id_agent, id_robot,
     y_dot_sign_stats.publish(publisher.section('y_dot_sign'))
 
     ds = data_central.get_dir_structure()
-    report_dir = ds.get_report_dir(id_agent=id_agent,
+    report_dir = ds.get_report_res_dir(id_agent=id_agent,
                                        id_robot=id_robot,
                                        id_state=state.id_state,
                                        phase='predict')
-    filename = os.path.join(report_dir, '%s.html' % basename)
+    filename = ds.get_report_filename(id_agent=id_agent,
+                                       id_robot=id_robot,
+                                       id_state=state.id_state,
+                                       phase='predict')
     logger.info('Writing output to %r.' % filename)
-    r.to_html(filename)
+    r.to_html(filename, resources_dir=report_dir)
 
 
 def compute_errors(s):

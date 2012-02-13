@@ -3,16 +3,23 @@ __version__ = '1.1'
 import numpy as np
 from contracts import contract
 
+
+### Setup logging
 from logging import getLogger
 from conf_tools.utils import col_logging # colored logging
 
 import logging
 logging.basicConfig()
-logger = logging.getLogger("BO")
+
+everybody_uses_same_logger = False
+if everybody_uses_same_logger:
+    logger = logging.getLogger('BO')
+    getLogger = lambda name: logger
+else:
+    logger = logging.getLogger(__name__)
 
 logger.setLevel(logging.DEBUG)
-# XXX: let everybody use the same logger
-getLogger = lambda name: logger
+
 
 
 from . import utils

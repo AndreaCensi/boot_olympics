@@ -11,8 +11,11 @@ class TestAgent(AgentInterface):
         A simple agent useful for testing.
     
         It executes any command specified on the constructor. 
-        If the command is a string, then it is evaluated. 
-        You can use the variable "t" for time.        
+        If the command is a string, then it is eval()uated.
+         
+        You can use the variables:
+        - "t" for time.
+        - "y" for the observations.        
     '''
 
     def __init__(self, cmd):
@@ -23,9 +26,12 @@ class TestAgent(AgentInterface):
 
     def process_observations(self, observations):
         self.timestamp = observations['timestamp']
+        self.y = observations['observations']
 
     def choose_commands(self):
         if isinstance(self.cmd, str):
+            # Variables that can be used in the expression
+            y = self.y #@UnusedVariable
             t = self.timestamp #@UnusedVariable
             cmd = eval(self.cmd)
             value = np.array(cmd)

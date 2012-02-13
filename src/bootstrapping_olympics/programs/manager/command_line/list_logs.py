@@ -1,4 +1,5 @@
 from . import check_no_spurious, logger, OptionParser, declare_command
+from conf_tools.utils.friendly_paths import friendly_path
 
 
 @declare_command('list-logs', 'list-logs [-R] [-e] [-s] [-l]')
@@ -24,10 +25,9 @@ def cmd_list_logs(data_central, argv):
 
     index = data_central.get_log_index(ignore_cache=options.refresh)
 
-    logger.info('Index contains %d bag files with boot data.' %
+    print('Index contains %d bag files with boot data.' %
                 len(index.file2streams))
-    logger.info('In total, there are %d robots:'
-                % len(index.robots2streams))
+    print('In total, there are %d robots:' % len(index.robots2streams))
 
     for robot, streams in index.robots2streams.items():
         print('- robot %r has %d streams.' % (robot, len(streams)))
@@ -41,6 +41,7 @@ def cmd_list_logs(data_central, argv):
                 total_obs += stream.get_num_observations()
                 total_episodes += len(stream.get_id_episodes())
                 agents.update(stream.get_id_agents())
+            print('            spec: %s' % streams[0].get_spec())
             print('    total length: %.1f minutes' %
                         (total_length / 60.0))
             print('  total episodes: %d' % (total_episodes))
@@ -49,13 +50,13 @@ def cmd_list_logs(data_central, argv):
 
         if options.display_logs:
             for stream in streams:
-                print('- %5ds %s' % (stream.get_length(),
-                                     stream.get_filename()))
+                print('   * %5ds %s' % (stream.get_length(),
+                                     friendly_path(stream.get_filename())))
 
     if options.display_streams:
         for filename, streams in index.file2streams.items():
             if streams:
-                logger.info('%s' % filename)
+                print('%s' % friendly_path(filename))
 
                 for stream in streams:
                     logger.info(' %s' % (stream))

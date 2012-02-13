@@ -1,7 +1,7 @@
 from . import astar, node2children_grid, contract, np
+from contracts import describe_type
 from geometry import SE3, SE2, angle_from_SE2, SE2_from_SE3
 import itertools
-from contracts import describe_type
 
 
 @contract(resolution='float,>0')

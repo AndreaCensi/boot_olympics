@@ -3,6 +3,7 @@ from .. import all_nuisances, for_all_robots
 from bootstrapping_olympics import (BootOlympicsConfig, StreamSpec,
     UnsupportedSpec)
 from bootstrapping_olympics.utils import assert_allclose
+from bootstrapping_olympics.interfaces.rep_nuisance import NuisanceNotInvertible
 
 
 @for_all_robots
@@ -17,7 +18,7 @@ def check_nuisances(id_robot, robot):
 
 def check_conversions(stream_spec1, nuisance):
     #print('Checking %s / %s ' % (stream_spec1, nuisance))
-    nuisance_inv = nuisance.inverse()
+    nuisance_inv = None
     try:
         try:
             stream_spec2 = nuisance.transform_spec(stream_spec1)
@@ -25,14 +26,22 @@ def check_conversions(stream_spec1, nuisance):
             logger.info('Skipping %s/%s because incompatible: %s' %
                         (stream_spec1, nuisance, e))
             return
-        stream_spec1b = nuisance_inv.transform_spec(stream_spec2)
-        StreamSpec.check_same_spec(stream_spec1, stream_spec1b)
 
         value1 = stream_spec1.get_random_value()
         stream_spec1.check_valid_value(value1)
 
         value2 = nuisance.transform_value(value1)
         stream_spec2.check_valid_value(value2)
+
+        try:
+            nuisance_inv = nuisance.inverse()
+        except NuisanceNotInvertible as e:
+            logger.info('Skipping some tests %s/%s because not invertible:'
+                        ' %s' % (stream_spec1, nuisance, e))
+            return
+
+        stream_spec1b = nuisance_inv.transform_spec(stream_spec2)
+        StreamSpec.check_same_spec(stream_spec1, stream_spec1b)
 
         value1b = nuisance_inv.transform_value(value2)
         stream_spec1.check_valid_value(value1b)

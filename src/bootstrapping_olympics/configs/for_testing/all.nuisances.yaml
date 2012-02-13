@@ -1,44 +1,82 @@
 - id: n_id
   desc: The identity nuisance
   code:
-  - bootstrapping_olympics.examples.Identity
+  - bootstrapping_olympics.library.Identity
   - {}
 
 - id: n_GLa
   desc: Linear transformation
   code:
-  - bootstrapping_olympics.examples.GLNuisance
+  - bootstrapping_olympics.library.GLNuisance
   - A: [[-0.5,+0.5],[+0.5,+0.5]]
 
 
 - id: n_rpermA
   desc: Random permutation
   code:
-  - bootstrapping_olympics.examples.RandomPermutation
+  - bootstrapping_olympics.library.RandomPermutation
   - seed: 100
 
 - id: n_rpermB
   desc: Random permutation
   code:
-  - bootstrapping_olympics.examples.RandomPermutation
+  - bootstrapping_olympics.library.RandomPermutation
   - seed: 200
 
 - id: n_rscaleA
   desc: Random scaling
   code:
-  - bootstrapping_olympics.examples.RandomScaling
+  - bootstrapping_olympics.library.RandomScaling
   - seed: 200
 
 - id: n_rscaleB
   desc: Random scaling 
   code:
-  - bootstrapping_olympics.examples.RandomScaling
+  - bootstrapping_olympics.library.RandomScaling
   - seed: 300
 
 - id: n_popcode128
   desc: Population code with resolution = 127
   code:
-  - bootstrapping_olympics.examples.PopCode
+  - bootstrapping_olympics.library.PopCode
   - resolution: 32
 
 
+- id: n_flatten
+  desc: Flattens the array.
+  code:
+  - bootstrapping_olympics.library.Flatten
+  - {}
+
+
+- id: n_select1
+  desc: Selects the first element of the array (not invertible)
+  code:
+  - bootstrapping_olympics.library.Select
+  - which: 1
+
+- id: n_select2
+  desc: Selects the first two elements of the array (not invertible)
+  code:
+    - bootstrapping_olympics.library.Select
+    - which: [0, 1]
+    
+
+- id: n_discretize_32
+  desc: Discretizes the float stream to 32 levels
+  code:
+    - bootstrapping_olympics.library.Discretize
+    - levels: 32
+    
+ 
+- id: n_bits2int
+  desc: Converts bits back into integers.
+  code:
+    - bootstrapping_olympics.library.Bits2int
+    - {}
+ 
+- id: n_int2bits
+  desc: Converts integers into their bits representation.
+  code:
+    - bootstrapping_olympics.library.Int2bits
+    - {}

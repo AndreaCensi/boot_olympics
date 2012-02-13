@@ -5,8 +5,8 @@ from .. import (create_video, servo_stats_report, servo_stats_summaries,
     simulate, task_predict, logger, learn_log, publish_once, np, task_servo,
     task_servonav)
 from bootstrapping_olympics import UnsupportedSpec
-import itertools
 from conf_tools import SemanticMistake
+import itertools
 
 try:
     from compmake import comp
@@ -124,8 +124,9 @@ class TaskRegister:
                 self.add_tasks_servonav(id_agent=id_agent, id_robot=id_robot,
                                         **servonav)
 
-            if predict is not None:
-                self.add_tasks_predict(id_agent=id_agent, id_robot=id_robot,
+            if predict is None:
+                predict = {}
+            self.add_tasks_predict(id_agent=id_agent, id_robot=id_robot,
                                        **predict)
 
     def add_tasks_predict(self, id_agent, id_robot):
@@ -198,6 +199,7 @@ class TaskRegister:
 
     def add_tasks_explore(self, id_robot, explorer,
                                 num_episodes,
+                                episodes_per_tranche=10,
                                    num_episodes_videos=1,
                                    videos=default_expl_videos,
                                    max_episode_len=10):
@@ -217,7 +219,8 @@ class TaskRegister:
 
         tranches = []
 
-        episodes_tranches = self.get_tranches(all_id_episodes)
+        episodes_tranches = self.get_tranches(all_id_episodes,
+                                              episodes_per_tranche)
         for t, id_episodes in enumerate(episodes_tranches):
             write_extra = len(set(id_episodes) &
                               set(id_episodes_with_extra)) > 0

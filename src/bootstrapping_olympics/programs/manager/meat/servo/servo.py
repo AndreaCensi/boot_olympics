@@ -1,7 +1,7 @@
 from . import BookkeepingServo, run_simulation_servo
 from .. import load_agent_state, logger, contract, np
 from bootstrapping_olympics import LogsFormat, BootOlympicsConstants
-from bootstrapping_olympics.utils import isodate_with_secs
+from bootstrapping_olympics.utils import unique_timestamp_string
 from geometry import translation_from_SE2, angle_from_SE2, SE2_from_SE3
 
 
@@ -41,7 +41,8 @@ def task_servo(data_central, id_agent, id_robot,
     id_agent_servo = '%s_servo' % id_agent
 
     ds = data_central.get_dir_structure()
-    id_stream = '%s_%s_%s_servo' % (id_robot, id_agent, isodate_with_secs())
+    id_stream = '%s_%s_%s_servo' % (id_robot, id_agent,
+                                    unique_timestamp_string())
     filename = ds.get_simlog_filename(id_robot=id_robot,
                                           id_agent=id_agent,
                                           id_stream=id_stream)

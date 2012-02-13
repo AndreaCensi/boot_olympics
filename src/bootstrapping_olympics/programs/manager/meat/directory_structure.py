@@ -25,8 +25,9 @@ class DirectoryStructure:
     pattern_simulation = 'simulations/${id_robot}/${id_agent}/'
     pattern_report = '${id_robot}-${id_agent}-${phase}.html'
     pattern_report_rd = 'resources'
-    pattern_video = ('${id_robot}-${id_agent}'
-                     '/${id_robot}-${id_agent}-${id_episode}')
+#    pattern_video = ('${id_robot}-${id_agent}'
+#                     '/${id_robot}-${id_agent}-${id_episode}')
+    pattern_video = ('${id_robot}-${id_agent}-${id_episode}')
 
     def __init__(self, root=None):
         if root is None:

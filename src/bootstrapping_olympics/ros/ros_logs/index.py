@@ -71,18 +71,21 @@ def bag_describe_stream(bag_file, bag, topic):
             spec.get_commands().check_valid_value(commands)
         except BootInvalidValue as e:
             if num_invalid_cmd <= 2:
-                logger.error('Invalid observations at #%d:%s:\n%s'
+                logger.error('Invalid commands at #%d:%s:\n%s'
                              % (num, t, e))
             num_invalid_cmd += 1
 
-        observations = np.array(msg.sensel_values)
+        sensel_values_reshaped = np.array(msg.sensel_values, 'float32')
+        observations = sensel_values_reshaped.reshape(msg.sensel_shape)
+
         try:
             spec.get_observations().check_valid_value(observations)
             # XXX: reshape first?
             # spec.check_compatible_raw_sensels_values(msg.sensel_values)
         except BootInvalidValue as e:
             if num_invalid_obs <= 2:
-                logger.error('Invalid commands at #%d:%s:\n%s' % (num, t, e))
+                msg = 'Invalid observations at #%d:%s:\n%s' % (num, t, e)
+                logger.error(msg)
             num_invalid_obs += 1
 
         num += 1

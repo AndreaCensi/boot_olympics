@@ -2,7 +2,7 @@ from . import get_grid, logger, contract, np
 from .. import load_agent_state
 from ..servo import BookkeepingServo, get_vsim_from_robot
 from bootstrapping_olympics import RobotInterface, ObsKeeper, LogsFormat
-from bootstrapping_olympics.utils import InAWhile, isodate_with_secs
+from bootstrapping_olympics.utils import InAWhile, unique_timestamp_string
 
 
 @contract(interval_print='None|>=0')
@@ -41,7 +41,8 @@ def task_servonav(data_central, id_agent, id_robot,
     id_agent_servo = '%s_servo' % id_agent
 
     ds = data_central.get_dir_structure()
-    id_stream = '%s_%s_%s_servonav' % (id_robot, id_agent, isodate_with_secs())
+    id_stream = '%s_%s_%s_servonav' % (id_robot, id_agent,
+                                       unique_timestamp_string())
     filename = ds.get_simlog_filename(id_robot=id_robot,
                                       id_agent=id_agent,
                                       id_stream=id_stream)
