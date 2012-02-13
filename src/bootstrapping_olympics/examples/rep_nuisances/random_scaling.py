@@ -22,6 +22,7 @@ class RandomScaling(RepresentationNuisance):
         if not streamels_all_of_kind(streamels=stream_spec.get_streamels(),
                                      kind=ValueFormats.Continuous):
             msg = 'RandomScaling only supports continuous streams.'
+            raise UnsupportedSpec(msg)
 
         if len(stream_spec.shape()) != 1:
             msg = 'RandomScaling only supports 1D streams.'
@@ -38,26 +39,22 @@ class RandomScaling(RepresentationNuisance):
 
         streamels = stream_spec.get_streamels()
         streamels2 = streamels.copy()
+        streamels2['kind'][:] = ValueFormats.Continuous
         streamels2['lower'] *= self.scale
         streamels2['upper'] *= self.scale
-        streamels2['default'] *= self.scale
-
-        filtered = {
-            'original': [stream_spec.to_yaml()],
-            'filter': ['bootstrapping_olympics.examples.RandomScaling',
-                       {'seed':self.seed, 'inverted': self.inverted}]
-        }
-        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered=filtered,
-                                  desc="%s (scaled)" % stream_spec.desc)
-
         # Save this so we can enforce it later
         self.lower_old = streamels['lower'].copy()
         self.upper_old = streamels['upper'].copy()
         self.lower = streamels2['lower'].copy()
         self.upper = streamels2['upper'].copy()
+
+        streamels2['default'] = self.transform_value(streamels['default'])
+
+        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
+                                  streamels=streamels2,
+                                  extra={},
+                                  filtered={},
+                                  desc="%s (scaled)" % stream_spec.desc)
 
         return stream_spec2
 
@@ -77,6 +74,6 @@ class RandomScaling(RepresentationNuisance):
             data = ""
         else:
             data = ',%s' % self.scale
-        return 'Scale(%s,%s%s)' % (self.seed, self.inverted, data)
+        return 'RandomScaling(%s,%s%s)' % (self.seed, self.inverted, data)
 
 

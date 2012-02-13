@@ -22,11 +22,12 @@ class StreamSpec:
         self.extra = extra
         self.filtered = filtered
 
-        check_valid_streamels(streamels)
         self.streamels = streamels
         self.kind = self.streamels['kind']
         self.lower = self.streamels['lower']
         self.upper = self.streamels['upper']
+
+        check_valid_streamels(streamels)
 
     def __eq__(self, other):
         return np.all(self.streamels == other.streamels)

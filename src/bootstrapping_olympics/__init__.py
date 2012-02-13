@@ -11,7 +11,7 @@ from conf_tools.utils import col_logging # colored logging
 import logging
 logging.basicConfig()
 
-everybody_uses_same_logger = False
+everybody_uses_same_logger = True
 if everybody_uses_same_logger:
     logger = logging.getLogger('BO')
     getLogger = lambda name: logger

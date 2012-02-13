@@ -73,10 +73,23 @@
   desc: Converts bits back into integers.
   code:
     - bootstrapping_olympics.library.Bits2int
-    - {}
+    - code: base2
  
 - id: n_int2bits
   desc: Converts integers into their bits representation.
   code:
     - bootstrapping_olympics.library.Int2bits
-    - {}
+    - code: base2
+
+- id: n_int2gray
+  desc: Converts integers into their bits representation.
+  code:
+    - bootstrapping_olympics.library.Int2bits
+    - code: gray
+
+ 
+- id: n_encrypt1
+  desc: Converts integers into their bits representation.
+  code:
+    - bootstrapping_olympics.library.Encrypt
+    - password: ciaociao

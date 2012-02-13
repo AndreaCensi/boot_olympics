@@ -45,6 +45,11 @@ def get_robot(id_robot):
     return BootOlympicsConfig.robots.instance(id_robot) #@UndefinedVariable
 
 
+def get_nuisance(id_nuisance):
+    make_sure_loaded()
+    return BootOlympicsConfig.specs['nuisances'].instance(id_nuisance)
+
+
 def get_agent(id_agent):
     make_sure_loaded()
     agent = BootOlympicsConfig.agents.instance(id_agent) #@UndefinedVariable

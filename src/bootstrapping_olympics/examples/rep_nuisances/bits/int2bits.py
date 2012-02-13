@@ -1,8 +1,39 @@
-from . import contract, np
-from ... import (StreamSpec, UnsupportedSpec, RepresentationNuisance,
+from . import contract, np, value2bits, gray
+from .... import (StreamSpec, UnsupportedSpec, RepresentationNuisance,
     streamels_all_of_kind, ValueFormats, streamel_dtype)
 
 __all__ = ['Int2bits', 'Bits2int']
+
+
+def format_word(word):
+    return tuple(int(b) for b in word)
+
+
+def format_code(code):
+    return [format_word(x) for x in code]
+
+
+@contract(max_value='int,>0', returns='list(seq[N](0|1))')
+def base2code(max_value):
+    nbits = int(np.ceil(np.log2(max_value)))
+    nbits = max(1, nbits) # max_value=1
+#    print('computing %d bits base2 code for max_value = %s' %
+#          (nbits, max_value))
+    max_value = 2 ** nbits
+    code = [value2bits(i, nbits) for i in range(max_value)]
+    return format_code(code)
+
+
+@contract(max_value='int,>0', returns='list(seq[N](0|1))')
+def graycode(max_value):
+    nbits = int(np.ceil(np.log2(max_value)))
+    nbits = max(1, nbits) # max_value=1
+#    print('computing %d bits gray code for max_value = %s' %
+#          (nbits, max_value))
+    code = gray(nbits)
+    return format_code(code)
+
+allowed_codes = {'base2': base2code, 'gray': graycode}
 
 
 class Int2bits(RepresentationNuisance):
@@ -15,8 +46,14 @@ class Int2bits(RepresentationNuisance):
         represent all the numbers in the array.
     '''
 
-    def __init__(self):
+    def __init__(self, code):
         self.nbits = None
+        if not code in allowed_codes:
+            msg = ('Unknown code %r, choose in %s' %
+                   (code, allowed_codes.keys()))
+            raise ValueError(msg)
+        self.codefunc = allowed_codes[code]
+        self.code = code
 
     @contract(stream_spec=StreamSpec)
     def transform_spec(self, stream_spec):
@@ -38,13 +75,14 @@ class Int2bits(RepresentationNuisance):
             msg = 'I assume that numbers are positive.'
             raise UnsupportedSpec(msg)
 
-        max_value = np.max(self.upper)
-        nbits = int(np.ceil(np.log2(max_value)))
-        print('Need %d bits to represent %s' % (nbits, max_value))
-        self.nbits = nbits
+        #print('upper: %s' % self.upper)
+        self.max_value = int(np.max(self.upper))
+        self.codewords = self.codefunc(self.max_value)
+        assert len(self.codewords) >= self.max_value
+        self.nbits = len(self.codewords[0])
 
         self.old_shape = streamels.shape
-        self.new_shape = (streamels.size, nbits)
+        self.new_shape = (streamels.size, self.nbits)
         streamels2 = np.zeros(self.new_shape, streamel_dtype)
         streamels2['kind'] = ValueFormats.Discrete
         streamels2['lower'] = 0
@@ -65,33 +103,17 @@ class Int2bits(RepresentationNuisance):
         assert value.shape == self.old_shape
         value2 = np.zeros(self.new_shape, 'int')
         for i, v in enumerate(value):
-            value2[i, :] = value2bits(v.item(), self.nbits)
+            # TODO: check value
+            value2[i, :] = self.codewords[int(v)]
         return value2
 
     def inverse(self):
         # XXX: we cannot really recover lower and upper
         # if lower !=0 or upper is not a power of 2 (and all the same)
-        raise Bits2int()
+        return Bits2int(self.code)
 
     def __repr__(self):
-        return 'Int2bits()'
-
-
-@contract(x='int,>=0', nbits='N,int,>=1', returns='array[N](=0|=1)')
-def value2bits(x, nbits):
-    ''' Converts an integer to its bit representation.
-        LSB first. '''
-    b = np.zeros(nbits, 'int')
-    for i in range(nbits):
-        b[i] = (int(2 ** i) & int(x)) > 0
-    return b
-
-
-@contract(b='array[N](=0|=1)', returns='int')
-def bits2value(b):
-    ''' Converts the bits back into integers. LSB first. '''
-    bit_values = 2 ** np.array(range(b.size))
-    return np.sum(b * bit_values)
+        return 'Int2bits(%r)' % self.code
 
 
 class Bits2int(RepresentationNuisance):
@@ -103,8 +125,13 @@ class Bits2int(RepresentationNuisance):
         an M array.
     '''
 
-    def __init__(self):
-        pass
+    def __init__(self, code):
+        if not code in allowed_codes:
+            msg = ('Unknown code %r, choose in %s' %
+                   (code, allowed_codes.keys()))
+            raise ValueError(msg)
+        self.code = code
+        self.codefunc = allowed_codes[code]
 
     @contract(stream_spec=StreamSpec)
     def transform_spec(self, stream_spec):
@@ -114,7 +141,7 @@ class Bits2int(RepresentationNuisance):
             msg = 'Bits2int only supports discrete streams.'
             raise UnsupportedSpec(msg)
 
-        if streamels.ndim != 1:
+        if streamels.ndim != 2:
             msg = 'Bits2int only works with 2D streams.'
             raise UnsupportedSpec(msg)
 
@@ -124,6 +151,14 @@ class Bits2int(RepresentationNuisance):
             raise UnsupportedSpec(msg)
 
         nvalues, nbits = shape
+
+        max_value = int(2 ** nbits - 1)
+        self.codewords = self.codefunc(max_value)
+        self.codewords_inv = {}
+        for i, x in enumerate(self.codewords):
+            self.codewords_inv[x] = i
+        print('codewords: %s' % self.codewords)
+
         streamels2 = np.zeros(nvalues, streamel_dtype)
         streamels2['kind'] = ValueFormats.Discrete
         streamels2['lower'] = 0
@@ -141,15 +176,13 @@ class Bits2int(RepresentationNuisance):
     @contract(value='array[NxM](=0|=1)', returns='array[N]') # XXX
     def transform_value(self, value):
         value2 = np.zeros(value.shape[0], 'int')
-        for i, B in enumerate(value):
-            value2[i, :] = bits2value(B)
+        for i, bits in enumerate(value):
+            word = format_word(bits)
+            value2[i] = self.codewords_inv[word]
         return value2
 
     def inverse(self):
-        raise Int2bits()
+        return Int2bits(self.code)
 
     def __repr__(self):
-        return 'Int2bits()'
-
-
-
+        return 'Bits2int(%r)' % self.code

@@ -36,20 +36,21 @@ class GLNuisance(RepresentationNuisance):
         streamels = stream_spec.get_streamels()
         streamels2 = streamels.copy()
         norm = np.abs(self.A).sum() # XXX
+        streamels2['kind'][:] = ValueFormats.Continuous
         streamels2['lower'] *= norm
         streamels2['upper'] *= norm
-        streamels2['default'] = np.dot(self.A, streamels['default'])
-
-        filtered = {
-            'original': [stream_spec.to_yaml()],
-            'filter': ['bootstrapping_olympics.examples.GLNuisance',
-                       {'A': self.A.tolist()}]
-        }
+        streamels2['default'] = self.transform_value(streamels['default'])
+#
+#        filtered = {
+#            'original': [stream_spec.to_yaml()],
+#            'filter': ['bootstrapping_olympics.examples.GLNuisance',
+#                       {'A': self.A.tolist()}]
+#        }
         stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
                                   streamels=streamels2,
                                   extra={},
-                                  filtered=filtered,
-                                  desc="%s (scaled)" % stream_spec.desc)
+                                  filtered={},
+                                  desc=stream_spec.desc)
 
         # Save this so we can enforce it later
         self.lower_old = streamels['lower'].copy()

@@ -1,6 +1,7 @@
 from . import contract, np
 from contracts import check
 from ..utils import show_differences
+from bootstrapping_olympics.utils.strings import indent
 
 
 class ValueFormats:
@@ -20,25 +21,36 @@ def check_valid_streamels(streamels):
     ''' Raises a ValueError if the data in the structure is not coherent. '''
     assert streamels.dtype == np.dtype(streamel_dtype)
 
-    # XXX: how about invalid values?
-    def check(which, msg, a, b):
-        if not np.all(which):
-            error = show_differences(a, b, is_failure=(~which), condition=msg)
-            raise ValueError(error)
+    try:
+        # XXX: how about invalid values?
+        def check(which, msg, a, b):
+            if not np.all(which):
+                error = show_differences(a, b,
+                                         is_failure=(~which), condition=msg)
+                raise ValueError(error)
 
-    not_discrete = streamels['kind'] != ValueFormats.Discrete
-    invalid = streamels['kind'] == ValueFormats.Invalid
+        not_discrete = streamels['kind'] != ValueFormats.Discrete
+        invalid = streamels['kind'] == ValueFormats.Invalid
 
-    check(np.logical_or(invalid, streamels['lower'] < streamels['upper']),
-          'lower<upper', streamels['lower'], streamels['upper'])
-    check(np.logical_or(invalid, streamels['default'] <= streamels['upper']),
-          'default<=upper', streamels['default'], streamels['upper'])
-    check(np.logical_or(invalid, streamels['lower'] <= streamels['default']),
-          'default<=upper', streamels['lower'], streamels['default'])
+        check(np.logical_or(invalid,
+                            streamels['lower'] < streamels['upper']),
+              'lower<upper', streamels['lower'], streamels['upper'])
+        check(np.logical_or(invalid,
+                            streamels['default'] <= streamels['upper']),
+              'default<=upper', streamels['default'], streamels['upper'])
+        check(np.logical_or(invalid,
+                            streamels['lower'] <= streamels['default']),
+              'default<=upper', streamels['lower'], streamels['default'])
 
-    check(np.logical_or(not_discrete,
-                    np.round(streamels['default']) == streamels['default']),
-                        'default is discrete',
-                        np.round(streamels['default']),
-                        streamels['default'])
+        check(np.logical_or(not_discrete,
+            np.round(streamels['default']) == streamels['default']),
+                            'default is discrete',
+                            np.round(streamels['default']),
+                            streamels['default'])
+    except Exception as e:
+        msg = ('This streamel specification is not coherent:\n'
+                '%s\n'
+                'streamels: %s' %
+                (indent(str(e), '>'), streamels))
+        raise ValueError(msg)
 

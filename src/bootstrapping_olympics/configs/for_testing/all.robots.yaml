@@ -35,3 +35,20 @@
   - robot: random_1_6
     cmd_nuisance: [n_rpermB, n_rscaleA]
     obs_nuisance: [n_rscaleA, n_rpermA]
+
+
+- id: random_bits2
+  desc: "A perturbed version of the random robot that uses discretization to give bits."
+  code:
+  - bootstrapping_olympics.examples.EquivRobot
+  - robot: random_1_6
+    cmd_nuisance: []
+    obs_nuisance: [n_discretize_32, n_int2bits, n_flatten]
+
+- id: random_bits1
+  desc: "A perturbed version of the random robot that uses discretization to give bits"
+  code:
+  - bootstrapping_olympics.examples.EquivRobot
+  - robot: random_1_6
+    cmd_nuisance: []
+    obs_nuisance: [n_discretize_32, n_int2bits]

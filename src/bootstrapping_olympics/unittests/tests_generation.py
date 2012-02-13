@@ -1,4 +1,5 @@
-from . import all_robots, get_robot, all_agents, get_agent, logger
+from . import (all_nuisances, get_nuisance, all_robots, get_robot,
+               all_agents, get_agent, logger)
 from bootstrapping_olympics import UnsupportedSpec
 from nose.tools import istest
 import sys
@@ -82,20 +83,51 @@ def add_pair_f(f, id_robot, id_agent):
     add_to_module(test_caller, f.__module__)
 
 
+def add_robot_nuisance_pair_f(f, id_robot, id_nuisance):
+    @istest
+    def test_caller():
+        nuisance = get_nuisance(id_nuisance)
+        robot = get_robot(id_robot)
+#
+#        try:
+#            agent1.init(robot.get_spec())
+#        except UnsupportedSpec:
+#            print('Unsupported combination (%s,%s)' % (id_robot, id_agent))
+#            return
+
+        wrap_with_desc(f, (id_robot, robot, id_nuisance, nuisance),
+                       nuisance=nuisance, robot=robot)
+
+    name = 'test_%s_%s_%s' % (f.__name__, id_nuisance, id_robot)
+    test_caller.__name__ = name
+    test_caller.agent = id_nuisance
+    test_caller.robot = id_robot
+
+    add_to_module(test_caller, f.__module__)
+
+
 def for_all_pairs(f):
     for id_agent in all_agents():
         for id_robot in all_robots():
             add_pair_f(f, id_robot, id_agent)
 
 
-def wrap_with_desc(function, arguments, agent=None, robot=None):
+def for_all_robot_nuisance_pairs(f):
+    for id_nuisance in all_nuisances():
+        for id_robot in all_robots():
+            add_robot_nuisance_pair_f(f, id_robot, id_nuisance)
+
+
+def wrap_with_desc(function, arguments,
+                   agent=None, robot=None, nuisance=None):
     ''' Calls function with arguments, and writes debug information
         if an exception is detected. '''
 
     try:
         function(*arguments)
     except:
-        msg = ('Error detected when running test (%s); displaying debug info.'
+        msg = ('Error detected when running test (%s); '
+               'displaying debug info.'
                % function.__name__)
         if robot is not None:
             msg += '\nRobot: %s' % robot
@@ -103,6 +135,8 @@ def wrap_with_desc(function, arguments, agent=None, robot=None):
             msg += '\n Cmd spec: %s' % robot.get_spec().get_commands()
         if agent is not None:
             msg += '\nAgent: %s' % agent
+        if nuisance is not None:
+            msg += '\nAgent: %s' % nuisance
 
         logger.error(msg)
         raise
