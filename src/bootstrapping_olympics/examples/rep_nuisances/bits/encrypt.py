@@ -12,8 +12,8 @@ def check_1d_bit_sequence(streamels, who):
         msg = '%s only supports discrete streams.' % who
         raise UnsupportedSpec(msg)
 
-    if streamels.ndim != 1: # XXX
-        msg = '%s only works with 2D streams.' % who
+    if streamels.ndim != 1:
+        msg = '%s only works with 1D streams.' % who
         raise UnsupportedSpec(msg)
 
     if (np.any(streamels['lower'] != 0) or

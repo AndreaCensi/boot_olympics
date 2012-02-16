@@ -5,7 +5,10 @@ import itertools
 
 
 @contract(resolution='float,>0')
-def get_grid(vsim, resolution, debug=False):
+def get_grid(robot, vsim, resolution, debug=False):
+    # Note: use robot to get the observations, be cause it might 
+    # include some nuisances that you don't get if you use vsim 
+    # directly
     from vehicles import VehicleSimulation
     if not isinstance(vsim, VehicleSimulation):
         msg = ('I really require a VehicleSimulation; obtained %s.' %
@@ -147,7 +150,7 @@ def get_grid(vsim, resolution, debug=False):
         pose = loc['pose']
         vehicle.set_pose(pose)
         if not debug:
-            loc['observations'] = mean_observations(vsim, n=5)
+            loc['observations'] = mean_observations(robot, n=10)
 
     return locations
 
@@ -200,7 +203,10 @@ def mean_observations(robot, n):
     obss = []
     for _ in range(n): # XXX: fixed threshold
         obss.append(robot.get_observations().observations)
-    return np.mean(obss, axis=0)
+
+    mean = np.mean(obss, axis=0)
+
+    return mean
 
 
 

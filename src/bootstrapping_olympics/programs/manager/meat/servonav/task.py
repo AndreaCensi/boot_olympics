@@ -121,12 +121,13 @@ def servonav_episode(id_robot, robot,
 
     stats_write = InAWhile(interval_print)
 
+    # Access the vehicleSimulation interface
     vsim = get_vsim_from_robot(robot)
 
     for _ in xrange(max_tries):
         # iterate until we can do this correctly
         episode = robot.new_episode()
-        locations = get_grid(vsim=vsim, resolution=resolution)
+        locations = get_grid(robot=robot, vsim=vsim, resolution=resolution)
 
         if len(locations) < MIN_PATH_LENGTH:
             logger.info('Path too short, trying again.')
@@ -164,7 +165,7 @@ def servonav_episode(id_robot, robot,
         time_since_last_switch = float(current_time - time_last_switch)
 
         def obs_distance(obs1, obs2):
-            return float(np.linalg.norm(obs1 - obs2))
+            return float(np.linalg.norm(obs1.flatten() - obs2.flatten()))
 
         curr_pose = robot_observations.robot_pose
         curr_obs = boot_observations['observations']
@@ -276,12 +277,17 @@ def run_simulation_servonav(id_robot, robot, id_agent, agent,
         if check_valid_values:
             obs_spec.check_valid_value(obs.observations)
 
+#        print('run_simulation_servonav: obs.obs %s' %
+#              (str(obs.observations.shape)))
         observations = keeper.push(timestamp=obs.timestamp,
                                    observations=obs.observations,
                                    commands=obs.commands,
                                    commands_source=obs.commands_source,
                                    id_episode=id_episode,
                                    id_world=id_environment)
+#        print('then: obs.obs %s' %
+#              (str(observations['observations'].shape)))
+
         episode_end = obs.episode_end
 
         yield obs, observations
@@ -309,7 +315,7 @@ def run_simulation_servonav(id_robot, robot, id_agent, agent,
                 break
 
         agent.process_observations(observations)
-        commands = agent.choose_commands() # repeated
+        commands = agent.choose_commands()
 
         if check_valid_values:
             cmd_spec.check_valid_value(commands)

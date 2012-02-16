@@ -5,52 +5,52 @@ __all__ = ['AgentInterface', 'UnsupportedSpec']
 
 class AgentInterface:
     ''' 
+        
+    This is the interface that the agents must implement.
     
-This is the interface that the agents must implement.
-
-The following is a list of conventions that we use.    
-
-Initialization
---------------
-
-init(boot_spec) is called first. 
-process_observations() is guaranteed to be called at least once
-before choose_commands().
-
-Processing the observations
----------------------------
-
-The function ``process_observations()`` is given an instance
-of the class Observations, which contains many info other than
-the raw sensel values. 
-
-Logging stuff
--------------
-
-Use the function ``self.info(msg)`` to log stuff.
-Do not use ``rospy.loginfo`` or ``print``: the agents implementation s
-hould be independent of ROS.
-
-
-Saving the state
-----------------
-
-Implement the functions ``set_state()`` and ``get_state()``. 
-``get_state()`` can return anything which is Pickable. 
-``set_state()`` will be given whatever ``get_state()`` returned.
-
-
-Publishing information
-----------------------
-
-Implement the function ``publish()`` to output information, such
-as graphs, statistics, etc. The function is given an instance of the 
-class Publisher, whose implementation is hidden.
-
-During a ROS simulation, Publisher will be a ROSPublisher that 
-will publish the data as ROS topics which can be subscribed by RViz.
-
-During offline learning, the data will be written to HTML files.
+    The following is a list of conventions that we use.    
+    
+    Initialization
+    --------------
+    
+    init(boot_spec) is called first. 
+    process_observations() is guaranteed to be called at least once
+    before choose_commands().
+    
+    Processing the observations
+    ---------------------------
+    
+    The function ``process_observations()`` is given an instance
+    of the class Observations, which contains many info other than
+    the raw sensel values. 
+    
+    Logging stuff
+    -------------
+    
+    Use the function ``self.info(msg)`` to log stuff.
+    Do not use ``rospy.loginfo`` or ``print``: the agents implementation s
+    hould be independent of ROS.
+    
+    
+    Saving the state
+    ----------------
+    
+    Implement the functions ``set_state()`` and ``get_state()``. 
+    ``get_state()`` can return anything that is Pickable. 
+    ``set_state()`` will be given whatever ``get_state()`` returned.
+    
+    
+    Publishing information
+    ----------------------
+    
+    Implement the function ``publish()`` to output information, such
+    as graphs, statistics, etc. The function is given an instance of the 
+    class Publisher, whose implementation is hidden.
+    
+    During a ROS simulation, Publisher will be a ROSPublisher that 
+    will publish the data as ROS topics which can be subscribed by RViz.
+    
+    During offline learning, the data will be written to HTML files.
 
     '''
 

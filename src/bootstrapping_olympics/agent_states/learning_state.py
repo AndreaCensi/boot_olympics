@@ -44,18 +44,21 @@ class LearningStateDB(object):
         dbdir = datadir
         logger.debug('Using dir %r as directory.' % dbdir)
 
-        if not os.path.exists(datadir):
-            os.makedirs(datadir)
+        try: # concurrent
+            if not os.path.exists(datadir):
+                os.makedirs(datadir)
+        except:
+            pass
 
         self.storage = StorageFilesystem(datadir)
 
     def list_states(self):
-        return [key2tuple(x) for x in  self.storage.keys() if isakey(x)]
+        return [key2tuple(x) for x in self.storage.keys() if isakey(x)]
 
     def has_state(self, id_agent, id_robot):
         ''' Returns true if the learning state is already present. '''
         key = tuple2key((id_agent, id_robot))
-        return  key in list(self.storage.keys())
+        return key in list(self.storage.keys())
 
     def get_state(self, id_agent, id_robot):
         ''' Returns the learning state for the given combination. '''

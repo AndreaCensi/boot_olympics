@@ -155,6 +155,22 @@
         zoom: 2
         show_sensor_data_compact: True
 
+- id: mp4sensels
+  desc: 'Shows only the sensels, graphically.'
+  code: 
+  - boot_log2movie_sensels
+  - width: 200
+
+
+- id: mp4sensels_plot
+  desc: 'Shows only the sensels (as a plot).'
+  code: 
+  - boot_log2movie_sensels_plot
+  - width: 300
+    height: 200
+    'mencoder.crop': True
+
+
 
 # 
 # - id: avisrvz0
