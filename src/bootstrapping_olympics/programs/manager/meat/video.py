@@ -24,7 +24,7 @@ def create_video(data_central, id_robot, id_agent,
     # TODO: check has_procgraph
     import procgraph_vehicles #@UnusedImport
     from procgraph import pg
-    logger.info('Writing to %r.' % basename)
+    #logger.info('Writing to %r.' % basename)
     config = dict(logdir=logdir,
                 id_robot=id_robot,
                 id_agent=id_agent,

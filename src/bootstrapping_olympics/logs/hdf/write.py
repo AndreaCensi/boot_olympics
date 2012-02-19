@@ -40,7 +40,7 @@ class HDFLogWriter():
         self.table.append(row)
 
         extras = yaml_dump(extra)
-        extras_gz = zlib.compress(extras)
+        extras_gz = compress(extras)
         #ratio = 100.0 * len(extras_gz) / len(extras)
         #print('Compressed %.1f%%' % (ratio))
         self.extra.append(extras_gz)
@@ -100,3 +100,16 @@ def remove_fields(dt, fields_to_remove):
         if not name in fields_to_remove:
             dt2.append((name, dt[name]))
     return np.dtype(dt2)
+
+
+def compress(s):
+    ''' Compresses using only one thread. '''
+    encoder = zlib.compressobj()
+    data = encoder.compress(s)
+    data = data + encoder.flush()
+    return data
+
+
+def compress_multi(s):
+    ''' Compresses using possibly multiple threads. '''
+    return zlib.compress(s)
