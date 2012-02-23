@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.examples.rep_nuisances.normalize_minmax</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.examples-module.html">Package&nbsp;examples</a> ::
+        <a href="bootstrapping_olympics.examples.rep_nuisances-module.html">Package&nbsp;rep_nuisances</a> ::
+        Module&nbsp;normalize_minmax
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.examples.rep_nuisances.normalize_minmax-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.examples.rep_nuisances.normalize_minmax-module.html">Module bootstrapping_olympics.examples.rep_nuisances.normalize_minmax</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Function bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_1D()=bootstrapping_olympics.examples.rep_nuisances.commons-module.html#check_streamels_1D"><a title="bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_1D" class="py-name" href="#" onclick="return doclink('link-0', 'check_streamels_1D', 'link-0');">check_streamels_1D</a></tt><tt class="py-op">,</tt> <tt id="link-1" class="py-name" targets="Function bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_continuous()=bootstrapping_olympics.examples.rep_nuisances.commons-module.html#check_streamels_continuous"><a title="bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_continuous" class="py-name" href="#" onclick="return doclink('link-1', 'check_streamels_continuous', 'link-1');">check_streamels_continuous</a></tt><tt class="py-op">,</tt> <tt class="py-name">contract</tt><tt class="py-op">,</tt> <tt class="py-name">np</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Package bootstrapping_olympics=bootstrapping_olympics-module.html"><a title="bootstrapping_olympics" class="py-name" href="#" onclick="return doclink('link-2', 'bootstrapping_olympics', 'link-2');">bootstrapping_olympics</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">(</tt><tt id="link-3" class="py-name" targets="Class bootstrapping_olympics.interfaces.rep_nuisance.NuisanceNotInvertible=bootstrapping_olympics.interfaces.rep_nuisance.NuisanceNotInvertible-class.html"><a title="bootstrapping_olympics.interfaces.rep_nuisance.NuisanceNotInvertible" class="py-name" href="#" onclick="return doclink('link-3', 'NuisanceNotInvertible', 'link-3');">NuisanceNotInvertible</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Variable bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.bits.encrypt-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.bits.int2bits-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.encrypt.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.encrypt-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.normalize_minmax-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.streamel_dtype=bootstrapping_olympics.examples-module.html#streamel_dtype,Variable bootstrapping_olympics.interfaces.stream_spec.streamel_dtype=bootstrapping_olympics.interfaces.stream_spec-module.html#streamel_dtype,Variable bootstrapping_olympics.interfaces.streamel_dtype=bootstrapping_olympics.interfaces-module.html#streamel_dtype,Variable bootstrapping_olympics.interfaces.streamels.streamel_dtype=bootstrapping_olympics.interfaces.streamels-module.html#streamel_dtype,Variable bootstrapping_olympics.library.streamel_dtype=bootstrapping_olympics.library-module.html#streamel_dtype,Variable bootstrapping_olympics.streamel_dtype=bootstrapping_olympics-module.html#streamel_dtype"><a title="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.encrypt.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.streamel_dtype
+bootstrapping_olympics.examples.streamel_dtype
+bootstrapping_olympics.interfaces.stream_spec.streamel_dtype
+bootstrapping_olympics.interfaces.streamel_dtype
+bootstrapping_olympics.interfaces.streamels.streamel_dtype
+bootstrapping_olympics.library.streamel_dtype
+bootstrapping_olympics.streamel_dtype" class="py-name" href="#" onclick="return doclink('link-4', 'streamel_dtype', 'link-4');">streamel_dtype</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line">    <tt id="link-5" class="py-name" targets="Class bootstrapping_olympics.interfaces.stream_spec.StreamSpec=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec" class="py-name" href="#" onclick="return doclink('link-5', 'StreamSpec', 'link-5');">StreamSpec</a></tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name" targets="Class bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance=bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html"><a title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" class="py-name" href="#" onclick="return doclink('link-6', 'RepresentationNuisance', 'link-6');">RepresentationNuisance</a></tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name" targets="Class bootstrapping_olympics.interfaces.streamels.ValueFormats=bootstrapping_olympics.interfaces.streamels.ValueFormats-class.html"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats" class="py-name" href="#" onclick="return doclink('link-7', 'ValueFormats', 'link-7');">ValueFormats</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'NormalizeMinMax'</tt><tt class="py-op">]</tt> </tt>
+<a name="NormalizeMinMax"></a><div id="NormalizeMinMax-def"><a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt> <a class="py-toggle" href="#" id="NormalizeMinMax-toggle" onclick="return toggle('NormalizeMinMax');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.NormalizeMinMax-class.html">NormalizeMinMax</a><tt class="py-op">(</tt><tt class="py-base-class">RepresentationNuisance</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NormalizeMinMax-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="NormalizeMinMax-expanded"><a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">    <tt class="py-docstring">''' </tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-docstring">        Transforms: ..</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-docstring">            z[:n] = (y-mean(y)) /  max(y) - min(y)  \in -1,1</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-docstring">            z[n]  = mean(y)</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-docstring">            z[n+1]= max(y) - min(y)</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">contract</tt><tt class="py-op">(</tt><tt class="py-name">A</tt><tt class="py-op">=</tt><tt class="py-string">'seq[N](seq[N])'</tt><tt class="py-op">)</tt> </tt>
+<a name="NormalizeMinMax.__init__"></a><div id="NormalizeMinMax.__init__-def"><a name="L18"></a><tt class="py-lineno">18</tt> <a class="py-toggle" href="#" id="NormalizeMinMax.__init__-toggle" onclick="return toggle('NormalizeMinMax.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.NormalizeMinMax-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">A</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NormalizeMinMax.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="NormalizeMinMax.__init__-expanded"><a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method bootstrapping_olympics.display.reprep_publisher.ReprepPublisher.array()=bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#array,Method bootstrapping_olympics.interfaces.publisher.Publisher.array()=bootstrapping_olympics.interfaces.publisher.Publisher-class.html#array,Method bootstrapping_olympics.interfaces.publisher.Section.array()=bootstrapping_olympics.interfaces.publisher.Section-class.html#array,Method bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.array()=bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#array"><a title="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher.array
+bootstrapping_olympics.interfaces.publisher.Publisher.array
+bootstrapping_olympics.interfaces.publisher.Section.array
+bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.array" class="py-name" href="#" onclick="return doclink('link-8', 'array', 'link-8');">array</a></tt><tt class="py-op">(</tt><tt class="py-name">A</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"> </tt>
+<a name="NormalizeMinMax.inverse"></a><div id="NormalizeMinMax.inverse-def"><a name="L21"></a><tt class="py-lineno">21</tt> <a class="py-toggle" href="#" id="NormalizeMinMax.inverse-toggle" onclick="return toggle('NormalizeMinMax.inverse');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.NormalizeMinMax-class.html#inverse">inverse</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NormalizeMinMax.inverse-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="NormalizeMinMax.inverse-expanded"><a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-9" class="py-name"><a title="bootstrapping_olympics.interfaces.rep_nuisance.NuisanceNotInvertible" class="py-name" href="#" onclick="return doclink('link-9', 'NuisanceNotInvertible', 'link-3');">NuisanceNotInvertible</a></tt><tt class="py-op">(</tt><tt class="py-string">'Not implemented'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">contract</tt><tt class="py-op">(</tt><tt id="link-10" class="py-name" targets="Module bootstrapping_olympics.interfaces.stream_spec=bootstrapping_olympics.interfaces.stream_spec-module.html"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-10', 'stream_spec', 'link-10');">stream_spec</a></tt><tt class="py-op">=</tt><tt id="link-11" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec" class="py-name" href="#" onclick="return doclink('link-11', 'StreamSpec', 'link-5');">StreamSpec</a></tt><tt class="py-op">)</tt> </tt>
+<a name="NormalizeMinMax.transform_spec"></a><div id="NormalizeMinMax.transform_spec-def"><a name="L25"></a><tt class="py-lineno">25</tt> <a class="py-toggle" href="#" id="NormalizeMinMax.transform_spec-toggle" onclick="return toggle('NormalizeMinMax.transform_spec');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.NormalizeMinMax-class.html#transform_spec">transform_spec</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">stream_spec</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NormalizeMinMax.transform_spec-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="NormalizeMinMax.transform_spec-expanded"><a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">        <tt id="link-12" class="py-name" targets="Module bootstrapping_olympics.interfaces.streamels=bootstrapping_olympics.interfaces.streamels-module.html"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-12', 'streamels', 'link-12');">streamels</a></tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-13', 'stream_spec', 'link-10');">stream_spec</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_streamels()=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#get_streamels"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_streamels" class="py-name" href="#" onclick="return doclink('link-14', 'get_streamels', 'link-14');">get_streamels</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">        <tt id="link-15" class="py-name"><a title="bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_1D" class="py-name" href="#" onclick="return doclink('link-15', 'check_streamels_1D', 'link-0');">check_streamels_1D</a></tt><tt class="py-op">(</tt><tt id="link-16" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-16', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt id="link-17" class="py-name"><a title="bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_continuous" class="py-name" href="#" onclick="return doclink('link-17', 'check_streamels_continuous', 'link-1');">check_streamels_continuous</a></tt><tt class="py-op">(</tt><tt id="link-18" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-18', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-name">n</tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-19', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Method bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size()=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#size"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size" class="py-name" href="#" onclick="return doclink('link-20', 'size', 'link-20');">size</a></tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">zeros</tt><tt class="py-op">(</tt><tt class="py-name">n</tt> <tt class="py-op">+</tt> <tt class="py-number">2</tt><tt class="py-op">,</tt> <tt id="link-21" class="py-name"><a title="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.encrypt.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.streamel_dtype
+bootstrapping_olympics.examples.streamel_dtype
+bootstrapping_olympics.interfaces.stream_spec.streamel_dtype
+bootstrapping_olympics.interfaces.streamel_dtype
+bootstrapping_olympics.interfaces.streamels.streamel_dtype
+bootstrapping_olympics.library.streamel_dtype
+bootstrapping_olympics.streamel_dtype" class="py-name" href="#" onclick="return doclink('link-21', 'streamel_dtype', 'link-4');">streamel_dtype</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'kind'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-22" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats" class="py-name" href="#" onclick="return doclink('link-22', 'ValueFormats', 'link-7');">ValueFormats</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Variable bootstrapping_olympics.interfaces.streamels.ValueFormats.Continuous=bootstrapping_olympics.interfaces.streamels.ValueFormats-class.html#Continuous"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Continuous" class="py-name" href="#" onclick="return doclink('link-23', 'Continuous', 'link-23');">Continuous</a></tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-name">n</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-name">n</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">+</tt><tt class="py-number">1</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">        <tt class="py-comment"># this is the mean</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">n</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">mean</tt><tt class="py-op">(</tt><tt id="link-24" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-24', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">n</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">mean</tt><tt class="py-op">(</tt><tt id="link-25" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-25', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line"> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt class="py-comment"># this is the spread of the data        </tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">n</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">        <tt class="py-comment"># XXX: we should find a different bounded  </tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">n</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">max</tt><tt class="py-op">(</tt><tt id="link-26" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-26', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">                                      <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">min</tt><tt class="py-op">(</tt><tt id="link-27" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-27', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line"> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name" targets="Method bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.Decrypt.transform_value()=bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.Decrypt-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.Encrypt.transform_value()=bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.Encrypt-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.Bits2int.transform_value()=bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.Bits2int-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.Int2bits.transform_value()=bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.Int2bits-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize.transform_value()=bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.flatten.Flatten.transform_value()=bootstrapping_olympics.examples.rep_nuisances.flatten.Flatten-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.flatten.Reshape.transform_value()=bootstrapping_olympics.examples.rep_nuisances.flatten.Reshape-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.identity.Identity.transform_value()=bootstrapping_olympics.examples.rep_nuisances.identity.Identity-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.linear.GLNuisance.transform_value()=bootstrapping_olympics.examples.rep_nuisances.linear.GLNuisance-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear.transform_value()=bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.NormalizeMinMax.transform_value()=bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.NormalizeMinMax-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.PopCode.transform_value()=bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.PopCode-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.PopCodeInv.transform_value()=bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.PopCodeInv-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.random_permutation.RandomPermutation.transform_value()=bootstrapping_olympics.examples.rep_nuisances.random_permutation.RandomPermutation-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling.transform_value()=bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.select.Select.transform_value()=bootstrapping_olympics.examples.rep_nuisances.select.Select-class.html#transform_value,Method bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.transform_value()=bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#transform_value"><a title="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.Decrypt.transform_value
+bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.Encrypt.transform_value
+bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.Bits2int.transform_value
+bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.Int2bits.transform_value
+bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize.transform_value
+bootstrapping_olympics.examples.rep_nuisances.flatten.Flatten.transform_value
+bootstrapping_olympics.examples.rep_nuisances.flatten.Reshape.transform_value
+bootstrapping_olympics.examples.rep_nuisances.identity.Identity.transform_value
+bootstrapping_olympics.examples.rep_nuisances.linear.GLNuisance.transform_value
+bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear.transform_value
+bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.NormalizeMinMax.transform_value
+bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.PopCode.transform_value
+bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.PopCodeInv.transform_value
+bootstrapping_olympics.examples.rep_nuisances.random_permutation.RandomPermutation.transform_value
+bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling.transform_value
+bootstrapping_olympics.examples.rep_nuisances.select.Select.transform_value
+bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.transform_value" class="py-name" href="#" onclick="return doclink('link-28', 'transform_value', 'link-28');">transform_value</a></tt><tt class="py-op">(</tt><tt id="link-29" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-29', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line"> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">        <tt class="py-name">stream_spec2</tt> <tt class="py-op">=</tt> <tt id="link-30" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec" class="py-name" href="#" onclick="return doclink('link-30', 'StreamSpec', 'link-5');">StreamSpec</a></tt><tt class="py-op">(</tt><tt class="py-name">id_stream</tt><tt class="py-op">=</tt><tt id="link-31" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-31', 'stream_spec', 'link-10');">stream_spec</a></tt><tt class="py-op">.</tt><tt class="py-name">id_stream</tt><tt class="py-op">,</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">                                  <tt id="link-32" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-32', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">=</tt><tt class="py-name">streamels2</tt><tt class="py-op">,</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">                                  <tt class="py-name">extra</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">                                  <tt class="py-name">filtered</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">                                  <tt class="py-name">desc</tt><tt class="py-op">=</tt><tt id="link-33" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-33', 'stream_spec', 'link-10');">stream_spec</a></tt><tt class="py-op">.</tt><tt class="py-name">desc</tt><tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">        <tt class="py-comment"># Save this so we can enforce it later</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt> <tt class="py-op">=</tt> <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">copy</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">upper</tt> <tt class="py-op">=</tt> <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">copy</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">stream_spec2</tt> </tt>
+</div><a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line"> </tt>
+<a name="NormalizeMinMax.transform_value"></a><div id="NormalizeMinMax.transform_value-def"><a name="L60"></a><tt class="py-lineno">60</tt> <a class="py-toggle" href="#" id="NormalizeMinMax.transform_value-toggle" onclick="return toggle('NormalizeMinMax.transform_value');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.NormalizeMinMax-class.html#transform_value">transform_value</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NormalizeMinMax.transform_value-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="NormalizeMinMax.transform_value-expanded"><a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">        <tt class="py-name">mean</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">mean</tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">        <tt class="py-name">spread</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">max</tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line"> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">        <tt class="py-name">n</tt> <tt class="py-op">=</tt> <tt class="py-name">value</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size" class="py-name" href="#" onclick="return doclink('link-34', 'size', 'link-20');">size</a></tt> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">        <tt class="py-name">value2</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">zeros</tt><tt class="py-op">(</tt><tt class="py-name">n</tt> <tt class="py-op">+</tt> <tt class="py-number">2</tt><tt class="py-op">)</tt> </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">        <tt class="py-name">value2</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-name">n</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">value</tt> <tt class="py-op">-</tt> <tt class="py-name">mean</tt><tt class="py-op">)</tt> <tt class="py-op">/</tt> <tt class="py-name">spread</tt> </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">        <tt class="py-name">value2</tt><tt class="py-op">[</tt><tt class="py-name">n</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">mean</tt> </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">        <tt class="py-name">value2</tt><tt class="py-op">[</tt><tt class="py-name">n</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">spread</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line"> </tt>
+<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line">        <tt class="py-comment"># enforce upper/lower bounds, to account for numerical errors</tt> </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">clip</tt><tt class="py-op">(</tt><tt class="py-name">value2</tt><tt class="py-op">.</tt><tt class="py-name">astype</tt><tt class="py-op">(</tt><tt class="py-string">'float32'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">upper</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line"> </tt>
+<a name="NormalizeMinMax.__repr__"></a><div id="NormalizeMinMax.__repr__-def"><a name="L73"></a><tt class="py-lineno">73</tt> <a class="py-toggle" href="#" id="NormalizeMinMax.__repr__-toggle" onclick="return toggle('NormalizeMinMax.__repr__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.NormalizeMinMax-class.html#__repr__">__repr__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NormalizeMinMax.__repr__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="NormalizeMinMax.__repr__-expanded"><a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'NormalizeMinMax()'</tt> </tt>
+</div></div><a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:30 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

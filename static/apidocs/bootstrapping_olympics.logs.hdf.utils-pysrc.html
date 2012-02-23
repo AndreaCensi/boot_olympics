@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.logs.hdf.utils</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.logs-module.html">Package&nbsp;logs</a> ::
+        <a href="bootstrapping_olympics.logs.hdf-module.html">Package&nbsp;hdf</a> ::
+        Module&nbsp;utils
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.logs.hdf.utils-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.logs.hdf.utils-module.html">Module bootstrapping_olympics.logs.hdf.utils</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">zlib</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package bootstrapping_olympics=bootstrapping_olympics-module.html"><a title="bootstrapping_olympics" class="py-name" href="#" onclick="return doclink('link-0', 'bootstrapping_olympics', 'link-0');">bootstrapping_olympics</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module bootstrapping_olympics.logs.hdf.utils=bootstrapping_olympics.logs.hdf.utils-module.html,Module bootstrapping_olympics.programs.manager.meat.servo.utils=bootstrapping_olympics.programs.manager.meat.servo.utils-module.html,Package bootstrapping_olympics.utils=bootstrapping_olympics.utils-module.html"><a title="bootstrapping_olympics.logs.hdf.utils
+bootstrapping_olympics.programs.manager.meat.servo.utils
+bootstrapping_olympics.utils" class="py-name" href="#" onclick="return doclink('link-1', 'utils', 'link-1');">utils</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module bootstrapping_olympics.utils.c_yaml=bootstrapping_olympics.utils.c_yaml-module.html"><a title="bootstrapping_olympics.utils.c_yaml" class="py-name" href="#" onclick="return doclink('link-2', 'c_yaml', 'link-2');">c_yaml</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Function bootstrapping_olympics.utils.c_yaml.yaml_load()=bootstrapping_olympics.utils.c_yaml-module.html#yaml_load"><a title="bootstrapping_olympics.utils.c_yaml.yaml_load" class="py-name" href="#" onclick="return doclink('link-3', 'yaml_load', 'link-3');">yaml_load</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="load_extra"></a><div id="load_extra-def"><a name="L5"></a><tt class="py-lineno"> 5</tt> <a class="py-toggle" href="#" id="load_extra-toggle" onclick="return toggle('load_extra');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.logs.hdf.utils-module.html#load_extra">load_extra</a><tt class="py-op">(</tt><tt class="py-param">extra_table</tt><tt class="py-op">,</tt> <tt class="py-param">index</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="load_extra-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="load_extra-expanded"><a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line">    <tt class="py-name">extra_string</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">extra_table</tt><tt class="py-op">[</tt><tt id="link-4" class="py-name" targets="Module bootstrapping_olympics.logs.hdf.index=bootstrapping_olympics.logs.hdf.index-module.html,Method bootstrapping_olympics.logs.log_index.LogIndex.index()=bootstrapping_olympics.logs.log_index.LogIndex-class.html#index,Module bootstrapping_olympics.ros.ros_logs.index=bootstrapping_olympics.ros.ros_logs.index-module.html"><a title="bootstrapping_olympics.logs.hdf.index
+bootstrapping_olympics.logs.log_index.LogIndex.index
+bootstrapping_olympics.ros.ros_logs.index" class="py-name" href="#" onclick="return doclink('link-4', 'index', 'link-4');">index</a></tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">    <tt class="py-name">extra_string</tt> <tt class="py-op">=</tt> <tt class="py-name">zlib</tt><tt class="py-op">.</tt><tt class="py-name">decompress</tt><tt class="py-op">(</tt><tt class="py-name">extra_string</tt><tt class="py-op">)</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">    <tt class="py-name">extra</tt> <tt class="py-op">=</tt> <tt id="link-5" class="py-name"><a title="bootstrapping_olympics.utils.c_yaml.yaml_load" class="py-name" href="#" onclick="return doclink('link-5', 'yaml_load', 'link-3');">yaml_load</a></tt><tt class="py-op">(</tt><tt class="py-name">extra_string</tt><tt class="py-op">)</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">extra</tt> </tt>
+</div><a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:29 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

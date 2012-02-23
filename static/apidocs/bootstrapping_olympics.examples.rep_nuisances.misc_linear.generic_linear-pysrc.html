@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.examples-module.html">Package&nbsp;examples</a> ::
+        <a href="bootstrapping_olympics.examples.rep_nuisances-module.html">Package&nbsp;rep_nuisances</a> ::
+        <a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear-module.html">Package&nbsp;misc_linear</a> ::
+        Module&nbsp;generic_linear
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear-module.html">Module bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt class="py-op">(</tt><tt id="link-0" class="py-name" targets="Function bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_1D()=bootstrapping_olympics.examples.rep_nuisances.commons-module.html#check_streamels_1D"><a title="bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_1D" class="py-name" href="#" onclick="return doclink('link-0', 'check_streamels_1D', 'link-0');">check_streamels_1D</a></tt><tt class="py-op">,</tt> <tt id="link-1" class="py-name" targets="Function bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_continuous()=bootstrapping_olympics.examples.rep_nuisances.commons-module.html#check_streamels_continuous"><a title="bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_continuous" class="py-name" href="#" onclick="return doclink('link-1', 'check_streamels_continuous', 'link-1');">check_streamels_continuous</a></tt><tt class="py-op">,</tt> <tt class="py-name">contract</tt><tt class="py-op">,</tt> <tt class="py-name">np</tt><tt class="py-op">,</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line">    <tt id="link-2" class="py-name" targets="Function bootstrapping_olympics.examples.rep_nuisances.commons.find_polytope_bounds_after_linear()=bootstrapping_olympics.examples.rep_nuisances.commons-module.html#find_polytope_bounds_after_linear"><a title="bootstrapping_olympics.examples.rep_nuisances.commons.find_polytope_bounds_after_linear" class="py-name" href="#" onclick="return doclink('link-2', 'find_polytope_bounds_after_linear', 'link-2');">find_polytope_bounds_after_linear</a></tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name" targets="Function bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_1D_size()=bootstrapping_olympics.examples.rep_nuisances.commons-module.html#check_streamels_1D_size"><a title="bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_1D_size" class="py-name" href="#" onclick="return doclink('link-3', 'check_streamels_1D_size', 'link-3');">check_streamels_1D_size</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name" targets="Package bootstrapping_olympics=bootstrapping_olympics-module.html"><a title="bootstrapping_olympics" class="py-name" href="#" onclick="return doclink('link-4', 'bootstrapping_olympics', 'link-4');">bootstrapping_olympics</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">(</tt><tt id="link-5" class="py-name" targets="Class bootstrapping_olympics.interfaces.stream_spec.StreamSpec=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec" class="py-name" href="#" onclick="return doclink('link-5', 'StreamSpec', 'link-5');">StreamSpec</a></tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name" targets="Class bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance=bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html"><a title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" class="py-name" href="#" onclick="return doclink('link-6', 'RepresentationNuisance', 'link-6');">RepresentationNuisance</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line">    <tt id="link-7" class="py-name" targets="Class bootstrapping_olympics.interfaces.streamels.ValueFormats=bootstrapping_olympics.interfaces.streamels.ValueFormats-class.html"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats" class="py-name" href="#" onclick="return doclink('link-7', 'ValueFormats', 'link-7');">ValueFormats</a></tt><tt class="py-op">,</tt> <tt id="link-8" class="py-name" targets="Variable bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.bits.encrypt-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.bits.int2bits-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.encrypt.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.encrypt-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.normalize_minmax-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.rep_nuisances.streamel_dtype=bootstrapping_olympics.examples.rep_nuisances-module.html#streamel_dtype,Variable bootstrapping_olympics.examples.streamel_dtype=bootstrapping_olympics.examples-module.html#streamel_dtype,Variable bootstrapping_olympics.interfaces.stream_spec.streamel_dtype=bootstrapping_olympics.interfaces.stream_spec-module.html#streamel_dtype,Variable bootstrapping_olympics.interfaces.streamel_dtype=bootstrapping_olympics.interfaces-module.html#streamel_dtype,Variable bootstrapping_olympics.interfaces.streamels.streamel_dtype=bootstrapping_olympics.interfaces.streamels-module.html#streamel_dtype,Variable bootstrapping_olympics.library.streamel_dtype=bootstrapping_olympics.library-module.html#streamel_dtype,Variable bootstrapping_olympics.streamel_dtype=bootstrapping_olympics-module.html#streamel_dtype"><a title="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.encrypt.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.streamel_dtype
+bootstrapping_olympics.examples.streamel_dtype
+bootstrapping_olympics.interfaces.stream_spec.streamel_dtype
+bootstrapping_olympics.interfaces.streamel_dtype
+bootstrapping_olympics.interfaces.streamels.streamel_dtype
+bootstrapping_olympics.library.streamel_dtype
+bootstrapping_olympics.streamel_dtype" class="py-name" href="#" onclick="return doclink('link-8', 'streamel_dtype', 'link-8');">streamel_dtype</a></tt><tt class="py-op">,</tt> <tt id="link-9" class="py-name" targets="Class bootstrapping_olympics.interfaces.rep_nuisance.NuisanceNotInvertible=bootstrapping_olympics.interfaces.rep_nuisance.NuisanceNotInvertible-class.html"><a title="bootstrapping_olympics.interfaces.rep_nuisance.NuisanceNotInvertible" class="py-name" href="#" onclick="return doclink('link-9', 'NuisanceNotInvertible', 'link-9');">NuisanceNotInvertible</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'GenericLinear'</tt><tt class="py-op">]</tt> </tt>
+<a name="GenericLinear"></a><div id="GenericLinear-def"><a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-comment"># TODO: add left/right inverse, add kernel </tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-comment"># TODO: preserve bounds</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt> <a class="py-toggle" href="#" id="GenericLinear-toggle" onclick="return toggle('GenericLinear');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html">GenericLinear</a><tt class="py-op">(</tt><tt class="py-base-class">RepresentationNuisance</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericLinear-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="GenericLinear-expanded"><a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt class="py-docstring">''' </tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-docstring">        This represents a generic linear transformation</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-docstring">        between 1D continuous signals. The subclasses </tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-docstring">        only need to provide the matrix by either passing</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-docstring">        it in the constructor or implementing get_matrix().</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">contract</tt><tt class="py-op">(</tt><tt class="py-name">A</tt><tt class="py-op">=</tt><tt class="py-string">'None|array[MxN]'</tt><tt class="py-op">)</tt> </tt>
+<a name="GenericLinear.__init__"></a><div id="GenericLinear.__init__-def"><a name="L20"></a><tt class="py-lineno">20</tt> <a class="py-toggle" href="#" id="GenericLinear.__init__-toggle" onclick="return toggle('GenericLinear.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">A</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericLinear.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="GenericLinear.__init__-expanded"><a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">        <tt class="py-docstring">''' A can be passed at construction time if it is known. '''</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">        <tt class="py-comment"># TODO: add kernel</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A0</tt> <tt class="py-op">=</tt> <tt class="py-name">A</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">contract</tt><tt class="py-op">(</tt><tt id="link-10" class="py-name" targets="Module bootstrapping_olympics.interfaces.streamels=bootstrapping_olympics.interfaces.streamels-module.html"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-10', 'streamels', 'link-10');">streamels</a></tt><tt class="py-op">=</tt><tt class="py-string">'array'</tt><tt class="py-op">,</tt> <tt class="py-name">returns</tt><tt class="py-op">=</tt><tt class="py-string">'array[MxN]'</tt><tt class="py-op">)</tt> </tt>
+<a name="GenericLinear.get_matrix"></a><div id="GenericLinear.get_matrix-def"><a name="L27"></a><tt class="py-lineno">27</tt> <a class="py-toggle" href="#" id="GenericLinear.get_matrix-toggle" onclick="return toggle('GenericLinear.get_matrix');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#get_matrix">get_matrix</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">streamels</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericLinear.get_matrix-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="GenericLinear.get_matrix-expanded"><a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-docstring">''' Returns the matrix representing the transformation. '''</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line"> </tt>
+<a name="GenericLinear._get_A"></a><div id="GenericLinear._get_A-def"><a name="L31"></a><tt class="py-lineno">31</tt> <a class="py-toggle" href="#" id="GenericLinear._get_A-toggle" onclick="return toggle('GenericLinear._get_A');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#_get_A">_get_A</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">streamels</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericLinear._get_A-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="GenericLinear._get_A-expanded"><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A0</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A0</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">            <tt class="py-name">A</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear.get_matrix()=bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#get_matrix,Method bootstrapping_olympics.examples.rep_nuisances.misc_linear.normalize.NormalizeMean.get_matrix()=bootstrapping_olympics.examples.rep_nuisances.misc_linear.normalize.NormalizeMean-class.html#get_matrix,Method bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling.get_matrix()=bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html#get_matrix"><a title="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear.get_matrix
+bootstrapping_olympics.examples.rep_nuisances.misc_linear.normalize.NormalizeMean.get_matrix
+bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling.get_matrix" class="py-name" href="#" onclick="return doclink('link-11', 'get_matrix', 'link-11');">get_matrix</a></tt><tt class="py-op">(</tt><tt id="link-12" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-12', 'streamels', 'link-10');">streamels</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">A</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">                <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'A not passed to constructor and get_matrix not '</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">                       <tt class="py-string">'implemented'</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">ValueError</tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">A</tt> </tt>
+</div><a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line"> </tt>
+<a name="GenericLinear.transform_spec"></a><div id="GenericLinear.transform_spec-def"><a name="L42"></a><tt class="py-lineno">42</tt> <a class="py-toggle" href="#" id="GenericLinear.transform_spec-toggle" onclick="return toggle('GenericLinear.transform_spec');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_spec">transform_spec</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">stream_spec</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericLinear.transform_spec-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="GenericLinear.transform_spec-expanded"><a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">        <tt id="link-13" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-13', 'streamels', 'link-10');">streamels</a></tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name" targets="Module bootstrapping_olympics.interfaces.stream_spec=bootstrapping_olympics.interfaces.stream_spec-module.html"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-14', 'stream_spec', 'link-14');">stream_spec</a></tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_streamels()=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#get_streamels"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_streamels" class="py-name" href="#" onclick="return doclink('link-15', 'get_streamels', 'link-15');">get_streamels</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">        <tt id="link-16" class="py-name"><a title="bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_1D" class="py-name" href="#" onclick="return doclink('link-16', 'check_streamels_1D', 'link-0');">check_streamels_1D</a></tt><tt class="py-op">(</tt><tt id="link-17" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-17', 'streamels', 'link-10');">streamels</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">        <tt id="link-18" class="py-name"><a title="bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_continuous" class="py-name" href="#" onclick="return doclink('link-18', 'check_streamels_continuous', 'link-1');">check_streamels_continuous</a></tt><tt class="py-op">(</tt><tt id="link-19" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-19', 'streamels', 'link-10');">streamels</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line"> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A0</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">            <tt id="link-20" class="py-name"><a title="bootstrapping_olympics.examples.rep_nuisances.commons.check_streamels_1D_size" class="py-name" href="#" onclick="return doclink('link-20', 'check_streamels_1D_size', 'link-3');">check_streamels_1D_size</a></tt><tt class="py-op">(</tt><tt id="link-21" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-21', 'streamels', 'link-10');">streamels</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A0</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape()=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#shape"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape" class="py-name" href="#" onclick="return doclink('link-22', 'shape', 'link-22');">shape</a></tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line"> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear._get_A()=bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#_get_A"><a title="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear._get_A" class="py-name" href="#" onclick="return doclink('link-23', '_get_A', 'link-23');">_get_A</a></tt><tt class="py-op">(</tt><tt id="link-24" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-24', 'streamels', 'link-10');">streamels</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape" class="py-name" href="#" onclick="return doclink('link-25', 'shape', 'link-22');">shape</a></tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> <tt class="py-op">!=</tt> <tt id="link-26" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-26', 'streamels', 'link-10');">streamels</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Method bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size()=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#size"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size" class="py-name" href="#" onclick="return doclink('link-27', 'size', 'link-27');">size</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">            <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'I expect a matrix with rows %d, got %s'</tt> <tt class="py-op">%</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">                   <tt class="py-op">(</tt><tt id="link-28" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-28', 'streamels', 'link-10');">streamels</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size" class="py-name" href="#" onclick="return doclink('link-29', 'size', 'link-27');">size</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape" class="py-name" href="#" onclick="return doclink('link-30', 'shape', 'link-22');">shape</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">ValueError</tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">        <tt class="py-comment"># TODO: use constr.</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">zeros</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape" class="py-name" href="#" onclick="return doclink('link-31', 'shape', 'link-22');">shape</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt id="link-32" class="py-name"><a title="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.encrypt.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.streamel_dtype
+bootstrapping_olympics.examples.rep_nuisances.streamel_dtype
+bootstrapping_olympics.examples.streamel_dtype
+bootstrapping_olympics.interfaces.stream_spec.streamel_dtype
+bootstrapping_olympics.interfaces.streamel_dtype
+bootstrapping_olympics.interfaces.streamels.streamel_dtype
+bootstrapping_olympics.library.streamel_dtype
+bootstrapping_olympics.streamel_dtype" class="py-name" href="#" onclick="return doclink('link-32', 'streamel_dtype', 'link-8');">streamel_dtype</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'kind'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-33" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats" class="py-name" href="#" onclick="return doclink('link-33', 'ValueFormats', 'link-7');">ValueFormats</a></tt><tt class="py-op">.</tt><tt id="link-34" class="py-name" targets="Variable bootstrapping_olympics.interfaces.streamels.ValueFormats.Continuous=bootstrapping_olympics.interfaces.streamels.ValueFormats-class.html#Continuous"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Continuous" class="py-name" href="#" onclick="return doclink('link-34', 'Continuous', 'link-34');">Continuous</a></tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">        <tt id="link-35" class="py-name"><a title="bootstrapping_olympics.examples.rep_nuisances.commons.find_polytope_bounds_after_linear" class="py-name" href="#" onclick="return doclink('link-35', 'find_polytope_bounds_after_linear', 'link-2');">find_polytope_bounds_after_linear</a></tt><tt class="py-op">(</tt><tt id="link-36" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-36', 'streamels', 'link-10');">streamels</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt><tt class="py-op">,</tt> <tt class="py-name">streamels2</tt><tt class="py-op">)</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt> <tt class="py-op">=</tt> <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">copy</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">upper</tt> <tt class="py-op">=</tt> <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">copy</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line"> </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.Decrypt.transform_value()=bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.Decrypt-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.Encrypt.transform_value()=bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.Encrypt-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.Bits2int.transform_value()=bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.Bits2int-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.Int2bits.transform_value()=bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.Int2bits-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize.transform_value()=bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.flatten.Flatten.transform_value()=bootstrapping_olympics.examples.rep_nuisances.flatten.Flatten-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.flatten.Reshape.transform_value()=bootstrapping_olympics.examples.rep_nuisances.flatten.Reshape-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.identity.Identity.transform_value()=bootstrapping_olympics.examples.rep_nuisances.identity.Identity-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.linear.GLNuisance.transform_value()=bootstrapping_olympics.examples.rep_nuisances.linear.GLNuisance-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear.transform_value()=bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.NormalizeMinMax.transform_value()=bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.NormalizeMinMax-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.PopCode.transform_value()=bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.PopCode-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.PopCodeInv.transform_value()=bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.PopCodeInv-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.random_permutation.RandomPermutation.transform_value()=bootstrapping_olympics.examples.rep_nuisances.random_permutation.RandomPermutation-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling.transform_value()=bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html#transform_value,Method bootstrapping_olympics.examples.rep_nuisances.select.Select.transform_value()=bootstrapping_olympics.examples.rep_nuisances.select.Select-class.html#transform_value,Method bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.transform_value()=bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#transform_value"><a title="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.Decrypt.transform_value
+bootstrapping_olympics.examples.rep_nuisances.bits.encrypt.Encrypt.transform_value
+bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.Bits2int.transform_value
+bootstrapping_olympics.examples.rep_nuisances.bits.int2bits.Int2bits.transform_value
+bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize.transform_value
+bootstrapping_olympics.examples.rep_nuisances.flatten.Flatten.transform_value
+bootstrapping_olympics.examples.rep_nuisances.flatten.Reshape.transform_value
+bootstrapping_olympics.examples.rep_nuisances.identity.Identity.transform_value
+bootstrapping_olympics.examples.rep_nuisances.linear.GLNuisance.transform_value
+bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear.transform_value
+bootstrapping_olympics.examples.rep_nuisances.normalize_minmax.NormalizeMinMax.transform_value
+bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.PopCode.transform_value
+bootstrapping_olympics.examples.rep_nuisances.popcode_nuisance.PopCodeInv.transform_value
+bootstrapping_olympics.examples.rep_nuisances.random_permutation.RandomPermutation.transform_value
+bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling.transform_value
+bootstrapping_olympics.examples.rep_nuisances.select.Select.transform_value
+bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.transform_value" class="py-name" href="#" onclick="return doclink('link-37', 'transform_value', 'link-37');">transform_value</a></tt><tt class="py-op">(</tt><tt id="link-38" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-38', 'streamels', 'link-10');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line"> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">        <tt class="py-name">stream_spec2</tt> <tt class="py-op">=</tt> <tt id="link-39" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec" class="py-name" href="#" onclick="return doclink('link-39', 'StreamSpec', 'link-5');">StreamSpec</a></tt><tt class="py-op">(</tt><tt class="py-name">id_stream</tt><tt class="py-op">=</tt><tt id="link-40" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-40', 'stream_spec', 'link-14');">stream_spec</a></tt><tt class="py-op">.</tt><tt class="py-name">id_stream</tt><tt class="py-op">,</tt> </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">                                  <tt id="link-41" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-41', 'streamels', 'link-10');">streamels</a></tt><tt class="py-op">=</tt><tt class="py-name">streamels2</tt><tt class="py-op">,</tt> </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">                                  <tt class="py-name">extra</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">                                  <tt class="py-name">filtered</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">                                  <tt class="py-name">desc</tt><tt class="py-op">=</tt><tt id="link-42" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-42', 'stream_spec', 'link-14');">stream_spec</a></tt><tt class="py-op">.</tt><tt class="py-name">desc</tt><tt class="py-op">)</tt> </tt>
+<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line"> </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">stream_spec2</tt> </tt>
+</div><a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line"> </tt>
+<a name="GenericLinear.transform_value"></a><div id="GenericLinear.transform_value-def"><a name="L73"></a><tt class="py-lineno">73</tt> <a class="py-toggle" href="#" id="GenericLinear.transform_value-toggle" onclick="return toggle('GenericLinear.transform_value');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_value">transform_value</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericLinear.transform_value-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="GenericLinear.transform_value-expanded"><a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">        <tt class="py-name">value2</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">dot</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt><tt class="py-op">,</tt> <tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">        <tt class="py-comment"># enforce upper/lower bounds, to account for numerical errors</tt> </tt>
+<a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line">        <tt class="py-name">value2</tt> <tt class="py-op">=</tt> <tt class="py-name">value2</tt><tt class="py-op">.</tt><tt class="py-name">astype</tt><tt class="py-op">(</tt><tt class="py-string">'float32'</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line">        <tt class="py-name">value2</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">clip</tt><tt class="py-op">(</tt><tt class="py-name">value2</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">upper</tt><tt class="py-op">)</tt> </tt>
+<a name="L78"></a><tt class="py-lineno">78</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">value2</tt> </tt>
+</div><a name="L79"></a><tt class="py-lineno">79</tt>  <tt class="py-line"> </tt>
+<a name="GenericLinear.inverse"></a><div id="GenericLinear.inverse-def"><a name="L80"></a><tt class="py-lineno">80</tt> <a class="py-toggle" href="#" id="GenericLinear.inverse-toggle" onclick="return toggle('GenericLinear.inverse');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#inverse">inverse</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericLinear.inverse-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="GenericLinear.inverse-expanded"><a name="L81"></a><tt class="py-lineno">81</tt>  <tt class="py-line">        <tt class="py-comment"># TODO: left_inverse()</tt> </tt>
+<a name="L82"></a><tt class="py-lineno">82</tt>  <tt class="py-line">        <tt class="py-name">M</tt><tt class="py-op">,</tt> <tt class="py-name">N</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape" class="py-name" href="#" onclick="return doclink('link-43', 'shape', 'link-22');">shape</a></tt> </tt>
+<a name="L83"></a><tt class="py-lineno">83</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">M</tt> <tt class="py-op">!=</tt> <tt class="py-name">N</tt><tt class="py-op">:</tt> </tt>
+<a name="L84"></a><tt class="py-lineno">84</tt>  <tt class="py-line">            <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-string">'Cannot invert %s matrix.'</tt> <tt class="py-op">%</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape" class="py-name" href="#" onclick="return doclink('link-44', 'shape', 'link-22');">shape</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno">85</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt id="link-45" class="py-name"><a title="bootstrapping_olympics.interfaces.rep_nuisance.NuisanceNotInvertible" class="py-name" href="#" onclick="return doclink('link-45', 'NuisanceNotInvertible', 'link-9');">NuisanceNotInvertible</a></tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno">86</tt>  <tt class="py-line"> </tt>
+<a name="L87"></a><tt class="py-lineno">87</tt>  <tt class="py-line">        <tt class="py-comment"># TODO: check for numerical errors</tt> </tt>
+<a name="L88"></a><tt class="py-lineno">88</tt>  <tt class="py-line">        <tt class="py-name">Ainv</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">linalg</tt><tt class="py-op">.</tt><tt class="py-name">inv</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt><tt class="py-op">)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno">89</tt>  <tt class="py-line"> </tt>
+<a name="L90"></a><tt class="py-lineno">90</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-46" class="py-name" targets="Class bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear=bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html"><a title="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear" class="py-name" href="#" onclick="return doclink('link-46', 'GenericLinear', 'link-46');">GenericLinear</a></tt><tt class="py-op">(</tt><tt class="py-name">Ainv</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L91"></a><tt class="py-lineno">91</tt>  <tt class="py-line"> </tt>
+<a name="GenericLinear.__str__"></a><div id="GenericLinear.__str__-def"><a name="L92"></a><tt class="py-lineno">92</tt> <a class="py-toggle" href="#" id="GenericLinear.__str__-toggle" onclick="return toggle('GenericLinear.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericLinear.__str__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="GenericLinear.__str__-expanded"><a name="L93"></a><tt class="py-lineno">93</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L94"></a><tt class="py-lineno">94</tt>  <tt class="py-line">            <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt class="py-string">'&lt;unset&gt;'</tt> </tt>
+<a name="L95"></a><tt class="py-lineno">95</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L96"></a><tt class="py-lineno">96</tt>  <tt class="py-line">            <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt class="py-string">'(%dx%d)'</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">A</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape" class="py-name" href="#" onclick="return doclink('link-47', 'shape', 'link-22');">shape</a></tt> </tt>
+<a name="L97"></a><tt class="py-lineno">97</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'GenericLinear(%s)'</tt> <tt class="py-op">%</tt> <tt class="py-name">s</tt> </tt>
+</div></div><a name="L98"></a><tt class="py-lineno">98</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:31 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
