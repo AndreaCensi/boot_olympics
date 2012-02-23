@@ -68,10 +68,10 @@
 <center>  <map id="uml_class_diagram_for_bootstra_40" name="uml_class_diagram_for_bootstra_40">
 <area shape="rect" href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#__abstractmethods__" title="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.__abstractmethods__" alt="" coords="17,153,404,172"/>
 <area shape="rect" href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="17,175,404,193"/>
-<area shape="rect" href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#array" title=":param name: :type name: &#160;``str|seq[&gt;0](str)``" alt="" coords="17,193,404,212"/>
-<area shape="rect" href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#array_as_image" title=":param name: :type name: &#160;``str|seq[&gt;0](str)``" alt="" coords="17,212,404,231"/>
-<area shape="rect" href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#plot" title="Usage example: :" alt="" coords="17,231,404,249"/>
-<area shape="rect" href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#text" title=":param text: :type text: &#160;``str``" alt="" coords="17,249,404,268"/>
+<area shape="rect" href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#array" title="Publishes an array; the publisher decides how to visualize it." alt="" coords="17,193,404,212"/>
+<area shape="rect" href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#array_as_image" title="Publishes an array as a false&#45;color image." alt="" coords="17,212,404,231"/>
+<area shape="rect" href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#plot" title="Usage example:" alt="" coords="17,231,404,249"/>
+<area shape="rect" href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#text" title="Publishes a text object." alt="" coords="17,249,404,268"/>
 <area shape="rect" href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html" title="This is the interface that the agents can use to publish debug information." alt="" coords="16,136,405,269"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#FILTER_POSNEG" title="bootstrapping_olympics.interfaces.publisher.Publisher.FILTER_POSNEG" alt="" coords="93,28,328,47"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#FILTER_SCALE" title="bootstrapping_olympics.interfaces.publisher.Publisher.FILTER_SCALE" alt="" coords="93,47,328,65"/>
@@ -83,8 +83,8 @@
 </center>
 </center>
 <hr />
-<p>This is the interface that the agents can use to publish debug 
-  information.</p>
+This is the interface that the agents can use to publish
+debug information.
 
 <!-- ==================== NESTED CLASSES ==================== -->
 <a name="section-NestedClasses"></a>
@@ -154,7 +154,7 @@
           <td><span class="summary-sig"><a href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#array" class="summary-sig-name">array</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">name</span>,
         <span class="summary-sig-arg">value</span>)</span><br />
-      :param name: :type name:  ``str|seq[&gt;0](str)``</td>
+      Publishes an array; the publisher decides how to visualize it.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.ros.publisher.ros_publisher-pysrc.html#ROSPublisher.array">source&nbsp;code</a></span>
             
@@ -175,7 +175,7 @@
         <span class="summary-sig-arg">value</span>,
         <span class="summary-sig-arg">filter</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">posneg</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">filter_params</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span><br />
-      :param name: :type name:  ``str|seq[&gt;0](str)``</td>
+      Publishes an array as a false-color image.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.ros.publisher.ros_publisher-pysrc.html#ROSPublisher.array_as_image">source&nbsp;code</a></span>
             
@@ -193,7 +193,7 @@
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#plot" class="summary-sig-name">plot</a>(<span class="summary-sig-arg">*args</span>,
         <span class="summary-sig-arg">**kwds</span>)</span><br />
-      Usage example: :</td>
+      Usage example:</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.ros.publisher.ros_publisher-pysrc.html#ROSPublisher.plot">source&nbsp;code</a></span>
             
@@ -212,7 +212,7 @@
           <td><span class="summary-sig"><a href="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher-class.html#text" class="summary-sig-name">text</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">name</span>,
         <span class="summary-sig-arg">text</span>)</span><br />
-      :param text: :type text:  ``str``</td>
+      Publishes a text object.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.ros.publisher.ros_publisher-pysrc.html#ROSPublisher.text">source&nbsp;code</a></span>
             
@@ -347,7 +347,7 @@
     </td>
   </tr></table>
   
-  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  x.__init__(...) initializes x; see help(type(x)) for signature
   <dl class="fields">
     <dt>Overrides:
         object.__init__
@@ -372,9 +372,13 @@
     </td>
   </tr></table>
   
-  <p>:param name: :type name:  ``str|seq[&gt;0](str)``</p>
-  <p>:param value: :type value:  ``array``</p>
+  Publishes an array; the publisher decides how to visualize it.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>name</code></strong> (<tt class="rst-docutils literal"><span class="pre">str|seq[&gt;0](str)</span></tt>)</li>
+        <li><strong class="pname"><code>value</code></strong> (<tt class="rst-docutils literal">array</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#array">interfaces.publisher.Publisher.array</a>
     </dt>
@@ -399,9 +403,21 @@
     </td>
   </tr></table>
   
-  <p>:param name: :type name:  ``str|seq[&gt;0](str)``</p>
-  <p>:param value: :type value:  ``array``</p>
+  <blockquote>
+<p>Publishes an array as a false-color image.
+<tt class="rst-rst-rst-docutils literal rst-rst-docutils literal rst-docutils literal">filter</tt> is the name of a filter.
+<tt class="rst-rst-rst-docutils literal rst-rst-docutils literal rst-docutils literal">filter_params</tt> are parameters to pass to the filter.</p>
+<p>Usage example:</p>
+<pre class="rst-rst-rst-literal-block rst-rst-literal-block rst-literal-block">
+publisher.array_as_image('covariance', P, 'posneg')
+</pre>
+</blockquote>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>name</code></strong> (<tt class="rst-docutils literal"><span class="pre">str|seq[&gt;0](str)</span></tt>)</li>
+        <li><strong class="pname"><code>value</code></strong> (<tt class="rst-docutils literal">array</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#array_as_image">interfaces.publisher.Publisher.array_as_image</a>
     </dt>
@@ -423,13 +439,13 @@
     </td>
   </tr></table>
   
-  <p>Usage example: :</p>
-<pre class="literalblock">
-   with publisher.plot('my plot') as pylab:
-       pylab.plot(Ey, label='E(y)')
-       pylab.plot(y_max, label='y_max')
-       pylab.plot(y_min, label='y_min')
-       pylab.legend()
+  <p>Usage example:</p>
+<pre class="rst-rst-literal-block rst-literal-block">
+with publisher.plot('my plot') as pylab:
+    pylab.plot(Ey, label='E(y)')
+    pylab.plot(y_max, label='y_max')
+    pylab.plot(y_min, label='y_min')
+    pylab.legend()
 </pre>
   <dl class="fields">
     <dt>Overrides:
@@ -455,9 +471,19 @@
     </td>
   </tr></table>
   
-  <p>:param text: :type text:  ``str``</p>
-  <p>:param name: :type name:  ``str|seq[&gt;0](str)``</p>
+  <blockquote>
+<p>Publishes a text object.</p>
+<p>Usage example:</p>
+<pre class="rst-rst-rst-literal-block rst-rst-literal-block rst-literal-block">
+publisher.text('status', 'I am ok')
+</pre>
+</blockquote>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>text</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+        <li><strong class="pname"><code>name</code></strong> (<tt class="rst-docutils literal"><span class="pre">str|seq[&gt;0](str)</span></tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#text">interfaces.publisher.Publisher.text</a>
     </dt>
@@ -496,7 +522,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:29 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:18 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

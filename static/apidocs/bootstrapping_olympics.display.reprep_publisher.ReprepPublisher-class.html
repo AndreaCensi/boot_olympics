@@ -68,12 +68,12 @@
 <area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#__abstractmethods__" title="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher.__abstractmethods__" alt="" coords="17,140,492,159"/>
 <area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#default_max_cols" title="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher.default_max_cols" alt="" coords="17,159,492,177"/>
 <area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="17,180,492,199"/>
-<area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#array" title=":param caption: :type caption: &#160;``None|str``" alt="" coords="17,199,492,217"/>
-<area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#array_as_image" title=":param filter: :type filter: &#160;``str``" alt="" coords="17,217,492,236"/>
+<area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#array" title="Publishes an array; the publisher decides how to visualize it." alt="" coords="17,199,492,217"/>
+<area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#array_as_image" title="Publishes an array as a false&#45;color image." alt="" coords="17,217,492,236"/>
 <area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#fig" title="Returns reference to current RepRep figure." alt="" coords="17,236,492,255"/>
-<area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#plot" title=":param caption: :type caption: &#160;``None|str``" alt="" coords="17,255,492,273"/>
+<area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#plot" title="Usage example:" alt="" coords="17,255,492,273"/>
 <area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#section" title="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher.section" alt="" coords="17,273,492,292"/>
-<area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#text" title=":param name: :type name: &#160;``str``" alt="" coords="17,292,492,311"/>
+<area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#text" title="Publishes a text object." alt="" coords="17,292,492,311"/>
 <area shape="rect" href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html" title="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher" alt="" coords="16,123,493,312"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#FILTER_POSNEG" title="bootstrapping_olympics.interfaces.publisher.Publisher.FILTER_POSNEG" alt="" coords="169,28,340,47"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#FILTER_SCALE" title="bootstrapping_olympics.interfaces.publisher.Publisher.FILTER_SCALE" alt="" coords="169,47,340,65"/>
@@ -156,7 +156,7 @@
         <span class="summary-sig-arg">name</span>,
         <span class="summary-sig-arg">value</span>,
         <span class="summary-sig-arg">caption</span>=<span class="summary-sig-default">None</span>)</span><br />
-      :param caption: :type caption:  ``None|str``</td>
+      Publishes an array; the publisher decides how to visualize it.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.display.reprep_publisher-pysrc.html#ReprepPublisher.array">source&nbsp;code</a></span>
             
@@ -178,7 +178,7 @@
         <span class="summary-sig-arg">filter</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">posneg</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">filter_params</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
         <span class="summary-sig-arg">caption</span>=<span class="summary-sig-default">None</span>)</span><br />
-      :param filter: :type filter:  ``str``</td>
+      Publishes an array as a false-color image.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.display.reprep_publisher-pysrc.html#ReprepPublisher.array_as_image">source&nbsp;code</a></span>
             
@@ -213,7 +213,7 @@
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#plot" class="summary-sig-name">plot</a>(<span class="summary-sig-arg">*args</span>,
         <span class="summary-sig-arg">**kwds</span>)</span><br />
-      :param caption: :type caption:  ``None|str``</td>
+      Usage example:</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.display.reprep_publisher-pysrc.html#ReprepPublisher.plot">source&nbsp;code</a></span>
             
@@ -250,7 +250,7 @@
           <td><span class="summary-sig"><a href="bootstrapping_olympics.display.reprep_publisher.ReprepPublisher-class.html#text" class="summary-sig-name">text</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">name</span>,
         <span class="summary-sig-arg">value</span>)</span><br />
-      :param name: :type name:  ``str``</td>
+      Publishes a text object.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.display.reprep_publisher-pysrc.html#ReprepPublisher.text">source&nbsp;code</a></span>
             
@@ -392,7 +392,7 @@
     </td>
   </tr></table>
   
-  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  x.__init__(...) initializes x; see help(type(x)) for signature
   <dl class="fields">
     <dt>Overrides:
         object.__init__
@@ -418,9 +418,13 @@
     </td>
   </tr></table>
   
-  <p>:param caption: :type caption:  ``None|str``</p>
-  <p>:param name: :type name:  ``str``</p>
+  Publishes an array; the publisher decides how to visualize it.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>caption</code></strong> (<tt class="rst-docutils literal">None|str</tt>)</li>
+        <li><strong class="pname"><code>name</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#array">interfaces.publisher.Publisher.array</a>
     </dt>
@@ -446,11 +450,23 @@
     </td>
   </tr></table>
   
-  <p>:param filter: :type filter:  ``str``</p>
-  <p>:param caption: :type caption:  ``None|str``</p>
-  <p>:param name: :type name:  ``str``</p>
-  <p>:param value: :type value:  ``array``</p>
+  <blockquote>
+<p>Publishes an array as a false-color image.
+<tt class="rst-docutils literal">filter</tt> is the name of a filter.
+<tt class="rst-docutils literal">filter_params</tt> are parameters to pass to the filter.</p>
+<p>Usage example:</p>
+<pre class="rst-literal-block">
+publisher.array_as_image('covariance', P, 'posneg')
+</pre>
+</blockquote>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>filter</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+        <li><strong class="pname"><code>caption</code></strong> (<tt class="rst-docutils literal">None|str</tt>)</li>
+        <li><strong class="pname"><code>name</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+        <li><strong class="pname"><code>value</code></strong> (<tt class="rst-docutils literal">array</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#array_as_image">interfaces.publisher.Publisher.array_as_image</a>
     </dt>
@@ -472,9 +488,20 @@
     </td>
   </tr></table>
   
-  <p>:param caption: :type caption:  ``None|str``</p>
-  <p>:param name: :type name:  ``str``</p>
+  <p>Usage example:</p>
+<pre class="rst-literal-block">
+with publisher.plot('my plot') as pylab:
+    pylab.plot(Ey, label='E(y)')
+    pylab.plot(y_max, label='y_max')
+    pylab.plot(y_min, label='y_min')
+    pylab.legend()
+</pre>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>caption</code></strong> (<tt class="rst-docutils literal">None|str</tt>)</li>
+        <li><strong class="pname"><code>name</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#plot">interfaces.publisher.Publisher.plot</a>
     </dt>
@@ -521,9 +548,19 @@
     </td>
   </tr></table>
   
-  <p>:param name: :type name:  ``str``</p>
-  <p>:param value: :type value:  ``str``</p>
+  <blockquote>
+<p>Publishes a text object.</p>
+<p>Usage example:</p>
+<pre class="rst-literal-block">
+publisher.text('status', 'I am ok')
+</pre>
+</blockquote>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>name</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+        <li><strong class="pname"><code>value</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#text">interfaces.publisher.Publisher.text</a>
     </dt>
@@ -562,7 +599,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:26 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:16 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

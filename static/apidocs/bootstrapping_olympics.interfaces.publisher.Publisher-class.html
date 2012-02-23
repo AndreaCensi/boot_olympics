@@ -71,7 +71,7 @@
 <area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="56,84,531,103"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#array" title="Publishes an array; the publisher decides how to visualize it." alt="" coords="56,105,531,124"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#array_as_image" title="Publishes an array as a false&#45;color image." alt="" coords="56,124,531,143"/>
-<area shape="rect" href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#plot" title="Usage example: :" alt="" coords="56,143,531,161"/>
+<area shape="rect" href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#plot" title="Usage example:" alt="" coords="56,143,531,161"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#section" title="bootstrapping_olympics.interfaces.publisher.Publisher.section" alt="" coords="56,161,531,180"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#text" title="Publishes a text object." alt="" coords="56,180,531,199"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html" title="This is the interface that the agents can use to publish debug information." alt="" coords="55,11,532,200"/>
@@ -82,8 +82,8 @@
 </center>
 </center>
 <hr />
-<p>This is the interface that the agents can use to publish debug 
-  information.</p>
+This is the interface that the agents can use to publish
+debug information.
 
 <!-- ==================== NESTED CLASSES ==================== -->
 <a name="section-NestedClasses"></a>
@@ -176,11 +176,11 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.interfaces.publisher.Publisher-class.html#plot" class="summary-sig-name">plot</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a name="plot"></a><span class="summary-sig-name">plot</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">name</span>,
         <span class="summary-sig-arg">caption</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">**args</span>)</span><br />
-      Usage example: :</td>
+      Usage example:</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.interfaces.publisher-pysrc.html#Publisher.plot">source&nbsp;code</a></span>
             
@@ -289,14 +289,14 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="_abc_cache"></a><span class="summary-name">_abc_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x1849910&gt;">&lt;_weakrefset.WeakSet object at 0x1849910&gt;</code>
+        <a name="_abc_cache"></a><span class="summary-name">_abc_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x30cf0d0&gt;">&lt;_weakrefset.WeakSet object at 0x30cf0d0&gt;</code>
     </td>
   </tr>
 <tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="_abc_negative_cache"></a><span class="summary-name">_abc_negative_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x1849c90&gt;">&lt;_weakrefset.WeakSet object at 0x1849c90&gt;</code>
+        <a name="_abc_negative_cache"></a><span class="summary-name">_abc_negative_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x30cf3d0&gt;">&lt;_weakrefset.WeakSet object at 0x30cf3d0&gt;</code>
     </td>
   </tr>
 <tr class="private">
@@ -310,7 +310,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="_abc_registry"></a><span class="summary-name">_abc_registry</span> = <code title="&lt;_weakrefset.WeakSet object at 0x1849390&gt;">&lt;_weakrefset.WeakSet object at 0x1849390&gt;</code>
+        <a name="_abc_registry"></a><span class="summary-name">_abc_registry</span> = <code title="&lt;_weakrefset.WeakSet object at 0x30c8110&gt;">&lt;_weakrefset.WeakSet object at 0x30c8110&gt;</code>
     </td>
   </tr>
 </table>
@@ -374,10 +374,13 @@
     </td>
   </tr></table>
   
-  <p>Publishes an array; the publisher decides how to visualize it.</p>
-  <p>:param name: :type name:  ``str``</p>
-  <p>:param value: :type value:  ``array``</p>
+  Publishes an array; the publisher decides how to visualize it.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>name</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+        <li><strong class="pname"><code>value</code></strong> (<tt class="rst-docutils literal">array</tt>)</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -400,55 +403,21 @@
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-           Publishes an array as a false-color image. 
-           ``filter`` is the name of a filter.
-           ``filter_params`` are parameters to pass to the filter.
-           
-           Usage example: ::
-           
-               publisher.array_as_image('covariance', P, 'posneg')
-       
-
-
-:param name: 
-:type name:  ``str``
-
-:param value: 
-:type value:  ``array``
-
+  <blockquote>
+<p>Publishes an array as a false-color image.
+<tt class="rst-rst-docutils literal rst-docutils literal">filter</tt> is the name of a filter.
+<tt class="rst-rst-docutils literal rst-docutils literal">filter_params</tt> are parameters to pass to the filter.</p>
+<p>Usage example:</p>
+<pre class="rst-rst-literal-block rst-literal-block">
+publisher.array_as_image('covariance', P, 'posneg')
 </pre>
+</blockquote>
   <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="plot"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">plot</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">name</span>,
-        <span class="sig-arg">caption</span>=<span class="sig-default">None</span>,
-        <span class="sig-arg">**args</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.interfaces.publisher-pysrc.html#Publisher.plot">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Usage example: :</p>
-<pre class="literalblock">
-   with publisher.plot('my plot') as pylab:
-       pylab.plot(Ey, label='E(y)')
-       pylab.plot(y_max, label='y_max')
-       pylab.plot(y_min, label='y_min')
-       pylab.legend()
-</pre>
-  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>name</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+        <li><strong class="pname"><code>value</code></strong> (<tt class="rst-docutils literal">array</tt>)</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -468,24 +437,19 @@
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-           Publishes a text object.
-
-           Usage example: ::
-           
-               publisher.text('status', 'I am ok')
-       
-
-
-:param text: 
-:type text:  ``str``
-
-:param name: 
-:type name:  ``str``
-
+  <blockquote>
+<p>Publishes a text object.</p>
+<p>Usage example:</p>
+<pre class="rst-rst-literal-block rst-literal-block">
+publisher.text('status', 'I am ok')
 </pre>
+</blockquote>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>text</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+        <li><strong class="pname"><code>name</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -558,7 +522,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:28 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:17 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

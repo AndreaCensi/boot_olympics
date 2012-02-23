@@ -108,8 +108,7 @@
         <span class="summary-sig-arg">streamels</span>,
         <span class="summary-sig-arg">extra</span>,
         <span class="summary-sig-arg">filtered</span>=<span class="summary-sig-default">None</span>,
-        <span class="summary-sig-arg">desc</span>=<span class="summary-sig-default">None</span>)</span><br />
-      :param filtered: :type filtered:  ``None|dict``</td>
+        <span class="summary-sig-arg">desc</span>=<span class="summary-sig-default">None</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.interfaces.stream_spec-pysrc.html#StreamSpec.__init__">source&nbsp;code</a></span>
             
@@ -144,7 +143,7 @@
           <td><span class="summary-sig"><a href="bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#check_valid_value" class="summary-sig-name">check_valid_value</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">x</span>)</span><br />
       Checks if the value x is valid according to this spec
-           and raises BootInvalidValue (derived from ValueError) if it is not.</td>
+and raises BootInvalidValue (derived from ValueError) if it is not.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.interfaces.stream_spec-pysrc.html#StreamSpec.check_valid_value">source&nbsp;code</a></span>
             
@@ -156,12 +155,13 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal">array</tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#get_default_value" class="summary-sig-name">get_default_value</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Returns a &quot;default value&quot; for this stream.</td>
+      commands streams, this has the semantics of being
+a &quot;at rest&quot; value.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.interfaces.stream_spec-pysrc.html#StreamSpec.get_default_value">source&nbsp;code</a></span>
             
@@ -189,12 +189,12 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal">array</tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#get_random_value" class="summary-sig-name">get_random_value</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Returns a &quot;random value&quot; for this stream.</td>
+      This is distributed uniformly in the ranges.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.interfaces.stream_spec-pysrc.html#StreamSpec.get_random_value">source&nbsp;code</a></span>
             
@@ -222,13 +222,12 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal"><span class="pre">seq[&gt;0](int,&gt;0)</span></tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#shape" class="summary-sig-name">shape</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Returns the shape of the stream, as a sequence of positive 
-           integers (like Numpy's shape).</td>
+          <td><span class="summary-sig"><a name="shape"></a><span class="summary-sig-name">shape</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      integers (like Numpy's shape).</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.interfaces.stream_spec-pysrc.html#StreamSpec.shape">source&nbsp;code</a></span>
             
@@ -240,11 +239,11 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal"><span class="pre">int,&gt;0</span></tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#size" class="summary-sig-name">size</a>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a name="size"></a><span class="summary-sig-name">size</span>(<span class="summary-sig-arg">self</span>)</span><br />
       Returns the number of total elements in the stream.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.interfaces.stream_spec-pysrc.html#StreamSpec.size">source&nbsp;code</a></span>
@@ -257,12 +256,11 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal">dict</tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="to_yaml"></a><span class="summary-sig-name">to_yaml</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      :rtype:  ``dict``</td>
+          <td><span class="summary-sig"><a name="to_yaml"></a><span class="summary-sig-name">to_yaml</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.interfaces.stream_spec-pysrc.html#StreamSpec.to_yaml">source&nbsp;code</a></span>
             
@@ -313,8 +311,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="from_yaml"></a><span class="summary-sig-name">from_yaml</span>(<span class="summary-sig-arg">spec</span>)</span><br />
-      :param spec: :type spec:  ``dict``</td>
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#from_yaml" class="summary-sig-name">from_yaml</a>(<span class="summary-sig-arg">spec</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.interfaces.stream_spec-pysrc.html#StreamSpec.from_yaml">source&nbsp;code</a></span>
             
@@ -381,12 +378,16 @@
     </td>
   </tr></table>
   
-  <p>:param filtered: :type filtered:  ``None|dict``</p>
-  <p>:param desc: :type desc:  ``None|str``</p>
-  <p>:param streamels: :type streamels:  ``array``</p>
-  <p>:param id_stream: :type id_stream:  ``None|str``</p>
-  <p>:param extra: :type extra:  ``None|dict``</p>
+  
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>filtered</code></strong> (<tt class="rst-docutils literal">None|dict</tt>)</li>
+        <li><strong class="pname"><code>desc</code></strong> (<tt class="rst-docutils literal">None|str</tt>)</li>
+        <li><strong class="pname"><code>streamels</code></strong> (<tt class="rst-docutils literal">array</tt>)</li>
+        <li><strong class="pname"><code>id_stream</code></strong> (<tt class="rst-docutils literal">None|str</tt>)</li>
+        <li><strong class="pname"><code>extra</code></strong> (<tt class="rst-docutils literal">None|dict</tt>)</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -405,18 +406,38 @@
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-           Checks if the value x is valid according to this spec
-           and raises BootInvalidValue (derived from ValueError) if it is not.
-        
-
-
-:param x: 
-:type x:  ``array``
-
-</pre>
+  <blockquote>
+Checks if the value x is valid according to this spec
+and raises BootInvalidValue (derived from ValueError) if it is not.</blockquote>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>x</code></strong> (<tt class="rst-docutils literal">array</tt>)</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="from_yaml"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">from_yaml</span>(<span class="sig-arg">spec</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="bootstrapping_olympics.interfaces.stream_spec-pysrc.html#StreamSpec.from_yaml">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>spec</code></strong> (<tt class="rst-docutils literal">dict</tt>)</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -434,17 +455,14 @@
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-Returns a &quot;default value&quot; for this stream. For
-           commands streams, this has the semantics of being
-           a &quot;at rest&quot; value. For observations, this is an &quot;example&quot;
-           value, used for visualization. 
-
-
-:rtype:  ``array``
-
-</pre>
+  <dl class="rst-docutils">
+<dt>Returns a &quot;default value&quot; for this stream. For</dt>
+<dd>commands streams, this has the semantics of being
+a &quot;at rest&quot; value. For observations, this is an &quot;example&quot;
+value, used for visualization.</dd>
+</dl>
   <dl class="fields">
+    <dt>Returns: <tt class="rst-rst-docutils literal rst-docutils literal">array</tt></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -462,62 +480,13 @@ Returns a &quot;default value&quot; for this stream. For
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-Returns a &quot;random value&quot; for this stream. 
-           This is distributed uniformly in the ranges. 
-           (representation dependent)
-
-
-:rtype:  ``array``
-
-</pre>
+  <dl class="rst-docutils">
+<dt>Returns a &quot;random value&quot; for this stream.</dt>
+<dd>This is distributed uniformly in the ranges.
+(representation dependent)</dd>
+</dl>
   <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="shape"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">shape</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.interfaces.stream_spec-pysrc.html#StreamSpec.shape">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <pre class="literalblock">
-Returns the shape of the stream, as a sequence of positive 
-           integers (like Numpy's shape). 
-
-
-:rtype:  ``seq[&gt;0](int,&gt;0)``
-
-</pre>
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="size"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">size</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.interfaces.stream_spec-pysrc.html#StreamSpec.size">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Returns the number of total elements in the stream.</p>
-  <p>:rtype:  ``int,&gt;0``</p>
-  <dl class="fields">
+    <dt>Returns: <tt class="rst-rst-docutils literal rst-docutils literal">array</tt></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -553,7 +522,7 @@ Returns the shape of the stream, as a sequence of positive
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:28 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:17 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

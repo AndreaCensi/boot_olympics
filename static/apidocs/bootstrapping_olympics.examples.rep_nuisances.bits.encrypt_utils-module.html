@@ -83,14 +83,13 @@
 </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal"><span class="pre">array[X](=0|=1)</span></tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt_utils-module.html#bits_decrypt" class="summary-sig-name">bits_decrypt</a>(<span class="summary-sig-arg">bits</span>,
         <span class="summary-sig-arg">password</span>,
-        <span class="summary-sig-arg">ngoodbits</span>)</span><br />
-      :param ngoodbits: :type ngoodbits:  ``int,X,&gt;0,&lt;=N``</td>
+        <span class="summary-sig-arg">ngoodbits</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt_utils-pysrc.html#bits_decrypt">source&nbsp;code</a></span>
             
@@ -102,13 +101,12 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal"><span class="pre">array[X](=0|=1),X&gt;=N,X&lt;=N+63</span></tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt_utils-module.html#bits_encrypt" class="summary-sig-name">bits_encrypt</a>(<span class="summary-sig-arg">bits</span>,
-        <span class="summary-sig-arg">password</span>)</span><br />
-      :param password: :type password:  ``str``</td>
+        <span class="summary-sig-arg">password</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt_utils-pysrc.html#bits_encrypt">source&nbsp;code</a></span>
             
@@ -120,12 +118,11 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal"><span class="pre">array[X](=0|=1),X&gt;=N,X&lt;=N+7</span></tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt_utils-module.html#bits_pad_to_byte" class="summary-sig-name">bits_pad_to_byte</a>(<span class="summary-sig-arg">bits</span>)</span><br />
-      :param bits: :type bits:  ``seq[N](0|1)``</td>
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt_utils-module.html#bits_pad_to_byte" class="summary-sig-name">bits_pad_to_byte</a>(<span class="summary-sig-arg">bits</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.encrypt_utils-pysrc.html#bits_pad_to_byte">source&nbsp;code</a></span>
             
@@ -233,11 +230,15 @@
     </td>
   </tr></table>
   
-  <p>:param ngoodbits: :type ngoodbits:  ``int,X,&gt;0,&lt;=N``</p>
-  <p>:param password: :type password:  ``str``</p>
-  <p>:param bits: :type bits:  ``seq[N](0|1)``</p>
-  <p>:rtype:  ``array[X](=0|=1)``</p>
+  
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>ngoodbits</code></strong> (<tt class="rst-docutils literal"><span class="pre">int,X,&gt;0,&lt;=N</span></tt>)</li>
+        <li><strong class="pname"><code>password</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+        <li><strong class="pname"><code>bits</code></strong> (<tt class="rst-docutils literal"><span class="pre">seq[N](0|1)</span></tt>)</li>
+    </ul></dd>
+    <dt>Returns: <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">array[X](=0|=1)</span></tt></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -256,10 +257,14 @@
     </td>
   </tr></table>
   
-  <p>:param password: :type password:  ``str``</p>
-  <p>:param bits: :type bits:  ``seq[N](0|1)``</p>
-  <p>:rtype:  ``array[X](=0|=1),X&gt;=N,X&lt;=N+63``</p>
+  
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>password</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+        <li><strong class="pname"><code>bits</code></strong> (<tt class="rst-docutils literal"><span class="pre">seq[N](0|1)</span></tt>)</li>
+    </ul></dd>
+    <dt>Returns: <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">array[X](=0|=1),X&gt;=N,X&lt;=N+63</span></tt></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -277,9 +282,13 @@
     </td>
   </tr></table>
   
-  <p>:param bits: :type bits:  ``seq[N](0|1)``</p>
-  <p>:rtype:  ``array[X](=0|=1),X&gt;=N,X&lt;=N+7``</p>
+  
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>bits</code></strong> (<tt class="rst-docutils literal"><span class="pre">seq[N](0|1)</span></tt>)</li>
+    </ul></dd>
+    <dt>Returns: <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">array[X](=0|=1),X&gt;=N,X&lt;=N+7</span></tt></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -352,7 +361,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:25 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:15 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

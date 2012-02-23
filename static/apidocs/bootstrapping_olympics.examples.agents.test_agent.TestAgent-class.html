@@ -69,7 +69,7 @@
 <area shape="rect" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#__abstractmethods__" title="bootstrapping_olympics.examples.agents.test_agent.TestAgent.__abstractmethods__" alt="" coords="17,265,257,284"/>
 <area shape="rect" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="17,287,257,305"/>
 <area shape="rect" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#__repr__" title="repr(x)" alt="" coords="17,305,257,324"/>
-<area shape="rect" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#choose_commands" title="Chooses commands to be generated; must return a sequence of numbers or &#160;array." alt="" coords="17,324,257,343"/>
+<area shape="rect" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#choose_commands" title="Chooses commands to be generated; must return a sequence of numbers or array." alt="" coords="17,324,257,343"/>
 <area shape="rect" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#init" title="Called when the observations and commands shape are available, so that the agent can initialize its data structures." alt="" coords="17,343,257,361"/>
 <area shape="rect" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#process_observations" title="Process new observations." alt="" coords="17,361,257,380"/>
 <area shape="rect" href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html" title="A simple agent useful for testing." alt="" coords="16,248,259,381"/>
@@ -89,18 +89,14 @@
 </center>
 </center>
 <hr />
-<pre class="literalblock">
-
-A simple agent useful for testing.
-
-It executes any command specified on the constructor. 
-If the command is a string, then it is eval()uated.
- 
-You can use the variables:
-- &quot;t&quot; for time.
-- &quot;y&quot; for the observations.        
-
-</pre>
+<p>A simple agent useful for testing.</p>
+<p>It executes any command specified on the constructor.
+If the command is a string, then it is eval()uated.</p>
+<p>You can use the variables:</p>
+<ul class="rst-simple">
+<li>&quot;t&quot; for time.</li>
+<li>&quot;y&quot; for the observations.</li>
+</ul>
 
 <!-- ==================== NESTED CLASSES ==================== -->
 <a name="section-NestedClasses"></a>
@@ -186,8 +182,8 @@ You can use the variables:
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#choose_commands" class="summary-sig-name">choose_commands</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Chooses commands to be generated; must return a sequence of numbers 
-      or array.</td>
+      Chooses commands to be generated; must return a sequence
+of numbers or array.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.agents.test_agent-pysrc.html#TestAgent.choose_commands">source&nbsp;code</a></span>
             
@@ -364,7 +360,7 @@ so that the agent can initialize its data structures.</td>
     </td>
   </tr></table>
   
-  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  x.__init__(...) initializes x; see help(type(x)) for signature
   <dl class="fields">
     <dt>Overrides:
         object.__init__
@@ -388,7 +384,7 @@ so that the agent can initialize its data structures.</td>
     </td>
   </tr></table>
   
-  <p>repr(x)</p>
+  repr(x)
   <dl class="fields">
     <dt>Overrides:
         object.__repr__
@@ -411,8 +407,8 @@ so that the agent can initialize its data structures.</td>
     </td>
   </tr></table>
   
-  <p>Chooses commands to be generated; must return a sequence of numbers or
-  array.</p>
+  Chooses commands to be generated; must return a sequence
+of numbers or array.
   <dl class="fields">
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#choose_commands">interfaces.agent.AgentInterface.choose_commands</a>
@@ -436,21 +432,16 @@ so that the agent can initialize its data structures.</td>
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-Called when the observations and commands shape are available,
-so that the agent can initialize its data structures.
-
-The agent might throw the exception UnsupportedSpec if the 
-spec is not supported.
-
-:param:boot_spec: An instance of the class BootSpec, which
-                  describes the specifications of the sensorimotor
-                  cascades.
-                  
-
-</pre>
+  <p>Called when the observations and commands shape are available,
+so that the agent can initialize its data structures.</p>
+<p>The agent might throw the exception UnsupportedSpec if the
+spec is not supported.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>boot_spec</code></strong> - An instance of the class BootSpec, which
+describes the specifications of the sensorimotor cascades.</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#init">interfaces.agent.AgentInterface.init</a>
         <dd><em class="note">(inherited documentation)</em></dd>
@@ -473,9 +464,12 @@ spec is not supported.
     </td>
   </tr></table>
   
-  <p>Process new observations.</p>
-  <p>:param:observations: a structure of type Observations</p>
+  Process new observations.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>observations</code></strong> - a structure of type Observations</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#process_observations">interfaces.agent.AgentInterface.process_observations</a>
         <dd><em class="note">(inherited documentation)</em></dd>
@@ -515,7 +509,7 @@ spec is not supported.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:26 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:16 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

@@ -67,10 +67,10 @@
 <center>
 <center>  <map id="uml_class_diagram_for_bootstra_11" name="uml_class_diagram_for_bootstra_11">
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#__abstractmethods__" title="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize.__abstractmethods__" alt="" coords="56,103,261,121"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#__init__" title=":param levels: :type levels: &#160;``int,&gt;=2``" alt="" coords="56,124,261,143"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="56,124,261,143"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#__repr__" title="repr(x)" alt="" coords="56,143,261,161"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#inverse" title="Returns the inverse representation nuisance, or NuisanceNotInvertible" alt="" coords="56,161,261,180"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#transform_spec" title=":param stream_spec: :type stream_spec: &#160;``StreamSpec``" alt="" coords="56,180,261,199"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#transform_spec" title="Returns the changed StreamSpec, or throws UnsupportedSpec if the spec is not supported." alt="" coords="56,180,261,199"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#transform_value" title="Returns the transformed value." alt="" coords="56,199,261,217"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html" title="This nuisance discretizes a float stream into an integer representation." alt="" coords="55,85,263,219"/>
 <area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="17,28,300,47"/>
@@ -80,9 +80,9 @@
 </center>
 </center>
 <hr />
-<p>This nuisance discretizes a float stream into an integer 
-  representation.</p>
-  <p>There is an inverse, but it is imprecise.</p>
+<p>This nuisance discretizes a float stream into
+an integer representation.</p>
+<p>There is an inverse, but it is imprecise.</p>
 
 <!-- ==================== NESTED CLASSES ==================== -->
 <a name="section-NestedClasses"></a>
@@ -134,7 +134,7 @@
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">levels</span>)</span><br />
-      :param levels: :type levels:  ``int,&gt;=2``</td>
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.discretize-pysrc.html#Discretize.__init__">source&nbsp;code</a></span>
             
@@ -168,7 +168,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#inverse" class="summary-sig-name">inverse</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Returns the inverse representation nuisance, or NuisanceNotInvertible</td>
+      Returns the inverse representation nuisance, or
+NuisanceNotInvertible</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.discretize-pysrc.html#Discretize.inverse">source&nbsp;code</a></span>
             
@@ -186,7 +187,8 @@
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.discretize.Discretize-class.html#transform_spec" class="summary-sig-name">transform_spec</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">stream_spec</span>)</span><br />
-      :param stream_spec: :type stream_spec:  ``StreamSpec``</td>
+      Returns the changed StreamSpec, or throws
+UnsupportedSpec if the spec is not supported.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.discretize-pysrc.html#Discretize.transform_spec">source&nbsp;code</a></span>
             
@@ -332,8 +334,12 @@
     </td>
   </tr></table>
   
-  <p>:param levels: :type levels:  ``int,&gt;=2``</p>
+  x.__init__(...) initializes x; see help(type(x)) for signature
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>levels</code></strong> (<tt class="rst-docutils literal"><span class="pre">int,&gt;=2</span></tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         object.__init__
     </dt>
@@ -355,7 +361,7 @@
     </td>
   </tr></table>
   
-  <p>repr(x)</p>
+  repr(x)
   <dl class="fields">
     <dt>Overrides:
         object.__repr__
@@ -378,8 +384,8 @@
     </td>
   </tr></table>
   
-  <p>Returns the inverse representation nuisance, or 
-  NuisanceNotInvertible</p>
+  Returns the inverse representation nuisance, or
+NuisanceNotInvertible
   <dl class="fields">
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#inverse">interfaces.rep_nuisance.RepresentationNuisance.inverse</a>
@@ -403,8 +409,13 @@
     </td>
   </tr></table>
   
-  <p>:param stream_spec: :type stream_spec:  ``StreamSpec``</p>
+  Returns the changed StreamSpec, or throws
+UnsupportedSpec if the spec is not supported.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>stream_spec</code></strong> (<tt class="rst-docutils literal">StreamSpec</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#transform_spec">interfaces.rep_nuisance.RepresentationNuisance.transform_spec</a>
     </dt>
@@ -426,7 +437,7 @@
     </td>
   </tr></table>
   
-  <p>Returns the transformed value.</p>
+  Returns the transformed value.
   <dl class="fields">
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#transform_value">interfaces.rep_nuisance.RepresentationNuisance.transform_value</a>
@@ -467,7 +478,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:27 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:16 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

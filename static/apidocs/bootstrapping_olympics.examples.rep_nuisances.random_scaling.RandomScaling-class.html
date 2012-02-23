@@ -68,10 +68,10 @@
 <center>
 <center>  <map id="uml_class_diagram_for_bootstra_23" name="uml_class_diagram_for_bootstra_23">
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#__abstractmethods__" title="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling.__abstractmethods__" alt="" coords="55,103,263,121"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#__init__" title=":param seed: :type seed: &#160;``int``" alt="" coords="55,124,263,143"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="55,124,263,143"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#__str__" title="str(x)" alt="" coords="55,143,263,161"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#inverse" title="Returns the inverse representation nuisance, or NuisanceNotInvertible" alt="" coords="55,161,263,180"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#transform_spec" title=":param stream_spec: :type stream_spec: &#160;``StreamSpec``" alt="" coords="55,180,263,199"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#transform_spec" title="Returns the changed StreamSpec, or throws UnsupportedSpec if the spec is not supported." alt="" coords="55,180,263,199"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#transform_value" title="Returns the transformed value." alt="" coords="55,199,263,217"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html" title="A fixed random scaling of the signal." alt="" coords="53,85,264,219"/>
 <area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="17,28,300,47"/>
@@ -81,7 +81,7 @@
 </center>
 </center>
 <hr />
-<p>A fixed random scaling of the signal.</p>
+A fixed random scaling of the signal.
 
 <!-- ==================== NESTED CLASSES ==================== -->
 <a name="section-NestedClasses"></a>
@@ -134,7 +134,7 @@
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">seed</span>,
         <span class="summary-sig-arg">inverted</span>=<span class="summary-sig-default">False</span>)</span><br />
-      :param seed: :type seed:  ``int``</td>
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
           <td align="right" valign="top">
             
             
@@ -168,7 +168,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#inverse" class="summary-sig-name">inverse</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Returns the inverse representation nuisance, or NuisanceNotInvertible</td>
+      Returns the inverse representation nuisance, or
+NuisanceNotInvertible</td>
           <td align="right" valign="top">
             
             
@@ -186,7 +187,8 @@
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#transform_spec" class="summary-sig-name">transform_spec</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">stream_spec</span>)</span><br />
-      :param stream_spec: :type stream_spec:  ``StreamSpec``</td>
+      Returns the changed StreamSpec, or throws
+UnsupportedSpec if the spec is not supported.</td>
           <td align="right" valign="top">
             
             
@@ -333,9 +335,13 @@
     </td>
   </tr></table>
   
-  <p>:param seed: :type seed:  ``int``</p>
-  <p>:param inverted: :type inverted:  ``bool``</p>
+  x.__init__(...) initializes x; see help(type(x)) for signature
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>seed</code></strong> (<tt class="rst-docutils literal">int</tt>)</li>
+        <li><strong class="pname"><code>inverted</code></strong> (<tt class="rst-docutils literal">bool</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         object.__init__
     </dt>
@@ -357,7 +363,7 @@
     </td>
   </tr></table>
   
-  <p>str(x)</p>
+  str(x)
   <dl class="fields">
     <dt>Overrides:
         object.__str__
@@ -380,8 +386,8 @@
     </td>
   </tr></table>
   
-  <p>Returns the inverse representation nuisance, or 
-  NuisanceNotInvertible</p>
+  Returns the inverse representation nuisance, or
+NuisanceNotInvertible
   <dl class="fields">
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#inverse">interfaces.rep_nuisance.RepresentationNuisance.inverse</a>
@@ -405,8 +411,13 @@
     </td>
   </tr></table>
   
-  <p>:param stream_spec: :type stream_spec:  ``StreamSpec``</p>
+  Returns the changed StreamSpec, or throws
+UnsupportedSpec if the spec is not supported.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>stream_spec</code></strong> (<tt class="rst-docutils literal">StreamSpec</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#transform_spec">interfaces.rep_nuisance.RepresentationNuisance.transform_spec</a>
     </dt>
@@ -428,7 +439,7 @@
     </td>
   </tr></table>
   
-  <p>Returns the transformed value.</p>
+  Returns the transformed value.
   <dl class="fields">
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#transform_value">interfaces.rep_nuisance.RepresentationNuisance.transform_value</a>
@@ -469,7 +480,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:27 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:17 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

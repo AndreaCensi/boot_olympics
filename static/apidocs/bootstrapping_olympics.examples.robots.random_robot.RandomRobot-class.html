@@ -70,9 +70,9 @@
 <area shape="rect" href="bootstrapping_olympics.examples.robots.random_robot.RandomRobot-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="17,156,329,175"/>
 <area shape="rect" href="bootstrapping_olympics.examples.robots.random_robot.RandomRobot-class.html#__str__" title="str(x)" alt="" coords="17,175,329,193"/>
 <area shape="rect" href="bootstrapping_olympics.examples.robots.random_robot.RandomRobot-class.html#get_observations" title="Get observations." alt="" coords="17,193,329,212"/>
-<area shape="rect" href="bootstrapping_olympics.examples.robots.random_robot.RandomRobot-class.html#get_spec" title="Returns the sensorimotor spec for this robot &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(a BootSpec object)." alt="" coords="17,212,329,231"/>
+<area shape="rect" href="bootstrapping_olympics.examples.robots.random_robot.RandomRobot-class.html#get_spec" title="(a BootSpec object)." alt="" coords="17,212,329,231"/>
 <area shape="rect" href="bootstrapping_olympics.examples.robots.random_robot.RandomRobot-class.html#new_episode" title="Skips to the next episode." alt="" coords="17,231,329,249"/>
-<area shape="rect" href="bootstrapping_olympics.examples.robots.random_robot.RandomRobot-class.html#set_commands" title=":param commands: :type commands: &#160;``array``" alt="" coords="17,249,329,268"/>
+<area shape="rect" href="bootstrapping_olympics.examples.robots.random_robot.RandomRobot-class.html#set_commands" title="Send the given commands." alt="" coords="17,249,329,268"/>
 <area shape="rect" href="bootstrapping_olympics.examples.robots.random_robot.RandomRobot-class.html" title="This is a sensorimotor cascade generating uniform noise, and ignores any command given." alt="" coords="16,117,331,269"/>
 <area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="85,28,261,47"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#get_state" title="Return the state so that it can be saved." alt="" coords="85,49,261,68"/>
@@ -83,8 +83,8 @@
 </center>
 </center>
 <hr />
-<p>This is a sensorimotor cascade generating uniform noise, and ignores 
-  any command given.</p>
+This is a sensorimotor cascade generating uniform noise,
+and ignores any command given.
 
 <!-- ==================== NESTED CLASSES ==================== -->
 <a name="section-NestedClasses"></a>
@@ -166,7 +166,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-rst-rst-docutils literal rst-rst-docutils literal rst-docutils literal">RobotObservations</tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -183,13 +183,12 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-rst-rst-docutils literal rst-rst-docutils literal rst-docutils literal">BootSpec</tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.robots.random_robot.RandomRobot-class.html#get_spec" class="summary-sig-name">get_spec</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Returns the sensorimotor spec for this robot
-           (a BootSpec object).</td>
+      (a BootSpec object).</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.robots.random_robot-pysrc.html#RandomRobot.get_spec">source&nbsp;code</a></span>
             
@@ -201,7 +200,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-rst-rst-docutils literal rst-rst-docutils literal rst-docutils literal">EpisodeDesc</tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -225,7 +224,7 @@
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.robots.random_robot.RandomRobot-class.html#set_commands" class="summary-sig-name">set_commands</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">commands</span>,
         <span class="summary-sig-arg">commands_source</span>)</span><br />
-      :param commands: :type commands:  ``array``</td>
+      Send the given commands.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.robots.random_robot-pysrc.html#RandomRobot.set_commands">source&nbsp;code</a></span>
             
@@ -358,7 +357,7 @@
     </td>
   </tr></table>
   
-  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  x.__init__(...) initializes x; see help(type(x)) for signature
   <dl class="fields">
     <dt>Overrides:
         object.__init__
@@ -382,7 +381,7 @@
     </td>
   </tr></table>
   
-  <p>str(x)</p>
+  str(x)
   <dl class="fields">
     <dt>Overrides:
         object.__str__
@@ -405,9 +404,9 @@
     </td>
   </tr></table>
   
-  <p>Get observations. Must return an instance of RobotObservations.</p>
-  <p>:rtype:  ``RobotObservations``</p>
+  Get observations. Must return an instance of RobotObservations.
   <dl class="fields">
+    <dt>Returns: <tt class="rst-rst-rst-rst-docutils literal rst-rst-rst-docutils literal rst-rst-docutils literal rst-docutils literal">RobotObservations</tt></dt>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#get_observations">interfaces.robot.RobotInterface.get_observations</a>
         <dd><em class="note">(inherited documentation)</em></dd>
@@ -429,15 +428,13 @@
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-Returns the sensorimotor spec for this robot
-           (a BootSpec object). 
-
-
-:rtype:  ``BootSpec``
-
-</pre>
+  <dl class="rst-rst-docutils rst-docutils">
+<dt>Returns the sensorimotor spec for this robot</dt>
+<dd><p class="rst-first rst-last rst-first rst-last">(a BootSpec object).</p>
+</dd>
+</dl>
   <dl class="fields">
+    <dt>Returns: <tt class="rst-rst-rst-rst-docutils literal rst-rst-rst-docutils literal rst-rst-docutils literal rst-docutils literal">BootSpec</tt></dt>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#get_spec">interfaces.robot.RobotInterface.get_spec</a>
         <dd><em class="note">(inherited documentation)</em></dd>
@@ -459,21 +456,14 @@ Returns the sensorimotor spec for this robot
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-           Skips to the next episode. 
-           In real robots, the platform might return to start position.
-           
-           Guaranteed to be called at least once before get_observations().
-           
-           Should return an instance of EpisodeDesc.
-       
-
-
-:rtype:  ``EpisodeDesc``
-
-</pre>
+  <blockquote>
+<p>Skips to the next episode.
+In real robots, the platform might return to start position.</p>
+<p>Guaranteed to be called at least once before get_observations().</p>
+<p>Should return an instance of EpisodeDesc.</p>
+</blockquote>
   <dl class="fields">
+    <dt>Returns: <tt class="rst-rst-rst-rst-docutils literal rst-rst-rst-docutils literal rst-rst-docutils literal rst-docutils literal">EpisodeDesc</tt></dt>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#new_episode">interfaces.robot.RobotInterface.new_episode</a>
         <dd><em class="note">(inherited documentation)</em></dd>
@@ -497,8 +487,12 @@ Returns the sensorimotor spec for this robot
     </td>
   </tr></table>
   
-  <p>:param commands: :type commands:  ``array``</p>
+  Send the given commands.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>commands</code></strong> (<tt class="rst-docutils literal">array</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#set_commands">interfaces.robot.RobotInterface.set_commands</a>
     </dt>
@@ -537,7 +531,7 @@ Returns the sensorimotor spec for this robot
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:28 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:17 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

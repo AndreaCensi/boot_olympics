@@ -67,13 +67,13 @@
 <h1 class="epydoc">Class RandomScaling</h1><p class="nomargin-top"><span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling-pysrc.html#RandomScaling">source&nbsp;code</a></span></p>
 <center>
 <center>  <map id="uml_class_diagram_for_bootstra_18" name="uml_class_diagram_for_bootstra_18">
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html#__init__" title=":param seed: :type seed: &#160;``int``" alt="" coords="79,236,239,255"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html#__init__" title="A can be passed at construction time if it is known." alt="" coords="79,236,239,255"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html#__str__" title="str(x)" alt="" coords="79,255,239,273"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html#get_matrix" title=":param streamels: :type streamels: &#160;``array[N]``" alt="" coords="79,273,239,292"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html#get_matrix" title="Returns the matrix representing the transformation." alt="" coords="79,273,239,292"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html" title="A fixed random scaling of the signal." alt="" coords="77,211,240,293"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#__abstractmethods__" title="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear.__abstractmethods__" alt="" coords="56,103,261,121"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#inverse" title="Returns the inverse representation nuisance, or NuisanceNotInvertible" alt="" coords="56,124,261,143"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_spec" title="Returns the changed StreamSpec, or throws UnsupportedSpec if the spec is &#160;not supported." alt="" coords="56,143,261,161"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_spec" title="Returns the changed StreamSpec, or throws UnsupportedSpec if the spec is not supported." alt="" coords="56,143,261,161"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_value" title="Returns the transformed value." alt="" coords="56,161,261,180"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html" title="This represents a generic linear transformation between 1D continuous signals." alt="" coords="55,85,263,181"/>
 <area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="17,28,300,47"/>
@@ -83,7 +83,7 @@
 </center>
 </center>
 <hr />
-<p>A fixed random scaling of the signal.</p>
+A fixed random scaling of the signal.
 
 <!-- ==================== NESTED CLASSES ==================== -->
 <a name="section-NestedClasses"></a>
@@ -135,7 +135,7 @@
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">seed</span>)</span><br />
-      :param seed: :type seed:  ``int``</td>
+      A can be passed at construction time if it is known.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling-pysrc.html#RandomScaling.__init__">source&nbsp;code</a></span>
             
@@ -164,13 +164,13 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal">array[NxN]</tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html#get_matrix" class="summary-sig-name">get_matrix</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">streamels</span>)</span><br />
-      :param streamels: :type streamels:  ``array[N]``</td>
+      Returns the matrix representing the transformation.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling-pysrc.html#RandomScaling.get_matrix">source&nbsp;code</a></span>
             
@@ -298,8 +298,12 @@
     </td>
   </tr></table>
   
-  <p>:param seed: :type seed:  ``int``</p>
+  A can be passed at construction time if it is known.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>seed</code></strong> (<tt class="rst-docutils literal">int</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         object.__init__
     </dt>
@@ -321,7 +325,7 @@
     </td>
   </tr></table>
   
-  <p>str(x)</p>
+  str(x)
   <dl class="fields">
     <dt>Overrides:
         object.__str__
@@ -345,9 +349,13 @@
     </td>
   </tr></table>
   
-  <p>:param streamels: :type streamels:  ``array[N]``</p>
-  <p>:rtype:  ``array[NxN]``</p>
+  Returns the matrix representing the transformation.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>streamels</code></strong> (<tt class="rst-docutils literal">array[N]</tt>)</li>
+    </ul></dd>
+    <dt>Returns: <tt class="rst-rst-docutils literal rst-docutils literal">array[NxN]</tt></dt>
     <dt>Overrides:
         <a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#get_matrix">generic_linear.GenericLinear.get_matrix</a>
     </dt>
@@ -386,7 +394,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:27 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:17 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

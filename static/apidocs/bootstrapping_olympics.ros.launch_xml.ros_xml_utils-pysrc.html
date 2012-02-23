@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.ros.launch_xml.ros_xml_utils</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.ros-module.html">Package&nbsp;ros</a> ::
+        <a href="bootstrapping_olympics.ros.launch_xml-module.html">Package&nbsp;launch_xml</a> ::
+        Module&nbsp;ros_xml_utils
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.ros.launch_xml.ros_xml_utils-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.ros.launch_xml.ros_xml_utils-module.html">Module bootstrapping_olympics.ros.launch_xml.ros_xml_utils</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-op">.</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Package bootstrapping_olympics.configuration=bootstrapping_olympics.configuration-module.html"><a title="bootstrapping_olympics.configuration" class="py-name" href="#" onclick="return doclink('link-0', 'configuration', 'link-0');">configuration</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Function bootstrapping_olympics.configuration.yaml_ros_node_spec.parse_yaml_ros_node_spec()=bootstrapping_olympics.configuration.yaml_ros_node_spec-module.html#parse_yaml_ros_node_spec"><a title="bootstrapping_olympics.configuration.yaml_ros_node_spec.parse_yaml_ros_node_spec" class="py-name" href="#" onclick="return doclink('link-1', 'parse_yaml_ros_node_spec', 'link-1');">parse_yaml_ros_node_spec</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt class="py-op">.</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module bootstrapping_olympics.logs.hdf.utils=bootstrapping_olympics.logs.hdf.utils-module.html,Module bootstrapping_olympics.programs.manager.meat.servo.utils=bootstrapping_olympics.programs.manager.meat.servo.utils-module.html,Package bootstrapping_olympics.utils=bootstrapping_olympics.utils-module.html"><a title="bootstrapping_olympics.logs.hdf.utils
+bootstrapping_olympics.programs.manager.meat.servo.utils
+bootstrapping_olympics.utils" class="py-name" href="#" onclick="return doclink('link-2', 'utils', 'link-2');">utils</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Function bootstrapping_olympics.utils.strings.indent()=bootstrapping_olympics.utils.strings-module.html#indent"><a title="bootstrapping_olympics.utils.strings.indent" class="py-name" href="#" onclick="return doclink('link-3', 'indent', 'link-3');">indent</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Function bootstrapping_olympics.utils.c_yaml.yaml_dump_inline()=bootstrapping_olympics.utils.c_yaml-module.html#yaml_dump_inline"><a title="bootstrapping_olympics.utils.c_yaml.yaml_dump_inline" class="py-name" href="#" onclick="return doclink('link-4', 'yaml_dump_inline', 'link-4');">yaml_dump_inline</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">string</tt> <tt class="py-keyword">import</tt> <tt class="py-name">Template</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
+<a name="create_ros_node_xml"></a><div id="create_ros_node_xml-def"><a name="L6"></a><tt class="py-lineno"> 6</tt> <a class="py-toggle" href="#" id="create_ros_node_xml-toggle" onclick="return toggle('create_ros_node_xml');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.ros.launch_xml.ros_xml_utils-module.html#create_ros_node_xml">create_ros_node_xml</a><tt class="py-op">(</tt><tt class="py-param">node_name</tt><tt class="py-op">,</tt> <tt class="py-param">ros_node</tt><tt class="py-op">,</tt> <tt class="py-param">remap</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">                        <tt class="py-param">args</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">output</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="create_ros_node_xml-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="create_ros_node_xml-expanded"><a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">    <tt class="py-name">package_name</tt><tt class="py-op">,</tt> <tt class="py-name">node_type</tt><tt class="py-op">,</tt> <tt class="py-name">params</tt> <tt class="py-op">=</tt> <tt id="link-5" class="py-name"><a title="bootstrapping_olympics.configuration.yaml_ros_node_spec.parse_yaml_ros_node_spec" class="py-name" href="#" onclick="return doclink('link-5', 'parse_yaml_ros_node_spec', 'link-1');">parse_yaml_ros_node_spec</a></tt><tt class="py-op">(</tt><tt class="py-name">ros_node</tt><tt class="py-op">)</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">    <tt class="py-name">xml_params</tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name" targets="Function bootstrapping_olympics.ros.launch_xml.ros_xml_utils.create_params_xml()=bootstrapping_olympics.ros.launch_xml.ros_xml_utils-module.html#create_params_xml"><a title="bootstrapping_olympics.ros.launch_xml.ros_xml_utils.create_params_xml" class="py-name" href="#" onclick="return doclink('link-6', 'create_params_xml', 'link-6');">create_params_xml</a></tt><tt class="py-op">(</tt><tt class="py-name">params</tt><tt class="py-op">)</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">    <tt class="py-name">xml_remap</tt> <tt class="py-op">=</tt> <tt id="link-7" class="py-name" targets="Function bootstrapping_olympics.ros.launch_xml.ros_xml_utils.create_remaps_xml()=bootstrapping_olympics.ros.launch_xml.ros_xml_utils-module.html#create_remaps_xml"><a title="bootstrapping_olympics.ros.launch_xml.ros_xml_utils.create_remaps_xml" class="py-name" href="#" onclick="return doclink('link-7', 'create_remaps_xml', 'link-7');">create_remaps_xml</a></tt><tt class="py-op">(</tt><tt class="py-name">remap</tt><tt class="py-op">)</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt class="py-name">template</tt> <tt class="py-op">=</tt> \ </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-string">"""&lt;node pkg="${package_name}"</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-string">         type="${node_type}" </tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-string">         name="${node_name}" ${output} ${args}&gt; </tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-string">${xml_params} </tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-string">${xml_remap}</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt class="py-string">&lt;/node&gt;"""</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">    <tt class="py-name">final</tt> <tt class="py-op">=</tt> <tt class="py-name">Template</tt><tt class="py-op">(</tt><tt class="py-name">template</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Function bootstrapping_olympics.utils.subst.substitute()=bootstrapping_olympics.utils.subst-module.html#substitute"><a title="bootstrapping_olympics.utils.subst.substitute" class="py-name" href="#" onclick="return doclink('link-8', 'substitute', 'link-8');">substitute</a></tt><tt class="py-op">(</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">                <tt class="py-name">package_name</tt><tt class="py-op">=</tt><tt class="py-name">package_name</tt><tt class="py-op">,</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">                <tt class="py-name">node_name</tt><tt class="py-op">=</tt><tt class="py-name">node_name</tt><tt class="py-op">,</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">                <tt class="py-name">node_type</tt><tt class="py-op">=</tt><tt class="py-name">node_type</tt><tt class="py-op">,</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">                <tt class="py-name">xml_remap</tt><tt class="py-op">=</tt><tt id="link-9" class="py-name"><a title="bootstrapping_olympics.utils.strings.indent" class="py-name" href="#" onclick="return doclink('link-9', 'indent', 'link-3');">indent</a></tt><tt class="py-op">(</tt><tt class="py-name">xml_remap</tt><tt class="py-op">,</tt> <tt class="py-string">' '</tt> <tt class="py-op">*</tt> <tt class="py-number">4</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">                <tt class="py-name">xml_params</tt><tt class="py-op">=</tt><tt id="link-10" class="py-name"><a title="bootstrapping_olympics.utils.strings.indent" class="py-name" href="#" onclick="return doclink('link-10', 'indent', 'link-3');">indent</a></tt><tt class="py-op">(</tt><tt class="py-name">xml_params</tt><tt class="py-op">,</tt> <tt class="py-string">' '</tt> <tt class="py-op">*</tt> <tt class="py-number">4</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">                <tt class="py-name">args</tt><tt class="py-op">=</tt><tt class="py-string">"args='%s'"</tt> <tt class="py-op">%</tt> <tt class="py-name">args</tt> <tt class="py-keyword">if</tt> <tt class="py-name">args</tt> <tt class="py-keyword">else</tt> <tt class="py-string">""</tt><tt class="py-op">,</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">                <tt id="link-11" class="py-name" targets="Variable bootstrapping_olympics.programs.hdf2bag.conversion.Raw2Boot.output=bootstrapping_olympics.programs.hdf2bag.conversion.Raw2Boot-class.html#output"><a title="bootstrapping_olympics.programs.hdf2bag.conversion.Raw2Boot.output" class="py-name" href="#" onclick="return doclink('link-11', 'output', 'link-11');">output</a></tt><tt class="py-op">=</tt><tt class="py-string">"output='%s'"</tt> <tt class="py-op">%</tt> <tt id="link-12" class="py-name"><a title="bootstrapping_olympics.programs.hdf2bag.conversion.Raw2Boot.output" class="py-name" href="#" onclick="return doclink('link-12', 'output', 'link-11');">output</a></tt> <tt class="py-keyword">if</tt> <tt id="link-13" class="py-name"><a title="bootstrapping_olympics.programs.hdf2bag.conversion.Raw2Boot.output" class="py-name" href="#" onclick="return doclink('link-13', 'output', 'link-11');">output</a></tt> <tt class="py-keyword">else</tt> <tt class="py-string">""</tt><tt class="py-op">,</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">final</tt> </tt>
+</div><a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line"> </tt>
+<a name="create_params_xml"></a><div id="create_params_xml-def"><a name="L31"></a><tt class="py-lineno">31</tt> <a class="py-toggle" href="#" id="create_params_xml-toggle" onclick="return toggle('create_params_xml');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.ros.launch_xml.ros_xml_utils-module.html#create_params_xml">create_params_xml</a><tt class="py-op">(</tt><tt class="py-param">params</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="create_params_xml-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="create_params_xml-expanded"><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">params</tt><tt class="py-op">:</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'&lt;!-- No parameters specified --&gt;'</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-string">"\n"</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Static Method bootstrapping_olympics.interfaces.stream_spec.StreamSpec.join()=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#join"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.join" class="py-name" href="#" onclick="return doclink('link-14', 'join', 'link-14');">join</a></tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt id="link-15" class="py-name" targets="Function bootstrapping_olympics.ros.launch_xml.ros_xml_utils.create_param_xml()=bootstrapping_olympics.ros.launch_xml.ros_xml_utils-module.html#create_param_xml"><a title="bootstrapping_olympics.ros.launch_xml.ros_xml_utils.create_param_xml" class="py-name" href="#" onclick="return doclink('link-15', 'create_param_xml', 'link-15');">create_param_xml</a></tt><tt class="py-op">(</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">                      <tt class="py-keyword">for</tt> <tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">value</tt> <tt class="py-keyword">in</tt> <tt class="py-name">params</tt><tt class="py-op">.</tt><tt class="py-name">items</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line"> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line"> </tt>
+<a name="create_param_xml"></a><div id="create_param_xml-def"><a name="L38"></a><tt class="py-lineno">38</tt> <a class="py-toggle" href="#" id="create_param_xml-toggle" onclick="return toggle('create_param_xml');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.ros.launch_xml.ros_xml_utils-module.html#create_param_xml">create_param_xml</a><tt class="py-op">(</tt><tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="create_param_xml-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="create_param_xml-expanded"><a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-name">int</tt><tt class="py-op">,</tt> <tt class="py-name">float</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">"&lt;rosparam param='%s'&gt;%r&lt;/rosparam&gt;"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">        <tt class="py-name">yaml_value</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="bootstrapping_olympics.utils.c_yaml.yaml_dump_inline" class="py-name" href="#" onclick="return doclink('link-16', 'yaml_dump_inline', 'link-4');">yaml_dump_inline</a></tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">"&lt;rosparam param='%s'&gt;%s&lt;/rosparam&gt;"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">yaml_value</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line"> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line"> </tt>
+<a name="create_remaps_xml"></a><div id="create_remaps_xml-def"><a name="L46"></a><tt class="py-lineno">46</tt> <a class="py-toggle" href="#" id="create_remaps_xml-toggle" onclick="return toggle('create_remaps_xml');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.ros.launch_xml.ros_xml_utils-module.html#create_remaps_xml">create_remaps_xml</a><tt class="py-op">(</tt><tt class="py-param">remap</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="create_remaps_xml-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="create_remaps_xml-expanded"><a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">remap</tt><tt class="py-op">:</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'&lt;!-- No remappings specified --&gt;'</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line"> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">create_remap_xml</tt><tt class="py-op">(</tt><tt class="py-param">sfrom</tt><tt class="py-op">,</tt> <tt class="py-param">sto</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'&lt;remap from="%s" to="%s"/&gt;'</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">sfrom</tt><tt class="py-op">,</tt> <tt class="py-name">sto</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line"> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-string">"\n"</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.join" class="py-name" href="#" onclick="return doclink('link-17', 'join', 'link-14');">join</a></tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">create_remap_xml</tt><tt class="py-op">(</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">                      <tt class="py-keyword">for</tt> <tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">value</tt> <tt class="py-keyword">in</tt> <tt class="py-name">remap</tt><tt class="py-op">.</tt><tt class="py-name">items</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:19 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

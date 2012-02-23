@@ -69,7 +69,7 @@
 <area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="172,47,412,65"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#logger" title="bootstrapping_olympics.interfaces.agent.AgentInterface.logger" alt="" coords="172,65,412,84"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#__str__" title="str(x)" alt="" coords="172,87,412,105"/>
-<area shape="rect" href="bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#choose_commands" title="Chooses commands to be generated; must return a sequence of numbers or &#160;array." alt="" coords="172,105,412,124"/>
+<area shape="rect" href="bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#choose_commands" title="Chooses commands to be generated; must return a sequence of numbers or array." alt="" coords="172,105,412,124"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#get_state" title="Return the state for the agent so that it can be saved." alt="" coords="172,124,412,143"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#get_state_vars" title="bootstrapping_olympics.interfaces.agent.AgentInterface.get_state_vars" alt="" coords="172,143,412,161"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#info" title="Logs something." alt="" coords="172,161,412,180"/>
@@ -87,56 +87,41 @@
 </center>
 </center>
 <hr />
-<pre class="literalblock">
-
-    
-This is the interface that the agents must implement.
-
-The following is a list of conventions that we use.    
-
-Initialization
---------------
-
-init(boot_spec) is called first. 
+<p>This is the interface that the agents must implement.</p>
+<p>The following is a list of conventions that we use.</p>
+<div class="rst-section" id="rst-initialization">
+<h1 class="heading">Initialization</h1>
+<p>init(boot_spec) is called first.
 process_observations() is guaranteed to be called at least once
-before choose_commands().
-
-Processing the observations
----------------------------
-
-The function ``process_observations()`` is given an instance
+before choose_commands().</p>
+</div>
+<div class="rst-section" id="rst-processing-the-observations">
+<h1 class="heading">Processing the observations</h1>
+<p>The function <tt class="rst-docutils literal">process_observations()</tt> is given an instance
 of the class Observations, which contains many info other than
-the raw sensel values. 
-
-Logging stuff
--------------
-
-Use the function ``self.info(msg)`` to log stuff.
-Do not use ``rospy.loginfo`` or ``print``: the agents implementation s
-hould be independent of ROS.
-
-
-Saving the state
-----------------
-
-Implement the functions ``set_state()`` and ``get_state()``. 
-``get_state()`` can return anything that is Pickable. 
-``set_state()`` will be given whatever ``get_state()`` returned.
-
-
-Publishing information
-----------------------
-
-Implement the function ``publish()`` to output information, such
-as graphs, statistics, etc. The function is given an instance of the 
-class Publisher, whose implementation is hidden.
-
-During a ROS simulation, Publisher will be a ROSPublisher that 
-will publish the data as ROS topics which can be subscribed by RViz.
-
-During offline learning, the data will be written to HTML files.
-
-</pre>
+the raw sensel values.</p>
+</div>
+<div class="rst-section" id="rst-logging-stuff">
+<h1 class="heading">Logging stuff</h1>
+<p>Use the function <tt class="rst-docutils literal">self.info(msg)</tt> to log stuff.
+Do not use <tt class="rst-docutils literal">rospy.loginfo</tt> or <tt class="rst-docutils literal">print</tt>: the agents implementation s
+hould be independent of ROS.</p>
+</div>
+<div class="rst-section" id="rst-saving-the-state">
+<h1 class="heading">Saving the state</h1>
+<p>Implement the functions <tt class="rst-docutils literal">set_state()</tt> and <tt class="rst-docutils literal">get_state()</tt>.
+<tt class="rst-docutils literal">get_state()</tt> can return anything that is Pickable.
+<tt class="rst-docutils literal">set_state()</tt> will be given whatever <tt class="rst-docutils literal">get_state()</tt> returned.</p>
+</div>
+<div class="rst-section" id="rst-publishing-information">
+<h1 class="heading">Publishing information</h1>
+<p>Implement the function <tt class="rst-docutils literal">publish()</tt> to output information, such
+as graphs, statistics, etc. The function is given an instance of the
+class Publisher, whose implementation is hidden.</p>
+<p>During a ROS simulation, Publisher will be a ROSPublisher that
+will publish the data as ROS topics which can be subscribed by RViz.</p>
+<p>During offline learning, the data will be written to HTML files.</p>
+</div>
 
 <!-- ==================== NESTED CLASSES ==================== -->
 <a name="section-NestedClasses"></a>
@@ -205,8 +190,8 @@ During offline learning, the data will be written to HTML files.
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="choose_commands"></a><span class="summary-sig-name">choose_commands</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Chooses commands to be generated; must return a sequence of numbers 
-      or array.</td>
+      Chooses commands to be generated; must return a sequence
+of numbers or array.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.interfaces.agent-pysrc.html#AgentInterface.choose_commands">source&nbsp;code</a></span>
             
@@ -311,7 +296,7 @@ so that the agent can initialize its data structures.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#publish" class="summary-sig-name">publish</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a name="publish"></a><span class="summary-sig-name">publish</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">publisher</span>)</span><br />
       Publish debug information.</td>
           <td align="right" valign="top">
@@ -422,14 +407,14 @@ so that the agent can initialize its data structures.</td>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="_abc_cache"></a><span class="summary-name">_abc_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x1846e50&gt;">&lt;_weakrefset.WeakSet object at 0x1846e50&gt;</code>
+        <a name="_abc_cache"></a><span class="summary-name">_abc_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x30c8890&gt;">&lt;_weakrefset.WeakSet object at 0x30c8890&gt;</code>
     </td>
   </tr>
 <tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="_abc_negative_cache"></a><span class="summary-name">_abc_negative_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x1846950&gt;">&lt;_weakrefset.WeakSet object at 0x1846950&gt;</code>
+        <a name="_abc_negative_cache"></a><span class="summary-name">_abc_negative_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x30c8850&gt;">&lt;_weakrefset.WeakSet object at 0x30c8850&gt;</code>
     </td>
   </tr>
 <tr class="private">
@@ -443,7 +428,7 @@ so that the agent can initialize its data structures.</td>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="_abc_registry"></a><span class="summary-name">_abc_registry</span> = <code title="&lt;_weakrefset.WeakSet object at 0x1846750&gt;">&lt;_weakrefset.WeakSet object at 0x1846750&gt;</code>
+        <a name="_abc_registry"></a><span class="summary-name">_abc_registry</span> = <code title="&lt;_weakrefset.WeakSet object at 0x309b850&gt;">&lt;_weakrefset.WeakSet object at 0x309b850&gt;</code>
     </td>
   </tr>
 <tr>
@@ -512,7 +497,7 @@ so that the agent can initialize its data structures.</td>
     </td>
   </tr></table>
   
-  <p>str(x)</p>
+  str(x)
   <dl class="fields">
     <dt>Overrides:
         object.__str__
@@ -536,21 +521,16 @@ so that the agent can initialize its data structures.</td>
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-Called when the observations and commands shape are available,
-so that the agent can initialize its data structures.
-
-The agent might throw the exception UnsupportedSpec if the 
-spec is not supported.
-
-:param:boot_spec: An instance of the class BootSpec, which
-                  describes the specifications of the sensorimotor
-                  cascades.
-                  
-
-</pre>
+  <p>Called when the observations and commands shape are available,
+so that the agent can initialize its data structures.</p>
+<p>The agent might throw the exception UnsupportedSpec if the
+spec is not supported.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>boot_spec</code></strong> - An instance of the class BootSpec, which
+describes the specifications of the sensorimotor cascades.</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -569,30 +549,12 @@ spec is not supported.
     </td>
   </tr></table>
   
-  <p>Process new observations.</p>
-  <p>:param:observations: a structure of type Observations</p>
+  Process new observations.
   <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="publish"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">publish</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">publisher</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.interfaces.agent-pysrc.html#AgentInterface.publish">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Publish debug information. ``publisher`` is an instance of the class 
-  PublisherInterface.</p>
-  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>observations</code></strong> - a structure of type Observations</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -665,7 +627,7 @@ spec is not supported.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:28 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:17 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

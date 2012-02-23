@@ -100,12 +100,11 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal">str</tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.bits_utils-module.html#bits2string" class="summary-sig-name">bits2string</a>(<span class="summary-sig-arg">bits</span>)</span><br />
-      :param bits: :type bits:  ``seq(0|1)``</td>
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.bits_utils-module.html#bits2string" class="summary-sig-name">bits2string</a>(<span class="summary-sig-arg">bits</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.bits_utils-pysrc.html#bits2string">source&nbsp;code</a></span>
             
@@ -117,7 +116,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal">int</tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -134,7 +133,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal"><span class="pre">seq[8*N](0|1)</span></tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -156,8 +155,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.bits_utils-module.html#nbytes_to_encrypt" class="summary-sig-name">nbytes_to_encrypt</a>(<span class="summary-sig-arg">nbits</span>)</span><br />
-      Returns the number of bytes necessary to hold the given number of 
-      bits.</td>
+      Returns the number of bytes necessary to hold the given number
+of bits.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.bits_utils-pysrc.html#nbytes_to_encrypt">source&nbsp;code</a></span>
             
@@ -174,8 +173,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="nbytes_to_hold"></a><span class="summary-sig-name">nbytes_to_hold</span>(<span class="summary-sig-arg">nbits</span>)</span><br />
-      Returns the number of bytes necessary to hold the given number of 
-      bits.</td>
+      Returns the number of bytes necessary to hold the given number
+of bits.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.bits_utils-pysrc.html#nbytes_to_hold">source&nbsp;code</a></span>
             
@@ -187,12 +186,11 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal">seq(0|1)</tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.bits_utils-module.html#string2bits" class="summary-sig-name">string2bits</a>(<span class="summary-sig-arg">s</span>)</span><br />
-      :param s: :type s:  ``str``</td>
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.bits_utils-module.html#string2bits" class="summary-sig-name">string2bits</a>(<span class="summary-sig-arg">s</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.bits_utils-pysrc.html#string2bits">source&nbsp;code</a></span>
             
@@ -204,13 +202,13 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal"><span class="pre">array[N](=0|=1)</span></tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.bits_utils-module.html#value2bits" class="summary-sig-name">value2bits</a>(<span class="summary-sig-arg">x</span>,
         <span class="summary-sig-arg">nbits</span>)</span><br />
-      Converts an integer to its bit representation.</td>
+      LSB first.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.bits.bits_utils-pysrc.html#value2bits">source&nbsp;code</a></span>
             
@@ -299,9 +297,12 @@
     </td>
   </tr></table>
   
-  <p>Packs the bits in a string, padding at 0.</p>
-  <p>:param bits: :type bits:  ``seq[&gt;0](0|1)``</p>
+  Packs the bits in a string, padding at 0.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>bits</code></strong> (<tt class="rst-docutils literal"><span class="pre">seq[&gt;0](0|1)</span></tt>)</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -319,9 +320,13 @@
     </td>
   </tr></table>
   
-  <p>:param bits: :type bits:  ``seq(0|1)``</p>
-  <p>:rtype:  ``str``</p>
+  
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>bits</code></strong> (<tt class="rst-docutils literal">seq(0|1)</tt>)</li>
+    </ul></dd>
+    <dt>Returns: <tt class="rst-rst-docutils literal rst-docutils literal">str</tt></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -339,10 +344,13 @@
     </td>
   </tr></table>
   
-  <p>Converts the bits back into integers. LSB first.</p>
-  <p>:param b: :type b:  ``seq[N](=0|=1)``</p>
-  <p>:rtype:  ``int``</p>
+  Converts the bits back into integers. LSB first.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>b</code></strong> (<tt class="rst-docutils literal"><span class="pre">seq[N](=0|=1)</span></tt>)</li>
+    </ul></dd>
+    <dt>Returns: <tt class="rst-rst-docutils literal rst-docutils literal">int</tt></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -360,10 +368,13 @@
     </td>
   </tr></table>
   
-  <p>Returns the bits in a string</p>
-  <p>:param s: :type s:  ``seq[N](int,&gt;=0,&lt;256)``</p>
-  <p>:rtype:  ``seq[8*N](0|1)``</p>
+  Returns the bits in a string
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>s</code></strong> (<tt class="rst-docutils literal"><span class="pre">seq[N](int,&gt;=0,&lt;256)</span></tt>)</li>
+    </ul></dd>
+    <dt>Returns: <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">seq[8*N](0|1)</span></tt></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -381,8 +392,8 @@
     </td>
   </tr></table>
   
-  <p>Returns the number of bytes necessary to hold the given number of 
-  bits. Takes into account padding of the message to 8 bits.</p>
+  Returns the number of bytes necessary to hold the given number
+of bits. Takes into account padding of the message to 8 bits.
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -401,9 +412,13 @@
     </td>
   </tr></table>
   
-  <p>:param s: :type s:  ``str``</p>
-  <p>:rtype:  ``seq(0|1)``</p>
+  
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>s</code></strong> (<tt class="rst-docutils literal">str</tt>)</li>
+    </ul></dd>
+    <dt>Returns: <tt class="rst-rst-docutils literal rst-docutils literal">seq(0|1)</tt></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -422,21 +437,17 @@
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-Converts an integer to its bit representation.
-       LSB first. 
-
-
-:param x: 
-:type x:  ``int,&gt;=0``
-
-:param nbits: 
-:type nbits:  ``N,int,&gt;=1``
-
-:rtype:  ``array[N](=0|=1)``
-
-</pre>
+  <dl class="rst-docutils">
+<dt>Converts an integer to its bit representation.</dt>
+<dd>LSB first.</dd>
+</dl>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>x</code></strong> (<tt class="rst-docutils literal"><span class="pre">int,&gt;=0</span></tt>)</li>
+        <li><strong class="pname"><code>nbits</code></strong> (<tt class="rst-docutils literal"><span class="pre">N,int,&gt;=1</span></tt>)</li>
+    </ul></dd>
+    <dt>Returns: <tt class="rst-rst-docutils literal rst-docutils literal"><span class="pre">array[N](=0|=1)</span></tt></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -509,7 +520,7 @@ Converts an integer to its bit representation.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:25 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:15 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

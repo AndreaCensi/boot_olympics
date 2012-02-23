@@ -70,7 +70,7 @@
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.select.Select-class.html#__init__" title="Initializes this sequence." alt="" coords="56,124,261,143"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.select.Select-class.html#__repr__" title="repr(x)" alt="" coords="56,143,261,161"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.select.Select-class.html#inverse" title="Returns the inverse representation nuisance, or NuisanceNotInvertible" alt="" coords="56,161,261,180"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.select.Select-class.html#transform_spec" title=":param stream_spec: :type stream_spec: &#160;``StreamSpec``" alt="" coords="56,180,261,199"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.select.Select-class.html#transform_spec" title="Returns the changed StreamSpec, or throws UnsupportedSpec if the spec is not supported." alt="" coords="56,180,261,199"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.select.Select-class.html#transform_value" title="Returns the transformed value." alt="" coords="56,199,261,217"/>
 <area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.select.Select-class.html" title="A non&#45;invertible nuisance that selects some of the sensels." alt="" coords="55,85,263,219"/>
 <area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="17,28,300,47"/>
@@ -80,8 +80,8 @@
 </center>
 </center>
 <hr />
-<p>A non-invertible nuisance that selects some of the sensels. Works only
-  for 1D streams.</p>
+A non-invertible nuisance that selects some of the sensels.
+Works only for 1D streams.
 
 <!-- ==================== NESTED CLASSES ==================== -->
 <a name="section-NestedClasses"></a>
@@ -167,7 +167,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.select.Select-class.html#inverse" class="summary-sig-name">inverse</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Returns the inverse representation nuisance, or NuisanceNotInvertible</td>
+      Returns the inverse representation nuisance, or
+NuisanceNotInvertible</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.select-pysrc.html#Select.inverse">source&nbsp;code</a></span>
             
@@ -185,7 +186,8 @@
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.select.Select-class.html#transform_spec" class="summary-sig-name">transform_spec</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">stream_spec</span>)</span><br />
-      :param stream_spec: :type stream_spec:  ``StreamSpec``</td>
+      Returns the changed StreamSpec, or throws
+UnsupportedSpec if the spec is not supported.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.select-pysrc.html#Select.transform_spec">source&nbsp;code</a></span>
             
@@ -331,9 +333,12 @@
     </td>
   </tr></table>
   
-  <p>Initializes this sequence.</p>
-  <p>:param which: either an integer or a sequence of integers</p>
+  Initializes this sequence.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>which</code></strong> - either an integer or a sequence of integers</li>
+    </ul></dd>
     <dt>Overrides:
         object.__init__
     </dt>
@@ -355,7 +360,7 @@
     </td>
   </tr></table>
   
-  <p>repr(x)</p>
+  repr(x)
   <dl class="fields">
     <dt>Overrides:
         object.__repr__
@@ -378,8 +383,8 @@
     </td>
   </tr></table>
   
-  <p>Returns the inverse representation nuisance, or 
-  NuisanceNotInvertible</p>
+  Returns the inverse representation nuisance, or
+NuisanceNotInvertible
   <dl class="fields">
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#inverse">interfaces.rep_nuisance.RepresentationNuisance.inverse</a>
@@ -403,8 +408,13 @@
     </td>
   </tr></table>
   
-  <p>:param stream_spec: :type stream_spec:  ``StreamSpec``</p>
+  Returns the changed StreamSpec, or throws
+UnsupportedSpec if the spec is not supported.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>stream_spec</code></strong> (<tt class="rst-docutils literal">StreamSpec</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#transform_spec">interfaces.rep_nuisance.RepresentationNuisance.transform_spec</a>
     </dt>
@@ -426,7 +436,7 @@
     </td>
   </tr></table>
   
-  <p>Returns the transformed value.</p>
+  Returns the transformed value.
   <dl class="fields">
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#transform_value">interfaces.rep_nuisance.RepresentationNuisance.transform_value</a>
@@ -467,7 +477,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:27 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:17 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

@@ -67,26 +67,27 @@
 <h1 class="epydoc">Class GenericLinear</h1><p class="nomargin-top"><span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear-pysrc.html#GenericLinear">source&nbsp;code</a></span></p>
 <center>
 <center>  <map id="uml_class_diagram_for_bootstra_16" name="uml_class_diagram_for_bootstra_16">
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#__abstractmethods__" title="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear.__abstractmethods__" alt="" coords="112,103,317,121"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#__init__" title="A can be passed at construction time if it is known." alt="" coords="112,124,317,143"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#__str__" title="str(x)" alt="" coords="112,143,317,161"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#get_matrix" title="Returns the matrix representing the transformation." alt="" coords="112,161,317,180"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#inverse" title="Returns the inverse representation nuisance, or NuisanceNotInvertible" alt="" coords="112,180,317,199"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_spec" title="Returns the changed StreamSpec, or throws UnsupportedSpec if the spec is &#160;not supported." alt="" coords="112,199,317,217"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_value" title="Returns the transformed value." alt="" coords="112,217,317,236"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html" title="This represents a generic linear transformation between 1D continuous signals." alt="" coords="111,85,319,237"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.normalize.NormalizeMean-class.html" title="This instantaneous transformation takes a vector of N values and transforms them into a vector of N+1 values." alt="" coords="16,267,181,293"/>
-<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html" title="A fixed random scaling of the signal." alt="" coords="232,267,432,293"/>
-<area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="73,28,356,47"/>
-<area shape="rect" href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" alt="" coords="72,11,357,56"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#__abstractmethods__" title="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear.__abstractmethods__" alt="" coords="129,103,335,121"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#__init__" title="A can be passed at construction time if it is known." alt="" coords="129,124,335,143"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#__str__" title="str(x)" alt="" coords="129,143,335,161"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#get_matrix" title="Returns the matrix representing the transformation." alt="" coords="129,161,335,180"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#inverse" title="Returns the inverse representation nuisance, or NuisanceNotInvertible" alt="" coords="129,180,335,199"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_spec" title="Returns the changed StreamSpec, or throws UnsupportedSpec if the spec is not supported." alt="" coords="129,199,335,217"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_value" title="Returns the transformed value." alt="" coords="129,217,335,236"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html" title="This represents a generic linear transformation between 1D continuous signals." alt="" coords="128,85,336,237"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling.RandomScaling-class.html" title="A fixed random scaling of the signal." alt="" coords="16,267,216,293"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.normalize.NormalizeMean-class.html" title="This instantaneous transformation takes a vector of N values and transforms them into a vector of N+1 values." alt="" coords="267,267,432,293"/>
+<area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="91,28,373,47"/>
+<area shape="rect" href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" alt="" coords="89,11,375,56"/>
 </map>
   <img src="uml_class_diagram_for_bootstra_16.gif" alt='' usemap="#uml_class_diagram_for_bootstra_16" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
 <hr />
-<p>This represents a generic linear transformation between 1D continuous 
-  signals. The subclasses only need to provide the matrix by either passing
-  it in the constructor or implementing get_matrix().</p>
+This represents a generic linear transformation
+between 1D continuous signals. The subclasses
+only need to provide the matrix by either passing
+it in the constructor or implementing get_matrix().
 
 <!-- ==================== NESTED CLASSES ==================== -->
 <a name="section-NestedClasses"></a>
@@ -184,7 +185,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><tt class="rst-docutils literal">array[MxN]</tt></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -207,7 +208,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#inverse" class="summary-sig-name">inverse</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Returns the inverse representation nuisance, or NuisanceNotInvertible</td>
+      Returns the inverse representation nuisance, or
+NuisanceNotInvertible</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear-pysrc.html#GenericLinear.inverse">source&nbsp;code</a></span>
             
@@ -225,8 +227,8 @@
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_spec" class="summary-sig-name">transform_spec</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">stream_spec</span>)</span><br />
-      Returns the changed StreamSpec, or throws UnsupportedSpec if the spec
-      is not supported.</td>
+      Returns the changed StreamSpec, or throws
+UnsupportedSpec if the spec is not supported.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.generic_linear-pysrc.html#GenericLinear.transform_spec">source&nbsp;code</a></span>
             
@@ -372,9 +374,12 @@
     </td>
   </tr></table>
   
-  <p>A can be passed at construction time if it is known.</p>
-  <p>:param A: :type A:  ``None|array[MxN]``</p>
+  A can be passed at construction time if it is known.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>A</code></strong> (<tt class="rst-docutils literal">None|array[MxN]</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         object.__init__
     </dt>
@@ -396,7 +401,7 @@
     </td>
   </tr></table>
   
-  <p>str(x)</p>
+  str(x)
   <dl class="fields">
     <dt>Overrides:
         object.__str__
@@ -420,10 +425,13 @@
     </td>
   </tr></table>
   
-  <p>Returns the matrix representing the transformation.</p>
-  <p>:param streamels: :type streamels:  ``array``</p>
-  <p>:rtype:  ``array[MxN]``</p>
+  Returns the matrix representing the transformation.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>streamels</code></strong> (<tt class="rst-docutils literal">array</tt>)</li>
+    </ul></dd>
+    <dt>Returns: <tt class="rst-rst-docutils literal rst-docutils literal">array[MxN]</tt></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -441,8 +449,8 @@
     </td>
   </tr></table>
   
-  <p>Returns the inverse representation nuisance, or 
-  NuisanceNotInvertible</p>
+  Returns the inverse representation nuisance, or
+NuisanceNotInvertible
   <dl class="fields">
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#inverse">interfaces.rep_nuisance.RepresentationNuisance.inverse</a>
@@ -466,8 +474,8 @@
     </td>
   </tr></table>
   
-  <p>Returns the changed StreamSpec, or throws UnsupportedSpec if the spec 
-  is not supported.</p>
+  Returns the changed StreamSpec, or throws
+UnsupportedSpec if the spec is not supported.
   <dl class="fields">
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#transform_spec">interfaces.rep_nuisance.RepresentationNuisance.transform_spec</a>
@@ -491,7 +499,7 @@
     </td>
   </tr></table>
   
-  <p>Returns the transformed value.</p>
+  Returns the transformed value.
   <dl class="fields">
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#transform_value">interfaces.rep_nuisance.RepresentationNuisance.transform_value</a>
@@ -532,7 +540,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:27 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 20:29:17 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
