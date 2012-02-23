@@ -45,7 +45,8 @@
         <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
         <a href="bootstrapping_olympics.examples-module.html">Package&nbsp;examples</a> ::
         <a href="bootstrapping_olympics.examples.rep_nuisances-module.html">Package&nbsp;rep_nuisances</a> ::
-        <a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling-module.html">Module&nbsp;random_scaling</a> ::
+        <a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear-module.html">Package&nbsp;misc_linear</a> ::
+        <a href="bootstrapping_olympics.examples.rep_nuisances.misc_linear.random_scaling-module.html">Module&nbsp;random_scaling</a> ::
         Class&nbsp;RandomScaling
       </span>
     </td>
@@ -63,23 +64,50 @@
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class RandomScaling</h1><p class="nomargin-top"><span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling-pysrc.html#RandomScaling">source&nbsp;code</a></span></p>
+<h1 class="epydoc">Class RandomScaling</h1><p class="nomargin-top"></p>
 <center>
-<center>  <map id="uml_class_diagram_for_bootstra_11" name="uml_class_diagram_for_bootstra_11">
-<area shape="rect" id="node1_5" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#__init__" title=":param seed: :type seed: &#160;``int``" alt="" coords="57,103,271,121"/>
-<area shape="rect" id="node1_6" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#__str__" title="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling.__str__" alt="" coords="57,121,271,140"/>
-<area shape="rect" id="node1_7" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#inverse" title="Returns the inverse representation nuisance." alt="" coords="57,140,271,159"/>
-<area shape="rect" id="node1_8" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#transform_spec" title=":param stream_spec: :type stream_spec: &#160;``StreamSpec``" alt="" coords="57,159,271,177"/>
-<area shape="rect" id="node1_9" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#transform_value" title="Returns the transformed value." alt="" coords="57,177,271,196"/>
-<area shape="rect" id="node1" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html" title="A fixed random scaling of the signal." alt="" coords="45,70,283,202"/>
-<area shape="rect" id="node2" href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html" title="Encapsulates the idea of a representation nuisance, either on the observations or the commands." alt="" coords="5,6,321,50"/>
+<center>  <map id="uml_class_diagram_for_bootstra_23" name="uml_class_diagram_for_bootstra_23">
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#__abstractmethods__" title="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling.__abstractmethods__" alt="" coords="55,103,263,121"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#__init__" title=":param seed: :type seed: &#160;``int``" alt="" coords="55,124,263,143"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#__str__" title="str(x)" alt="" coords="55,143,263,161"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#inverse" title="Returns the inverse representation nuisance, or NuisanceNotInvertible" alt="" coords="55,161,263,180"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#transform_spec" title=":param stream_spec: :type stream_spec: &#160;``StreamSpec``" alt="" coords="55,180,263,199"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#transform_value" title="Returns the transformed value." alt="" coords="55,199,263,217"/>
+<area shape="rect" href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html" title="A fixed random scaling of the signal." alt="" coords="53,85,264,219"/>
+<area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="17,28,300,47"/>
+<area shape="rect" href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" alt="" coords="16,11,301,56"/>
 </map>
-  <img src="uml_class_diagram_for_bootstra_11.gif" alt='' usemap="#uml_class_diagram_for_bootstra_11" ismap="ismap" class="graph-without-title" />
+  <img src="uml_class_diagram_for_bootstra_23.gif" alt='' usemap="#uml_class_diagram_for_bootstra_23" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
 <hr />
 <p>A fixed random scaling of the signal.</p>
 
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html">interfaces.rep_nuisance.RepresentationNuisance</a></code></b>:
+      <code><a href="abc.ABCMeta-class.html">__metaclass__</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -108,7 +136,7 @@
         <span class="summary-sig-arg">inverted</span>=<span class="summary-sig-default">False</span>)</span><br />
       :param seed: :type seed:  ``int``</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling-pysrc.html#RandomScaling.__init__">source&nbsp;code</a></span>
+            
             
           </td>
         </tr>
@@ -122,9 +150,10 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="__str__"></a><span class="summary-sig-name">__str__</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      str(x)</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling-pysrc.html#RandomScaling.__str__">source&nbsp;code</a></span>
+            
             
           </td>
         </tr>
@@ -139,9 +168,9 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling.RandomScaling-class.html#inverse" class="summary-sig-name">inverse</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Returns the inverse representation nuisance.</td>
+      Returns the inverse representation nuisance, or NuisanceNotInvertible</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling-pysrc.html#RandomScaling.inverse">source&nbsp;code</a></span>
+            
             
           </td>
         </tr>
@@ -159,7 +188,7 @@
         <span class="summary-sig-arg">stream_spec</span>)</span><br />
       :param stream_spec: :type stream_spec:  ``StreamSpec``</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling-pysrc.html#RandomScaling.transform_spec">source&nbsp;code</a></span>
+            
             
           </td>
         </tr>
@@ -177,12 +206,95 @@
         <span class="summary-sig-arg">values</span>)</span><br />
       Returns the transformed value.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling-pysrc.html#RandomScaling.transform_value">source&nbsp;code</a></span>
+            
             
           </td>
         </tr>
       </table>
       
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__abstractmethods__"></a><span class="summary-name">__abstractmethods__</span> = <code title="frozenset([])"><code class="variable-group">frozenset([</code><code class="variable-group">])</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_abc_negative_cache_version"></a><span class="summary-name">_abc_negative_cache_version</span> = <code title="23">23</code>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html">interfaces.rep_nuisance.RepresentationNuisance</a></code></b> (private):
+      <code><a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#_abc_cache" onclick="show_private();">_abc_cache</a></code>,
+      <code><a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#_abc_negative_cache" onclick="show_private();">_abc_negative_cache</a></code>,
+      <code><a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#_abc_registry" onclick="show_private();">_abc_registry</a></code>
+      </p></div>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
     </td>
   </tr>
 </table>
@@ -217,13 +329,40 @@
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling-pysrc.html#RandomScaling.__init__">source&nbsp;code</a></span>&nbsp;
+    >&nbsp;
     </td>
   </tr></table>
   
   <p>:param seed: :type seed:  ``int``</p>
   <p>:param inverted: :type inverted:  ``bool``</p>
   <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>str(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__str__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -237,11 +376,12 @@
   <h3 class="epydoc"><span class="sig"><span class="sig-name">inverse</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling-pysrc.html#RandomScaling.inverse">source&nbsp;code</a></span>&nbsp;
+    >&nbsp;
     </td>
   </tr></table>
   
-  <p>Returns the inverse representation nuisance.</p>
+  <p>Returns the inverse representation nuisance, or 
+  NuisanceNotInvertible</p>
   <dl class="fields">
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#inverse">interfaces.rep_nuisance.RepresentationNuisance.inverse</a>
@@ -261,7 +401,7 @@
         <span class="sig-arg">stream_spec</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling-pysrc.html#RandomScaling.transform_spec">source&nbsp;code</a></span>&nbsp;
+    >&nbsp;
     </td>
   </tr></table>
   
@@ -284,7 +424,7 @@
         <span class="sig-arg">values</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.examples.rep_nuisances.random_scaling-pysrc.html#RandomScaling.transform_value">source&nbsp;code</a></span>&nbsp;
+    >&nbsp;
     </td>
   </tr></table>
   
@@ -329,7 +469,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb  1 14:39:53 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:27 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

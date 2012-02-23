@@ -64,17 +64,19 @@
 </table>
 <h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.programs.manager.meat.log_learn-module.html">Module bootstrapping_olympics.programs.manager.meat.log_learn</a></h1>
 <pre class="py-src">
-<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Function bootstrapping_olympics.programs.manager.meat.load_agent_state'.load_agent_state()=bootstrapping_olympics.programs.manager.meat.load_agent_state%27-module.html#load_agent_state"><a title="bootstrapping_olympics.programs.manager.meat.load_agent_state'.load_agent_state" class="py-name" href="#" onclick="return doclink('link-0', 'load_agent_state', 'link-0');">load_agent_state</a></tt><tt class="py-op">,</tt> <tt id="link-1" class="py-name" targets="Function bootstrapping_olympics.programs.manager.meat.publish_output.publish_agent_output()=bootstrapping_olympics.programs.manager.meat.publish_output-module.html#publish_agent_output"><a title="bootstrapping_olympics.programs.manager.meat.publish_output.publish_agent_output" class="py-name" href="#" onclick="return doclink('link-1', 'publish_agent_output', 'link-1');">publish_agent_output</a></tt><tt class="py-op">,</tt> <tt id="link-2" class="py-name" targets="Variable bootstrapping_olympics.agent_states.filesystem_storage.logger=bootstrapping_olympics.agent_states.filesystem_storage-module.html#logger,Variable bootstrapping_olympics.agent_states.learning_state.logger=bootstrapping_olympics.agent_states.learning_state-module.html#logger,Variable bootstrapping_olympics.agent_states.logger=bootstrapping_olympics.agent_states-module.html#logger,Variable bootstrapping_olympics.configuration.logger=bootstrapping_olympics.configuration-module.html#logger,Variable bootstrapping_olympics.configuration.master.logger=bootstrapping_olympics.configuration.master-module.html#logger,Variable bootstrapping_olympics.examples.logger=bootstrapping_olympics.examples-module.html#logger,Variable bootstrapping_olympics.examples.rep_nuisances.logger=bootstrapping_olympics.examples.rep_nuisances-module.html#logger,Variable bootstrapping_olympics.interfaces.agent.AgentInterface.logger=bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#logger,Variable bootstrapping_olympics.interfaces.boot_spec.logger=bootstrapping_olympics.interfaces.boot_spec-module.html#logger,Variable bootstrapping_olympics.interfaces.logger=bootstrapping_olympics.interfaces-module.html#logger,Variable bootstrapping_olympics.interfaces.stream_spec.logger=bootstrapping_olympics.interfaces.stream_spec-module.html#logger,Variable bootstrapping_olympics.logger=bootstrapping_olympics-module.html#logger,Variable bootstrapping_olympics.logs.hdf.index.logger=bootstrapping_olympics.logs.hdf.index-module.html#logger,Variable bootstrapping_olympics.logs.hdf.logger=bootstrapping_olympics.logs.hdf-module.html#logger,Variable bootstrapping_olympics.logs.hdf.read.logger=bootstrapping_olympics.logs.hdf.read-module.html#logger,Variable bootstrapping_olympics.logs.hdf.write.logger=bootstrapping_olympics.logs.hdf.write-module.html#logger,Variable bootstrapping_olympics.logs.log_index.logger=bootstrapping_olympics.logs.log_index-module.html#logger,Variable bootstrapping_olympics.logs.logger=bootstrapping_olympics.logs-module.html#logger,Variable bootstrapping_olympics.logs.logs_format.logger=bootstrapping_olympics.logs.logs_format-module.html#logger,Variable bootstrapping_olympics.programs.hdf2bag.logger=bootstrapping_olympics.programs.hdf2bag-module.html#logger,Variable bootstrapping_olympics.programs.hdf2bag.main.logger=bootstrapping_olympics.programs.hdf2bag.main-module.html#logger,Variable bootstrapping_olympics.programs.manager.batch'.logger=bootstrapping_olympics.programs.manager.batch%27-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.clean_simulations.logger=bootstrapping_olympics.programs.manager.command_line.clean_simulations-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.clean_states.logger=bootstrapping_olympics.programs.manager.command_line.clean_states-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.learn.logger=bootstrapping_olympics.programs.manager.command_line.learn-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.list_agents.logger=bootstrapping_olympics.programs.manager.command_line.list_agents-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.list_logs.logger=bootstrapping_olympics.programs.manager.command_line.list_logs-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.list_robots.logger=bootstrapping_olympics.programs.manager.command_line.list_robots-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.list_states.logger=bootstrapping_olympics.programs.manager.command_line.list_states-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.logger=bootstrapping_olympics.programs.manager.command_line-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.main.logger=bootstrapping_olympics.programs.manager.command_line.main-module.html#logger,Variable bootstrapping_olympics.programs.manager.logger=bootstrapping_olympics.programs.manager-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.directory_structure.logger=bootstrapping_olympics.programs.manager.meat.directory_structure-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.load_agent_state'.logger=bootstrapping_olympics.programs.manager.meat.load_agent_state%27-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.log_learn.logger=bootstrapping_olympics.programs.manager.meat.log_learn-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.logger=bootstrapping_olympics.programs.manager.meat-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.predict.logger=bootstrapping_olympics.programs.manager.meat.predict-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.publish_output.logger=bootstrapping_olympics.programs.manager.meat.publish_output-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.run_simulation'.logger=bootstrapping_olympics.programs.manager.meat.run_simulation%27-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.logger=bootstrapping_olympics.programs.manager.meat.servo.bookkeeping-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.logger=bootstrapping_olympics.programs.manager.meat.servo-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.report.logger=bootstrapping_olympics.programs.manager.meat.servo.report-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.run_simulation.logger=bootstrapping_olympics.programs.manager.meat.servo.run_simulation-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.servo.logger=bootstrapping_olympics.programs.manager.meat.servo.servo-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.summaries.logger=bootstrapping_olympics.programs.manager.meat.servo.summaries-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servonav.logger=bootstrapping_olympics.programs.manager.meat.servonav-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servonav.task.logger=bootstrapping_olympics.programs.manager.meat.servonav.task-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.simulate'.logger=bootstrapping_olympics.programs.manager.meat.simulate%27-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.video.logger=bootstrapping_olympics.programs.manager.meat.video-module.html#logger,Variable bootstrapping_olympics.programs.print_config.logger=bootstrapping_olympics.programs.print_config-module.html#logger,Variable bootstrapping_olympics.programs.print_config.main'.logger=bootstrapping_olympics.programs.print_config.main%27-module.html#logger,Variable bootstrapping_olympics.programs.rosbag2h5.logger=bootstrapping_olympics.programs.rosbag2h5-module.html#logger,Variable bootstrapping_olympics.programs.rosbag2h5.main'.logger=bootstrapping_olympics.programs.rosbag2h5.main%27-module.html#logger,Variable bootstrapping_olympics.ros.adapters.boot_agent_adapter.Global.logger=bootstrapping_olympics.ros.adapters.boot_agent_adapter.Global-class.html#logger,Variable bootstrapping_olympics.ros.create_launch.command_line.logger=bootstrapping_olympics.ros.create_launch.command_line-module.html#logger,Variable bootstrapping_olympics.ros.create_launch.logger=bootstrapping_olympics.ros.create_launch-module.html#logger,Variable bootstrapping_olympics.ros.logger=bootstrapping_olympics.ros-module.html#logger,Variable bootstrapping_olympics.ros.ros_logs.index.logger=bootstrapping_olympics.ros.ros_logs.index-module.html#logger,Variable bootstrapping_olympics.ros.ros_logs.logger=bootstrapping_olympics.ros.ros_logs-module.html#logger,Variable bootstrapping_olympics.ros.ros_logs.read.logger=bootstrapping_olympics.ros.ros_logs.read-module.html#logger,Variable bootstrapping_olympics.ros.ros_logs.write.logger=bootstrapping_olympics.ros.ros_logs.write-module.html#logger,Variable bootstrapping_olympics.utils.c_yaml.logger=bootstrapping_olympics.utils.c_yaml-module.html#logger,Variable bootstrapping_olympics.utils.logger=bootstrapping_olympics.utils-module.html#logger,Variable bootstrapping_olympics.utils.try_until.logger=bootstrapping_olympics.utils.try_until-module.html#logger"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Function bootstrapping_olympics.programs.manager.meat.load_agent_state'.load_agent_state()=bootstrapping_olympics.programs.manager.meat.load_agent_state%27-module.html#load_agent_state"><a title="bootstrapping_olympics.programs.manager.meat.load_agent_state'.load_agent_state" class="py-name" href="#" onclick="return doclink('link-0', 'load_agent_state', 'link-0');">load_agent_state</a></tt><tt class="py-op">,</tt> <tt id="link-1" class="py-name" targets="Function bootstrapping_olympics.programs.manager.meat.publish_output.publish_agent_output()=bootstrapping_olympics.programs.manager.meat.publish_output-module.html#publish_agent_output"><a title="bootstrapping_olympics.programs.manager.meat.publish_output.publish_agent_output" class="py-name" href="#" onclick="return doclink('link-1', 'publish_agent_output', 'link-1');">publish_agent_output</a></tt><tt class="py-op">,</tt> <tt id="link-2" class="py-name" targets="Variable bootstrapping_olympics.agent_states.filesystem_storage.logger=bootstrapping_olympics.agent_states.filesystem_storage-module.html#logger,Variable bootstrapping_olympics.agent_states.learning_state.logger=bootstrapping_olympics.agent_states.learning_state-module.html#logger,Variable bootstrapping_olympics.agent_states.logger=bootstrapping_olympics.agent_states-module.html#logger,Variable bootstrapping_olympics.configuration.logger=bootstrapping_olympics.configuration-module.html#logger,Variable bootstrapping_olympics.configuration.master.logger=bootstrapping_olympics.configuration.master-module.html#logger,Variable bootstrapping_olympics.examples.logger=bootstrapping_olympics.examples-module.html#logger,Variable bootstrapping_olympics.examples.rep_nuisances.logger=bootstrapping_olympics.examples.rep_nuisances-module.html#logger,Variable bootstrapping_olympics.examples.robots.equiv_robot.logger=bootstrapping_olympics.examples.robots.equiv_robot-module.html#logger,Variable bootstrapping_olympics.interfaces.agent.AgentInterface.logger=bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#logger,Variable bootstrapping_olympics.interfaces.boot_spec.logger=bootstrapping_olympics.interfaces.boot_spec-module.html#logger,Variable bootstrapping_olympics.interfaces.logger=bootstrapping_olympics.interfaces-module.html#logger,Variable bootstrapping_olympics.interfaces.stream_spec.logger=bootstrapping_olympics.interfaces.stream_spec-module.html#logger,Variable bootstrapping_olympics.library.logger=bootstrapping_olympics.library-module.html#logger,Variable bootstrapping_olympics.logger=bootstrapping_olympics-module.html#logger,Variable bootstrapping_olympics.logs.hdf.index.logger=bootstrapping_olympics.logs.hdf.index-module.html#logger,Variable bootstrapping_olympics.logs.hdf.logger=bootstrapping_olympics.logs.hdf-module.html#logger,Variable bootstrapping_olympics.logs.hdf.read.logger=bootstrapping_olympics.logs.hdf.read-module.html#logger,Variable bootstrapping_olympics.logs.hdf.write.logger=bootstrapping_olympics.logs.hdf.write-module.html#logger,Variable bootstrapping_olympics.logs.log_index.logger=bootstrapping_olympics.logs.log_index-module.html#logger,Variable bootstrapping_olympics.logs.logger=bootstrapping_olympics.logs-module.html#logger,Variable bootstrapping_olympics.logs.logs_format.logger=bootstrapping_olympics.logs.logs_format-module.html#logger,Variable bootstrapping_olympics.programs.hdf2bag.logger=bootstrapping_olympics.programs.hdf2bag-module.html#logger,Variable bootstrapping_olympics.programs.hdf2bag.main.logger=bootstrapping_olympics.programs.hdf2bag.main-module.html#logger,Variable bootstrapping_olympics.programs.manager.batch'.logger=bootstrapping_olympics.programs.manager.batch%27-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.clean_simulations.logger=bootstrapping_olympics.programs.manager.command_line.clean_simulations-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.clean_states.logger=bootstrapping_olympics.programs.manager.command_line.clean_states-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.learn.logger=bootstrapping_olympics.programs.manager.command_line.learn-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.list_agents.logger=bootstrapping_olympics.programs.manager.command_line.list_agents-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.list_logs.logger=bootstrapping_olympics.programs.manager.command_line.list_logs-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.list_states.logger=bootstrapping_olympics.programs.manager.command_line.list_states-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.logger=bootstrapping_olympics.programs.manager.command_line-module.html#logger,Variable bootstrapping_olympics.programs.manager.command_line.main.logger=bootstrapping_olympics.programs.manager.command_line.main-module.html#logger,Variable bootstrapping_olympics.programs.manager.logger=bootstrapping_olympics.programs.manager-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.directory_structure.logger=bootstrapping_olympics.programs.manager.meat.directory_structure-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.load_agent_state'.logger=bootstrapping_olympics.programs.manager.meat.load_agent_state%27-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.log_learn.logger=bootstrapping_olympics.programs.manager.meat.log_learn-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.logger=bootstrapping_olympics.programs.manager.meat-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.predict.logger=bootstrapping_olympics.programs.manager.meat.predict-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.publish_output.logger=bootstrapping_olympics.programs.manager.meat.publish_output-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.run_simulation'.logger=bootstrapping_olympics.programs.manager.meat.run_simulation%27-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.logger=bootstrapping_olympics.programs.manager.meat.servo.bookkeeping-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.logger=bootstrapping_olympics.programs.manager.meat.servo-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.report.logger=bootstrapping_olympics.programs.manager.meat.servo.report-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.run_simulation.logger=bootstrapping_olympics.programs.manager.meat.servo.run_simulation-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.servo.logger=bootstrapping_olympics.programs.manager.meat.servo.servo-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servo.summaries.logger=bootstrapping_olympics.programs.manager.meat.servo.summaries-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servonav.logger=bootstrapping_olympics.programs.manager.meat.servonav-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.servonav.task.logger=bootstrapping_olympics.programs.manager.meat.servonav.task-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.simulate'.logger=bootstrapping_olympics.programs.manager.meat.simulate%27-module.html#logger,Variable bootstrapping_olympics.programs.manager.meat.video.logger=bootstrapping_olympics.programs.manager.meat.video-module.html#logger,Variable bootstrapping_olympics.programs.print_config.logger=bootstrapping_olympics.programs.print_config-module.html#logger,Variable bootstrapping_olympics.programs.print_config.main'.logger=bootstrapping_olympics.programs.print_config.main%27-module.html#logger,Variable bootstrapping_olympics.programs.rosbag2h5.logger=bootstrapping_olympics.programs.rosbag2h5-module.html#logger,Variable bootstrapping_olympics.programs.rosbag2h5.main'.logger=bootstrapping_olympics.programs.rosbag2h5.main%27-module.html#logger,Variable bootstrapping_olympics.ros.adapters.boot_agent_adapter.Global.logger=bootstrapping_olympics.ros.adapters.boot_agent_adapter.Global-class.html#logger,Variable bootstrapping_olympics.ros.create_launch.command_line.logger=bootstrapping_olympics.ros.create_launch.command_line-module.html#logger,Variable bootstrapping_olympics.ros.create_launch.logger=bootstrapping_olympics.ros.create_launch-module.html#logger,Variable bootstrapping_olympics.ros.logger=bootstrapping_olympics.ros-module.html#logger,Variable bootstrapping_olympics.ros.ros_logs.index.logger=bootstrapping_olympics.ros.ros_logs.index-module.html#logger,Variable bootstrapping_olympics.ros.ros_logs.logger=bootstrapping_olympics.ros.ros_logs-module.html#logger,Variable bootstrapping_olympics.ros.ros_logs.read.logger=bootstrapping_olympics.ros.ros_logs.read-module.html#logger,Variable bootstrapping_olympics.ros.ros_logs.write.logger=bootstrapping_olympics.ros.ros_logs.write-module.html#logger,Variable bootstrapping_olympics.utils.c_yaml.logger=bootstrapping_olympics.utils.c_yaml-module.html#logger,Variable bootstrapping_olympics.utils.cocher.logger=bootstrapping_olympics.utils.cocher-module.html#logger,Variable bootstrapping_olympics.utils.logger=bootstrapping_olympics.utils-module.html#logger,Variable bootstrapping_olympics.utils.try_until.logger=bootstrapping_olympics.utils.try_until-module.html#logger"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
 bootstrapping_olympics.agent_states.learning_state.logger
 bootstrapping_olympics.agent_states.logger
 bootstrapping_olympics.configuration.logger
 bootstrapping_olympics.configuration.master.logger
 bootstrapping_olympics.examples.logger
 bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.examples.robots.equiv_robot.logger
 bootstrapping_olympics.interfaces.agent.AgentInterface.logger
 bootstrapping_olympics.interfaces.boot_spec.logger
 bootstrapping_olympics.interfaces.logger
 bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.library.logger
 bootstrapping_olympics.logger
 bootstrapping_olympics.logs.hdf.index.logger
 bootstrapping_olympics.logs.hdf.logger
@@ -91,7 +93,6 @@ bootstrapping_olympics.programs.manager.command_line.clean_states.logger
 bootstrapping_olympics.programs.manager.command_line.learn.logger
 bootstrapping_olympics.programs.manager.command_line.list_agents.logger
 bootstrapping_olympics.programs.manager.command_line.list_logs.logger
-bootstrapping_olympics.programs.manager.command_line.list_robots.logger
 bootstrapping_olympics.programs.manager.command_line.list_states.logger
 bootstrapping_olympics.programs.manager.command_line.logger
 bootstrapping_olympics.programs.manager.command_line.main.logger
@@ -126,10 +127,13 @@ bootstrapping_olympics.ros.ros_logs.logger
 bootstrapping_olympics.ros.ros_logs.read.logger
 bootstrapping_olympics.ros.ros_logs.write.logger
 bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.cocher.logger
 bootstrapping_olympics.utils.logger
 bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-2', 'logger', 'link-2');">logger</a></tt> </tt>
 <a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name" targets="Package bootstrapping_olympics=bootstrapping_olympics-module.html"><a title="bootstrapping_olympics" class="py-name" href="#" onclick="return doclink('link-3', 'bootstrapping_olympics', 'link-3');">bootstrapping_olympics</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class bootstrapping_olympics.interfaces.agent.AgentInterface=bootstrapping_olympics.interfaces.agent.AgentInterface-class.html"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface" class="py-name" href="#" onclick="return doclink('link-4', 'AgentInterface', 'link-4');">AgentInterface</a></tt> </tt>
-<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-5" class="py-name"><a title="bootstrapping_olympics" class="py-name" href="#" onclick="return doclink('link-5', 'bootstrapping_olympics', 'link-3');">bootstrapping_olympics</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Package bootstrapping_olympics.utils=bootstrapping_olympics.utils-module.html"><a title="bootstrapping_olympics.utils" class="py-name" href="#" onclick="return doclink('link-6', 'utils', 'link-6');">utils</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Class bootstrapping_olympics.utils.in_a_while.InAWhile=bootstrapping_olympics.utils.in_a_while.InAWhile-class.html"><a title="bootstrapping_olympics.utils.in_a_while.InAWhile" class="py-name" href="#" onclick="return doclink('link-7', 'InAWhile', 'link-7');">InAWhile</a></tt><tt class="py-op">,</tt> <tt id="link-8" class="py-name" targets="Class bootstrapping_olympics.utils.scripts_utils.UserError=bootstrapping_olympics.utils.scripts_utils.UserError-class.html"><a title="bootstrapping_olympics.utils.scripts_utils.UserError" class="py-name" href="#" onclick="return doclink('link-8', 'UserError', 'link-8');">UserError</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-5" class="py-name"><a title="bootstrapping_olympics" class="py-name" href="#" onclick="return doclink('link-5', 'bootstrapping_olympics', 'link-3');">bootstrapping_olympics</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Module bootstrapping_olympics.logs.hdf.utils=bootstrapping_olympics.logs.hdf.utils-module.html,Module bootstrapping_olympics.programs.manager.meat.servo.utils=bootstrapping_olympics.programs.manager.meat.servo.utils-module.html,Package bootstrapping_olympics.utils=bootstrapping_olympics.utils-module.html"><a title="bootstrapping_olympics.logs.hdf.utils
+bootstrapping_olympics.programs.manager.meat.servo.utils
+bootstrapping_olympics.utils" class="py-name" href="#" onclick="return doclink('link-6', 'utils', 'link-6');">utils</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Class bootstrapping_olympics.utils.in_a_while.InAWhile=bootstrapping_olympics.utils.in_a_while.InAWhile-class.html"><a title="bootstrapping_olympics.utils.in_a_while.InAWhile" class="py-name" href="#" onclick="return doclink('link-7', 'InAWhile', 'link-7');">InAWhile</a></tt><tt class="py-op">,</tt> <tt id="link-8" class="py-name" targets="Class bootstrapping_olympics.utils.scripts_utils.UserError=bootstrapping_olympics.utils.scripts_utils.UserError-class.html"><a title="bootstrapping_olympics.utils.scripts_utils.UserError" class="py-name" href="#" onclick="return doclink('link-8', 'UserError', 'link-8');">UserError</a></tt> </tt>
 <a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
 <a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"> </tt>
 <a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
@@ -149,10 +153,12 @@ bootstrapping_olympics.configuration.logger
 bootstrapping_olympics.configuration.master.logger
 bootstrapping_olympics.examples.logger
 bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.examples.robots.equiv_robot.logger
 bootstrapping_olympics.interfaces.agent.AgentInterface.logger
 bootstrapping_olympics.interfaces.boot_spec.logger
 bootstrapping_olympics.interfaces.logger
 bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.library.logger
 bootstrapping_olympics.logger
 bootstrapping_olympics.logs.hdf.index.logger
 bootstrapping_olympics.logs.hdf.logger
@@ -169,7 +175,6 @@ bootstrapping_olympics.programs.manager.command_line.clean_states.logger
 bootstrapping_olympics.programs.manager.command_line.learn.logger
 bootstrapping_olympics.programs.manager.command_line.list_agents.logger
 bootstrapping_olympics.programs.manager.command_line.list_logs.logger
-bootstrapping_olympics.programs.manager.command_line.list_robots.logger
 bootstrapping_olympics.programs.manager.command_line.list_states.logger
 bootstrapping_olympics.programs.manager.command_line.logger
 bootstrapping_olympics.programs.manager.command_line.main.logger
@@ -204,6 +209,7 @@ bootstrapping_olympics.ros.ros_logs.logger
 bootstrapping_olympics.ros.ros_logs.read.logger
 bootstrapping_olympics.ros.ros_logs.write.logger
 bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.cocher.logger
 bootstrapping_olympics.utils.logger
 bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-9', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method bootstrapping_olympics.interfaces.agent.AgentInterface.info()=bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#info,Method bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info()=bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger-class.html#info"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
 bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-10', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-string">'Learning episodes %r'</tt> <tt class="py-op">%</tt> <tt class="py-name">episodes</tt><tt class="py-op">)</tt> </tt>
@@ -231,10 +237,12 @@ bootstrapping_olympics.configuration.logger
 bootstrapping_olympics.configuration.master.logger
 bootstrapping_olympics.examples.logger
 bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.examples.robots.equiv_robot.logger
 bootstrapping_olympics.interfaces.agent.AgentInterface.logger
 bootstrapping_olympics.interfaces.boot_spec.logger
 bootstrapping_olympics.interfaces.logger
 bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.library.logger
 bootstrapping_olympics.logger
 bootstrapping_olympics.logs.hdf.index.logger
 bootstrapping_olympics.logs.hdf.logger
@@ -251,7 +259,6 @@ bootstrapping_olympics.programs.manager.command_line.clean_states.logger
 bootstrapping_olympics.programs.manager.command_line.learn.logger
 bootstrapping_olympics.programs.manager.command_line.list_agents.logger
 bootstrapping_olympics.programs.manager.command_line.list_logs.logger
-bootstrapping_olympics.programs.manager.command_line.list_robots.logger
 bootstrapping_olympics.programs.manager.command_line.list_states.logger
 bootstrapping_olympics.programs.manager.command_line.logger
 bootstrapping_olympics.programs.manager.command_line.main.logger
@@ -286,6 +293,7 @@ bootstrapping_olympics.ros.ros_logs.logger
 bootstrapping_olympics.ros.ros_logs.read.logger
 bootstrapping_olympics.ros.ros_logs.write.logger
 bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.cocher.logger
 bootstrapping_olympics.utils.logger
 bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-28', 'logger', 'link-2');">logger</a></tt> <tt class="py-op">=</tt> <tt class="py-name">agent_logger</tt> </tt>
 <a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"> </tt>
@@ -298,20 +306,22 @@ bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick=
 <a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
 <a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">publish_interval</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt> <tt class="py-keyword">or</tt> <tt id="link-34" class="py-name" targets="Function bootstrapping_olympics.programs.manager.meat.publish_output.publish_once()=bootstrapping_olympics.programs.manager.meat.publish_output-module.html#publish_once"><a title="bootstrapping_olympics.programs.manager.meat.publish_output.publish_once" class="py-name" href="#" onclick="return doclink('link-34', 'publish_once', 'link-34');">publish_once</a></tt><tt class="py-op">:</tt> </tt>
 <a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-name">ds</tt> <tt class="py-op">=</tt> <tt id="link-35" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.data_central" class="py-name" href="#" onclick="return doclink('link-35', 'data_central', 'link-12');">data_central</a></tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Method bootstrapping_olympics.programs.manager.meat.data_central.DataCentral.get_dir_structure()=bootstrapping_olympics.programs.manager.meat.data_central.DataCentral-class.html#get_dir_structure"><a title="bootstrapping_olympics.programs.manager.meat.data_central.DataCentral.get_dir_structure" class="py-name" href="#" onclick="return doclink('link-36', 'get_dir_structure', 'link-36');">get_dir_structure</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-name">report_dir</tt> <tt class="py-op">=</tt> <tt class="py-name">ds</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.get_report_dir()=bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure-class.html#get_report_dir"><a title="bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.get_report_dir" class="py-name" href="#" onclick="return doclink('link-37', 'get_report_dir', 'link-37');">get_report_dir</a></tt><tt class="py-op">(</tt><tt class="py-name">id_agent</tt><tt class="py-op">=</tt><tt class="py-name">id_agent</tt><tt class="py-op">,</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-name">report_dir</tt> <tt class="py-op">=</tt> <tt class="py-name">ds</tt><tt class="py-op">.</tt><tt class="py-name">get_report_dir</tt><tt class="py-op">(</tt><tt class="py-name">id_agent</tt><tt class="py-op">=</tt><tt class="py-name">id_agent</tt><tt class="py-op">,</tt> </tt>
 <a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">                                       <tt class="py-name">id_robot</tt><tt class="py-op">=</tt><tt class="py-name">id_robot</tt><tt class="py-op">,</tt> </tt>
 <a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">                                       <tt class="py-name">id_state</tt><tt class="py-op">=</tt><tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">id_state</tt><tt class="py-op">)</tt> </tt>
-<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt id="link-38" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt id="link-37" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
 bootstrapping_olympics.agent_states.learning_state.logger
 bootstrapping_olympics.agent_states.logger
 bootstrapping_olympics.configuration.logger
 bootstrapping_olympics.configuration.master.logger
 bootstrapping_olympics.examples.logger
 bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.examples.robots.equiv_robot.logger
 bootstrapping_olympics.interfaces.agent.AgentInterface.logger
 bootstrapping_olympics.interfaces.boot_spec.logger
 bootstrapping_olympics.interfaces.logger
 bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.library.logger
 bootstrapping_olympics.logger
 bootstrapping_olympics.logs.hdf.index.logger
 bootstrapping_olympics.logs.hdf.logger
@@ -328,7 +338,6 @@ bootstrapping_olympics.programs.manager.command_line.clean_states.logger
 bootstrapping_olympics.programs.manager.command_line.learn.logger
 bootstrapping_olympics.programs.manager.command_line.list_agents.logger
 bootstrapping_olympics.programs.manager.command_line.list_logs.logger
-bootstrapping_olympics.programs.manager.command_line.list_robots.logger
 bootstrapping_olympics.programs.manager.command_line.list_states.logger
 bootstrapping_olympics.programs.manager.command_line.logger
 bootstrapping_olympics.programs.manager.command_line.main.logger
@@ -363,23 +372,26 @@ bootstrapping_olympics.ros.ros_logs.logger
 bootstrapping_olympics.ros.ros_logs.read.logger
 bootstrapping_olympics.ros.ros_logs.write.logger
 bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.cocher.logger
 bootstrapping_olympics.utils.logger
-bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-38', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
-bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-39', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-string">'Writing output to directory %r.'</tt> <tt class="py-op">%</tt> <tt class="py-name">report_dir</tt><tt class="py-op">)</tt> </tt>
-<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt id="link-40" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.publish_output.publish_agent_output" class="py-name" href="#" onclick="return doclink('link-40', 'publish_agent_output', 'link-1');">publish_agent_output</a></tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">,</tt> <tt id="link-41" class="py-name"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-41', 'agent', 'link-29');">agent</a></tt><tt class="py-op">,</tt> <tt class="py-name">report_dir</tt><tt class="py-op">,</tt> <tt class="py-name">basename</tt><tt class="py-op">=</tt><tt class="py-string">'once'</tt><tt class="py-op">)</tt> </tt>
+bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-37', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
+bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-38', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-string">'Writing output to directory %r.'</tt> <tt class="py-op">%</tt> <tt class="py-name">report_dir</tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt id="link-39" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.publish_output.publish_agent_output" class="py-name" href="#" onclick="return doclink('link-39', 'publish_agent_output', 'link-1');">publish_agent_output</a></tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">,</tt> <tt id="link-40" class="py-name"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-40', 'agent', 'link-29');">agent</a></tt><tt class="py-op">,</tt> <tt class="py-name">report_dir</tt><tt class="py-op">,</tt> <tt class="py-name">basename</tt><tt class="py-op">=</tt><tt class="py-string">'once'</tt><tt class="py-op">)</tt> </tt>
 <a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"> </tt>
-<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-42" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.publish_output.publish_once" class="py-name" href="#" onclick="return doclink('link-42', 'publish_once', 'link-34');">publish_once</a></tt><tt class="py-op">:</tt> </tt>
-<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt id="link-43" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-41" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.publish_output.publish_once" class="py-name" href="#" onclick="return doclink('link-41', 'publish_once', 'link-34');">publish_once</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt id="link-42" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
 bootstrapping_olympics.agent_states.learning_state.logger
 bootstrapping_olympics.agent_states.logger
 bootstrapping_olympics.configuration.logger
 bootstrapping_olympics.configuration.master.logger
 bootstrapping_olympics.examples.logger
 bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.examples.robots.equiv_robot.logger
 bootstrapping_olympics.interfaces.agent.AgentInterface.logger
 bootstrapping_olympics.interfaces.boot_spec.logger
 bootstrapping_olympics.interfaces.logger
 bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.library.logger
 bootstrapping_olympics.logger
 bootstrapping_olympics.logs.hdf.index.logger
 bootstrapping_olympics.logs.hdf.logger
@@ -396,7 +408,6 @@ bootstrapping_olympics.programs.manager.command_line.clean_states.logger
 bootstrapping_olympics.programs.manager.command_line.learn.logger
 bootstrapping_olympics.programs.manager.command_line.list_agents.logger
 bootstrapping_olympics.programs.manager.command_line.list_logs.logger
-bootstrapping_olympics.programs.manager.command_line.list_robots.logger
 bootstrapping_olympics.programs.manager.command_line.list_states.logger
 bootstrapping_olympics.programs.manager.command_line.logger
 bootstrapping_olympics.programs.manager.command_line.main.logger
@@ -431,12 +442,13 @@ bootstrapping_olympics.ros.ros_logs.logger
 bootstrapping_olympics.ros.ros_logs.read.logger
 bootstrapping_olympics.ros.ros_logs.write.logger
 bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.cocher.logger
 bootstrapping_olympics.utils.logger
-bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-43', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-44" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
-bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-44', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-string">'As requested, exiting after publishing information.'</tt><tt class="py-op">)</tt> </tt>
+bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-42', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
+bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-43', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-string">'As requested, exiting after publishing information.'</tt><tt class="py-op">)</tt> </tt>
 <a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> </tt>
 <a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"> </tt>
-<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-name">streams</tt> <tt class="py-op">=</tt> <tt id="link-45" class="py-name"><a title="bootstrapping_olympics.logs.log_index" class="py-name" href="#" onclick="return doclink('link-45', 'log_index', 'link-11');">log_index</a></tt><tt class="py-op">.</tt><tt id="link-46" class="py-name" targets="Method bootstrapping_olympics.logs.log_index.LogIndex.get_streams_for_robot()=bootstrapping_olympics.logs.log_index.LogIndex-class.html#get_streams_for_robot"><a title="bootstrapping_olympics.logs.log_index.LogIndex.get_streams_for_robot" class="py-name" href="#" onclick="return doclink('link-46', 'get_streams_for_robot', 'link-46');">get_streams_for_robot</a></tt><tt class="py-op">(</tt><tt class="py-name">id_robot</tt><tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-name">streams</tt> <tt class="py-op">=</tt> <tt id="link-44" class="py-name"><a title="bootstrapping_olympics.logs.log_index" class="py-name" href="#" onclick="return doclink('link-44', 'log_index', 'link-11');">log_index</a></tt><tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Method bootstrapping_olympics.logs.log_index.LogIndex.get_streams_for_robot()=bootstrapping_olympics.logs.log_index.LogIndex-class.html#get_streams_for_robot"><a title="bootstrapping_olympics.logs.log_index.LogIndex.get_streams_for_robot" class="py-name" href="#" onclick="return doclink('link-45', 'get_streams_for_robot', 'link-45');">get_streams_for_robot</a></tt><tt class="py-op">(</tt><tt class="py-name">id_robot</tt><tt class="py-op">)</tt> </tt>
 <a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">    <tt class="py-comment"># TODO: progress bar</tt> </tt>
 <a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">    <tt class="py-name">num_episodes_total</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
 <a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">    <tt class="py-name">num_episodes_remaining</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
@@ -444,32 +456,34 @@ bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class
 <a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">    <tt class="py-name">num_observations_remaining</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
 <a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">stream</tt> <tt class="py-keyword">in</tt> <tt class="py-name">streams</tt><tt class="py-op">:</tt> </tt>
 <a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-comment"># Check if all learned</tt> </tt>
-<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-name">stream_episodes</tt> <tt class="py-op">=</tt> <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.BootStream.get_id_episodes()=bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_id_episodes,Method bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.get_id_episodes()=bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo-class.html#get_id_episodes,Method bootstrapping_olympics.programs.manager.meat.simulate'.Bookkeeping.get_id_episodes()=bootstrapping_olympics.programs.manager.meat.simulate%27.Bookkeeping-class.html#get_id_episodes"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_id_episodes
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-name">stream_episodes</tt> <tt class="py-op">=</tt> <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.BootStream.get_id_episodes()=bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_id_episodes,Method bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.get_id_episodes()=bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo-class.html#get_id_episodes,Method bootstrapping_olympics.programs.manager.meat.simulate'.Bookkeeping.get_id_episodes()=bootstrapping_olympics.programs.manager.meat.simulate%27.Bookkeeping-class.html#get_id_episodes"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_id_episodes
 bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.get_id_episodes
-bootstrapping_olympics.programs.manager.meat.simulate'.Bookkeeping.get_id_episodes" class="py-name" href="#" onclick="return doclink('link-47', 'get_id_episodes', 'link-47');">get_id_episodes</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+bootstrapping_olympics.programs.manager.meat.simulate'.Bookkeeping.get_id_episodes" class="py-name" href="#" onclick="return doclink('link-46', 'get_id_episodes', 'link-46');">get_id_episodes</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-name">num_episodes_total</tt> <tt class="py-op">+=</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">stream_episodes</tt><tt class="py-op">)</tt> </tt>
-<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-name">num_observations_total</tt> <tt class="py-op">+=</tt> <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.BootStream.get_num_observations()=bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_num_observations,Method bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_num_observations()=bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#get_num_observations"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_num_observations
-bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_num_observations" class="py-name" href="#" onclick="return doclink('link-48', 'get_num_observations', 'link-48');">get_num_observations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-name">num_observations_total</tt> <tt class="py-op">+=</tt> <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.BootStream.get_num_observations()=bootstrapping_olympics.logs.boot_stream.BootStream-class.html#get_num_observations,Method bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_num_observations()=bootstrapping_olympics.logs.boot_stream.EpisodeSummary-class.html#get_num_observations"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_num_observations
+bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_num_observations" class="py-name" href="#" onclick="return doclink('link-47', 'get_num_observations', 'link-47');">get_num_observations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt class="py-name">to_learn</tt> <tt class="py-op">=</tt> <tt class="py-name">stream_episodes</tt><tt class="py-op">.</tt><tt class="py-name">difference</tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">id_episodes</tt><tt class="py-op">)</tt> </tt>
 <a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">episodes</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
 <a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">            <tt class="py-name">to_learn</tt> <tt class="py-op">=</tt> <tt class="py-name">to_learn</tt><tt class="py-op">.</tt><tt class="py-name">intersection</tt><tt class="py-op">(</tt><tt class="py-name">episodes</tt><tt class="py-op">)</tt> </tt>
 <a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">to_learn</tt><tt class="py-op">:</tt> </tt>
 <a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">            <tt class="py-name">num_episodes_remaining</tt> <tt class="py-op">+=</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">to_learn</tt><tt class="py-op">)</tt> </tt>
-<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">            <tt class="py-name">num_observations_remaining</tt> <tt class="py-op">+=</tt> <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_num_observations
-bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_num_observations" class="py-name" href="#" onclick="return doclink('link-49', 'get_num_observations', 'link-48');">get_num_observations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">            <tt class="py-name">num_observations_remaining</tt> <tt class="py-op">+=</tt> <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_num_observations
+bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_num_observations" class="py-name" href="#" onclick="return doclink('link-48', 'get_num_observations', 'link-47');">get_num_observations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"> </tt>
 <a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">    <tt class="py-name">template</tt> <tt class="py-op">=</tt> <tt class="py-string">'%20s: %7d episodes, %7d observations.'</tt> </tt>
-<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">    <tt id="link-50" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">    <tt id="link-49" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
 bootstrapping_olympics.agent_states.learning_state.logger
 bootstrapping_olympics.agent_states.logger
 bootstrapping_olympics.configuration.logger
 bootstrapping_olympics.configuration.master.logger
 bootstrapping_olympics.examples.logger
 bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.examples.robots.equiv_robot.logger
 bootstrapping_olympics.interfaces.agent.AgentInterface.logger
 bootstrapping_olympics.interfaces.boot_spec.logger
 bootstrapping_olympics.interfaces.logger
 bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.library.logger
 bootstrapping_olympics.logger
 bootstrapping_olympics.logs.hdf.index.logger
 bootstrapping_olympics.logs.hdf.logger
@@ -486,7 +500,6 @@ bootstrapping_olympics.programs.manager.command_line.clean_states.logger
 bootstrapping_olympics.programs.manager.command_line.learn.logger
 bootstrapping_olympics.programs.manager.command_line.list_agents.logger
 bootstrapping_olympics.programs.manager.command_line.list_logs.logger
-bootstrapping_olympics.programs.manager.command_line.list_robots.logger
 bootstrapping_olympics.programs.manager.command_line.list_states.logger
 bootstrapping_olympics.programs.manager.command_line.logger
 bootstrapping_olympics.programs.manager.command_line.main.logger
@@ -521,22 +534,25 @@ bootstrapping_olympics.ros.ros_logs.logger
 bootstrapping_olympics.ros.ros_logs.read.logger
 bootstrapping_olympics.ros.ros_logs.write.logger
 bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.cocher.logger
 bootstrapping_olympics.utils.logger
-bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-50', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
-bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-51', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-name">template</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">'total'</tt><tt class="py-op">,</tt> </tt>
+bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-49', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
+bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-50', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-name">template</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">'total'</tt><tt class="py-op">,</tt> </tt>
 <a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">                            <tt class="py-name">num_episodes_total</tt><tt class="py-op">,</tt> </tt>
 <a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">                            <tt class="py-name">num_observations_total</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">    <tt id="link-52" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">    <tt id="link-51" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
 bootstrapping_olympics.agent_states.learning_state.logger
 bootstrapping_olympics.agent_states.logger
 bootstrapping_olympics.configuration.logger
 bootstrapping_olympics.configuration.master.logger
 bootstrapping_olympics.examples.logger
 bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.examples.robots.equiv_robot.logger
 bootstrapping_olympics.interfaces.agent.AgentInterface.logger
 bootstrapping_olympics.interfaces.boot_spec.logger
 bootstrapping_olympics.interfaces.logger
 bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.library.logger
 bootstrapping_olympics.logger
 bootstrapping_olympics.logs.hdf.index.logger
 bootstrapping_olympics.logs.hdf.logger
@@ -553,7 +569,6 @@ bootstrapping_olympics.programs.manager.command_line.clean_states.logger
 bootstrapping_olympics.programs.manager.command_line.learn.logger
 bootstrapping_olympics.programs.manager.command_line.list_agents.logger
 bootstrapping_olympics.programs.manager.command_line.list_logs.logger
-bootstrapping_olympics.programs.manager.command_line.list_robots.logger
 bootstrapping_olympics.programs.manager.command_line.list_states.logger
 bootstrapping_olympics.programs.manager.command_line.logger
 bootstrapping_olympics.programs.manager.command_line.main.logger
@@ -588,22 +603,25 @@ bootstrapping_olympics.ros.ros_logs.logger
 bootstrapping_olympics.ros.ros_logs.read.logger
 bootstrapping_olympics.ros.ros_logs.write.logger
 bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.cocher.logger
 bootstrapping_olympics.utils.logger
-bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-52', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
-bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-53', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-name">template</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">'already learned'</tt><tt class="py-op">,</tt> </tt>
+bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-51', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
+bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-52', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-name">template</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">'already learned'</tt><tt class="py-op">,</tt> </tt>
 <a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">                            <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">id_episodes</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
 <a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">                            <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">num_observations</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">    <tt id="link-54" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">    <tt id="link-53" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
 bootstrapping_olympics.agent_states.learning_state.logger
 bootstrapping_olympics.agent_states.logger
 bootstrapping_olympics.configuration.logger
 bootstrapping_olympics.configuration.master.logger
 bootstrapping_olympics.examples.logger
 bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.examples.robots.equiv_robot.logger
 bootstrapping_olympics.interfaces.agent.AgentInterface.logger
 bootstrapping_olympics.interfaces.boot_spec.logger
 bootstrapping_olympics.interfaces.logger
 bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.library.logger
 bootstrapping_olympics.logger
 bootstrapping_olympics.logs.hdf.index.logger
 bootstrapping_olympics.logs.hdf.logger
@@ -620,7 +638,6 @@ bootstrapping_olympics.programs.manager.command_line.clean_states.logger
 bootstrapping_olympics.programs.manager.command_line.learn.logger
 bootstrapping_olympics.programs.manager.command_line.list_agents.logger
 bootstrapping_olympics.programs.manager.command_line.list_logs.logger
-bootstrapping_olympics.programs.manager.command_line.list_robots.logger
 bootstrapping_olympics.programs.manager.command_line.list_states.logger
 bootstrapping_olympics.programs.manager.command_line.logger
 bootstrapping_olympics.programs.manager.command_line.main.logger
@@ -655,57 +672,67 @@ bootstrapping_olympics.ros.ros_logs.logger
 bootstrapping_olympics.ros.ros_logs.read.logger
 bootstrapping_olympics.ros.ros_logs.write.logger
 bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.cocher.logger
 bootstrapping_olympics.utils.logger
-bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-54', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
-bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-55', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-name">template</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">'remaining'</tt><tt class="py-op">,</tt> </tt>
+bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-53', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
+bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-54', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-name">template</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">'remaining'</tt><tt class="py-op">,</tt> </tt>
 <a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                            <tt class="py-name">num_episodes_remaining</tt><tt class="py-op">,</tt> </tt>
 <a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">                            <tt class="py-name">num_observations_remaining</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
 <a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"> </tt>
-<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">    <tt class="py-name">tracker_save</tt> <tt class="py-op">=</tt> <tt id="link-56" class="py-name"><a title="bootstrapping_olympics.utils.in_a_while.InAWhile" class="py-name" href="#" onclick="return doclink('link-56', 'InAWhile', 'link-7');">InAWhile</a></tt><tt class="py-op">(</tt><tt class="py-name">interval_save</tt><tt class="py-op">)</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">    <tt class="py-name">tracker_save</tt> <tt class="py-op">=</tt> <tt id="link-55" class="py-name"><a title="bootstrapping_olympics.utils.in_a_while.InAWhile" class="py-name" href="#" onclick="return doclink('link-55', 'InAWhile', 'link-7');">InAWhile</a></tt><tt class="py-op">(</tt><tt class="py-name">interval_save</tt><tt class="py-op">)</tt> </tt>
 <a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"> </tt>
-<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt class="py-name">tracker</tt> <tt class="py-op">=</tt> <tt id="link-57" class="py-name"><a title="bootstrapping_olympics.utils.in_a_while.InAWhile" class="py-name" href="#" onclick="return doclink('link-57', 'InAWhile', 'link-7');">InAWhile</a></tt><tt class="py-op">(</tt><tt class="py-name">interval_print</tt><tt class="py-op">)</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt class="py-name">tracker</tt> <tt class="py-op">=</tt> <tt id="link-56" class="py-name"><a title="bootstrapping_olympics.utils.in_a_while.InAWhile" class="py-name" href="#" onclick="return doclink('link-56', 'InAWhile', 'link-7');">InAWhile</a></tt><tt class="py-op">(</tt><tt class="py-name">interval_print</tt><tt class="py-op">)</tt> </tt>
 <a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"> </tt>
 <a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">stream</tt> <tt class="py-keyword">in</tt> <tt class="py-name">streams</tt><tt class="py-op">:</tt> </tt>
 <a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-comment"># Check if all learned</tt> </tt>
-<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-name">to_learn</tt> <tt class="py-op">=</tt> <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_id_episodes
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-name">to_learn</tt> <tt class="py-op">=</tt> <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_id_episodes
 bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.get_id_episodes
-bootstrapping_olympics.programs.manager.meat.simulate'.Bookkeeping.get_id_episodes" class="py-name" href="#" onclick="return doclink('link-58', 'get_id_episodes', 'link-47');">get_id_episodes</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">difference</tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">id_episodes</tt><tt class="py-op">)</tt> </tt>
+bootstrapping_olympics.programs.manager.meat.simulate'.Bookkeeping.get_id_episodes" class="py-name" href="#" onclick="return doclink('link-57', 'get_id_episodes', 'link-46');">get_id_episodes</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">difference</tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">id_episodes</tt><tt class="py-op">)</tt> </tt>
 <a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">episodes</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
 <a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">            <tt class="py-name">to_learn</tt> <tt class="py-op">=</tt> <tt class="py-name">to_learn</tt><tt class="py-op">.</tt><tt class="py-name">intersection</tt><tt class="py-op">(</tt><tt class="py-name">episodes</tt><tt class="py-op">)</tt> </tt>
 <a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">to_learn</tt><tt class="py-op">:</tt> </tt>
 <a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">            <tt class="py-comment">#logger.info('Stream %s already completely learned.' % stream)</tt> </tt>
 <a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">            <tt class="py-keyword">continue</tt> </tt>
 <a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"> </tt>
-<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-name">cur_stream_observations</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
-<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">obs</tt> <tt class="py-keyword">in</tt> <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.BootStream.read()=bootstrapping_olympics.logs.boot_stream.BootStream-class.html#read,Module bootstrapping_olympics.logs.hdf.read=bootstrapping_olympics.logs.hdf.read-module.html,Module bootstrapping_olympics.ros.ros_logs.read=bootstrapping_olympics.ros.ros_logs.read-module.html"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.read
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">            <tt class="py-keyword">from</tt> <tt class="py-name">compmake</tt> <tt class="py-keyword">import</tt> <tt class="py-name">progress</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">            <tt class="py-name">progress</tt><tt class="py-op">(</tt><tt class="py-string">'Learning'</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">id_episodes</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">                                  <tt class="py-name">num_episodes_total</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">ImportError</tt><tt class="py-op">:</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt class="py-name">cur_stream_observations</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">obs</tt> <tt class="py-keyword">in</tt> <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name" targets="Method bootstrapping_olympics.logs.boot_stream.BootStream.read()=bootstrapping_olympics.logs.boot_stream.BootStream-class.html#read,Module bootstrapping_olympics.logs.hdf.read=bootstrapping_olympics.logs.hdf.read-module.html,Module bootstrapping_olympics.ros.ros_logs.read=bootstrapping_olympics.ros.ros_logs.read-module.html"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.read
 bootstrapping_olympics.logs.hdf.read
-bootstrapping_olympics.ros.ros_logs.read" class="py-name" href="#" onclick="return doclink('link-59', 'read', 'link-59');">read</a></tt><tt class="py-op">(</tt><tt class="py-name">only_episodes</tt><tt class="py-op">=</tt><tt class="py-name">to_learn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">            <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">num_observations</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
-<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">            <tt class="py-name">cur_stream_observations</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
-<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
-<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">tracker</tt><tt class="py-op">.</tt><tt id="link-60" class="py-name" targets="Method bootstrapping_olympics.utils.in_a_while.InAWhile.its_time()=bootstrapping_olympics.utils.in_a_while.InAWhile-class.html#its_time"><a title="bootstrapping_olympics.utils.in_a_while.InAWhile.its_time" class="py-name" href="#" onclick="return doclink('link-60', 'its_time', 'link-60');">its_time</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">                <tt class="py-name">progress</tt> <tt class="py-op">=</tt> <tt class="py-number">100</tt> <tt class="py-op">*</tt> <tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">num_observations</tt><tt class="py-op">)</tt> <tt class="py-op">/</tt> </tt>
-<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">                                  <tt class="py-name">num_observations_total</tt><tt class="py-op">)</tt> </tt>
-<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">                <tt class="py-name">progress_log</tt> <tt class="py-op">=</tt> <tt class="py-number">100</tt> <tt class="py-op">*</tt> <tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">cur_stream_observations</tt><tt class="py-op">)</tt> <tt class="py-op">/</tt> </tt>
-<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">                                      <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-61" class="py-name"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_num_observations
-bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_num_observations" class="py-name" href="#" onclick="return doclink('link-61', 'get_num_observations', 'link-48');">get_num_observations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">                <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'overall %.2f%% (log %3d%%) (eps: %4d/%d, obs: %4d/%d);'</tt> </tt>
-<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                       <tt class="py-string">' %5.1f fps'</tt> <tt class="py-op">%</tt> </tt>
-<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                       <tt class="py-op">(</tt><tt class="py-name">progress</tt><tt class="py-op">,</tt> <tt class="py-name">progress_log</tt><tt class="py-op">,</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">id_episodes</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
-<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">                         <tt class="py-name">num_episodes_total</tt><tt class="py-op">,</tt> </tt>
-<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                        <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">num_observations</tt><tt class="py-op">,</tt> <tt class="py-name">num_observations_total</tt><tt class="py-op">,</tt> </tt>
-<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">                        <tt class="py-name">tracker</tt><tt class="py-op">.</tt><tt id="link-62" class="py-name" targets="Method bootstrapping_olympics.utils.in_a_while.InAWhile.fps()=bootstrapping_olympics.utils.in_a_while.InAWhile-class.html#fps"><a title="bootstrapping_olympics.utils.in_a_while.InAWhile.fps" class="py-name" href="#" onclick="return doclink('link-62', 'fps', 'link-62');">fps</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">                <tt id="link-63" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
+bootstrapping_olympics.ros.ros_logs.read" class="py-name" href="#" onclick="return doclink('link-58', 'read', 'link-58');">read</a></tt><tt class="py-op">(</tt><tt class="py-name">only_episodes</tt><tt class="py-op">=</tt><tt class="py-name">to_learn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">            <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">num_observations</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">            <tt class="py-name">cur_stream_observations</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">tracker</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name" targets="Method bootstrapping_olympics.utils.in_a_while.InAWhile.its_time()=bootstrapping_olympics.utils.in_a_while.InAWhile-class.html#its_time"><a title="bootstrapping_olympics.utils.in_a_while.InAWhile.its_time" class="py-name" href="#" onclick="return doclink('link-59', 'its_time', 'link-59');">its_time</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">                <tt class="py-name">progress</tt> <tt class="py-op">=</tt> <tt class="py-number">100</tt> <tt class="py-op">*</tt> <tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">num_observations</tt><tt class="py-op">)</tt> <tt class="py-op">/</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                                  <tt class="py-name">num_observations_total</tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">                <tt class="py-name">progress_log</tt> <tt class="py-op">=</tt> <tt class="py-number">100</tt> <tt class="py-op">*</tt> <tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">cur_stream_observations</tt><tt class="py-op">)</tt> <tt class="py-op">/</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">                                      <tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-60" class="py-name"><a title="bootstrapping_olympics.logs.boot_stream.BootStream.get_num_observations
+bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_num_observations" class="py-name" href="#" onclick="return doclink('link-60', 'get_num_observations', 'link-47');">get_num_observations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">                <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'overall %.2f%% (log %3d%%) (eps: %4d/%d, obs: %4d/%d);'</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">                       <tt class="py-string">' %5.1f fps'</tt> <tt class="py-op">%</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                       <tt class="py-op">(</tt><tt class="py-name">progress</tt><tt class="py-op">,</tt> <tt class="py-name">progress_log</tt><tt class="py-op">,</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">id_episodes</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">                         <tt class="py-name">num_episodes_total</tt><tt class="py-op">,</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                        <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">num_observations</tt><tt class="py-op">,</tt> <tt class="py-name">num_observations_total</tt><tt class="py-op">,</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">                        <tt class="py-name">tracker</tt><tt class="py-op">.</tt><tt id="link-61" class="py-name" targets="Method bootstrapping_olympics.utils.in_a_while.InAWhile.fps()=bootstrapping_olympics.utils.in_a_while.InAWhile-class.html#fps"><a title="bootstrapping_olympics.utils.in_a_while.InAWhile.fps" class="py-name" href="#" onclick="return doclink('link-61', 'fps', 'link-61');">fps</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">                <tt id="link-62" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
 bootstrapping_olympics.agent_states.learning_state.logger
 bootstrapping_olympics.agent_states.logger
 bootstrapping_olympics.configuration.logger
 bootstrapping_olympics.configuration.master.logger
 bootstrapping_olympics.examples.logger
 bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.examples.robots.equiv_robot.logger
 bootstrapping_olympics.interfaces.agent.AgentInterface.logger
 bootstrapping_olympics.interfaces.boot_spec.logger
 bootstrapping_olympics.interfaces.logger
 bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.library.logger
 bootstrapping_olympics.logger
 bootstrapping_olympics.logs.hdf.index.logger
 bootstrapping_olympics.logs.hdf.logger
@@ -722,7 +749,6 @@ bootstrapping_olympics.programs.manager.command_line.clean_states.logger
 bootstrapping_olympics.programs.manager.command_line.learn.logger
 bootstrapping_olympics.programs.manager.command_line.list_agents.logger
 bootstrapping_olympics.programs.manager.command_line.list_logs.logger
-bootstrapping_olympics.programs.manager.command_line.list_robots.logger
 bootstrapping_olympics.programs.manager.command_line.list_states.logger
 bootstrapping_olympics.programs.manager.command_line.logger
 bootstrapping_olympics.programs.manager.command_line.main.logger
@@ -757,22 +783,25 @@ bootstrapping_olympics.ros.ros_logs.logger
 bootstrapping_olympics.ros.ros_logs.read.logger
 bootstrapping_olympics.ros.ros_logs.write.logger
 bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.cocher.logger
 bootstrapping_olympics.utils.logger
-bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-63', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-64" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
-bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-64', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
-<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"> </tt>
-<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">tracker_save</tt><tt class="py-op">.</tt><tt id="link-65" class="py-name"><a title="bootstrapping_olympics.utils.in_a_while.InAWhile.its_time" class="py-name" href="#" onclick="return doclink('link-65', 'its_time', 'link-60');">its_time</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                <tt id="link-66" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
+bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-62', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
+bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-63', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">tracker_save</tt><tt class="py-op">.</tt><tt id="link-64" class="py-name"><a title="bootstrapping_olympics.utils.in_a_while.InAWhile.its_time" class="py-name" href="#" onclick="return doclink('link-64', 'its_time', 'link-59');">its_time</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">                <tt id="link-65" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
 bootstrapping_olympics.agent_states.learning_state.logger
 bootstrapping_olympics.agent_states.logger
 bootstrapping_olympics.configuration.logger
 bootstrapping_olympics.configuration.master.logger
 bootstrapping_olympics.examples.logger
 bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.examples.robots.equiv_robot.logger
 bootstrapping_olympics.interfaces.agent.AgentInterface.logger
 bootstrapping_olympics.interfaces.boot_spec.logger
 bootstrapping_olympics.interfaces.logger
 bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.library.logger
 bootstrapping_olympics.logger
 bootstrapping_olympics.logs.hdf.index.logger
 bootstrapping_olympics.logs.hdf.logger
@@ -789,7 +818,6 @@ bootstrapping_olympics.programs.manager.command_line.clean_states.logger
 bootstrapping_olympics.programs.manager.command_line.learn.logger
 bootstrapping_olympics.programs.manager.command_line.list_agents.logger
 bootstrapping_olympics.programs.manager.command_line.list_logs.logger
-bootstrapping_olympics.programs.manager.command_line.list_robots.logger
 bootstrapping_olympics.programs.manager.command_line.list_states.logger
 bootstrapping_olympics.programs.manager.command_line.logger
 bootstrapping_olympics.programs.manager.command_line.main.logger
@@ -824,41 +852,45 @@ bootstrapping_olympics.ros.ros_logs.logger
 bootstrapping_olympics.ros.ros_logs.read.logger
 bootstrapping_olympics.ros.ros_logs.write.logger
 bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.cocher.logger
 bootstrapping_olympics.utils.logger
-bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-66', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt class="py-name">debug</tt><tt class="py-op">(</tt><tt class="py-string">'Saving state (periodic)'</tt><tt class="py-op">)</tt> </tt>
-<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">                <tt class="py-comment"># note: episodes not updated</tt> </tt>
-<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">agent_state</tt> <tt class="py-op">=</tt> <tt id="link-67" class="py-name"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-67', 'agent', 'link-29');">agent</a></tt><tt class="py-op">.</tt><tt id="link-68" class="py-name" targets="Method bootstrapping_olympics.agent_states.learning_state.LearningStateDB.get_state()=bootstrapping_olympics.agent_states.learning_state.LearningStateDB-class.html#get_state,Method bootstrapping_olympics.examples.robots.equiv_robot.EquivRobot.get_state()=bootstrapping_olympics.examples.robots.equiv_robot.EquivRobot-class.html#get_state,Method bootstrapping_olympics.interfaces.agent.AgentInterface.get_state()=bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#get_state,Method bootstrapping_olympics.interfaces.robot.RobotInterface.get_state()=bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#get_state"><a title="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.get_state
+bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-65', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt class="py-name">debug</tt><tt class="py-op">(</tt><tt class="py-string">'Saving state (periodic)'</tt><tt class="py-op">)</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">                <tt class="py-comment"># note: episodes not updated</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">                <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">agent_state</tt> <tt class="py-op">=</tt> <tt id="link-66" class="py-name"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-66', 'agent', 'link-29');">agent</a></tt><tt class="py-op">.</tt><tt id="link-67" class="py-name" targets="Method bootstrapping_olympics.agent_states.learning_state.LearningStateDB.get_state()=bootstrapping_olympics.agent_states.learning_state.LearningStateDB-class.html#get_state,Method bootstrapping_olympics.examples.robots.equiv_robot.EquivRobot.get_state()=bootstrapping_olympics.examples.robots.equiv_robot.EquivRobot-class.html#get_state,Method bootstrapping_olympics.interfaces.agent.AgentInterface.get_state()=bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#get_state,Method bootstrapping_olympics.interfaces.robot.RobotInterface.get_state()=bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#get_state"><a title="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.get_state
 bootstrapping_olympics.examples.robots.equiv_robot.EquivRobot.get_state
 bootstrapping_olympics.interfaces.agent.AgentInterface.get_state
-bootstrapping_olympics.interfaces.robot.RobotInterface.get_state" class="py-name" href="#" onclick="return doclink('link-68', 'get_state', 'link-68');">get_state</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">                <tt class="py-name">db</tt><tt class="py-op">.</tt><tt id="link-69" class="py-name" targets="Method bootstrapping_olympics.agent_states.learning_state.LearningStateDB.set_state()=bootstrapping_olympics.agent_states.learning_state.LearningStateDB-class.html#set_state,Method bootstrapping_olympics.interfaces.agent.AgentInterface.set_state()=bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#set_state,Method bootstrapping_olympics.interfaces.robot.RobotInterface.set_state()=bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#set_state"><a title="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.set_state
+bootstrapping_olympics.interfaces.robot.RobotInterface.get_state" class="py-name" href="#" onclick="return doclink('link-67', 'get_state', 'link-67');">get_state</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">                <tt class="py-name">db</tt><tt class="py-op">.</tt><tt id="link-68" class="py-name" targets="Method bootstrapping_olympics.agent_states.learning_state.LearningStateDB.set_state()=bootstrapping_olympics.agent_states.learning_state.LearningStateDB-class.html#set_state,Method bootstrapping_olympics.interfaces.agent.AgentInterface.set_state()=bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#set_state,Method bootstrapping_olympics.interfaces.robot.RobotInterface.set_state()=bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#set_state"><a title="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.set_state
 bootstrapping_olympics.interfaces.agent.AgentInterface.set_state
-bootstrapping_olympics.interfaces.robot.RobotInterface.set_state" class="py-name" href="#" onclick="return doclink('link-69', 'set_state', 'link-69');">set_state</a></tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">=</tt><tt class="py-name">state</tt><tt class="py-op">,</tt> <tt class="py-name">id_robot</tt><tt class="py-op">=</tt><tt class="py-name">id_robot</tt><tt class="py-op">,</tt> <tt class="py-name">id_agent</tt><tt class="py-op">=</tt><tt class="py-name">id_agent</tt><tt class="py-op">)</tt> </tt>
-<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"> </tt>
-<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">            <tt id="link-70" class="py-name"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-70', 'agent', 'link-29');">agent</a></tt><tt class="py-op">.</tt><tt id="link-71" class="py-name" targets="Method bootstrapping_olympics.examples.agents.random_agent.RandomAgent.process_observations()=bootstrapping_olympics.examples.agents.random_agent.RandomAgent-class.html#process_observations,Method bootstrapping_olympics.examples.agents.random_agent.RandomAgentPredictor.process_observations()=bootstrapping_olympics.examples.agents.random_agent.RandomAgentPredictor-class.html#process_observations,Method bootstrapping_olympics.examples.agents.random_agent.RandomAgentServo.process_observations()=bootstrapping_olympics.examples.agents.random_agent.RandomAgentServo-class.html#process_observations,Method bootstrapping_olympics.examples.agents.test_agent.TestAgent.process_observations()=bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#process_observations,Method bootstrapping_olympics.interfaces.agent.AgentInterface.process_observations()=bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#process_observations"><a title="bootstrapping_olympics.examples.agents.random_agent.RandomAgent.process_observations
+bootstrapping_olympics.interfaces.robot.RobotInterface.set_state" class="py-name" href="#" onclick="return doclink('link-68', 'set_state', 'link-68');">set_state</a></tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">=</tt><tt class="py-name">state</tt><tt class="py-op">,</tt> <tt class="py-name">id_robot</tt><tt class="py-op">=</tt><tt class="py-name">id_robot</tt><tt class="py-op">,</tt> <tt class="py-name">id_agent</tt><tt class="py-op">=</tt><tt class="py-name">id_agent</tt><tt class="py-op">)</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">            <tt id="link-69" class="py-name"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-69', 'agent', 'link-29');">agent</a></tt><tt class="py-op">.</tt><tt id="link-70" class="py-name" targets="Method bootstrapping_olympics.examples.agents.random_agent.RandomAgent.process_observations()=bootstrapping_olympics.examples.agents.random_agent.RandomAgent-class.html#process_observations,Method bootstrapping_olympics.examples.agents.random_agent.RandomAgentPredictor.process_observations()=bootstrapping_olympics.examples.agents.random_agent.RandomAgentPredictor-class.html#process_observations,Method bootstrapping_olympics.examples.agents.random_agent.RandomAgentServo.process_observations()=bootstrapping_olympics.examples.agents.random_agent.RandomAgentServo-class.html#process_observations,Method bootstrapping_olympics.examples.agents.test_agent.TestAgent.process_observations()=bootstrapping_olympics.examples.agents.test_agent.TestAgent-class.html#process_observations,Method bootstrapping_olympics.interfaces.agent.AgentInterface.process_observations()=bootstrapping_olympics.interfaces.agent.AgentInterface-class.html#process_observations"><a title="bootstrapping_olympics.examples.agents.random_agent.RandomAgent.process_observations
 bootstrapping_olympics.examples.agents.random_agent.RandomAgentPredictor.process_observations
 bootstrapping_olympics.examples.agents.random_agent.RandomAgentServo.process_observations
 bootstrapping_olympics.examples.agents.test_agent.TestAgent.process_observations
-bootstrapping_olympics.interfaces.agent.AgentInterface.process_observations" class="py-name" href="#" onclick="return doclink('link-71', 'process_observations', 'link-71');">process_observations</a></tt><tt class="py-op">(</tt><tt class="py-name">obs</tt><tt class="py-op">)</tt> </tt>
-<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"> </tt>
-<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">publish_interval</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
-<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-number">0</tt> <tt class="py-op">==</tt> <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">num_observations</tt> <tt class="py-op">%</tt> <tt class="py-name">publish_interval</tt><tt class="py-op">:</tt> </tt>
-<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">                    <tt id="link-72" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.publish_output.publish_agent_output" class="py-name" href="#" onclick="return doclink('link-72', 'publish_agent_output', 'link-1');">publish_agent_output</a></tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">,</tt> <tt id="link-73" class="py-name"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-73', 'agent', 'link-29');">agent</a></tt><tt class="py-op">,</tt> <tt class="py-name">report_dir</tt><tt class="py-op">,</tt> </tt>
-<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">                                    <tt class="py-name">basename</tt><tt class="py-op">=</tt><tt class="py-string">'%05d'</tt> <tt class="py-op">%</tt> <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">num_observations</tt><tt class="py-op">)</tt> </tt>
-<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"> </tt>
-<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">id_episodes</tt><tt class="py-op">.</tt><tt id="link-74" class="py-name" targets="Method bootstrapping_olympics.programs.hdf2bag.conversion.Raw2Boot.update()=bootstrapping_olympics.programs.hdf2bag.conversion.Raw2Boot-class.html#update"><a title="bootstrapping_olympics.programs.hdf2bag.conversion.Raw2Boot.update" class="py-name" href="#" onclick="return doclink('link-74', 'update', 'link-74');">update</a></tt><tt class="py-op">(</tt><tt class="py-name">to_learn</tt><tt class="py-op">)</tt> </tt>
-<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">        <tt class="py-comment"># Saving agent state</tt> </tt>
-<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">        <tt id="link-75" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
+bootstrapping_olympics.interfaces.agent.AgentInterface.process_observations" class="py-name" href="#" onclick="return doclink('link-70', 'process_observations', 'link-70');">process_observations</a></tt><tt class="py-op">(</tt><tt class="py-name">obs</tt><tt class="py-op">)</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">publish_interval</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-number">0</tt> <tt class="py-op">==</tt> <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">num_observations</tt> <tt class="py-op">%</tt> <tt class="py-name">publish_interval</tt><tt class="py-op">:</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">                    <tt id="link-71" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.publish_output.publish_agent_output" class="py-name" href="#" onclick="return doclink('link-71', 'publish_agent_output', 'link-1');">publish_agent_output</a></tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">,</tt> <tt id="link-72" class="py-name"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-72', 'agent', 'link-29');">agent</a></tt><tt class="py-op">,</tt> <tt class="py-name">report_dir</tt><tt class="py-op">,</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">                                    <tt class="py-name">basename</tt><tt class="py-op">=</tt><tt class="py-string">'%05d'</tt> <tt class="py-op">%</tt> <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">num_observations</tt><tt class="py-op">)</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">        <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">id_episodes</tt><tt class="py-op">.</tt><tt id="link-73" class="py-name" targets="Method bootstrapping_olympics.programs.hdf2bag.conversion.Raw2Boot.update()=bootstrapping_olympics.programs.hdf2bag.conversion.Raw2Boot-class.html#update"><a title="bootstrapping_olympics.programs.hdf2bag.conversion.Raw2Boot.update" class="py-name" href="#" onclick="return doclink('link-73', 'update', 'link-73');">update</a></tt><tt class="py-op">(</tt><tt class="py-name">to_learn</tt><tt class="py-op">)</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">    <tt class="py-comment"># Saving agent state</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">    <tt id="link-74" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
 bootstrapping_olympics.agent_states.learning_state.logger
 bootstrapping_olympics.agent_states.logger
 bootstrapping_olympics.configuration.logger
 bootstrapping_olympics.configuration.master.logger
 bootstrapping_olympics.examples.logger
 bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.examples.robots.equiv_robot.logger
 bootstrapping_olympics.interfaces.agent.AgentInterface.logger
 bootstrapping_olympics.interfaces.boot_spec.logger
 bootstrapping_olympics.interfaces.logger
 bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.library.logger
 bootstrapping_olympics.logger
 bootstrapping_olympics.logs.hdf.index.logger
 bootstrapping_olympics.logs.hdf.logger
@@ -875,7 +907,6 @@ bootstrapping_olympics.programs.manager.command_line.clean_states.logger
 bootstrapping_olympics.programs.manager.command_line.learn.logger
 bootstrapping_olympics.programs.manager.command_line.list_agents.logger
 bootstrapping_olympics.programs.manager.command_line.list_logs.logger
-bootstrapping_olympics.programs.manager.command_line.list_robots.logger
 bootstrapping_olympics.programs.manager.command_line.list_states.logger
 bootstrapping_olympics.programs.manager.command_line.logger
 bootstrapping_olympics.programs.manager.command_line.main.logger
@@ -910,32 +941,35 @@ bootstrapping_olympics.ros.ros_logs.logger
 bootstrapping_olympics.ros.ros_logs.read.logger
 bootstrapping_olympics.ros.ros_logs.write.logger
 bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.cocher.logger
 bootstrapping_olympics.utils.logger
-bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-75', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt class="py-name">debug</tt><tt class="py-op">(</tt><tt class="py-string">'Saving state (end of stream)'</tt><tt class="py-op">)</tt> </tt>
-<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">        <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">agent_state</tt> <tt class="py-op">=</tt> <tt id="link-76" class="py-name"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-76', 'agent', 'link-29');">agent</a></tt><tt class="py-op">.</tt><tt id="link-77" class="py-name"><a title="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.get_state
+bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-74', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt class="py-name">debug</tt><tt class="py-op">(</tt><tt class="py-string">'Saving state (end of streams)'</tt><tt class="py-op">)</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">    <tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">agent_state</tt> <tt class="py-op">=</tt> <tt id="link-75" class="py-name"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-75', 'agent', 'link-29');">agent</a></tt><tt class="py-op">.</tt><tt id="link-76" class="py-name"><a title="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.get_state
 bootstrapping_olympics.examples.robots.equiv_robot.EquivRobot.get_state
 bootstrapping_olympics.interfaces.agent.AgentInterface.get_state
-bootstrapping_olympics.interfaces.robot.RobotInterface.get_state" class="py-name" href="#" onclick="return doclink('link-77', 'get_state', 'link-68');">get_state</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">        <tt class="py-name">db</tt><tt class="py-op">.</tt><tt id="link-78" class="py-name"><a title="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.set_state
+bootstrapping_olympics.interfaces.robot.RobotInterface.get_state" class="py-name" href="#" onclick="return doclink('link-76', 'get_state', 'link-67');">get_state</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">    <tt class="py-name">db</tt><tt class="py-op">.</tt><tt id="link-77" class="py-name"><a title="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.set_state
 bootstrapping_olympics.interfaces.agent.AgentInterface.set_state
-bootstrapping_olympics.interfaces.robot.RobotInterface.set_state" class="py-name" href="#" onclick="return doclink('link-78', 'set_state', 'link-69');">set_state</a></tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">=</tt><tt class="py-name">state</tt><tt class="py-op">,</tt> <tt class="py-name">id_robot</tt><tt class="py-op">=</tt><tt class="py-name">id_robot</tt><tt class="py-op">,</tt> <tt class="py-name">id_agent</tt><tt class="py-op">=</tt><tt class="py-name">id_agent</tt><tt class="py-op">)</tt> </tt>
-<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"> </tt>
-<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">publish_interval</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
-<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">        <tt class="py-name">ds</tt> <tt class="py-op">=</tt> <tt id="link-79" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.data_central" class="py-name" href="#" onclick="return doclink('link-79', 'data_central', 'link-12');">data_central</a></tt><tt class="py-op">.</tt><tt id="link-80" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.data_central.DataCentral.get_dir_structure" class="py-name" href="#" onclick="return doclink('link-80', 'get_dir_structure', 'link-36');">get_dir_structure</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">        <tt class="py-name">report_dir</tt> <tt class="py-op">=</tt> <tt class="py-name">ds</tt><tt class="py-op">.</tt><tt id="link-81" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.get_report_dir" class="py-name" href="#" onclick="return doclink('link-81', 'get_report_dir', 'link-37');">get_report_dir</a></tt><tt class="py-op">(</tt><tt class="py-name">id_agent</tt><tt class="py-op">=</tt><tt class="py-name">id_agent</tt><tt class="py-op">,</tt> </tt>
-<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">                                       <tt class="py-name">id_robot</tt><tt class="py-op">=</tt><tt class="py-name">id_robot</tt><tt class="py-op">,</tt> </tt>
-<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">                                       <tt class="py-name">id_state</tt><tt class="py-op">=</tt><tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">id_state</tt><tt class="py-op">)</tt> </tt>
-<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt id="link-82" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
+bootstrapping_olympics.interfaces.robot.RobotInterface.set_state" class="py-name" href="#" onclick="return doclink('link-77', 'set_state', 'link-68');">set_state</a></tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">=</tt><tt class="py-name">state</tt><tt class="py-op">,</tt> <tt class="py-name">id_robot</tt><tt class="py-op">=</tt><tt class="py-name">id_robot</tt><tt class="py-op">,</tt> <tt class="py-name">id_agent</tt><tt class="py-op">=</tt><tt class="py-name">id_agent</tt><tt class="py-op">)</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">publish_interval</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">        <tt class="py-name">ds</tt> <tt class="py-op">=</tt> <tt id="link-78" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.data_central" class="py-name" href="#" onclick="return doclink('link-78', 'data_central', 'link-12');">data_central</a></tt><tt class="py-op">.</tt><tt id="link-79" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.data_central.DataCentral.get_dir_structure" class="py-name" href="#" onclick="return doclink('link-79', 'get_dir_structure', 'link-36');">get_dir_structure</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-name">report_dir</tt> <tt class="py-op">=</tt> <tt class="py-name">ds</tt><tt class="py-op">.</tt><tt class="py-name">get_report_dir</tt><tt class="py-op">(</tt><tt class="py-name">id_agent</tt><tt class="py-op">=</tt><tt class="py-name">id_agent</tt><tt class="py-op">,</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">                                       <tt class="py-name">id_robot</tt><tt class="py-op">=</tt><tt class="py-name">id_robot</tt><tt class="py-op">,</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">                                       <tt class="py-name">id_state</tt><tt class="py-op">=</tt><tt class="py-name">state</tt><tt class="py-op">.</tt><tt class="py-name">id_state</tt><tt class="py-op">)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt id="link-80" class="py-name"><a title="bootstrapping_olympics.agent_states.filesystem_storage.logger
 bootstrapping_olympics.agent_states.learning_state.logger
 bootstrapping_olympics.agent_states.logger
 bootstrapping_olympics.configuration.logger
 bootstrapping_olympics.configuration.master.logger
 bootstrapping_olympics.examples.logger
 bootstrapping_olympics.examples.rep_nuisances.logger
+bootstrapping_olympics.examples.robots.equiv_robot.logger
 bootstrapping_olympics.interfaces.agent.AgentInterface.logger
 bootstrapping_olympics.interfaces.boot_spec.logger
 bootstrapping_olympics.interfaces.logger
 bootstrapping_olympics.interfaces.stream_spec.logger
+bootstrapping_olympics.library.logger
 bootstrapping_olympics.logger
 bootstrapping_olympics.logs.hdf.index.logger
 bootstrapping_olympics.logs.hdf.logger
@@ -952,7 +986,6 @@ bootstrapping_olympics.programs.manager.command_line.clean_states.logger
 bootstrapping_olympics.programs.manager.command_line.learn.logger
 bootstrapping_olympics.programs.manager.command_line.list_agents.logger
 bootstrapping_olympics.programs.manager.command_line.list_logs.logger
-bootstrapping_olympics.programs.manager.command_line.list_robots.logger
 bootstrapping_olympics.programs.manager.command_line.list_states.logger
 bootstrapping_olympics.programs.manager.command_line.logger
 bootstrapping_olympics.programs.manager.command_line.main.logger
@@ -987,11 +1020,12 @@ bootstrapping_olympics.ros.ros_logs.logger
 bootstrapping_olympics.ros.ros_logs.read.logger
 bootstrapping_olympics.ros.ros_logs.write.logger
 bootstrapping_olympics.utils.c_yaml.logger
+bootstrapping_olympics.utils.cocher.logger
 bootstrapping_olympics.utils.logger
-bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-82', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-83" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
-bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-83', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-string">'Writing output to directory %r.'</tt> <tt class="py-op">%</tt> <tt class="py-name">report_dir</tt><tt class="py-op">)</tt> </tt>
-<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">        <tt id="link-84" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.publish_output.publish_agent_output" class="py-name" href="#" onclick="return doclink('link-84', 'publish_agent_output', 'link-1');">publish_agent_output</a></tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">,</tt> <tt id="link-85" class="py-name"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-85', 'agent', 'link-29');">agent</a></tt><tt class="py-op">,</tt> <tt class="py-name">report_dir</tt><tt class="py-op">,</tt> <tt class="py-name">basename</tt><tt class="py-op">=</tt><tt class="py-string">'all'</tt><tt class="py-op">)</tt> </tt>
-</div><a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+bootstrapping_olympics.utils.try_until.logger" class="py-name" href="#" onclick="return doclink('link-80', 'logger', 'link-2');">logger</a></tt><tt class="py-op">.</tt><tt id="link-81" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.AgentInterface.info
+bootstrapping_olympics.ros.ros_script_utils.rospy_logger.RospyLogger.info" class="py-name" href="#" onclick="return doclink('link-81', 'info', 'link-10');">info</a></tt><tt class="py-op">(</tt><tt class="py-string">'Writing output to directory %r.'</tt> <tt class="py-op">%</tt> <tt class="py-name">report_dir</tt><tt class="py-op">)</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">        <tt id="link-82" class="py-name"><a title="bootstrapping_olympics.programs.manager.meat.publish_output.publish_agent_output" class="py-name" href="#" onclick="return doclink('link-82', 'publish_agent_output', 'link-1');">publish_agent_output</a></tt><tt class="py-op">(</tt><tt class="py-name">state</tt><tt class="py-op">,</tt> <tt id="link-83" class="py-name"><a title="bootstrapping_olympics.interfaces.agent" class="py-name" href="#" onclick="return doclink('link-83', 'agent', 'link-29');">agent</a></tt><tt class="py-op">,</tt> <tt class="py-name">report_dir</tt><tt class="py-op">,</tt> <tt class="py-name">basename</tt><tt class="py-op">=</tt><tt class="py-string">'all'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
 expandto(location.href);
 // -->
@@ -1029,7 +1063,7 @@ expandto(location.href);
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb  1 14:39:57 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:30 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

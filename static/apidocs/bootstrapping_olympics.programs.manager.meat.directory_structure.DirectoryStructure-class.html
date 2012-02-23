@@ -65,6 +65,9 @@
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class DirectoryStructure</h1><p class="nomargin-top"><span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.directory_structure-pysrc.html#DirectoryStructure">source&nbsp;code</a></span></p>
+<p>This class knows how to organize the output of the various programs on
+  the filesystem.</p>
+
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -92,6 +95,25 @@
         <span class="summary-sig-arg">root</span>=<span class="summary-sig-default">None</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.directory_structure-pysrc.html#DirectoryStructure.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure-class.html#file_is_done" class="summary-sig-name">file_is_done</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">filename_or_basename</span>,
+        <span class="summary-sig-arg">desc</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Notifies that some file is done writing.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.directory_structure-pysrc.html#DirectoryStructure.file_is_done">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -138,14 +160,34 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_report_dir"></a><span class="summary-sig-name">get_report_dir</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a name="get_report_filename"></a><span class="summary-sig-name">get_report_filename</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">id_agent</span>,
         <span class="summary-sig-arg">id_robot</span>,
         <span class="summary-sig-arg">id_state</span>,
-        <span class="summary-sig-arg">phase</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">learn</code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">add_last</span>=<span class="summary-sig-default">False</span>)</span></td>
+        <span class="summary-sig-arg">phase</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.directory_structure-pysrc.html#DirectoryStructure.get_report_dir">source&nbsp;code</a></span>
+            <span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.directory_structure-pysrc.html#DirectoryStructure.get_report_filename">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_report_res_dir"></a><span class="summary-sig-name">get_report_res_dir</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">id_agent</span>,
+        <span class="summary-sig-arg">id_robot</span>,
+        <span class="summary-sig-arg">id_state</span>,
+        <span class="summary-sig-arg">phase</span>)</span><br />
+      Returns the directory for the resources of the report.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.directory_structure-pysrc.html#DirectoryStructure.get_report_res_dir">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -327,7 +369,76 @@
         <a name="DIR_VIDEOS"></a><span class="summary-name">DIR_VIDEOS</span> = <code title="'videos'"><code class="variable-quote">'</code><code class="variable-string">videos</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="pattern_report"></a><span class="summary-name">pattern_report</span> = <code title="'${id_robot}-${id_agent}-${phase}.html'"><code class="variable-quote">'</code><code class="variable-string">${id_robot}-${id_agent}-${phase}.html</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="pattern_report_rd"></a><span class="summary-name">pattern_report_rd</span> = <code title="'resources'"><code class="variable-quote">'</code><code class="variable-string">resources</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="pattern_simulation"></a><span class="summary-name">pattern_simulation</span> = <code title="'simulations/${id_robot}/${id_agent}/'"><code class="variable-quote">'</code><code class="variable-string">simulations/${id_robot}/${id_agent}/</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="pattern_video"></a><span class="summary-name">pattern_video</span> = <code title="'${id_robot}-${id_agent}-${id_episode}'"><code class="variable-quote">'</code><code class="variable-string">${id_robot}-${id_agent}-${id_episode}</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
 </table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="file_is_done"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">file_is_done</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">filename_or_basename</span>,
+        <span class="sig-arg">desc</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.directory_structure-pysrc.html#DirectoryStructure.file_is_done">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Notifies that some file is done writing. Used to create a list of 
+  recent files that are done.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
@@ -359,7 +470,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb  1 14:39:55 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:29 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

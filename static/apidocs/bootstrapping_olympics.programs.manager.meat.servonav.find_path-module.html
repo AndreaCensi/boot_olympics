@@ -88,13 +88,69 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="elastic"></a><span class="summary-sig-name">elastic</span>(<span class="summary-sig-arg">manifold</span>,
+        <span class="summary-sig-arg">poses</span>,
+        <span class="summary-sig-arg">alpha</span>=<span class="summary-sig-default">0.1</span>,
+        <span class="summary-sig-arg">num_iterations</span>=<span class="summary-sig-default">20</span>)</span><br />
+      :param poses: :type poses:  ``list[&gt;=3](array[KxK])``</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-pysrc.html#elastic">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="get_grid"></a><span class="summary-sig-name">get_grid</span>(<span class="summary-sig-arg">robot</span>,
-        <span class="summary-sig-arg">world</span>,
-        <span class="summary-sig-arg">vehicle</span>,
-        <span class="summary-sig-arg">resolution</span>)</span><br />
+        <span class="summary-sig-arg">vsim</span>,
+        <span class="summary-sig-arg">resolution</span>,
+        <span class="summary-sig-arg">debug</span>=<span class="summary-sig-default">False</span>)</span><br />
       :param resolution: :type resolution:  ``float,&gt;0``</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-pysrc.html#get_grid">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-module.html#interpolate" class="summary-sig-name">interpolate</a>(<span class="summary-sig-arg">pose1</span>,
+        <span class="summary-sig-arg">pose2</span>)</span><br />
+      :param pose1: :type pose1:  ``SE3``</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-pysrc.html#interpolate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-module.html#interpolate_sequence" class="summary-sig-name">interpolate_sequence</a>(<span class="summary-sig-arg">poses</span>,
+        <span class="summary-sig-arg">max_theta_diff_deg</span>)</span><br />
+      :param poses: :type poses:  ``list[N,&gt;=2](SE3)``</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-pysrc.html#interpolate_sequence">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -113,6 +169,25 @@
       Averages the robot's observations at the given place.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-pysrc.html#mean_observations">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-module.html#step_too_big" class="summary-sig-name">step_too_big</a>(<span class="summary-sig-arg">pose1</span>,
+        <span class="summary-sig-arg">pose2</span>,
+        <span class="summary-sig-arg">max_theta_diff_deg</span>)</span><br />
+      :param pose1: :type pose1:  ``SE3``</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-pysrc.html#step_too_big">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -142,10 +217,109 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a name="SE2"></a><span class="summary-name">SE2</span> = <code title="SE2">SE2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="SE3"></a><span class="summary-name">SE3</span> = <code title="SE3">SE3</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-module.html#__package__" class="summary-name">__package__</a> = <code title="'bootstrapping_olympics.programs.manager.meat.servonav'"><code class="variable-quote">'</code><code class="variable-string">bootstrapping_olympics.programs.manager.meat.se</code><code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 </table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Function Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-FunctionDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="interpolate"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">interpolate</span>(<span class="sig-arg">pose1</span>,
+        <span class="sig-arg">pose2</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-pysrc.html#interpolate">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>:param pose1: :type pose1:  ``SE3``</p>
+  <p>:param pose2: :type pose2:  ``SE3``</p>
+  <p>:rtype:  ``SE3``</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="interpolate_sequence"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">interpolate_sequence</span>(<span class="sig-arg">poses</span>,
+        <span class="sig-arg">max_theta_diff_deg</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-pysrc.html#interpolate_sequence">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>:param poses: :type poses:  ``list[N,&gt;=2](SE3)``</p>
+  <p>:rtype:  ``list[&gt;=N](SE3)``</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="step_too_big"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">step_too_big</span>(<span class="sig-arg">pose1</span>,
+        <span class="sig-arg">pose2</span>,
+        <span class="sig-arg">max_theta_diff_deg</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="bootstrapping_olympics.programs.manager.meat.servonav.find_path-pysrc.html#step_too_big">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>:param pose1: :type pose1:  ``SE3``</p>
+  <p>:param pose2: :type pose2:  ``SE3``</p>
+  <p>:param max_theta_diff_deg: :type max_theta_diff_deg:  ``&gt;0``</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
 <!-- ==================== VARIABLES DETAILS ==================== -->
 <a name="section-VariablesDetails"></a>
 <table class="details" border="1" cellpadding="3"
@@ -214,7 +388,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb  1 14:39:51 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 22 18:59:26 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
