@@ -26,6 +26,7 @@ class RobotObservations:
     def __init__(self, timestamp, observations, commands, commands_source,
                         episode_end, robot_pose):
         '''
+            Initializes the structure.    
         
             - ``episode_end`` should indicate whether the episode ended
               due to, e.g., user intervention or collision

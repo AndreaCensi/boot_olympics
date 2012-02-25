@@ -7,13 +7,14 @@ __all__ = ['TestAgent']
 
 
 class TestAgent(AgentInterface):
-    ''' 
+    '''
         A simple agent useful for testing.
     
         It executes any command specified on the constructor. 
         If the command is a string, then it is eval()uated.
          
         You can use the variables:
+        
         - "t" for time.
         - "y" for the observations.        
     '''

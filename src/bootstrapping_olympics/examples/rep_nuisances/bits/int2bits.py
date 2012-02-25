@@ -137,6 +137,7 @@ class Bits2int(RepresentationNuisance):
     def transform_spec(self, stream_spec):
         streamels = stream_spec.get_streamels()
         shape = streamels.shape
+        # TODO: use normal function
         if not streamels_all_of_kind(streamels, ValueFormats.Discrete):
             msg = 'Bits2int only supports discrete streams.'
             raise UnsupportedSpec(msg)

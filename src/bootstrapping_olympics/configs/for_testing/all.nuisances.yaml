@@ -82,14 +82,32 @@
     - code: base2
 
 - id: n_int2gray
-  desc: Converts integers into their bits representation.
+  desc: Converts integers into their bits representation using a Gray code.
   code:
     - bootstrapping_olympics.library.Int2bits
     - code: gray
 
- 
 - id: n_encrypt1
   desc: Converts integers into their bits representation.
   code:
     - bootstrapping_olympics.library.Encrypt
     - password: ciaociao
+
+- id: n_normalize_mean
+  desc: Subtracts the mean from the data.
+  code:
+    - bootstrapping_olympics.library.NormalizeMean
+    - {}
+
+- id: n_normalize_mmax
+  desc: 'Normalizes the data in the [-1,1] range (instantaneously)'
+  code:
+    - bootstrapping_olympics.library.NormalizeMinMax
+    - {}
+
+
+- id: n_normalize_min
+  desc: 'Normalizes the data in the [0,1] range (instantaneously)'
+  code:
+    - bootstrapping_olympics.library.NormalizeMin 
+    - {}

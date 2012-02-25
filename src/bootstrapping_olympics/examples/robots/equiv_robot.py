@@ -26,7 +26,7 @@ class EquivRobot(RobotInterface):
         instance = BootOlympicsConfig.specs['nuisances'].instance
         self.obs_nuisances = [instance(x) for x in obs_nuisance]
         self.cmd_nuisances = [instance(x) for x in cmd_nuisance]
-        self.cmd_nuisances_inv = [x.inverse() for x in self.cmd_nuisances]
+        # No - we should not call inverse() before transform_spec()
 
         obs_spec = self.robot.get_spec().get_observations()
         for n in self.obs_nuisances:
@@ -35,6 +35,8 @@ class EquivRobot(RobotInterface):
         cmd_spec = self.robot.get_spec().get_commands()
         for n in self.cmd_nuisances:
             cmd_spec = n.transform_spec(cmd_spec)
+
+        self.cmd_nuisances_inv = [x.inverse() for x in self.cmd_nuisances]
 
         # now initialize in reverse
         cmd_spec_i = cmd_spec

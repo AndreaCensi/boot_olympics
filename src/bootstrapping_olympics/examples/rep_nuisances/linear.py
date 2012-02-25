@@ -1,9 +1,11 @@
-from . import contract, np
+from . import check_streamels_1D, check_streamels_continuous, contract, np
 from ... import (StreamSpec, UnsupportedSpec, RepresentationNuisance,
-    streamels_all_of_kind, ValueFormats)
+    ValueFormats)
 
 __all__ = ['GLNuisance']
 
+
+# TODO: use generic
 
 class GLNuisance(RepresentationNuisance):
     ''' A general linear transformation. '''
@@ -17,20 +19,13 @@ class GLNuisance(RepresentationNuisance):
 
     @contract(stream_spec=StreamSpec)
     def transform_spec(self, stream_spec):
+        streamels = stream_spec.get_streamels()
+        check_streamels_1D(streamels)
+        check_streamels_continuous(streamels)
 
-        if not streamels_all_of_kind(streamels=stream_spec.get_streamels(),
-                                     kind=ValueFormats.Continuous):
-            msg = 'GLNuisance only supports continuous streams.'
-            raise UnsupportedSpec(msg)
-
-        shape = stream_spec.shape()
-        if len(shape) != 1:
-            msg = 'GLNuisance only supports 1D streams.'
-            raise UnsupportedSpec(msg)
-
-        if self.A.shape[1] != shape[0]:
+        if self.A.shape[1] != streamels.shape[0]:
             msg = ('Matrix of shape %r cannot act on stream of shape %s' %
-                   (self.A.shape, shape))
+                   (self.A.shape, streamels.shape))
             raise UnsupportedSpec(msg)
 
         streamels = stream_spec.get_streamels()
@@ -40,12 +35,7 @@ class GLNuisance(RepresentationNuisance):
         streamels2['lower'] *= norm
         streamels2['upper'] *= norm
         streamels2['default'] = self.transform_value(streamels['default'])
-#
-#        filtered = {
-#            'original': [stream_spec.to_yaml()],
-#            'filter': ['bootstrapping_olympics.examples.GLNuisance',
-#                       {'A': self.A.tolist()}]
-#        }
+
         stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
                                   streamels=streamels2,
                                   extra={},

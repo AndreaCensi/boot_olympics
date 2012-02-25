@@ -57,9 +57,10 @@ class ObsKeeper: # TODO: move away from here
 
     def __init__(self, boot_spec, id_robot, check_valid_values=True):
         '''
-        
+            Initializes the object.
+            
             :param check_valid_values: checks that the commands and 
-            observations respect the spec
+                observations respect the spec
         '''
         self.episode_started = False
         self.observations = None

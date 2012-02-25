@@ -1,8 +1,9 @@
-__version__ = '1.1'
+__version__ = '1.2'
 
 import numpy as np
 from contracts import contract
 
+__docformat__ = 'restructuredtext'
 
 ### Setup logging
 from logging import getLogger
@@ -19,7 +20,6 @@ else:
     logger = logging.getLogger(__name__)
 
 logger.setLevel(logging.DEBUG)
-
 
 
 from . import utils

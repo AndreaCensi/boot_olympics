@@ -1,7 +1,7 @@
 from . import (check_valid_streamels, ValueFormats, streamel_dtype, logger,
     contract, np)
-from bootstrapping_olympics.utils import (assert_allequal_verbose,
-    assert_allclose_verbose)
+from ..utils import (assert_allequal_verbose, assert_allclose_verbose,
+    display_some, display_some_extended)
 from contracts import check, describe_type, describe_value
 from numbers import Number
 
@@ -12,10 +12,10 @@ class BootInvalidValue(ValueError):
 
 class StreamSpec:
 
-    @contract(id_stream='None|str', streamels='array',
+    @contract(id_stream='None|str', streamels='streamel_array',
               extra='None|dict', filtered='None|dict', desc='None|str')
-    def __init__(self, id_stream, streamels, extra, #@ReservedAssignment
-                 filtered=None, desc=None): #@ReservedAssignment
+    def __init__(self, id_stream, streamels, extra,
+                 filtered=None, desc=None):
 
         self.id_stream = id_stream
         self.desc = desc
@@ -46,17 +46,25 @@ class StreamSpec:
 
     @contract(returns='array')
     def get_default_value(self):
-        ''' Returns a "default value" for this stream. For
-            commands streams, this has the semantics of being
-            a "at rest" value. For observations, this is an "example"
-            value, used for visualization. '''
+        ''' 
+            Returns a "default value" for this stream. 
+            
+            For commands streams, this has the semantics of being
+            a "at rest" value. 
+            
+            For observations, this is an "example"
+            value, used for visualization. 
+        '''
         return self.streamels['default']
 
     @contract(returns='array')
     def get_random_value(self):
-        ''' Returns a "random value" for this stream. 
-            This is distributed uniformly in the ranges. 
-            (representation dependent)'''
+        ''' 
+            Returns a "random value" for this stream. 
+        
+            This is distributed uniformly in the lower/upper bound range. 
+            Note this is not intrinsic and is representation dependent.
+        '''
         x = np.zeros(self.streamels.shape)
 
         streamelsf = self.streamels.flat
@@ -287,8 +295,9 @@ def check_valid_bounds(bounds):
         raise ValueError(msg)
     expect_size(bounds, 2)
     if not bounds[0] < bounds[1]:
-        raise ValueError('Invalid bounds lower: %s upper: %s (lower>=upper)' %
-                         (bounds[0], bounds[1]))
+        msg = ('Invalid bounds lower: %s upper: %s (lower>=upper)' %
+                (bounds[0], bounds[1]))
+        raise ValueError(msg)
 
 
 def expect_one_of(x, options):
@@ -417,25 +426,4 @@ def streamels_from_spec(shape, format, range, default): #@ReservedAssignment
     return streamels
 
 
-def display_some(x, select, max_to_display=4):
-    ''' Displays some of the elements in x (array) given
-        by select (array of bool). '''
-    how_many = np.sum(select)
-    to_display = min(how_many, max_to_display)
-    s = 'First %s of %s/%s: %s' % (to_display, how_many, x.size,
-                                   x[select][:to_display])
-    return s
-
-
-def display_some_extended(x, streamels, select, max_to_display=4):
-    ''' Displays some of the elements in x (array) given
-        by select (array of bool). '''
-    how_many = np.sum(select)
-    to_display = min(how_many, max_to_display)
-    values = x[select][:to_display]
-    s = 'First %s of %s/%s: %s' % (to_display, how_many,
-                                   x.size, values)
-    s += '\n lower: %s' % streamels['lower'][select][:to_display]
-    s += '\n upper: %s' % streamels['upper'][select][:to_display]
-    return s
 

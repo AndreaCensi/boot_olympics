@@ -11,10 +11,12 @@ class UserError(Exception):
 def wrap_script_entry_point(function, logger,
                             exceptions_no_traceback=(UserError,)):
     """
-        exceptions_no_traceback: list of exceptions for which we just print
-         the error, and return 1.
-         
+        Wraps the main() of a script.
         For Exception: we exit with value 2.
+        
+        :param exceptions_no_traceback: list of exceptions for which we 
+         just print the error, and return 1.
+        
     """
     try:
         ret = function(sys.argv[1:])

@@ -1,6 +1,6 @@
-from . import contract, np
-from ... import (StreamSpec, UnsupportedSpec, RepresentationNuisance,
-    streamels_all_of_kind, ValueFormats, NuisanceNotInvertible)
+from . import check_streamels_continuous, contract, np
+from ... import (StreamSpec, RepresentationNuisance, ValueFormats,
+    NuisanceNotInvertible)
 
 __all__ = ['Discretize']
 
@@ -19,13 +19,9 @@ class Discretize(RepresentationNuisance):
 
     @contract(stream_spec=StreamSpec)
     def transform_spec(self, stream_spec):
-
-        if not streamels_all_of_kind(streamels=stream_spec.get_streamels(),
-                                     kind=ValueFormats.Continuous):
-            msg = 'Discretize only supports continuous streams.'
-            raise UnsupportedSpec(msg)
-
         streamels = stream_spec.get_streamels()
+        check_streamels_continuous(streamels)
+
         # Save these so we can use them later
         self.lower = streamels['lower'].copy()
         self.upper = streamels['upper'].copy()

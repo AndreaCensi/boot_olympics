@@ -1,6 +1,6 @@
-from . import contract, np
-from ... import (StreamSpec, UnsupportedSpec, RepresentationNuisance,
- NuisanceNotInvertible)
+from . import check_streamels_1D, contract, np
+from bootstrapping_olympics import (StreamSpec, UnsupportedSpec,
+    RepresentationNuisance, NuisanceNotInvertible)
 
 __all__ = ['Select']
 
@@ -30,10 +30,8 @@ class Select(RepresentationNuisance):
 
     @contract(stream_spec=StreamSpec)
     def transform_spec(self, stream_spec):
-        shape = stream_spec.shape()
-        if len(shape) != 1:
-            msg = 'Select() only supports 1D streams.'
-            raise UnsupportedSpec(msg)
+        streamels = stream_spec.get_streamels()
+        check_streamels_1D(streamels)
 
         size = stream_spec.size()
         min_size = max(self.select) + 1
@@ -42,7 +40,6 @@ class Select(RepresentationNuisance):
                    'streamels; found %s.' % (min_size, size))
             raise UnsupportedSpec(msg)
 
-        streamels = stream_spec.get_streamels()
         streamels2 = streamels[self.select]
 
         return StreamSpec(id_stream=stream_spec.id_stream,

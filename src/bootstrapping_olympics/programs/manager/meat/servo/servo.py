@@ -160,29 +160,33 @@ def servoing_episode(id_robot, robot,
             else:
                 return SE3.to_yaml(x)
 
-        current_pose = robot_observations.robot_pose
-
         extra = {}
 
         sensels_list = boot_observations['observations'].tolist()
         extra['servoing_base'] = dict(goal=obs0.tolist(), current=sensels_list)
 
-        extra['servoing_poses'] = dict(goal=pose_to_yaml(pose0),
-                                       current=pose_to_yaml(current_pose))
+        current_pose = robot_observations.robot_pose
+        has_pose = current_pose is not None
 
-        delta = SE2_from_SE3(SE3.multiply(SE3.inverse(current_pose),
-                                          pose0))
-        dist_t_m = np.linalg.norm(translation_from_SE2(delta))
-        dist_th_deg = np.abs(angle_from_SE2(delta))
+        if has_pose:
+            # Add extra pose information
 
-        # TODO: make it not overlapping
-        extra['servoing'] = dict(obs0=obs0.tolist(),
-                                pose0=pose_to_yaml(pose0),
-                                poseK=pose_to_yaml(current_pose),
-                                obsK=sensels_list,
-                                displacement=displacement,
-                                cmd0=cmd0.tolist(),
-                                pose1=pose_to_yaml(pose1))
+            extra['servoing_poses'] = dict(goal=pose_to_yaml(pose0),
+                                           current=pose_to_yaml(current_pose))
+
+            delta = SE2_from_SE3(SE3.multiply(SE3.inverse(current_pose),
+                                              pose0))
+            dist_t_m = np.linalg.norm(translation_from_SE2(delta))
+            dist_th_deg = np.abs(angle_from_SE2(delta))
+
+            # TODO: make it not overlapping
+            extra['servoing'] = dict(obs0=obs0.tolist(),
+                                    pose0=pose_to_yaml(pose0),
+                                    poseK=pose_to_yaml(current_pose),
+                                    obsK=sensels_list,
+                                    displacement=displacement,
+                                    cmd0=cmd0.tolist(),
+                                    pose1=pose_to_yaml(pose1))
 
         if save_robot_state:
             extra['robot_state'] = robot.get_state()
@@ -190,8 +194,12 @@ def servoing_episode(id_robot, robot,
         writer.push_observations(observations=boot_observations,
                                  extra=extra)
 
-        if ((dist_t_m <= converged_dist_t_m) and
-            (dist_th_deg <= converged_dist_th_deg)):
-            print('Converged!')
-            break
-
+        if has_pose:
+            if ((dist_t_m <= converged_dist_t_m) and
+                (dist_th_deg <= converged_dist_th_deg)):
+                print('Converged!')
+                break
+        else:
+            # TODO: write convergence criterion
+            # without pose information
+            pass

@@ -1,26 +1,64 @@
+'''
+    A streamel (stream element) describes the *format* of the data stream.
+    It specifies what are the valid values that the data can take. 
+
+'''
+
 from . import contract, np
-from contracts import check
-from ..utils import show_differences
-from bootstrapping_olympics.utils.strings import indent
+from ..utils import indent, show_differences
+from contracts import check, new_contract
 
 
 class ValueFormats:
-    Continuous = 'C' # range is [min, max]
+    Continuous = 'C' # range is [lower, upper]
     Discrete = 'D' # finite number of elements 
     Invalid = 'I' # invalid/not used # TODO: tests for invalid values
     valid = [Continuous, Discrete, Invalid]
 
-streamel_dtype = [('kind', 'S1'), # 'I','D','C'
-                  ('lower', 'float'),
-                  ('upper', 'float'),
-                  ('default', 'float')]
+streamel_dtype = [
+      ('kind', 'S1'), # 'I','D','C'
+      ('lower', 'float'), # This must be a finite value.
+      ('upper', 'float'), # This must be a finite value.
+      ('default', 'float')  # This must respect the bounds.
+]
 
 
-@contract(streamels='array')
+@contract(shape='(int,>0)|seq[>0](int,>0)')
+def new_streamels(shape):
+    ''' 
+        Creates a new array of streamels, initialized with all invalid
+        values. This is useful to check if we forgot to initialize 
+        some fields.
+    '''
+    x = np.zeros(shape, streamel_dtype)
+    x['kind'] = '?'
+    x['lower'] = np.nan
+    x['upper'] = np.nan
+    x['default'] = np.nan
+    return x
+
+
+@new_contract
+@contract(x='array')
+def streamel_array(x):
+    ''' 
+        Checks that the argument is a non-empty array of streamels. 
+        This checks only the data type, not the validity of the data.
+    '''
+    # TODO: register_dtype(x, contract)
+    if x.dtype != streamel_dtype:
+        msg = 'Expected streamels array, obtained: %s.' % str(x.dtype)
+        raise ValueError(msg)
+
+
+@contract(streamels='streamel_array')
 def check_valid_streamels(streamels):
-    ''' Raises a ValueError if the data in the structure is not coherent. '''
-    assert streamels.dtype == np.dtype(streamel_dtype)
-
+    ''' 
+        Raises a ValueError if the data in the structure is not coherent.
+        
+        This checks, for example, that the default value given respects
+        the declared upper/lower bounds. 
+    '''
     try:
         # XXX: how about invalid values?
         def check(which, msg, a, b):

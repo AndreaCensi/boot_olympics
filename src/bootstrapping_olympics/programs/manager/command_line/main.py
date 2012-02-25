@@ -1,10 +1,10 @@
 from . import Storage, OptionParser, logger, np
-from ....utils import wrap_script_entry_point, UserError, substitute
 from ..meat import DataCentral, DirectoryStructure
-from bootstrapping_olympics.constants import BootOlympicsConstants
-from bootstrapping_olympics.logs import LogsFormat
-import contracts
+from bootstrapping_olympics import LogsFormat, BootOlympicsConstants
+from bootstrapping_olympics.utils import (wrap_script_entry_point, UserError,
+    substitute)
 from conf_tools import ConfToolsException
+import contracts
 
 
 commands_list = "\n".join(['  %-15s  %s\n  %-15s  Usage: %s' %

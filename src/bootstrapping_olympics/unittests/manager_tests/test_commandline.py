@@ -17,7 +17,7 @@ def check_basic_operations_cmdline(id_agent, agent, id_robot, robot):
         log_index = data_central.get_log_index()
 
         def execute_command(*args):
-            arguments = ['-d', root] + list(args)
+            arguments = ['-d', root, '--contracts'] + list(args)
             boot_olympics_manager(arguments)
 
         assert not log_index.has_streams_for_robot(id_robot)

@@ -8,6 +8,7 @@ def get_vsim_from_robot(robot):
         Returns an instance to the VehicleSimulation. """
     if isinstance(robot, EquivRobot):
         robot = robot.get_original_robot()
+        return get_vsim_from_robot(robot)
 
     from vehicles import VehicleSimulation
     if isinstance(robot, VehicleSimulation):

@@ -65,9 +65,8 @@ class AgentInterface:
             The agent might throw the exception UnsupportedSpec if the 
             spec is not supported.
             
-            :param:boot_spec: An instance of the class BootSpec, which
-                              describes the specifications of the sensorimotor
-                              cascades.
+            :param boot_spec: An instance of the class BootSpec, which
+             describes the specifications of the sensorimotor cascades.
                               
         '''
 
@@ -76,7 +75,7 @@ class AgentInterface:
         '''
             Process new observations.
             
-            :param:observations: a structure of type Observations
+            :param observations: a structure of type Observations
         '''
 
     @abstractmethod
@@ -124,7 +123,7 @@ class AgentInterface:
                 self.__dict__[v] = None
             else:
                 self.__dict__[v] = state[v]
-        self.info('State loaded: %s' % state_vars)
+        #self.info('State loaded: %s' % state_vars)
 
 
 class UnsupportedSpec(Exception):

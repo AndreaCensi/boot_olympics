@@ -32,10 +32,12 @@ def wildcard_to_regexp(arg):
 
 @contract(wildcard='str', universe='list(str)')
 def expand_wildcard(wildcard, universe):
-    ''' Expands a wildcard expression against the given list.
-        wildcard: string with '*' 
-        universe: list of strings
-     '''
+    ''' 
+        Expands a wildcard expression against the given list.
+        
+        :param wildcard: string with '*' 
+        :param universe: a list of strings
+    '''
     assert wildcard.find('*') > -1
     regexp = wildcard_to_regexp(wildcard)
     num_matches = 0

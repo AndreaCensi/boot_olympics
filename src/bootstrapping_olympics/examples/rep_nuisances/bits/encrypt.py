@@ -1,7 +1,8 @@
 from . import (bits_encrypt, bits_decrypt, contract, np, nbytes_to_encrypt,
     NBITS_IN_BYTE)
-from .... import (StreamSpec, UnsupportedSpec, streamels_all_of_kind,
-    ValueFormats, streamel_dtype, RepresentationNuisance)
+from bootstrapping_olympics import (StreamSpec, UnsupportedSpec,
+    streamels_all_of_kind, ValueFormats, streamel_dtype,
+    RepresentationNuisance)
 
 __all__ = ['Encrypt', 'Decrypt']
 
