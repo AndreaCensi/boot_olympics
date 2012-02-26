@@ -1,0 +1,196 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.manager.command_line.main &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics.programs.manager.command_line" href="../command_line.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../command_line.html" accesskey="U">bootstrapping_olympics.programs.manager.command_line</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.manager.command_line.main</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">Storage</span><span class="p">,</span> <span class="n">OptionParser</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">..meat</span> <span class="kn">import</span> <span class="n">DataCentral</span><span class="p">,</span> <span class="n">DirectoryStructure</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics</span> <span class="kn">import</span> <span class="n">LogsFormat</span><span class="p">,</span> <span class="n">BootOlympicsConstants</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">wrap_script_entry_point</span><span class="p">,</span> <span class="n">UserError</span><span class="p">,</span>
+    <span class="n">substitute</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">conf_tools</span> <span class="kn">import</span> <span class="n">ConfToolsException</span>
+<span class="kn">import</span> <span class="nn">contracts</span>
+
+
+<span class="n">commands_list</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;  </span><span class="si">%-15s</span><span class="s">  </span><span class="si">%s</span><span class="se">\n</span><span class="s">  </span><span class="si">%-15s</span><span class="s">  Usage: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                           <span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">__doc__</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">short_usage</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">Storage</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+
+<span class="n">usage_pattern</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+
+<span class="s">    ${cmd} [options]  &lt;command&gt;  [command options]</span>
+<span class="s">    </span>
+<span class="s">Available commands:</span>
+
+<span class="s">${commands_list}</span>
+
+<span class="s">Use: `${cmd}  &lt;command&gt; -h&#39; to get more information about that command.  </span>
+<span class="s">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="boot_olympics_manager"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.command_line.html#bootstrapping_olympics.programs.manager.command_line.main.boot_olympics_manager">[docs]</a><span class="k">def</span> <span class="nf">boot_olympics_manager</span><span class="p">(</span><span class="n">arguments</span><span class="p">):</span>
+    <span class="n">usage</span> <span class="o">=</span> <span class="n">substitute</span><span class="p">(</span><span class="n">usage_pattern</span><span class="p">,</span> <span class="n">commands_list</span><span class="o">=</span><span class="n">commands_list</span><span class="p">,</span>
+                       <span class="n">cmd</span><span class="o">=</span><span class="s">&#39;boot_olympics_manager&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s">&#39;boot_olympics_manager&#39;</span><span class="p">,</span> <span class="n">usage</span><span class="o">=</span><span class="n">usage</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">disable_interspersed_args</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;boot_root&#39;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&#39;Root directory with logs, config, etc. [</span><span class="si">%d</span><span class="s">efault]&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--contracts&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;Activate PyContracts (disabled by default)&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--seterr&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;seterr&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;warn&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;Sets np.seterr. &quot;</span>
+                      <span class="s">&quot;Possible values: ignore, warn, raise, print, log&quot;</span><span class="p">)</span>
+
+    <span class="n">available</span> <span class="o">=</span> <span class="n">LogsFormat</span><span class="o">.</span><span class="n">formats</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--logformat&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;log_format&#39;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="n">BootOlympicsConstants</span><span class="o">.</span><span class="n">DEFAULT_LOG_FORMAT</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;Choose format for writing logs in </span><span class="si">%s</span><span class="s">. [</span><span class="si">%%</span><span class="s">default]&quot;</span>
+                        <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">available</span><span class="p">))</span>
+
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">arguments</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Please supply command. Available: </span><span class="si">%s</span><span class="s">&#39;</span>
+               <span class="o">%</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Storage</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">cmd_options</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">Storage</span><span class="o">.</span><span class="n">commands</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Unknown command </span><span class="si">%r</span><span class="s">. Available: </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span>
+               <span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Storage</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+        <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">seterr</span><span class="p">)</span>
+    <span class="c"># underflow is very common in all libraries (e.g. matplotlib)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">under</span><span class="o">=</span><span class="s">&#39;warn&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">contracts</span><span class="p">:</span>
+        <span class="n">contracts</span><span class="o">.</span><span class="n">disable_all</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">boot_root</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">boot_root</span> <span class="o">=</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">DEFAULT_ROOT</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Using </span><span class="si">%r</span><span class="s"> as default root directory &#39;</span>
+                    <span class="s">&#39;(use -d &lt;dir&gt; to change)&#39;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">boot_root</span><span class="p">)</span>
+
+    <span class="c"># TODO: make more elegant</span>
+    <span class="c"># FIXME: remove this dependency</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">vehicles</span> <span class="kn">import</span> <span class="n">VehiclesConfig</span>
+        <span class="n">VehiclesConfig</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="n">VehiclesConfig</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">boot_root</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="n">data_central</span> <span class="o">=</span> <span class="n">DataCentral</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">boot_root</span><span class="p">)</span>
+    <span class="n">data_central</span><span class="o">.</span><span class="n">get_dir_structure</span><span class="p">()</span><span class="o">.</span><span class="n">set_log_format</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">log_format</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Storage</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="n">cmd</span><span class="p">](</span><span class="n">data_central</span><span class="p">,</span> <span class="n">cmd_options</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="manager_main"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.command_line.html#bootstrapping_olympics.programs.manager.command_line.main.manager_main">[docs]</a><span class="k">def</span> <span class="nf">manager_main</span><span class="p">():</span>
+    <span class="n">exceptions_no_traceback</span> <span class="o">=</span> <span class="p">(</span><span class="n">UserError</span><span class="p">,</span> <span class="n">ConfToolsException</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrap_script_entry_point</span><span class="p">(</span><span class="n">boot_olympics_manager</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span>
+                        <span class="n">exceptions_no_traceback</span><span class="o">=</span><span class="n">exceptions_no_traceback</span><span class="p">)</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">manager_main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../command_line.html" >bootstrapping_olympics.programs.manager.command_line</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

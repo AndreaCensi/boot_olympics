@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.library.nuisances.bits.int2bits &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.library.nuisances.bits.int2bits</h1><pre>
+from . import contract, np, value2bits, gray
+from .... import (StreamSpec, UnsupportedSpec, RepresentationNuisance,
+    streamels_all_of_kind, ValueFormats, streamel_dtype)
+
+__all__ = ['Int2bits', 'Bits2int']
+
+
+def format_word(word):
+    return tuple(int(b) for b in word)
+
+
+def format_code(code):
+    return [format_word(x) for x in code]
+
+
+@contract(max_value='int,&gt;0', returns='list(seq[N](0|1))')
+def base2code(max_value):
+    nbits = int(np.ceil(np.log2(max_value)))
+    nbits = max(1, nbits) # max_value=1
+#    print('computing %d bits base2 code for max_value = %s' %
+#          (nbits, max_value))
+    max_value = 2 ** nbits
+    code = [value2bits(i, nbits) for i in range(max_value)]
+    return format_code(code)
+
+
+@contract(max_value='int,&gt;0', returns='list(seq[N](0|1))')
+def graycode(max_value):
+    nbits = int(np.ceil(np.log2(max_value)))
+    nbits = max(1, nbits) # max_value=1
+#    print('computing %d bits gray code for max_value = %s' %
+#          (nbits, max_value))
+    code = gray(nbits)
+    return format_code(code)
+
+allowed_codes = {'base2': base2code, 'gray': graycode}
+
+
+<div class="viewcode-block" id="Int2bits"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits">[docs]</a>class Int2bits(RepresentationNuisance):
+    ''' 
+        This nuisance represents integer values with
+        their bit representation (0-1).   
+        
+        Converts a M array into an MxN array, 
+        using N bits, where N is the mininum used to
+        represent all the numbers in the array.
+    '''
+
+    def __init__(self, code):
+        self.nbits = None
+        if not code in allowed_codes:
+            msg = ('Unknown code %r, choose in %s' %
+                   (code, allowed_codes.keys()))
+            raise ValueError(msg)
+        self.codefunc = allowed_codes[code]
+        self.code = code
+
+    @contract(stream_spec=StreamSpec)
+<div class="viewcode-block" id="Int2bits.transform_spec"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_spec">[docs]</a>    def transform_spec(self, stream_spec):
+        streamels = stream_spec.get_streamels()
+
+        if not streamels_all_of_kind(streamels, ValueFormats.Discrete):
+            msg = 'Int2bits only supports discrete streams.'
+            raise UnsupportedSpec(msg)
+
+        if streamels.ndim != 1:
+            msg = 'Int2bits only works with 1D streams.'
+            raise UnsupportedSpec(msg)
+
+        # Save these so we can use them later
+        self.lower = streamels['lower'].copy()
+        self.upper = streamels['upper'].copy()
+
+        if not np.all(self.lower &gt;= 0):
+            msg = 'I assume that numbers are positive.'
+            raise UnsupportedSpec(msg)
+
+        #print('upper: %s' % self.upper)
+        self.max_value = int(np.max(self.upper))
+        self.codewords = self.codefunc(self.max_value)
+        assert len(self.codewords) &gt;= self.max_value
+        self.nbits = len(self.codewords[0])
+
+        self.old_shape = streamels.shape
+        self.new_shape = (streamels.size, self.nbits)
+        streamels2 = np.zeros(self.new_shape, streamel_dtype)
+        streamels2['kind'] = ValueFormats.Discrete
+        streamels2['lower'] = 0
+        streamels2['upper'] = 1
+        streamels2['default'] = self.transform_value(streamels['default'])
+
+        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
+                                  streamels=streamels2,
+                                  extra={},
+                                  filtered={},
+                                  desc=None)
+
+        return stream_spec2
+</div>
+    @contract(value='array[N]', # TODO: add generic int
+              returns='array[NxM](=0|=1)')
+<div class="viewcode-block" id="Int2bits.transform_value"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_value">[docs]</a>    def transform_value(self, value):
+        assert value.shape == self.old_shape
+        value2 = np.zeros(self.new_shape, 'int')
+        for i, v in enumerate(value):
+            # TODO: check value
+            value2[i, :] = self.codewords[int(v)]
+        return value2
+</div>
+<div class="viewcode-block" id="Int2bits.inverse"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.inverse">[docs]</a>    def inverse(self):
+        # XXX: we cannot really recover lower and upper
+        # if lower !=0 or upper is not a power of 2 (and all the same)
+        return Bits2int(self.code)
+</div>
+    def __repr__(self):
+        return 'Int2bits(%r)' % self.code
+
+</div>
+<div class="viewcode-block" id="Bits2int"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int">[docs]</a>class Bits2int(RepresentationNuisance):
+    ''' 
+        This nuisance represents transforms back 
+        a bit representation into integer values.
+        
+        Converts an MxN array (N: number of bits), to
+        an M array.
+    '''
+
+    def __init__(self, code):
+        if not code in allowed_codes:
+            msg = ('Unknown code %r, choose in %s' %
+                   (code, allowed_codes.keys()))
+            raise ValueError(msg)
+        self.code = code
+        self.codefunc = allowed_codes[code]
+
+    @contract(stream_spec=StreamSpec)
+<div class="viewcode-block" id="Bits2int.transform_spec"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_spec">[docs]</a>    def transform_spec(self, stream_spec):
+        streamels = stream_spec.get_streamels()
+        shape = streamels.shape
+        # TODO: use normal function
+        if not streamels_all_of_kind(streamels, ValueFormats.Discrete):
+            msg = 'Bits2int only supports discrete streams.'
+            raise UnsupportedSpec(msg)
+
+        if streamels.ndim != 2:
+            msg = 'Bits2int only works with 2D streams.'
+            raise UnsupportedSpec(msg)
+
+        if (np.any(streamels['lower'] != 0) or
+             np.any(streamels['upper'] != 1)):
+            msg = 'I expect only bits as input.'
+            raise UnsupportedSpec(msg)
+
+        nvalues, nbits = shape
+
+        max_value = int(2 ** nbits - 1)
+        self.codewords = self.codefunc(max_value)
+        self.codewords_inv = {}
+        for i, x in enumerate(self.codewords):
+            self.codewords_inv[x] = i
+        print('codewords: %s' % self.codewords)
+
+        streamels2 = np.zeros(nvalues, streamel_dtype)
+        streamels2['kind'] = ValueFormats.Discrete
+        streamels2['lower'] = 0
+        streamels2['upper'] = 2 ** nbits - 1
+        streamels2['default'] = self.transform_value(streamels['default'])
+
+        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
+                                  streamels=streamels2,
+                                  extra={},
+                                  filtered={},
+                                  desc=None)
+
+        return stream_spec2
+</div>
+    @contract(value='array[NxM](=0|=1)', returns='array[N]') # XXX
+<div class="viewcode-block" id="Bits2int.transform_value"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_value">[docs]</a>    def transform_value(self, value):
+        value2 = np.zeros(value.shape[0], 'int')
+        for i, bits in enumerate(value):
+            word = format_word(bits)
+            value2[i] = self.codewords_inv[word]
+        return value2
+</div>
+<div class="viewcode-block" id="Bits2int.inverse"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.inverse">[docs]</a>    def inverse(self):
+        return Int2bits(self.code)
+</div>
+    def __repr__(self):
+        return 'Bits2int(%r)' % self.code</div>
+</pre>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,218 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>agent_states Package &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="agent-states-package">
+<h1>agent_states Package<a class="headerlink" href="#agent-states-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">agent_states</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-bootstrapping_olympics.agent_states"></span><p>Loading and saving an agent&#8217;s state.</p>
+</div>
+<div class="section" id="module-bootstrapping_olympics.agent_states.filesystem_storage">
+<span id="filesystem-storage-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">filesystem_storage</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.agent_states.filesystem_storage" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.agent_states.filesystem_storage.</tt><tt class="descname">StorageFilesystem</tt><big>(</big><em>basepath</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/filesystem_storage.html#StorageFilesystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.checked_existence">
+<tt class="descname">checked_existence</tt><em class="property"> = False</em><a class="headerlink" href="#bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.checked_existence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.dangerous_chars">
+<tt class="descname">dangerous_chars</tt><em class="property"> = {'..': 'CMDOT', '/': 'CMSLASH', '~': 'CMHOME'}</em><a class="headerlink" href="#bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.dangerous_chars" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.delete">
+<tt class="descname">delete</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/filesystem_storage.html#StorageFilesystem.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.exists">
+<tt class="descname">exists</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/filesystem_storage.html#StorageFilesystem.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.filename2key">
+<em class="property">static </em><tt class="descname">filename2key</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/filesystem_storage.html#StorageFilesystem.filename2key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.filename2key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undoes key2filename</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.filename_for_key">
+<tt class="descname">filename_for_key</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/filesystem_storage.html#StorageFilesystem.filename_for_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.filename_for_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the pickle storage filename corresponding to the job id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.get">
+<tt class="descname">get</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/filesystem_storage.html#StorageFilesystem.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.key2filename">
+<em class="property">static </em><tt class="descname">key2filename</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/filesystem_storage.html#StorageFilesystem.key2filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.key2filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>turns a key into a reasonable filename</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.keys">
+<tt class="descname">keys</tt><big>(</big><em>pattern='*'</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/filesystem_storage.html#StorageFilesystem.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.set">
+<tt class="descname">set</tt><big>(</big><em>key</em>, <em>value</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/filesystem_storage.html#StorageFilesystem.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.filesystem_storage.StorageFilesystem.set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.agent_states.learning_state">
+<span id="learning-state-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">learning_state</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.agent_states.learning_state" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.agent_states.learning_state.LearningState">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.agent_states.learning_state.</tt><tt class="descname">LearningState</tt><big>(</big><em>id_agent</em>, <em>id_robot</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/learning_state.html#LearningState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.learning_state.LearningState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A learning state is the agent state + the IDs 
+of the episodes used to learn</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="bootstrapping_olympics.agent_states.learning_state.LearningStateDB">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.agent_states.learning_state.</tt><tt class="descname">LearningStateDB</tt><big>(</big><em>datadir</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/learning_state.html#LearningStateDB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.learning_state.LearningStateDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.get_state">
+<tt class="descname">get_state</tt><big>(</big><em>id_agent</em>, <em>id_robot</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/learning_state.html#LearningStateDB.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.learning_state.LearningStateDB.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the learning state for the given combination.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.has_state">
+<tt class="descname">has_state</tt><big>(</big><em>id_agent</em>, <em>id_robot</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/learning_state.html#LearningStateDB.has_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.learning_state.LearningStateDB.has_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if the learning state is already present.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.list_states">
+<tt class="descname">list_states</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/learning_state.html#LearningStateDB.list_states"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.learning_state.LearningStateDB.list_states" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.reload_state_for_agent">
+<tt class="descname">reload_state_for_agent</tt><big>(</big><em>id_agent</em>, <em>id_robot</em>, <em>agent</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/learning_state.html#LearningStateDB.reload_state_for_agent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.learning_state.LearningStateDB.reload_state_for_agent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.agent_states.learning_state.LearningStateDB.set_state">
+<tt class="descname">set_state</tt><big>(</big><em>id_agent</em>, <em>id_robot</em>, <em>state</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/agent_states/learning_state.html#LearningStateDB.set_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.agent_states.learning_state.LearningStateDB.set_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the learning state for the given combination.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">agent_states Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">agent_states</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.agent_states.filesystem_storage"><tt class="docutils literal"><span class="pre">filesystem_storage</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.agent_states.learning_state"><tt class="docutils literal"><span class="pre">learning_state</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/api/bootstrapping_olympics.agent_states.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

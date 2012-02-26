@@ -1,0 +1,179 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.interfaces.boot_spec &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.interfaces.boot_spec</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">StreamSpec</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">contract</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">check_contained</span>
+<span class="kn">from</span> <span class="nn">contracts</span> <span class="kn">import</span> <span class="n">describe_type</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pformat</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;BootSpec&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="BootSpec"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.boot_spec.BootSpec">[docs]</a><span class="k">class</span> <span class="nc">BootSpec</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        This class represents the interface of a sensorimotor</span>
+<span class="sd">        interface. </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs_spec</span><span class="p">,</span> <span class="n">cmd_spec</span><span class="p">,</span> <span class="n">id_robot</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">desc</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_robot</span> <span class="o">=</span> <span class="n">id_robot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="n">desc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra</span> <span class="o">=</span> <span class="n">extra</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obs_spec</span><span class="p">,</span> <span class="n">StreamSpec</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Expected StreamSpec for observations, not </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span>
+                   <span class="n">describe_type</span><span class="p">(</span><span class="n">obs_spec</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cmd_spec</span><span class="p">,</span> <span class="n">StreamSpec</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Expected StreamSpec for commands, not </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span>
+                   <span class="n">describe_type</span><span class="p">(</span><span class="n">cmd_spec</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span> <span class="o">=</span> <span class="n">obs_spec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span> <span class="o">=</span> <span class="n">cmd_spec</span>
+
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">returns</span><span class="o">=</span><span class="n">StreamSpec</span><span class="p">)</span>
+<div class="viewcode-block" id="BootSpec.get_commands"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.boot_spec.BootSpec.get_commands">[docs]</a>    <span class="k">def</span> <span class="nf">get_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns a StreamSpec instance representing the commands. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span>
+</div>
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">returns</span><span class="o">=</span><span class="n">StreamSpec</span><span class="p">)</span>
+<div class="viewcode-block" id="BootSpec.get_observations"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.boot_spec.BootSpec.get_observations">[docs]</a>    <span class="k">def</span> <span class="nf">get_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns a StreamSpec instance representing the observations. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span>
+</div>
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_commands</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_commands</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observations</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_observations</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;BootSpec(</span><span class="si">%s</span><span class="s">,</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BootSpec.from_yaml"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.boot_spec.BootSpec.from_yaml">[docs]</a>    <span class="k">def</span> <span class="nf">from_yaml</span><span class="p">(</span><span class="n">xo</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xo</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Expected a dict, got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">xo</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">xo</span><span class="p">)</span> <span class="c"># make a copy</span>
+
+            <span class="n">check_contained</span><span class="p">(</span><span class="s">&#39;observations&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="n">check_contained</span><span class="p">(</span><span class="s">&#39;commands&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="n">observations</span> <span class="o">=</span> <span class="n">StreamSpec</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;observations&#39;</span><span class="p">))</span>
+            <span class="n">commands</span> <span class="o">=</span> <span class="n">StreamSpec</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;commands&#39;</span><span class="p">))</span>
+            <span class="n">extra</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;extra&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="n">desc</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;desc&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="n">id_robot</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;While reading</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s">extra keys detected: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                               <span class="p">(</span><span class="n">pformat</span><span class="p">(</span><span class="n">xo</span><span class="p">),</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+            <span class="k">return</span> <span class="n">BootSpec</span><span class="p">(</span><span class="n">observations</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span>
+                            <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                            <span class="n">extra</span><span class="o">=</span><span class="n">extra</span><span class="p">,</span>
+                            <span class="n">desc</span><span class="o">=</span><span class="n">desc</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Error while parsing the BootSpec:</span><span class="se">\n</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">xo</span><span class="p">)</span>
+            <span class="k">raise</span>
+</div>
+<div class="viewcode-block" id="BootSpec.to_yaml"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.boot_spec.BootSpec.to_yaml">[docs]</a>    <span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">x</span><span class="p">[</span><span class="s">&#39;observations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">[</span><span class="s">&#39;commands&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">[</span><span class="s">&#39;extra&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra</span>
+        <span class="n">x</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_robot</span>
+        <span class="n">x</span><span class="p">[</span><span class="s">&#39;desc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">desc</span>
+        <span class="k">return</span> <span class="n">x</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

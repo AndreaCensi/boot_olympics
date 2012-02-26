@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>servonav Package &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="servonav-package">
+<h1>servonav Package<a class="headerlink" href="#servonav-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">servonav</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-bootstrapping_olympics.programs.manager.meat.servonav"></span><dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.task_servonav">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.</tt><tt class="descname">task_servonav</tt><big>(</big><em>data_central</em>, <em>id_agent</em>, <em>id_robot</em>, <em>max_episode_len</em>, <em>num_episodes</em>, <em>fail_if_not_working</em>, <em>id_episodes=None</em>, <em>cumulative=False</em>, <em>interval_print=None</em>, <em>interval_write=10</em>, <em>num_episodes_with_robot_state=0</em>, <em>resolution=1</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.task_servonav" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of the episodes IDs simulated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>interval_print</strong> (<tt class="docutils literal"><span class="pre">None|&gt;=0</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.meat.servonav.astar_algo">
+<span id="astar-algo-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">astar_algo</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.meat.servonav.astar_algo" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.NodeInfo">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.</tt><tt class="descname">NodeInfo</tt><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.NodeInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+<p>NodeInfo(parent, cost_to_come, min_cost_to_go)</p>
+<dl class="attribute">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.NodeInfo.cost_to_come">
+<tt class="descname">cost_to_come</tt><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.NodeInfo.cost_to_come" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.NodeInfo.min_cost_to_go">
+<tt class="descname">min_cost_to_go</tt><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.NodeInfo.min_cost_to_go" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.NodeInfo.parent">
+<tt class="descname">parent</tt><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.NodeInfo.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.argmin">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.</tt><tt class="descname">argmin</tt><big>(</big><em>seq</em>, <em>key</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/astar_algo.html#argmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.argmin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.astar">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.</tt><tt class="descname">astar</tt><big>(</big><em>start</em>, <em>target</em>, <em>node2children</em>, <em>heuristics</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/astar_algo.html#astar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.astar" title="Permalink to this definition">¶</a></dt>
+<dd><p>start, target: nodes
+node2children: given a node, returns a list of tuples (children, cost)
+Returns a tuple (path, cost).</p>
+<p>heuristics(node, target)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.node2children_grid">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.</tt><tt class="descname">node2children_grid</tt><big>(</big><em>node</em>, <em>shape</em>, <em>cell_free</em>, <em>cost</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/astar_algo.html#node2children_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.node2children_grid" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>cell_free((a,b)) should return True if the cell is free. </dt>
+<dd>cost((a,b), (c,d)) returns the cost of the transition</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> (<tt class="docutils literal"><span class="pre">tuple(int,int)</span></tt>) &#8211; </li>
+<li><strong>shape</strong> (<tt class="docutils literal"><span class="pre">tuple((int,&gt;0),(int,&gt;0))</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.meat.servonav.find_path">
+<span id="find-path-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">find_path</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.meat.servonav.find_path" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.find_path.elastic">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.find_path.</tt><tt class="descname">elastic</tt><big>(</big><em>manifold</em>, <em>poses</em>, <em>alpha=0.1</em>, <em>num_iterations=20</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/find_path.html#elastic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.find_path.elastic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>poses</strong> (<tt class="docutils literal"><span class="pre">list[&gt;=3](array[KxK])</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.find_path.get_grid">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.find_path.</tt><tt class="descname">get_grid</tt><big>(</big><em>robot</em>, <em>vsim</em>, <em>resolution</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/find_path.html#get_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.find_path.get_grid" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resolution</strong> (<tt class="docutils literal"><span class="pre">float,&gt;0</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.find_path.interpolate">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.find_path.</tt><tt class="descname">interpolate</tt><big>(</big><em>pose1</em>, <em>pose2</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/find_path.html#interpolate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.find_path.interpolate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pose1</strong> (<tt class="docutils literal"><span class="pre">SE3</span></tt>) &#8211; </li>
+<li><strong>pose2</strong> (<tt class="docutils literal"><span class="pre">SE3</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">SE3</span></tt></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.find_path.interpolate_sequence">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.find_path.</tt><tt class="descname">interpolate_sequence</tt><big>(</big><em>poses</em>, <em>max_theta_diff_deg</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/find_path.html#interpolate_sequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.find_path.interpolate_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>poses</strong> (<tt class="docutils literal"><span class="pre">list[N,&gt;=2](SE3)</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">list[&gt;=N](SE3)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.find_path.mean_observations">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.find_path.</tt><tt class="descname">mean_observations</tt><big>(</big><em>robot</em>, <em>n</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/find_path.html#mean_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.find_path.mean_observations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Averages the robot&#8217;s observations at the given place.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.find_path.step_too_big">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.find_path.</tt><tt class="descname">step_too_big</tt><big>(</big><em>pose1</em>, <em>pose2</em>, <em>max_theta_diff_deg</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/find_path.html#step_too_big"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.find_path.step_too_big" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pose1</strong> (<tt class="docutils literal"><span class="pre">SE3</span></tt>) &#8211; </li>
+<li><strong>pose2</strong> (<tt class="docutils literal"><span class="pre">SE3</span></tt>) &#8211; </li>
+<li><strong>max_theta_diff_deg</strong> (<tt class="docutils literal"><span class="pre">&gt;0</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.meat.servonav.task">
+<span id="task-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">task</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.meat.servonav.task" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.task.convert_to_yaml">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.task.</tt><tt class="descname">convert_to_yaml</tt><big>(</big><em>locations</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/task.html#convert_to_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.task.convert_to_yaml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.task.run_simulation_servonav">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.task.</tt><tt class="descname">run_simulation_servonav</tt><big>(</big><em>id_robot</em>, <em>robot</em>, <em>id_agent</em>, <em>agent</em>, <em>max_observations</em>, <em>max_time</em>, <em>id_episode</em>, <em>id_environment</em>, <em>check_valid_values=True</em>, <em>raise_error_on_collision=True</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/task.html#run_simulation_servonav"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.task.run_simulation_servonav" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Runs an episode of the simulation. The agent should already been</dt>
+<dd><p class="first">init()ed.</p>
+<p class="last">yields robot.get_observations(), boot_observatoions</p>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>max_observations</strong> (<tt class="docutils literal"><span class="pre">&gt;=1</span></tt>) &#8211; </li>
+<li><strong>id_agent</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>max_time</strong> (<tt class="docutils literal"><span class="pre">&gt;0</span></tt>) &#8211; </li>
+<li><strong>robot</strong> (<tt class="docutils literal"><span class="pre">RobotInterface</span></tt>) &#8211; </li>
+<li><strong>id_robot</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.task.servonav_episode">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.task.</tt><tt class="descname">servonav_episode</tt><big>(</big><em>id_robot</em>, <em>robot</em>, <em>id_servo_agent</em>, <em>servo_agent</em>, <em>writer</em>, <em>id_episode</em>, <em>max_episode_len</em>, <em>save_robot_state</em>, <em>interval_write=1</em>, <em>interval_print=5</em>, <em>resolution=0.5</em>, <em>delta_t_threshold=0.2</em>, <em>MIN_PATH_LENGTH=8</em>, <em>MAX_TIME_FOR_SWITCH=20.0</em>, <em>fail_if_not_working=False</em>, <em>max_tries=10000</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/task.html#servonav_episode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.task.servonav_episode" title="Permalink to this definition">¶</a></dt>
+<dd><p>:arg:displacement: Time in seconds to displace the robot.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.task.task_servonav">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.task.</tt><tt class="descname">task_servonav</tt><big>(</big><em>data_central</em>, <em>id_agent</em>, <em>id_robot</em>, <em>max_episode_len</em>, <em>num_episodes</em>, <em>fail_if_not_working</em>, <em>id_episodes=None</em>, <em>cumulative=False</em>, <em>interval_print=None</em>, <em>interval_write=10</em>, <em>num_episodes_with_robot_state=0</em>, <em>resolution=1</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/task.html#task_servonav"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.task.task_servonav" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of the episodes IDs simulated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>interval_print</strong> (<tt class="docutils literal"><span class="pre">None|&gt;=0</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.meat.servonav.test_path">
+<span id="test-path-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_path</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.meat.servonav.test_path" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servonav.test_path.main">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servonav.test_path.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servonav/test_path.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servonav.test_path.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">servonav Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">servonav</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.meat.servonav.astar_algo"><tt class="docutils literal"><span class="pre">astar_algo</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.meat.servonav.find_path"><tt class="docutils literal"><span class="pre">find_path</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.meat.servonav.task"><tt class="docutils literal"><span class="pre">task</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.meat.servonav.test_path"><tt class="docutils literal"><span class="pre">test_path</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/api/bootstrapping_olympics.programs.manager.meat.servonav.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

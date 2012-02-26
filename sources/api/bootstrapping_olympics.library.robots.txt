@@ -1,0 +1,27 @@
+robots Package
+==============
+
+:mod:`robots` Package
+---------------------
+
+.. automodule:: bootstrapping_olympics.library.robots
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`equiv_robot` Module
+-------------------------
+
+.. automodule:: bootstrapping_olympics.library.robots.equiv_robot
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`random_robot` Module
+--------------------------
+
+.. automodule:: bootstrapping_olympics.library.robots.random_robot
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

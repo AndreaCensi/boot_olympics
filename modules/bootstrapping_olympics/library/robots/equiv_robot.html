@@ -1,0 +1,189 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.library.robots.equiv_robot &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.library.robots.equiv_robot</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">contract</span><span class="p">,</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="n">BootSpec</span><span class="p">,</span> <span class="n">RobotInterface</span><span class="p">,</span> <span class="n">BootOlympicsConfig</span><span class="p">,</span> <span class="n">StreamSpec</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics.utils.strings</span> <span class="kn">import</span> <span class="n">indent</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;EquivRobot&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="EquivRobot"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot">[docs]</a><span class="k">class</span> <span class="nc">EquivRobot</span><span class="p">(</span><span class="n">RobotInterface</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; This is used to create the perturbed version of a robot. &#39;&#39;&#39;</span>
+
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">robot</span><span class="o">=</span><span class="s">&#39;str&#39;</span><span class="p">,</span>
+              <span class="n">obs_nuisance</span><span class="o">=</span><span class="s">&#39;str|list(str)&#39;</span><span class="p">,</span>
+              <span class="n">cmd_nuisance</span><span class="o">=</span><span class="s">&#39;str|list(str)&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">obs_nuisance</span><span class="o">=</span><span class="p">[],</span> <span class="n">cmd_nuisance</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">BootOlympicsConfig</span><span class="o">.</span><span class="n">specs</span><span class="p">[</span><span class="s">&#39;robots&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;EquivRobot(</span><span class="si">%s</span><span class="s">,obs:</span><span class="si">%s</span><span class="s">,cmd:</span><span class="si">%s</span><span class="s">)&#39;</span>
+                    <span class="o">%</span> <span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">obs_nuisance</span><span class="p">,</span> <span class="n">cmd_nuisance</span><span class="p">))</span>
+
+        <span class="c"># convert to (possibly empty) list of strings</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obs_nuisance</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">obs_nuisance</span> <span class="o">=</span> <span class="p">[</span><span class="n">obs_nuisance</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cmd_nuisance</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">cmd_nuisance</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmd_nuisance</span><span class="p">]</span>
+
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">BootOlympicsConfig</span><span class="o">.</span><span class="n">specs</span><span class="p">[</span><span class="s">&#39;nuisances&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_nuisances</span> <span class="o">=</span> <span class="p">[</span><span class="n">instance</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">obs_nuisance</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_nuisances</span> <span class="o">=</span> <span class="p">[</span><span class="n">instance</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cmd_nuisance</span><span class="p">]</span>
+        <span class="c"># No - we should not call inverse() before transform_spec()</span>
+
+        <span class="n">obs_spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">get_spec</span><span class="p">()</span><span class="o">.</span><span class="n">get_observations</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_nuisances</span><span class="p">:</span>
+            <span class="n">obs_spec</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">transform_spec</span><span class="p">(</span><span class="n">obs_spec</span><span class="p">)</span>
+
+        <span class="n">cmd_spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">get_spec</span><span class="p">()</span><span class="o">.</span><span class="n">get_commands</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_nuisances</span><span class="p">:</span>
+            <span class="n">cmd_spec</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">transform_spec</span><span class="p">(</span><span class="n">cmd_spec</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_nuisances_inv</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_nuisances</span><span class="p">]</span>
+
+        <span class="c"># now initialize in reverse</span>
+        <span class="n">cmd_spec_i</span> <span class="o">=</span> <span class="n">cmd_spec</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd_nuisances_inv</span><span class="p">):</span>
+            <span class="n">cmd_spec_i</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">transform_spec</span><span class="p">(</span><span class="n">cmd_spec_i</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">StreamSpec</span><span class="o">.</span><span class="n">check_same_spec</span><span class="p">(</span><span class="n">cmd_spec_i</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">get_spec</span><span class="p">()</span><span class="o">.</span><span class="n">get_commands</span><span class="p">())</span>
+            <span class="c"># TODO: why do we do this for commands, not for osbservations?</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;It seems that this chain of nuisances is not &#39;</span>
+                           <span class="s">&#39;exact, but it could be OK to continue. &#39;</span>
+                           <span class="s">&#39; The chain is </span><span class="si">%s</span><span class="s">; the error is:</span><span class="se">\n</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                           <span class="p">(</span><span class="n">cmd_nuisance</span><span class="p">,</span> <span class="n">indent</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="s">&#39;&gt; &#39;</span><span class="p">)))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">spec</span> <span class="o">=</span> <span class="n">BootSpec</span><span class="p">(</span><span class="n">obs_spec</span><span class="o">=</span><span class="n">obs_spec</span><span class="p">,</span> <span class="n">cmd_spec</span><span class="o">=</span><span class="n">cmd_spec</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">desc</span>
+
+<div class="viewcode-block" id="EquivRobot.get_spec"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.get_spec">[docs]</a>    <span class="k">def</span> <span class="nf">get_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span>
+</div>
+<div class="viewcode-block" id="EquivRobot.get_state"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.get_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="EquivRobot.get_observations"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.get_observations">[docs]</a>    <span class="k">def</span> <span class="nf">get_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">get_observations</span><span class="p">()</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">observations</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_nuisances</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">transform_value</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">obs</span><span class="o">.</span><span class="n">observations</span> <span class="o">=</span> <span class="n">values</span>
+
+        <span class="c"># Note we use the inverted order</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">commands</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd_nuisances_inv</span><span class="p">):</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">transform_value</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">obs</span><span class="o">.</span><span class="n">commands</span> <span class="o">=</span> <span class="n">values</span>
+
+        <span class="k">return</span> <span class="n">obs</span>
+</div>
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">commands</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="EquivRobot.set_commands"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.set_commands">[docs]</a>    <span class="k">def</span> <span class="nf">set_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span> <span class="n">commands_source</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd_nuisances</span><span class="p">:</span>
+            <span class="n">commands</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">transform_value</span><span class="p">(</span><span class="n">commands</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">set_commands</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">commands_source</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="EquivRobot.new_episode"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.new_episode">[docs]</a>    <span class="k">def</span> <span class="nf">new_episode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">new_episode</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="EquivRobot.get_original_robot"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.get_original_robot">[docs]</a>    <span class="k">def</span> <span class="nf">get_original_robot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns the robot that we are wrapping with this nuisance. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

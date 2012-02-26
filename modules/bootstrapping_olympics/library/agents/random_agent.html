@@ -1,0 +1,174 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.library.agents.random_agent &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.library.agents.random_agent</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39; A dummy agent that gives random commands. &#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="n">AgentInterface</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;RandomAgent&#39;</span><span class="p">,</span> <span class="s">&#39;RandomAgentPredictor&#39;</span><span class="p">,</span> <span class="s">&#39;RandomAgentServo&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="RandomAgent"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgent">[docs]</a><span class="k">class</span> <span class="nc">RandomAgent</span><span class="p">(</span><span class="n">AgentInterface</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; A dummy agent that gives random commands. &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inited</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_called</span> <span class="o">=</span> <span class="bp">True</span>
+
+<div class="viewcode-block" id="RandomAgent.init"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgent.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boot_spec</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boot_spec</span> <span class="o">=</span> <span class="n">boot_spec</span>
+
+        <span class="c"># Just some checks, useful for debugging</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inited</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Already init()ed once.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inited</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="RandomAgent.process_observations"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgent.process_observations">[docs]</a>    <span class="k">def</span> <span class="nf">process_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observations</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inited</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;process_observations() called before init().&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_called</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="RandomAgent.choose_commands"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgent.choose_commands">[docs]</a>    <span class="k">def</span> <span class="nf">choose_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_called</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;choose_commands() called before process_observations().&#39;</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">boot_spec</span><span class="o">.</span><span class="n">get_commands</span><span class="p">()</span><span class="o">.</span><span class="n">get_random_value</span><span class="p">()</span>
+</div>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;RandomAgent&quot;</span>
+
+<div class="viewcode-block" id="RandomAgent.get_servo"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgent.get_servo">[docs]</a>    <span class="k">def</span> <span class="nf">get_servo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inited</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;get_servo() called before init().&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RandomAgentServo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boot_spec</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RandomAgent.get_predictor"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgent.get_predictor">[docs]</a>    <span class="k">def</span> <span class="nf">get_predictor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inited</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;get_predictor() called before init().&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RandomAgentPredictor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boot_spec</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="RandomAgentServo"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgentServo">[docs]</a><span class="k">class</span> <span class="nc">RandomAgentServo</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boot_spec</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boot_spec</span> <span class="o">=</span> <span class="n">boot_spec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">goal_called</span> <span class="o">=</span> <span class="bp">False</span>
+
+<div class="viewcode-block" id="RandomAgentServo.set_goal_observations"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgentServo.set_goal_observations">[docs]</a>    <span class="k">def</span> <span class="nf">set_goal_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">goal_called</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="RandomAgentServo.process_observations"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgentServo.process_observations">[docs]</a>    <span class="k">def</span> <span class="nf">process_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs</span><span class="p">):</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="RandomAgentServo.choose_commands"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgentServo.choose_commands">[docs]</a>    <span class="k">def</span> <span class="nf">choose_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">goal_called</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;choose_commands() called before set_goal_observations()&#39;</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">boot_spec</span><span class="o">.</span><span class="n">get_commands</span><span class="p">()</span><span class="o">.</span><span class="n">get_random_value</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="RandomAgentPredictor"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgentPredictor">[docs]</a><span class="k">class</span> <span class="nc">RandomAgentPredictor</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boot_spec</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boot_spec</span> <span class="o">=</span> <span class="n">boot_spec</span>
+
+<div class="viewcode-block" id="RandomAgentPredictor.process_observations"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgentPredictor.process_observations">[docs]</a>    <span class="k">def</span> <span class="nf">process_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs</span><span class="p">):</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="RandomAgentPredictor.predict_y"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.random_agent.RandomAgentPredictor.predict_y">[docs]</a>    <span class="k">def</span> <span class="nf">predict_y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">boot_spec</span><span class="o">.</span><span class="n">get_observations</span><span class="p">()</span><span class="o">.</span><span class="n">get_random_value</span><span class="p">()</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

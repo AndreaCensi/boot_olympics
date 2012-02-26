@@ -1,0 +1,131 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.unittests.boot_spec_tests.boot_specs_test &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.unittests.boot_spec_tests.boot_specs_test</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="n">BootSpec</span>
+<span class="kn">from</span> <span class="nn">.boot_specs</span> <span class="kn">import</span> <span class="n">valid_boot_specs</span><span class="p">,</span> <span class="n">invalid_boot_specs</span>
+<span class="kn">from</span> <span class="nn">contracts</span> <span class="kn">import</span> <span class="n">ContractNotRespected</span>
+<span class="kn">from</span> <span class="nn">numpy.testing.utils</span> <span class="kn">import</span> <span class="n">assert_raises</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+
+<div class="viewcode-block" id="check_parsing"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.unittests.boot_spec_tests.html#bootstrapping_olympics.unittests.boot_spec_tests.boot_specs_test.check_parsing">[docs]</a><span class="k">def</span> <span class="nf">check_parsing</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">BootSpec</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="check_parsing_invalid"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.unittests.boot_spec_tests.html#bootstrapping_olympics.unittests.boot_spec_tests.boot_specs_test.check_parsing_invalid">[docs]</a><span class="k">def</span> <span class="nf">check_parsing_invalid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">assert_raises</span><span class="p">((</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">ContractNotRespected</span><span class="p">),</span> <span class="n">BootSpec</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="check_conversions"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.unittests.boot_spec_tests.html#bootstrapping_olympics.unittests.boot_spec_tests.boot_specs_test.check_conversions">[docs]</a><span class="k">def</span> <span class="nf">check_conversions</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">BootSpec</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">BootSpec</span><span class="p">)</span>
+    <span class="n">spec_struct</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec_struct</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+    <span class="n">spec_struct_yaml</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">spec_struct</span><span class="p">)</span>
+    <span class="n">spec_struct2</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">spec_struct_yaml</span><span class="p">)</span>
+    <span class="n">spec2</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">spec_struct2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">spec</span> <span class="o">==</span> <span class="n">spec2</span>
+
+</div>
+<div class="viewcode-block" id="test_validity_1"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.unittests.boot_spec_tests.html#bootstrapping_olympics.unittests.boot_spec_tests.boot_specs_test.test_validity_1">[docs]</a><span class="k">def</span> <span class="nf">test_validity_1</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">valid_boot_specs</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">check_parsing</span><span class="p">,</span> <span class="n">x</span>
+        <span class="k">yield</span> <span class="n">check_conversions</span><span class="p">,</span> <span class="n">x</span>
+
+</div>
+<div class="viewcode-block" id="test_validity_2"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.unittests.boot_spec_tests.html#bootstrapping_olympics.unittests.boot_spec_tests.boot_specs_test.test_validity_2">[docs]</a><span class="k">def</span> <span class="nf">test_validity_2</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">invalid_boot_specs</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">check_parsing_invalid</span><span class="p">,</span> <span class="n">x</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

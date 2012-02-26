@@ -1,0 +1,6 @@
+bootstrapping_olympics.RobotInterface
+=====================================
+
+.. currentmodule:: bootstrapping_olympics
+
+.. autodata:: RobotInterface

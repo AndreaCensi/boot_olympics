@@ -1,0 +1,19 @@
+display Package
+===============
+
+:mod:`display` Package
+----------------------
+
+.. automodule:: bootstrapping_olympics.display
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`reprep_publisher` Module
+------------------------------
+
+.. automodule:: bootstrapping_olympics.display.reprep_publisher
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

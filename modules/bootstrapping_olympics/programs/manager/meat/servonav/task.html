@@ -1,0 +1,423 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.manager.meat.servonav.task &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics.programs.manager.meat.servonav" href="../servonav.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../servonav.html" accesskey="U">bootstrapping_olympics.programs.manager.meat.servonav</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.manager.meat.servonav.task</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">get_grid</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">contract</span><span class="p">,</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">load_agent_state</span>
+<span class="kn">from</span> <span class="nn">..servo</span> <span class="kn">import</span> <span class="n">BookkeepingServo</span><span class="p">,</span> <span class="n">get_vsim_from_robot</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics</span> <span class="kn">import</span> <span class="n">RobotInterface</span><span class="p">,</span> <span class="n">ObsKeeper</span><span class="p">,</span> <span class="n">LogsFormat</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics.utils</span> <span class="kn">import</span> <span class="n">InAWhile</span><span class="p">,</span> <span class="n">unique_timestamp_string</span>
+
+
+<span class="nd">@contract</span><span class="p">(</span><span class="n">interval_print</span><span class="o">=</span><span class="s">&#39;None|&gt;=0&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="task_servonav"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.task.task_servonav">[docs]</a><span class="k">def</span> <span class="nf">task_servonav</span><span class="p">(</span><span class="n">data_central</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span>
+               <span class="n">max_episode_len</span><span class="p">,</span>
+               <span class="n">num_episodes</span><span class="p">,</span>
+               <span class="n">fail_if_not_working</span><span class="p">,</span>
+               <span class="n">id_episodes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="c"># if None, just use the ID given by the world</span>
+               <span class="n">cumulative</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+               <span class="n">interval_print</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+               <span class="n">interval_write</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="c"># write every 10 frames</span>
+               <span class="n">num_episodes_with_robot_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">resolution</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Returns the list of the episodes IDs simulated. &#39;&#39;&#39;</span>
+
+    <span class="c"># Reseed the generator (otherwise multiprocessing will use the same)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">id_episodes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">id_episodes</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_episodes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Expected correct number of IDs.&#39;</span><span class="p">)</span>
+
+    <span class="c"># Instance robot object</span>
+    <span class="n">robot</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">get_bo_config</span><span class="p">()</span><span class="o">.</span><span class="n">robots</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">id_robot</span><span class="p">)</span>
+
+    <span class="c"># TODO: check that this is a Vehicles simulation</span>
+
+    <span class="n">boot_spec</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_spec</span><span class="p">()</span>
+
+    <span class="c"># Instance agent object    </span>
+    <span class="n">agent</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">load_agent_state</span><span class="p">(</span><span class="n">data_central</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span>
+                                <span class="n">reset_state</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                                <span class="n">raise_if_no_state</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="c"># TODO: check servo</span>
+    <span class="n">servo_agent</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_servo</span><span class="p">()</span>
+    <span class="n">id_agent_servo</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">_servo&#39;</span> <span class="o">%</span> <span class="n">id_agent</span>
+
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">get_dir_structure</span><span class="p">()</span>
+    <span class="n">id_stream</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">_servonav&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span>
+                                       <span class="n">unique_timestamp_string</span><span class="p">())</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">get_simlog_filename</span><span class="p">(</span><span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                      <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                                      <span class="n">id_stream</span><span class="o">=</span><span class="n">id_stream</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Creating stream </span><span class="si">%r</span><span class="se">\n</span><span class="s"> in file </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_stream</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+
+    <span class="n">logs_format</span> <span class="o">=</span> <span class="n">LogsFormat</span><span class="o">.</span><span class="n">get_reader_for</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">bk</span> <span class="o">=</span> <span class="n">BookkeepingServo</span><span class="p">(</span><span class="n">data_central</span><span class="o">=</span><span class="n">data_central</span><span class="p">,</span>
+                             <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                             <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent_servo</span><span class="p">,</span>
+                             <span class="n">num_episodes</span><span class="o">=</span><span class="n">num_episodes</span><span class="p">,</span>
+                             <span class="n">cumulative</span><span class="o">=</span><span class="n">cumulative</span><span class="p">,</span>
+                             <span class="n">interval_print</span><span class="o">=</span><span class="n">interval_print</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">bk</span><span class="o">.</span><span class="n">another_episode_todo</span><span class="p">():</span>
+        <span class="k">return</span>
+
+    <span class="k">with</span> <span class="n">logs_format</span><span class="o">.</span><span class="n">write_stream</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
+                                  <span class="n">id_stream</span><span class="o">=</span><span class="n">id_stream</span><span class="p">,</span>
+                                  <span class="n">boot_spec</span><span class="o">=</span><span class="n">boot_spec</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">bk</span><span class="o">.</span><span class="n">another_episode_todo</span><span class="p">():</span>
+            <span class="n">episode</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">new_episode</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">id_episodes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">id_episode</span> <span class="o">=</span> <span class="n">id_episodes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">id_episode</span> <span class="o">=</span> <span class="n">episode</span><span class="o">.</span><span class="n">id_episode</span>
+
+            <span class="n">save_robot_state</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">&lt;</span> <span class="n">num_episodes_with_robot_state</span>
+
+            <span class="n">servonav_episode</span><span class="p">(</span><span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">robot</span><span class="o">=</span><span class="n">robot</span><span class="p">,</span>
+                 <span class="n">id_servo_agent</span><span class="o">=</span><span class="n">id_agent_servo</span><span class="p">,</span>
+                 <span class="n">servo_agent</span><span class="o">=</span><span class="n">servo_agent</span><span class="p">,</span>
+                 <span class="n">writer</span><span class="o">=</span><span class="n">writer</span><span class="p">,</span> <span class="n">id_episode</span><span class="o">=</span><span class="n">id_episode</span><span class="p">,</span>
+                 <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
+                 <span class="n">max_episode_len</span><span class="o">=</span><span class="n">max_episode_len</span><span class="p">,</span>
+                 <span class="n">save_robot_state</span><span class="o">=</span><span class="n">save_robot_state</span><span class="p">,</span>
+                 <span class="n">interval_write</span><span class="o">=</span><span class="n">interval_write</span><span class="p">,</span>
+                 <span class="n">fail_if_not_working</span><span class="o">=</span><span class="n">fail_if_not_working</span><span class="p">,</span>
+                 <span class="n">max_tries</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+
+            <span class="n">bk</span><span class="o">.</span><span class="n">episode_done</span><span class="p">()</span>
+            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+</div>
+<div class="viewcode-block" id="convert_to_yaml"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.task.convert_to_yaml">[docs]</a><span class="k">def</span> <span class="nf">convert_to_yaml</span><span class="p">(</span><span class="n">locations</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">geometry</span> <span class="kn">import</span> <span class="n">SE3</span>
+
+    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">loc</span><span class="p">):</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">loc</span><span class="p">)</span>
+        <span class="n">loc</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SE3</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">(</span><span class="n">loc</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">])</span>
+        <span class="n">loc</span><span class="p">[</span><span class="s">&#39;observations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">loc</span><span class="p">[</span><span class="s">&#39;observations&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">loc</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">convert</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">locations</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="servonav_episode"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.task.servonav_episode">[docs]</a><span class="k">def</span> <span class="nf">servonav_episode</span><span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span>
+                     <span class="n">id_servo_agent</span><span class="p">,</span> <span class="n">servo_agent</span><span class="p">,</span>
+                     <span class="n">writer</span><span class="p">,</span> <span class="n">id_episode</span><span class="p">,</span>
+                     <span class="n">max_episode_len</span><span class="p">,</span> <span class="n">save_robot_state</span><span class="p">,</span>
+                     <span class="n">interval_write</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                     <span class="n">interval_print</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                     <span class="n">resolution</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="c"># grid resolution</span>
+                     <span class="n">delta_t_threshold</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="c"># when to switch</span>
+                     <span class="n">MIN_PATH_LENGTH</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+                     <span class="n">MAX_TIME_FOR_SWITCH</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+                     <span class="n">fail_if_not_working</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                     <span class="n">max_tries</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    </span>
+<span class="sd">        :arg:displacement: Time in seconds to displace the robot.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="kn">from</span> <span class="nn">geometry</span> <span class="kn">import</span> <span class="p">(</span><span class="n">SE2_from_SE3</span><span class="p">,</span> <span class="n">translation_from_SE2</span><span class="p">,</span>
+                          <span class="n">angle_from_SE2</span><span class="p">,</span> <span class="n">SE3</span><span class="p">)</span>
+
+    <span class="n">stats_write</span> <span class="o">=</span> <span class="n">InAWhile</span><span class="p">(</span><span class="n">interval_print</span><span class="p">)</span>
+
+    <span class="c"># Access the vehicleSimulation interface</span>
+    <span class="n">vsim</span> <span class="o">=</span> <span class="n">get_vsim_from_robot</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">max_tries</span><span class="p">):</span>
+        <span class="c"># iterate until we can do this correctly</span>
+        <span class="n">episode</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">new_episode</span><span class="p">()</span>
+        <span class="n">locations</span> <span class="o">=</span> <span class="n">get_grid</span><span class="p">(</span><span class="n">robot</span><span class="o">=</span><span class="n">robot</span><span class="p">,</span> <span class="n">vsim</span><span class="o">=</span><span class="n">vsim</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">locations</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">MIN_PATH_LENGTH</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Path too short, trying again.&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Could not find path in </span><span class="si">%d</span><span class="s"> tries.&#39;</span> <span class="o">%</span> <span class="n">max_tries</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">locations_yaml</span> <span class="o">=</span> <span class="n">convert_to_yaml</span><span class="p">(</span><span class="n">locations</span><span class="p">)</span>
+
+    <span class="n">vsim</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">set_pose</span><span class="p">(</span><span class="n">locations</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;pose&#39;</span><span class="p">])</span>
+
+    <span class="n">current_goal</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">current_goal_obs</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">current_goal</span><span class="p">][</span><span class="s">&#39;observations&#39;</span><span class="p">]</span>
+    <span class="n">servo_agent</span><span class="o">.</span><span class="n">set_goal_observations</span><span class="p">(</span><span class="n">current_goal_obs</span><span class="p">)</span>
+
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">time_last_switch</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="n">num_written</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">robot_observations</span><span class="p">,</span> <span class="n">boot_observations</span> <span class="ow">in</span> \
+        <span class="n">run_simulation_servonav</span><span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span>
+                           <span class="n">id_servo_agent</span><span class="p">,</span> <span class="n">servo_agent</span><span class="p">,</span>
+                           <span class="mi">100000</span><span class="p">,</span> <span class="n">max_episode_len</span><span class="p">,</span>
+                           <span class="n">id_episode</span><span class="o">=</span><span class="n">id_episode</span><span class="p">,</span>
+                           <span class="n">id_environment</span><span class="o">=</span><span class="n">episode</span><span class="o">.</span><span class="n">id_environment</span><span class="p">,</span>
+                           <span class="n">raise_error_on_collision</span><span class="o">=</span><span class="n">fail_if_not_working</span><span class="p">):</span>
+
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">boot_observations</span><span class="p">[</span><span class="s">&#39;timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">time_last_switch</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">time_last_switch</span> <span class="o">=</span> <span class="n">current_time</span>
+
+        <span class="n">time_since_last_switch</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">current_time</span> <span class="o">-</span> <span class="n">time_last_switch</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">obs_distance</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="n">obs2</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">obs1</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">-</span> <span class="n">obs2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()))</span>
+
+        <span class="n">curr_pose</span> <span class="o">=</span> <span class="n">robot_observations</span><span class="o">.</span><span class="n">robot_pose</span>
+        <span class="n">curr_obs</span> <span class="o">=</span> <span class="n">boot_observations</span><span class="p">[</span><span class="s">&#39;observations&#39;</span><span class="p">]</span>
+        <span class="n">curr_goal</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">current_goal</span><span class="p">][</span><span class="s">&#39;observations&#39;</span><span class="p">]</span>
+        <span class="n">prev_goal</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">current_goal</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s">&#39;observations&#39;</span><span class="p">]</span>
+        <span class="n">curr_err</span> <span class="o">=</span> <span class="n">obs_distance</span><span class="p">(</span><span class="n">curr_goal</span><span class="p">,</span> <span class="n">curr_obs</span><span class="p">)</span>
+        <span class="n">prev_err</span> <span class="o">=</span> <span class="n">obs_distance</span><span class="p">(</span><span class="n">prev_goal</span><span class="p">,</span> <span class="n">curr_obs</span><span class="p">)</span>
+        <span class="n">current_goal_pose</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">current_goal</span><span class="p">][</span><span class="s">&#39;pose&#39;</span><span class="p">]</span>
+        <span class="n">current_goal_obs</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">current_goal</span><span class="p">][</span><span class="s">&#39;observations&#39;</span><span class="p">]</span>
+
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">SE2_from_SE3</span><span class="p">(</span><span class="n">SE3</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">SE3</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">curr_pose</span><span class="p">),</span>
+                                          <span class="n">current_goal_pose</span><span class="p">))</span>
+        <span class="n">delta_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">translation_from_SE2</span><span class="p">(</span><span class="n">delta</span><span class="p">))</span>
+        <span class="n">delta_th</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">angle_from_SE2</span><span class="p">(</span><span class="n">delta</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">stats_write</span><span class="o">.</span><span class="n">its_time</span><span class="p">():</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;  deltaT: </span><span class="si">%.2f</span><span class="s">m  deltaTh: </span><span class="si">%.1f</span><span class="s">deg&#39;</span> <span class="o">%</span>
+                     <span class="p">(</span><span class="n">delta_t</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">delta_th</span><span class="p">)))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c"># If at the final goal, go closer</span>
+        <span class="n">is_final_goal</span> <span class="o">=</span> <span class="n">current_goal</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">locations</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">is_final_goal</span><span class="p">:</span>
+            <span class="n">delta_t_threshold</span> <span class="o">*=</span> <span class="mf">0.3</span>
+
+        <span class="c"># TODO: should we care also about delta_th?</span>
+        <span class="n">time_to_switch</span> <span class="o">=</span> <span class="p">(</span><span class="n">delta_t</span> <span class="o">&lt;</span> <span class="n">delta_t_threshold</span><span class="p">)</span> <span class="ow">or</span> \
+            <span class="p">(</span><span class="n">time_since_last_switch</span> <span class="o">&gt;</span> <span class="n">MAX_TIME_FOR_SWITCH</span><span class="p">)</span>
+        <span class="c"># does not work: curr_err &lt; SWITCH_THRESHOLD * prev_err:</span>
+
+        <span class="k">if</span> <span class="n">time_to_switch</span><span class="p">:</span>
+            <span class="n">current_goal</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Switched to goal </span><span class="si">%d</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">current_goal</span><span class="p">)</span>
+
+            <span class="n">time_last_switch</span> <span class="o">=</span> <span class="n">current_time</span>
+            <span class="k">if</span> <span class="n">current_goal</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">locations</span><span class="p">):</span>
+                <span class="c"># finished</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Finished :-)&#39;</span><span class="p">)</span>
+                <span class="k">break</span>
+
+        <span class="n">threshold_lost_m</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="n">delta_t</span> <span class="o">&gt;</span> <span class="n">threshold_lost_m</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Breaking because too far away.&#39;</span>
+            <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">fail_if_not_working</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">servo_agent</span><span class="o">.</span><span class="n">set_goal_observations</span><span class="p">(</span><span class="n">current_goal_obs</span><span class="p">)</span>
+
+        <span class="n">extra</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">extra</span><span class="p">[</span><span class="s">&#39;servoing_base&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">goal</span><span class="o">=</span><span class="n">curr_goal</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                                      <span class="n">current</span><span class="o">=</span><span class="n">curr_obs</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+        <span class="n">extra</span><span class="p">[</span><span class="s">&#39;servoing_poses&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">goal</span><span class="o">=</span><span class="n">SE3</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">(</span><span class="n">current_goal_pose</span><span class="p">),</span>
+                                       <span class="n">current</span><span class="o">=</span><span class="n">SE3</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">(</span><span class="n">curr_pose</span><span class="p">))</span>
+
+        <span class="n">extra</span><span class="p">[</span><span class="s">&#39;servonav&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">poseK</span><span class="o">=</span><span class="n">SE3</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">(</span><span class="n">curr_pose</span><span class="p">),</span>
+                        <span class="n">obsK</span><span class="o">=</span><span class="n">boot_observations</span><span class="p">[</span><span class="s">&#39;observations&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                        <span class="n">pose1</span><span class="o">=</span><span class="n">SE3</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">(</span><span class="n">current_goal_pose</span><span class="p">),</span>
+                        <span class="n">locations</span><span class="o">=</span><span class="n">locations_yaml</span><span class="p">,</span>
+                        <span class="n">current_goal</span><span class="o">=</span><span class="n">current_goal</span><span class="p">,</span>
+                        <span class="n">curr_err</span><span class="o">=</span><span class="n">curr_err</span><span class="p">,</span>
+                        <span class="n">prev_err</span><span class="o">=</span><span class="n">prev_err</span><span class="p">,</span>
+                        <span class="n">time_last_switch</span><span class="o">=</span><span class="n">time_last_switch</span><span class="p">,</span>
+                        <span class="n">time_since_last_switch</span><span class="o">=</span><span class="n">time_since_last_switch</span>
+                        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">counter</span> <span class="o">%</span> <span class="n">interval_write</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">save_robot_state</span><span class="p">:</span>
+                <span class="n">extra</span><span class="p">[</span><span class="s">&#39;robot_state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+
+            <span class="n">writer</span><span class="o">.</span><span class="n">push_observations</span><span class="p">(</span><span class="n">observations</span><span class="o">=</span><span class="n">boot_observations</span><span class="p">,</span>
+                                     <span class="n">extra</span><span class="o">=</span><span class="n">extra</span><span class="p">)</span>
+            <span class="n">num_written</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">num_written</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;This log was too short to be written (</span><span class="si">%d</span><span class="s"> observations)&#39;</span>
+               <span class="o">%</span> <span class="n">counter</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">id_robot</span><span class="o">=</span><span class="s">&#39;str&#39;</span><span class="p">,</span> <span class="n">id_agent</span><span class="o">=</span><span class="s">&#39;str&#39;</span><span class="p">,</span>
+          <span class="n">robot</span><span class="o">=</span><span class="n">RobotInterface</span><span class="p">,</span> <span class="n">max_observations</span><span class="o">=</span><span class="s">&#39;&gt;=1&#39;</span><span class="p">,</span>
+          <span class="n">max_time</span><span class="o">=</span><span class="s">&#39;&gt;0&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="run_simulation_servonav"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.task.run_simulation_servonav">[docs]</a><span class="k">def</span> <span class="nf">run_simulation_servonav</span><span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span>
+                            <span class="n">max_observations</span><span class="p">,</span> <span class="n">max_time</span><span class="p">,</span>
+                            <span class="n">id_episode</span><span class="p">,</span> <span class="n">id_environment</span><span class="p">,</span>
+                            <span class="n">check_valid_values</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                            <span class="n">raise_error_on_collision</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Runs an episode of the simulation. The agent should already been</span>
+<span class="sd">        init()ed. </span>
+<span class="sd">        </span>
+<span class="sd">        yields robot.get_observations(), boot_observatoions</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">keeper</span> <span class="o">=</span> <span class="n">ObsKeeper</span><span class="p">(</span><span class="n">boot_spec</span><span class="o">=</span><span class="n">robot</span><span class="o">.</span><span class="n">get_spec</span><span class="p">(),</span> <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">)</span>
+
+    <span class="n">obs_spec</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_spec</span><span class="p">()</span><span class="o">.</span><span class="n">get_observations</span><span class="p">()</span>
+    <span class="n">cmd_spec</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_spec</span><span class="p">()</span><span class="o">.</span><span class="n">get_commands</span><span class="p">()</span>
+
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_observations</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">check_valid_values</span><span class="p">:</span>
+            <span class="n">obs_spec</span><span class="o">.</span><span class="n">check_valid_value</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">observations</span><span class="p">)</span>
+
+<span class="c">#        print(&#39;run_simulation_servonav: obs.obs %s&#39; %</span>
+<span class="c">#              (str(obs.observations.shape)))</span>
+        <span class="n">observations</span> <span class="o">=</span> <span class="n">keeper</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="n">obs</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span>
+                                   <span class="n">observations</span><span class="o">=</span><span class="n">obs</span><span class="o">.</span><span class="n">observations</span><span class="p">,</span>
+                                   <span class="n">commands</span><span class="o">=</span><span class="n">obs</span><span class="o">.</span><span class="n">commands</span><span class="p">,</span>
+                                   <span class="n">commands_source</span><span class="o">=</span><span class="n">obs</span><span class="o">.</span><span class="n">commands_source</span><span class="p">,</span>
+                                   <span class="n">id_episode</span><span class="o">=</span><span class="n">id_episode</span><span class="p">,</span>
+                                   <span class="n">id_world</span><span class="o">=</span><span class="n">id_environment</span><span class="p">)</span>
+<span class="c">#        print(&#39;then: obs.obs %s&#39; %</span>
+<span class="c">#              (str(observations[&#39;observations&#39;].shape)))</span>
+
+        <span class="n">episode_end</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">episode_end</span>
+
+        <span class="k">yield</span> <span class="n">obs</span><span class="p">,</span> <span class="n">observations</span>
+
+        <span class="n">now</span> <span class="o">=</span> <span class="s">&#39;step </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">counter</span>
+
+        <span class="k">if</span> <span class="n">counter</span> <span class="o">&gt;=</span> <span class="n">max_observations</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Finished at </span><span class="si">%s</span><span class="s"> because </span><span class="si">%s</span><span class="s"> &gt;= </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                        <span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">counter</span><span class="p">,</span> <span class="n">max_observations</span><span class="p">))</span>
+            <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">observations</span><span class="p">[</span><span class="s">&#39;time_from_episode_start&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_time</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Finished at </span><span class="si">%s</span><span class="s"> because of max_time: </span><span class="si">%s</span><span class="s"> &gt; </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                        <span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">observations</span><span class="p">[</span><span class="s">&#39;time_from_episode_start&#39;</span><span class="p">],</span>
+                         <span class="n">max_time</span><span class="p">))</span>
+            <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">episode_end</span><span class="p">:</span> <span class="c"># Fishy</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Finished at </span><span class="si">%s</span><span class="s"> because of robot driver.&#39;</span> <span class="o">%</span> <span class="n">now</span>
+
+            <span class="k">if</span> <span class="n">raise_error_on_collision</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">break</span>
+
+        <span class="n">agent</span><span class="o">.</span><span class="n">process_observations</span><span class="p">(</span><span class="n">observations</span><span class="p">)</span>
+        <span class="n">commands</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">choose_commands</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">check_valid_values</span><span class="p">:</span>
+            <span class="n">cmd_spec</span><span class="o">.</span><span class="n">check_valid_value</span><span class="p">(</span><span class="n">commands</span><span class="p">)</span>
+
+        <span class="n">robot</span><span class="o">.</span><span class="n">set_commands</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">)</span>
+
+        <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../servonav.html" >bootstrapping_olympics.programs.manager.meat.servonav</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

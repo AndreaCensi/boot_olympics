@@ -1,0 +1,193 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.library.nuisances.misc_linear.generic_linear &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.library.nuisances.misc_linear.generic_linear</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="p">(</span><span class="n">check_streamels_1D</span><span class="p">,</span> <span class="n">check_streamels_continuous</span><span class="p">,</span> <span class="n">contract</span><span class="p">,</span> <span class="n">np</span><span class="p">,</span>
+    <span class="n">find_polytope_bounds_after_linear</span><span class="p">,</span> <span class="n">check_streamels_1D_size</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics</span> <span class="kn">import</span> <span class="p">(</span><span class="n">StreamSpec</span><span class="p">,</span> <span class="n">RepresentationNuisance</span><span class="p">,</span>
+    <span class="n">ValueFormats</span><span class="p">,</span> <span class="n">streamel_dtype</span><span class="p">,</span> <span class="n">NuisanceNotInvertible</span><span class="p">)</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;GenericLinear&#39;</span><span class="p">]</span>
+
+<span class="c"># TODO: add left/right inverse, add kernel </span>
+<span class="c"># TODO: preserve bounds</span>
+
+
+<div class="viewcode-block" id="GenericLinear"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.misc_linear.html#bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.GenericLinear">[docs]</a><span class="k">class</span> <span class="nc">GenericLinear</span><span class="p">(</span><span class="n">RepresentationNuisance</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        This represents a generic linear transformation</span>
+<span class="sd">        between 1D continuous signals. The subclasses </span>
+<span class="sd">        only need to provide the matrix by either passing</span>
+<span class="sd">        it in the constructor or implementing get_matrix().</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="s">&#39;None|array[MxN]&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; A can be passed at construction time if it is known. &#39;&#39;&#39;</span>
+        <span class="c"># TODO: add kernel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A0</span> <span class="o">=</span> <span class="n">A</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">streamels</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;array[MxN]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="GenericLinear.get_matrix"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.misc_linear.html#bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.GenericLinear.get_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">get_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">streamels</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns the matrix representing the transformation. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+    <span class="k">def</span> <span class="nf">_get_A</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">streamels</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">A0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">A0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">(</span><span class="n">streamels</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">A</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;A not passed to constructor and get_matrix not &#39;</span>
+                       <span class="s">&#39;implemented&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">A</span>
+
+<div class="viewcode-block" id="GenericLinear.transform_spec"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.misc_linear.html#bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.GenericLinear.transform_spec">[docs]</a>    <span class="k">def</span> <span class="nf">transform_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_spec</span><span class="p">):</span>
+        <span class="n">streamels</span> <span class="o">=</span> <span class="n">stream_spec</span><span class="o">.</span><span class="n">get_streamels</span><span class="p">()</span>
+        <span class="n">check_streamels_1D</span><span class="p">(</span><span class="n">streamels</span><span class="p">)</span>
+        <span class="n">check_streamels_continuous</span><span class="p">(</span><span class="n">streamels</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">A0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">check_streamels_1D_size</span><span class="p">(</span><span class="n">streamels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">A0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_A</span><span class="p">(</span><span class="n">streamels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">streamels</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;I expect a matrix with rows </span><span class="si">%d</span><span class="s">, got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                   <span class="p">(</span><span class="n">streamels</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c"># TODO: use constr.</span>
+        <span class="n">streamels2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">streamel_dtype</span><span class="p">)</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">ValueFormats</span><span class="o">.</span><span class="n">Continuous</span>
+        <span class="n">find_polytope_bounds_after_linear</span><span class="p">(</span><span class="n">streamels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">streamels2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lower</span> <span class="o">=</span> <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upper</span> <span class="o">=</span> <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_value</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">])</span>
+
+        <span class="n">stream_spec2</span> <span class="o">=</span> <span class="n">StreamSpec</span><span class="p">(</span><span class="n">id_stream</span><span class="o">=</span><span class="n">stream_spec</span><span class="o">.</span><span class="n">id_stream</span><span class="p">,</span>
+                                  <span class="n">streamels</span><span class="o">=</span><span class="n">streamels2</span><span class="p">,</span>
+                                  <span class="n">extra</span><span class="o">=</span><span class="p">{},</span>
+                                  <span class="n">filtered</span><span class="o">=</span><span class="p">{},</span>
+                                  <span class="n">desc</span><span class="o">=</span><span class="n">stream_spec</span><span class="o">.</span><span class="n">desc</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">stream_spec2</span>
+</div>
+<div class="viewcode-block" id="GenericLinear.transform_value"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.misc_linear.html#bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.GenericLinear.transform_value">[docs]</a>    <span class="k">def</span> <span class="nf">transform_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">value2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="c"># enforce upper/lower bounds, to account for numerical errors</span>
+        <span class="n">value2</span> <span class="o">=</span> <span class="n">value2</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;float32&#39;</span><span class="p">)</span>
+        <span class="n">value2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">value2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value2</span>
+</div>
+<div class="viewcode-block" id="GenericLinear.inverse"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.misc_linear.html#bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.GenericLinear.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># TODO: left_inverse()</span>
+        <span class="n">M</span><span class="p">,</span> <span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">if</span> <span class="n">M</span> <span class="o">!=</span> <span class="n">N</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Cannot invert </span><span class="si">%s</span><span class="s"> matrix.&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">NuisanceNotInvertible</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c"># TODO: check for numerical errors</span>
+        <span class="n">Ainv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">GenericLinear</span><span class="p">(</span><span class="n">Ainv</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;&lt;unset&gt;&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;(</span><span class="si">%d</span><span class="s">x</span><span class="si">%d</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">return</span> <span class="s">&#39;GenericLinear(</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="n">s</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

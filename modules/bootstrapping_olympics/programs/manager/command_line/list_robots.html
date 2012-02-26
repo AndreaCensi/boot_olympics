@@ -1,0 +1,133 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.manager.command_line.list_robots &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics.programs.manager.command_line" href="../command_line.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../command_line.html" accesskey="U">bootstrapping_olympics.programs.manager.command_line</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.manager.command_line.list_robots</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">check_no_spurious</span><span class="p">,</span> <span class="n">OptionParser</span><span class="p">,</span> <span class="n">declare_command</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pformat</span>
+
+
+<span class="nd">@declare_command</span><span class="p">(</span><span class="s">&#39;list-robots&#39;</span><span class="p">,</span> <span class="s">&#39;list-robots [-v]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="cmd_list_robots"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.command_line.html#bootstrapping_olympics.programs.manager.command_line.list_robots.cmd_list_robots">[docs]</a><span class="k">def</span> <span class="nf">cmd_list_robots</span><span class="p">(</span><span class="n">data_central</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Shows a summary of the robots in the configuration. &#39;&#39;&#39;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s">&#39;list-robots&#39;</span><span class="p">,</span>
+                          <span class="n">usage</span><span class="o">=</span><span class="n">cmd_list_robots</span><span class="o">.</span><span class="n">short_usage</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">disable_interspersed_args</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;verbose&#39;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;Show more verbose output.&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="n">check_no_spurious</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="n">bo_config</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">get_bo_config</span><span class="p">()</span>
+    <span class="n">robots</span> <span class="o">=</span> <span class="n">bo_config</span><span class="o">.</span><span class="n">robots</span>
+    <span class="n">which</span> <span class="o">=</span> <span class="n">robots</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="c"># TODO: selection, natsort</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;I know </span><span class="si">%d</span><span class="s"> robots:&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">robots</span><span class="p">))</span>
+
+    <span class="n">max_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">which</span><span class="p">)</span>
+    <span class="n">formats</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%%%d</span><span class="s">s: </span><span class="si">%%</span><span class="s">s&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">max_len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">id_robot</span> <span class="ow">in</span> <span class="n">which</span><span class="p">:</span>
+        <span class="n">robot_spec</span> <span class="o">=</span> <span class="n">robots</span><span class="p">[</span><span class="n">id_robot</span><span class="p">]</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">formats</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">robot_spec</span><span class="p">[</span><span class="s">&#39;desc&#39;</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">id_robot</span> <span class="ow">in</span> <span class="n">which</span><span class="p">:</span>
+            <span class="n">robot_spec</span> <span class="o">=</span> <span class="n">robots</span><span class="p">[</span><span class="n">id_robot</span><span class="p">]</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">pformat</span><span class="p">(</span><span class="n">robot_spec</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Use &quot;-v&quot; to see more information.&#39;</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../command_line.html" >bootstrapping_olympics.programs.manager.command_line</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,188 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.manager.batch.batch_manager &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.manager.batch.batch_manager</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">BatchConfigMaster</span><span class="p">,</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">..meat</span> <span class="kn">import</span> <span class="n">DataCentral</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">safe_makedirs</span><span class="p">,</span> <span class="n">safe_symlink</span><span class="p">,</span>
+                                          <span class="n">UserError</span><span class="p">,</span> <span class="n">expand_string</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">conf_tools</span> <span class="kn">import</span> <span class="n">import_name</span><span class="p">,</span> <span class="n">ConfToolsException</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pformat</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">compmake</span> <span class="c">#@UnusedImport</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Compmake not installed; multiprocessor &#39;</span>
+                 <span class="s">&#39;processes not available.&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="batch_process_manager"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_manager.batch_process_manager">[docs]</a><span class="k">def</span> <span class="nf">batch_process_manager</span><span class="p">(</span><span class="n">data_central</span><span class="p">,</span> <span class="n">which_sets</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">compmake</span> <span class="kn">import</span> <span class="p">(</span><span class="n">comp_prefix</span><span class="p">,</span> <span class="n">use_filesystem</span><span class="p">,</span>
+                          <span class="n">compmake_console</span><span class="p">,</span> <span class="n">batch_command</span><span class="p">)</span>
+
+    <span class="n">batch_config</span> <span class="o">=</span> <span class="n">BatchConfigMaster</span><span class="p">()</span>
+    <span class="n">configs</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">get_dir_structure</span><span class="p">()</span><span class="o">.</span><span class="n">get_config_directories</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
+        <span class="n">batch_config</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+    <span class="n">sets_available</span> <span class="o">=</span> <span class="n">batch_config</span><span class="o">.</span><span class="n">sets</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Available: </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">sets_available</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Sets:      </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">which_sets</span><span class="p">)</span>
+    <span class="n">which_sets</span> <span class="o">=</span> <span class="n">expand_string</span><span class="p">(</span><span class="n">which_sets</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">sets_available</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">which_sets</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Specified sets not found.&#39;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; Available: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">sets_available</span>
+        <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Expanded:  </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">which_sets</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">which_sets</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sets_available</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Set </span><span class="si">%r</span><span class="s"> not available.&#39;</span> <span class="o">%</span> <span class="n">x</span>
+            <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">which_sets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">combid</span> <span class="o">=</span> <span class="n">which_sets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">combid</span> <span class="o">=</span> <span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">which_sets</span><span class="p">)</span>
+
+    <span class="c"># Create the new root        </span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">root</span>
+    <span class="n">root_set</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_central</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="s">&#39;sets&#39;</span><span class="p">,</span> <span class="n">combid</span><span class="p">)</span>
+    <span class="n">safe_makedirs</span><span class="p">(</span><span class="n">root_set</span><span class="p">)</span>
+    <span class="n">data_central_set</span> <span class="o">=</span> <span class="n">DataCentral</span><span class="p">(</span><span class="n">root_set</span><span class="p">)</span>
+
+    <span class="c"># add symbolic links to logs and config</span>
+    <span class="n">safe_symlink</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s">&#39;config&#39;</span><span class="p">),</span>
+               <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_set</span><span class="p">,</span> <span class="s">&#39;config&#39;</span><span class="p">))</span>
+
+    <span class="n">safe_makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_set</span><span class="p">,</span> <span class="s">&#39;logs&#39;</span><span class="p">))</span>
+    <span class="n">safe_symlink</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s">&#39;logs&#39;</span><span class="p">),</span>
+                 <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_set</span><span class="p">,</span> <span class="s">&#39;logs&#39;</span><span class="p">,</span> <span class="s">&#39;original&#39;</span><span class="p">))</span>
+
+    <span class="n">storage</span> <span class="o">=</span> <span class="n">data_central_set</span><span class="o">.</span><span class="n">get_dir_structure</span><span class="p">()</span><span class="o">.</span><span class="n">get_storage_dir</span><span class="p">()</span>
+    <span class="n">compmake_storage</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="s">&#39;compmake&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Using storage </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">compmake_storage</span><span class="p">)</span>
+    <span class="n">use_filesystem</span><span class="p">(</span><span class="n">compmake_storage</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">id_set</span> <span class="ow">in</span> <span class="n">which_sets</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">which_sets</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">comp_prefix</span><span class="p">(</span><span class="n">id_set</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="n">batch_config</span><span class="o">.</span><span class="n">sets</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+            <span class="n">batch_set</span><span class="p">(</span><span class="n">data_central_set</span><span class="p">,</span> <span class="n">id_set</span><span class="p">,</span> <span class="n">spec</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ConfToolsException</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Bad configuration for the set </span><span class="si">%r</span><span class="s"> with spec</span><span class="se">\n</span><span class="s"> </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                   <span class="p">(</span><span class="n">id_set</span><span class="p">,</span> <span class="n">pformat</span><span class="p">(</span><span class="n">spec</span><span class="p">)))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span>
+
+    <span class="k">if</span> <span class="n">command</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">batch_command</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">compmake_console</span><span class="p">()</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+</div>
+<div class="viewcode-block" id="batch_set"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_manager.batch_set">[docs]</a><span class="k">def</span> <span class="nf">batch_set</span><span class="p">(</span><span class="n">data_central</span><span class="p">,</span> <span class="n">id_set</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
+    <span class="n">function_name</span> <span class="o">=</span> <span class="n">spec</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">spec</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">function</span> <span class="o">=</span> <span class="n">import_name</span><span class="p">(</span><span class="n">function_name</span><span class="p">)</span>
+    <span class="n">function</span><span class="p">(</span><span class="n">data_central</span><span class="o">=</span><span class="n">data_central</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

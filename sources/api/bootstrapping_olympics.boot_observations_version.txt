@@ -1,0 +1,6 @@
+bootstrapping_olympics.boot_observations_version
+================================================
+
+.. currentmodule:: bootstrapping_olympics
+
+.. autodata:: boot_observations_version

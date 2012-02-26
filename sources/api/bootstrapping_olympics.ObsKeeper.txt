@@ -1,0 +1,6 @@
+bootstrapping_olympics.ObsKeeper
+================================
+
+.. currentmodule:: bootstrapping_olympics
+
+.. autodata:: ObsKeeper

@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.manager.meat.servonav.find_path &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics.programs.manager.meat.servonav" href="../servonav.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../servonav.html" accesskey="U">bootstrapping_olympics.programs.manager.meat.servonav</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.manager.meat.servonav.find_path</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">astar</span><span class="p">,</span> <span class="n">node2children_grid</span><span class="p">,</span> <span class="n">contract</span><span class="p">,</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">contracts</span> <span class="kn">import</span> <span class="n">describe_type</span>
+<span class="kn">from</span> <span class="nn">geometry</span> <span class="kn">import</span> <span class="n">SE3</span><span class="p">,</span> <span class="n">SE2</span><span class="p">,</span> <span class="n">angle_from_SE2</span><span class="p">,</span> <span class="n">SE2_from_SE3</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+
+
+<span class="nd">@contract</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s">&#39;float,&gt;0&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="get_grid"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.find_path.get_grid">[docs]</a><span class="k">def</span> <span class="nf">get_grid</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">vsim</span><span class="p">,</span> <span class="n">resolution</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="c"># Note: use robot to get the observations, be cause it might </span>
+    <span class="c"># include some nuisances that you don&#39;t get if you use vsim </span>
+    <span class="c"># directly</span>
+    <span class="kn">from</span> <span class="nn">vehicles</span> <span class="kn">import</span> <span class="n">VehicleSimulation</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vsim</span><span class="p">,</span> <span class="n">VehicleSimulation</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;I really require a VehicleSimulation; obtained </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span>
+               <span class="n">describe_type</span><span class="p">(</span><span class="n">vsim</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">world</span> <span class="o">=</span> <span class="n">vsim</span><span class="o">.</span><span class="n">world</span>
+    <span class="n">vehicle</span> <span class="o">=</span> <span class="n">vsim</span><span class="o">.</span><span class="n">vehicle</span>
+
+    <span class="kn">from</span> <span class="nn">geometry</span> <span class="kn">import</span> <span class="p">(</span><span class="n">translation_from_SE2</span><span class="p">,</span>
+        <span class="n">SE2_from_translation_angle</span><span class="p">,</span> <span class="n">SE2_from_xytheta</span><span class="p">,</span> <span class="n">SE3_from_SE2</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">vehicles.simulation.collision</span> <span class="kn">import</span> <span class="n">collides_with</span>
+
+    <span class="n">bounds</span> <span class="o">=</span> <span class="n">world</span><span class="o">.</span><span class="n">bounds</span>
+    <span class="n">bx</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">by</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">wx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">bx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">bx</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">wy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">by</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">by</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">wx</span> <span class="o">/</span> <span class="n">resolution</span><span class="p">))</span>
+    <span class="n">ny</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">wy</span> <span class="o">/</span> <span class="n">resolution</span><span class="p">))</span>
+
+    <span class="n">cx</span> <span class="o">=</span> <span class="n">wx</span> <span class="o">/</span> <span class="n">nx</span>
+    <span class="n">cy</span> <span class="o">=</span> <span class="n">wy</span> <span class="o">/</span> <span class="n">ny</span>
+
+    <span class="n">primitives</span> <span class="o">=</span> <span class="n">world</span><span class="o">.</span><span class="n">get_primitives</span><span class="p">()</span>
+    <span class="n">vehicle</span><span class="o">.</span><span class="n">set_world_primitives</span><span class="p">(</span><span class="n">primitives</span><span class="p">)</span>
+
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">locations</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nx</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">ny</span><span class="p">)):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">bx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">cx</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">by</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">cy</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">pose</span> <span class="o">=</span> <span class="n">SE3_from_SE2</span><span class="p">(</span><span class="n">SE2_from_xytheta</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">]))</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">pose</span><span class="o">=</span><span class="n">pose</span><span class="p">)</span>
+        <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">locations</span><span class="p">)</span>
+        <span class="n">locations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">collision_at</span><span class="p">(</span><span class="n">pose</span><span class="p">):</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="n">translation_from_SE2</span><span class="p">(</span><span class="n">SE2_from_SE3</span><span class="p">(</span><span class="n">pose</span><span class="p">))</span>
+        <span class="n">collision</span> <span class="o">=</span> <span class="n">collides_with</span><span class="p">(</span><span class="n">primitives</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="n">center</span><span class="p">,</span>
+                                  <span class="n">radius</span><span class="o">=</span><span class="n">vehicle</span><span class="o">.</span><span class="n">radius</span> <span class="o">*</span> <span class="mf">2.5</span><span class="p">)</span>
+        <span class="c">#print(&#39;center %s: %s&#39; % (center, collision))</span>
+        <span class="k">return</span> <span class="n">collision</span><span class="o">.</span><span class="n">collided</span>
+
+    <span class="k">def</span> <span class="nf">cell_free</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">grid</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;collision&#39;</span> <span class="ow">in</span> <span class="n">loc</span><span class="p">:</span>
+            <span class="n">loc</span><span class="p">[</span><span class="s">&#39;collision&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">collision_at</span><span class="p">(</span><span class="n">loc</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">])</span>
+            <span class="c">#print(&#39;Checking %s: %s&#39; % (node, loc[&#39;collision&#39;]))</span>
+
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">loc</span><span class="p">[</span><span class="s">&#39;collision&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">):</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">node1</span><span class="p">)</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">node2</span><span class="p">)</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p1</span> <span class="o">-</span> <span class="n">p2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dist</span>
+
+    <span class="k">def</span> <span class="nf">node2children</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">node2children_grid</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                                        <span class="n">cell_free</span><span class="o">=</span><span class="n">cell_free</span><span class="p">,</span>
+                                        <span class="n">cost</span><span class="o">=</span><span class="n">cost</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">heuristics</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cost</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_start_cells</span><span class="p">():</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">locations</span><span class="p">))[::</span><span class="mi">5</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="s">&#39;cell&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">cell_free</span><span class="p">(</span><span class="n">cell</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">cell</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;No free space at all&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_target_cells</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Enumerate end cells rom the bottom &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">goodness</span><span class="p">(</span><span class="n">cell</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">cost</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">cell</span><span class="p">)</span>
+
+        <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">([</span><span class="o">-</span><span class="n">goodness</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="s">&#39;cell&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">locations</span><span class="p">])</span>
+
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">order</span><span class="p">[::</span><span class="mi">5</span><span class="p">]:</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s">&#39;cell&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">cell_free</span><span class="p">(</span><span class="n">cell</span><span class="p">):</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="c">#print(&#39;TRying %s (%s)&#39; % (str(cell), goodness(cell)))</span>
+                <span class="k">yield</span> <span class="n">cell</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;No free space at all&quot;</span><span class="p">)</span>
+
+    <span class="c"># Find a long path </span>
+    <span class="k">def</span> <span class="nf">get_path</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="n">get_start_cells</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">get_target_cells</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+                <span class="n">path</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">astar</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">node2children</span><span class="p">,</span> <span class="n">heuristics</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">path</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Could not find any path.&#39;</span><span class="p">)</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">get_path</span><span class="p">()</span>
+
+    <span class="n">locations</span> <span class="o">=</span> <span class="p">[</span><span class="n">locations</span><span class="p">[</span><span class="n">grid</span><span class="p">[</span><span class="n">c</span><span class="p">]]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">path</span><span class="p">]</span>
+
+    <span class="c"># adjust poses angle</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">locations</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">loc1</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">loc2</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">translation_from_SE2</span><span class="p">(</span><span class="n">SE2_from_SE3</span><span class="p">(</span><span class="n">loc1</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">]))</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="n">translation_from_SE2</span><span class="p">(</span><span class="n">SE2_from_SE3</span><span class="p">(</span><span class="n">loc2</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">]))</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">SE3_from_SE2</span><span class="p">(</span><span class="n">SE2_from_translation_angle</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">))</span>
+        <span class="n">loc1</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">loc1</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">],</span> <span class="n">diff</span><span class="p">)</span>
+
+    <span class="n">poses</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">locations</span><span class="p">]</span>
+
+    <span class="c"># project to SE2</span>
+    <span class="n">poses_se2</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">SE2_from_SE3</span><span class="p">,</span> <span class="n">poses</span><span class="p">)</span>
+    <span class="c"># smooth path</span>
+    <span class="n">poses_se2</span> <span class="o">=</span> <span class="n">elastic</span><span class="p">(</span><span class="n">SE2</span><span class="p">,</span> <span class="n">poses_se2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">poses</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">SE3_from_SE2</span><span class="p">,</span> <span class="n">poses_se2</span><span class="p">)</span>
+
+    <span class="c"># compute observations</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Found path of length </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">poses</span><span class="p">))</span>
+
+    <span class="c">#poses = interpolate_sequence(poses, max_theta_diff_deg=30)</span>
+    <span class="c"># compute observations</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Upsampled at </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">poses</span><span class="p">))</span>
+
+    <span class="n">locations</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">pose</span><span class="o">=</span><span class="n">pose</span><span class="p">)</span> <span class="k">for</span> <span class="n">pose</span> <span class="ow">in</span> <span class="n">poses</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">locations</span><span class="p">:</span>
+        <span class="n">pose</span> <span class="o">=</span> <span class="n">loc</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">]</span>
+        <span class="n">vehicle</span><span class="o">.</span><span class="n">set_pose</span><span class="p">(</span><span class="n">pose</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">debug</span><span class="p">:</span>
+            <span class="n">loc</span><span class="p">[</span><span class="s">&#39;observations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean_observations</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">locations</span>
+
+
+<span class="c">#def get_random_path(find_path):</span>
+<span class="c">#    &#39;&#39;&#39; Find a path between two cells. </span>
+<span class="c">#            find_path(start, target)</span>
+<span class="c">#    &#39;&#39;&#39;</span>
+<span class="c">#    for start in get_start_cells():</span>
+<span class="c">#        for target in get_target_cells(start):</span>
+<span class="c">#            path, _ = astar(start, target, node2children, heuristics)</span>
+<span class="c">#</span>
+<span class="c">#            if path is not None:</span>
+<span class="c">#                break</span>
+<span class="c">#    else:</span>
+<span class="c">#        raise Exception(&#39;Could not find any path.&#39;)</span>
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">pose1</span><span class="o">=</span><span class="s">&#39;SE3&#39;</span><span class="p">,</span> <span class="n">pose2</span><span class="o">=</span><span class="s">&#39;SE3&#39;</span><span class="p">,</span> <span class="n">max_theta_diff_deg</span><span class="o">=</span><span class="s">&#39;&gt;0&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="step_too_big"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.find_path.step_too_big">[docs]</a><span class="k">def</span> <span class="nf">step_too_big</span><span class="p">(</span><span class="n">pose1</span><span class="p">,</span> <span class="n">pose2</span><span class="p">,</span> <span class="n">max_theta_diff_deg</span><span class="p">):</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">SE3</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">SE3</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">pose1</span><span class="p">),</span> <span class="n">pose2</span><span class="p">)</span>
+    <span class="n">diff_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">angle_from_SE2</span><span class="p">(</span><span class="n">SE2_from_SE3</span><span class="p">(</span><span class="n">diff</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">diff_theta</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">max_theta_diff_deg</span><span class="p">)</span>
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">pose1</span><span class="o">=</span><span class="s">&#39;SE3&#39;</span><span class="p">,</span> <span class="n">pose2</span><span class="o">=</span><span class="s">&#39;SE3&#39;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;SE3&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="interpolate"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.find_path.interpolate">[docs]</a><span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="n">pose1</span><span class="p">,</span> <span class="n">pose2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">SE3</span><span class="o">.</span><span class="n">geodesic</span><span class="p">(</span><span class="n">pose1</span><span class="p">,</span> <span class="n">pose2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">poses</span><span class="o">=</span><span class="s">&#39;list[N,&gt;=2](SE3)&#39;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;list[&gt;=N](SE3)&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="interpolate_sequence"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.find_path.interpolate_sequence">[docs]</a><span class="k">def</span> <span class="nf">interpolate_sequence</span><span class="p">(</span><span class="n">poses</span><span class="p">,</span> <span class="n">max_theta_diff_deg</span><span class="p">):</span>
+    <span class="n">poses</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">poses</span><span class="p">)</span>
+    <span class="n">inter</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">inter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">poses</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">poses</span><span class="p">:</span> <span class="k">break</span>
+        <span class="n">current_pose</span> <span class="o">=</span> <span class="n">inter</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">next_pose</span> <span class="o">=</span> <span class="n">poses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">step_too_big</span><span class="p">(</span><span class="n">current_pose</span><span class="p">,</span> <span class="n">next_pose</span><span class="p">,</span> <span class="n">max_theta_diff_deg</span><span class="p">):</span>
+            <span class="n">interpolated</span> <span class="o">=</span> <span class="n">interpolate</span><span class="p">(</span><span class="n">current_pose</span><span class="p">,</span> <span class="n">next_pose</span><span class="p">)</span>
+            <span class="n">inter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interpolated</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">inter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">poses</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">inter</span>
+</div>
+<div class="viewcode-block" id="mean_observations"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.find_path.mean_observations">[docs]</a><span class="k">def</span> <span class="nf">mean_observations</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Averages the robot&#39;s observations at the given place. &quot;&quot;&quot;</span>
+    <span class="c"># XXX: only works for 1D?</span>
+    <span class="n">obss</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="c"># XXX: fixed threshold</span>
+        <span class="n">obss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">robot</span><span class="o">.</span><span class="n">get_observations</span><span class="p">()</span><span class="o">.</span><span class="n">observations</span><span class="p">)</span>
+
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">obss</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mean</span>
+
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">poses</span><span class="o">=</span><span class="s">&#39;list[&gt;=3](array[KxK])&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="elastic"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.find_path.elastic">[docs]</a><span class="k">def</span> <span class="nf">elastic</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">poses</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="n">poses2</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">poses</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cur</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">poses2</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">poses2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span> <span class="k">continue</span>
+
+            <span class="n">pA</span> <span class="o">=</span> <span class="n">poses2</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">pB</span> <span class="o">=</span> <span class="n">poses2</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">geodesic</span><span class="p">(</span><span class="n">pA</span><span class="p">,</span> <span class="n">pB</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">moved</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">geodesic</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+<span class="c">#            if i == 5:</span>
+<span class="c">#                print(&#39;Now: %s&#39; % SE2.friendly(SE2_from_SE3(moved)))</span>
+<span class="c">#            moved[:2, 3] = cur[:2, 3] # don&#39;t move </span>
+            <span class="n">poses2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">moved</span>
+
+    <span class="k">return</span> <span class="n">poses2</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../servonav.html" >bootstrapping_olympics.programs.manager.meat.servonav</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,170 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.manager.meat.servo.summaries &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics.programs.manager.meat.servo" href="../servo.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../servo.html" accesskey="U">bootstrapping_olympics.programs.manager.meat.servo</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.manager.meat.servo.summaries</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">np</span>
+
+
+<div class="viewcode-block" id="servo_stats_summaries"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servo.html#bootstrapping_olympics.programs.manager.meat.servo.summaries.servo_stats_summaries">[docs]</a><span class="k">def</span> <span class="nf">servo_stats_summaries</span><span class="p">(</span><span class="n">data_central</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_episodes</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">geometry</span> <span class="kn">import</span> <span class="p">(</span><span class="n">SE2</span><span class="p">,</span> <span class="n">SE2_from_SE3</span><span class="p">,</span> <span class="n">translation_from_SE2</span><span class="p">,</span>
+                          <span class="n">angle_from_SE2</span><span class="p">,</span> <span class="n">SE3</span><span class="p">)</span>
+    <span class="n">log_index</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">get_log_index</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">id_episodes</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">id_episodes</span> <span class="o">=</span> <span class="n">log_index</span><span class="o">.</span><span class="n">get_episodes_for_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">,</span>
+                                                    <span class="n">id_agent</span> <span class="o">+</span> <span class="s">&#39;_servo&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">id_episodes</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;No episodes found for </span><span class="si">%s</span><span class="s"> - </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">summaries</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">id_episode</span> <span class="ow">in</span> <span class="n">id_episodes</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Reading </span><span class="si">%s</span><span class="s">...&#39;</span> <span class="o">%</span> <span class="n">id_episode</span><span class="p">)</span>
+
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">timestamps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">poses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dist_xy</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dist_th</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">observations</span> <span class="ow">in</span> \
+            <span class="n">log_index</span><span class="o">.</span><span class="n">read_robot_episode</span><span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_episode</span><span class="p">,</span>
+                                         <span class="n">read_extra</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+            <span class="n">extra</span> <span class="o">=</span> <span class="n">observations</span><span class="p">[</span><span class="s">&#39;extra&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+            <span class="n">servoing</span> <span class="o">=</span> <span class="n">extra</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;servoing&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">servoing</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Warning, no &quot;servoing&quot; in episode </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span>
+                              <span class="n">id_episode</span><span class="p">)</span>
+                <span class="k">break</span>
+
+            <span class="n">obs0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">servoing</span><span class="p">[</span><span class="s">&#39;obs0&#39;</span><span class="p">])</span>
+            <span class="n">pose0</span> <span class="o">=</span> <span class="n">SE2_from_SE3</span><span class="p">(</span><span class="n">SE3</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">servoing</span><span class="p">[</span><span class="s">&#39;pose0&#39;</span><span class="p">]))</span>
+            <span class="n">pose1</span> <span class="o">=</span> <span class="n">SE2_from_SE3</span><span class="p">(</span><span class="n">SE3</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">servoing</span><span class="p">[</span><span class="s">&#39;pose1&#39;</span><span class="p">]))</span>
+            <span class="n">poseK</span> <span class="o">=</span> <span class="n">SE2_from_SE3</span><span class="p">(</span><span class="n">SE3</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">servoing</span><span class="p">[</span><span class="s">&#39;poseK&#39;</span><span class="p">]))</span>
+
+            <span class="n">pose1</span> <span class="o">=</span> <span class="n">SE2</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">SE2</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">pose0</span><span class="p">),</span> <span class="n">pose1</span><span class="p">)</span>
+            <span class="n">poseK</span> <span class="o">=</span> <span class="n">SE2</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">SE2</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">pose0</span><span class="p">),</span> <span class="n">poseK</span><span class="p">)</span>
+            <span class="n">poses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">poseK</span><span class="p">)</span>
+
+            <span class="n">dist_xy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">translation_from_SE2</span><span class="p">(</span><span class="n">poseK</span><span class="p">)))</span>
+            <span class="n">dist_th</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">angle_from_SE2</span><span class="p">(</span><span class="n">poseK</span><span class="p">)))</span>
+
+            <span class="c">#obs1 = np.array(servoing[&#39;obs1&#39;])</span>
+            <span class="n">obsK</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">servoing</span><span class="p">[</span><span class="s">&#39;obsK&#39;</span><span class="p">])</span>
+
+            <span class="n">err_L2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">obs0</span> <span class="o">-</span> <span class="n">obsK</span><span class="p">)</span>
+
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err_L2</span><span class="p">)</span>
+            <span class="n">timestamps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">observations</span><span class="p">[</span><span class="s">&#39;timestamp&#39;</span><span class="p">])</span>
+<span class="c"># last[&#39;time_from_episode_start&#39;] = observations[&#39;time_from_episode_start&#39;]</span>
+
+        <span class="n">initial_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">translation_from_SE2</span><span class="p">(</span><span class="n">pose1</span><span class="p">))</span>
+
+        <span class="n">summary</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s">&#39;pose0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pose0</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s">&#39;pose1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pose1</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s">&#39;poses&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">poses</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s">&#39;errors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">errors</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s">&#39;timestamps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timestamps</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s">&#39;initial_translation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">translation_from_SE2</span><span class="p">(</span><span class="n">pose1</span><span class="p">)</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s">&#39;initial_distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_distance</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s">&#39;initial_rotation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">angle_from_SE2</span><span class="p">(</span><span class="n">pose1</span><span class="p">)</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist_xy</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s">&#39;dist_th&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist_th</span>
+
+        <span class="n">summaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">summaries</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../servo.html" >bootstrapping_olympics.programs.manager.meat.servo</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

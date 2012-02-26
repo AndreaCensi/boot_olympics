@@ -1,0 +1,6 @@
+bootstrapping_olympics.EpisodeDesc
+==================================
+
+.. currentmodule:: bootstrapping_olympics
+
+.. autodata:: EpisodeDesc

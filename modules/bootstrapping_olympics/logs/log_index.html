@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.logs.log_index &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.logs.log_index</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">BootStream</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">LogsFormat</span><span class="p">,</span> <span class="n">contract</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">natsorted</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">conf_tools</span> <span class="kn">import</span> <span class="n">locate_files</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;LogIndex&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="LogIndex"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.logs.html#bootstrapping_olympics.logs.log_index.LogIndex">[docs]</a><span class="k">class</span> <span class="nc">LogIndex</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># id robot -&gt; list of streams</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robots2streams</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c"># filename -&gt; list of streams  </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file2streams</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">directories_indexed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<div class="viewcode-block" id="LogIndex.reindex"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.logs.html#bootstrapping_olympics.logs.log_index.LogIndex.reindex">[docs]</a>    <span class="k">def</span> <span class="nf">reindex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">dirname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">directories_indexed</span><span class="p">:</span>
+            <span class="n">new_streams</span> <span class="o">=</span> \
+                <span class="n">index_directory_cached</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">ignore_cache</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file2streams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_streams</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robots2streams</span> <span class="o">=</span> <span class="n">index_robots</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file2streams</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="LogIndex.index"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.logs.html#bootstrapping_olympics.logs.log_index.LogIndex.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">ignore_cache</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">new_streams</span> <span class="o">=</span> \
+            <span class="n">index_directory_cached</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">ignore_cache</span><span class="o">=</span><span class="n">ignore_cache</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file2streams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_streams</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directories_indexed</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robots2streams</span> <span class="o">=</span> <span class="n">index_robots</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file2streams</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="LogIndex.has_streams_for_robot"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.logs.html#bootstrapping_olympics.logs.log_index.LogIndex.has_streams_for_robot">[docs]</a>    <span class="k">def</span> <span class="nf">has_streams_for_robot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">id_robot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robots2streams</span>
+</div>
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">returns</span><span class="o">=</span><span class="s">&#39;list&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="LogIndex.get_streams_for_robot"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.logs.html#bootstrapping_olympics.logs.log_index.LogIndex.get_streams_for_robot">[docs]</a>    <span class="k">def</span> <span class="nf">get_streams_for_robot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">id_robot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robots2streams</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;No streams for robot </span><span class="si">%r</span><span class="s">; available </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span>
+                             <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">robots2streams</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">robots2streams</span><span class="p">[</span><span class="n">id_robot</span><span class="p">]</span>
+</div>
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">returns</span><span class="o">=</span><span class="s">&#39;list&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="LogIndex.get_streams_for"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.logs.html#bootstrapping_olympics.logs.log_index.LogIndex.get_streams_for">[docs]</a>    <span class="k">def</span> <span class="nf">get_streams_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">id_robot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robots2streams</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;No streams for robot </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">id_robot</span><span class="p">)</span>
+        <span class="n">streams</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robots2streams</span><span class="p">[</span><span class="n">id_robot</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">id_agent</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">id_agent</span> <span class="ow">in</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id_agents</span><span class="p">():</span>
+                    <span class="n">streams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">streams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">streams</span>
+</div>
+<div class="viewcode-block" id="LogIndex.get_robot_spec"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.logs.html#bootstrapping_olympics.logs.log_index.LogIndex.get_robot_spec">[docs]</a>    <span class="k">def</span> <span class="nf">get_robot_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns the spec of the robot as stored in the files. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">robots2streams</span><span class="p">[</span><span class="n">id_robot</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_spec</span><span class="p">()</span>
+
+    <span class="c"># TODO: implement has_extra</span></div>
+<div class="viewcode-block" id="LogIndex.get_episodes_for_robot"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.logs.html#bootstrapping_olympics.logs.log_index.LogIndex.get_episodes_for_robot">[docs]</a>    <span class="k">def</span> <span class="nf">get_episodes_for_robot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns a list of all episodes for the given robot (and</span>
+<span class="sd">            agent if it is given). &#39;&#39;&#39;</span> <span class="c"># TODO: implement this</span>
+        <span class="n">episodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_streams_for_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">id_agent</span><span class="p">:</span>
+                <span class="n">episodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">get_id_episodes</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">id_agent</span> <span class="ow">in</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id_agents</span><span class="p">():</span>
+                    <span class="n">episodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">get_id_episodes</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">natsorted</span><span class="p">(</span><span class="n">episodes</span><span class="p">)</span>
+
+    <span class="c"># TODO: implement has_extra</span></div>
+<div class="viewcode-block" id="LogIndex.read_all_robot_streams"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.logs.html#bootstrapping_olympics.logs.log_index.LogIndex.read_all_robot_streams">[docs]</a>    <span class="k">def</span> <span class="nf">read_all_robot_streams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span>
+                               <span class="n">id_agent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">read_extra</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Reads all the data corresponding to a robot.</span>
+<span class="sd">            If agent is not None, it filters by agent.</span>
+<span class="sd">         &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_streams_for_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">id_agent</span><span class="p">:</span>
+                <span class="n">do_this</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">do_this</span> <span class="o">=</span> <span class="n">id_agent</span> <span class="ow">in</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id_agents</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">do_this</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">read_extra</span><span class="o">=</span><span class="n">read_extra</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">obs</span>
+</div>
+<div class="viewcode-block" id="LogIndex.read_robot_episode"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.logs.html#bootstrapping_olympics.logs.log_index.LogIndex.read_robot_episode">[docs]</a>    <span class="k">def</span> <span class="nf">read_robot_episode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_episode</span><span class="p">,</span> <span class="n">read_extra</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Reads only one episode. &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_streams_for_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">id_episode</span> <span class="ow">in</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id_episodes</span><span class="p">():</span>
+
+                <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">read_extra</span><span class="o">=</span><span class="n">read_extra</span><span class="p">,</span>
+                                       <span class="n">only_episodes</span><span class="o">=</span><span class="p">[</span><span class="n">id_episode</span><span class="p">]):</span>
+                    <span class="k">assert</span> <span class="n">obs</span><span class="p">[</span><span class="s">&#39;id_episode&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">==</span> <span class="n">id_episode</span>
+                    <span class="k">yield</span> <span class="n">obs</span>
+
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;found:</span><span class="se">\n</span><span class="s">&#39;</span>
+            <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_streams_for_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id_episodes</span><span class="p">())</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;No episode </span><span class="si">%r</span><span class="s"> found: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_episode</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span>
+
+</div></div>
+<span class="k">def</span> <span class="nf">index_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">ignore_cache</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Returns a hash filename -&gt; list of streams. &#39;&#39;&#39;</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="n">LogsFormat</span><span class="o">.</span><span class="n">formats</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+    <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">extensions</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="s">&#39;*.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">extension</span>
+        <span class="n">files</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">locate_files</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">pattern</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;No log files found in </span><span class="si">%r</span><span class="s"> (extensions: </span><span class="si">%s</span><span class="s">).&#39;</span> <span class="o">%</span>
+               <span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">extensions</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">file2streams</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span>   <span class="n">filename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">LogsFormat</span><span class="o">.</span><span class="n">get_reader_for</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">file2streams</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> \
+                <span class="n">reader</span><span class="o">.</span><span class="n">index_file_cached</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">ignore_cache</span><span class="o">=</span><span class="n">ignore_cache</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">file2streams</span><span class="p">[</span><span class="n">filename</span><span class="p">]:</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">BootStream</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">file2streams</span><span class="p">[</span><span class="n">filename</span><span class="p">]:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;No streams found in file </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">except</span> <span class="bp">None</span><span class="p">:</span> <span class="c"># XXX</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Invalid data in file </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">file2streams</span>
+
+
+<span class="k">def</span> <span class="nf">index_robots</span><span class="p">(</span><span class="n">file2streams</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Groups the streams by robot, making sure the specs are compatible. </span>
+<span class="sd">        Returns dict: id_robot -&gt; list of streams.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">robot2streams</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[])</span>
+    <span class="n">robot2spec</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">streams</span> <span class="ow">in</span> <span class="n">file2streams</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
+            <span class="n">id_robot</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id_robot</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">id_robot</span> <span class="ow">in</span> <span class="n">robot2spec</span><span class="p">:</span>
+                <span class="n">robot2spec</span><span class="p">[</span><span class="n">id_robot</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_spec</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># XXX:</span>
+                <span class="n">stream_spec</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_spec</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_spec</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">(</span><span class="n">robot2spec</span><span class="p">[</span><span class="n">id_robot</span><span class="p">]):</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Warning! You got your logs mixed up. </span><span class="se">\n</span><span class="s">&#39;</span>
+                    <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span><span class="s">&#39;Problem spec in:</span><span class="se">\n\t</span><span class="si">%s</span><span class="se">\n</span><span class="s">is</span><span class="se">\n\t</span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span>
+                           <span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">stream_spec</span><span class="p">))</span>
+                    <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span><span class="s">&#39;and this is different from:</span><span class="se">\n\t</span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span>
+                           <span class="s">&#39;found in e.g.,:</span><span class="se">\n\t</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                           <span class="p">(</span><span class="n">robot2spec</span><span class="p">[</span><span class="n">id_robot</span><span class="p">],</span> <span class="n">robot2streams</span><span class="p">[</span><span class="n">id_robot</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+                    <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">I will skip this stream.&#39;</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                    <span class="k">continue</span>
+            <span class="n">robot2streams</span><span class="p">[</span><span class="n">id_robot</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">robot</span> <span class="ow">in</span> <span class="n">robot2streams</span><span class="p">:</span>
+        <span class="n">robot2streams</span><span class="p">[</span><span class="n">robot</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">robot2streams</span><span class="p">[</span><span class="n">robot</span><span class="p">],</span>
+                                 <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_id_episodes</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">robot2streams</span><span class="p">)</span>
+
+
+<span class="n">index_directory_cached</span> <span class="o">=</span> <span class="n">index_directory</span> <span class="c"># TODO: remove</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

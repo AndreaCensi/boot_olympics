@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.library.nuisances.popcode_nuisance &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.library.nuisances.popcode_nuisance</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="p">(</span><span class="n">RepresentationNuisance</span><span class="p">,</span> <span class="n">StreamSpec</span><span class="p">,</span> <span class="n">streamel_dtype</span><span class="p">,</span>
+    <span class="n">ValueFormats</span><span class="p">,</span> <span class="n">UnsupportedSpec</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.popcode_functions</span> <span class="kn">import</span> <span class="n">popcode</span><span class="p">,</span> <span class="n">popcode_inv</span>
+
+
+<div class="viewcode-block" id="PopCode"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode">[docs]</a><span class="k">class</span> <span class="nc">PopCode</span><span class="p">(</span><span class="n">RepresentationNuisance</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        This nuisance transforms a 1D representation of the signal</span>
+<span class="sd">        into a 2D representation. </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resolution</span> <span class="o">=</span> <span class="n">resolution</span>
+
+<div class="viewcode-block" id="PopCode.inverse"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PopCodeInv</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="PopCode.transform_spec"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode.transform_spec">[docs]</a>    <span class="k">def</span> <span class="nf">transform_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_spec</span><span class="p">):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">stream_spec</span><span class="o">.</span><span class="n">shape</span><span class="p">()</span>
+        <span class="n">streamels</span> <span class="o">=</span> <span class="n">stream_spec</span><span class="o">.</span><span class="n">get_streamels</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="s">&quot;I only accept 1D signals.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ValueFormats</span><span class="o">.</span><span class="n">Continuous</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="s">&quot;I only accept continuous signals.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="s">&quot;I only accept signals with lower=0.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="s">&quot;I only accept signals with upper=1.&quot;</span><span class="p">)</span>
+
+        <span class="c"># TODO: check all floats and in 0--1</span>
+
+        <span class="n">shape2</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolution</span>
+        <span class="n">streamels2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">streamel_dtype</span><span class="p">)</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">ValueFormats</span><span class="o">.</span><span class="n">Continuous</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">popcode</span><span class="p">(</span><span class="n">stream_spec</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">(),</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">resolution</span><span class="p">)</span>
+
+<span class="c">#        print &#39;old default&#39;, streamels[&#39;default&#39;]</span>
+<span class="c">#        print &#39;new default&#39;, streamels2[&#39;default&#39;]</span>
+
+        <span class="k">return</span> <span class="n">StreamSpec</span><span class="p">(</span><span class="n">id_stream</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="c"># XXX</span>
+                           <span class="n">streamels</span><span class="o">=</span><span class="n">streamels2</span><span class="p">,</span>
+                           <span class="n">extra</span><span class="o">=</span><span class="bp">None</span> <span class="c"># XXX</span>
+                           <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PopCode.transform_value"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode.transform_value">[docs]</a>    <span class="k">def</span> <span class="nf">transform_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">popcode</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolution</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;PopCode(resolution=</span><span class="si">%d</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolution</span>
+
+</div>
+<div class="viewcode-block" id="PopCodeInv"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv">[docs]</a><span class="k">class</span> <span class="nc">PopCodeInv</span><span class="p">(</span><span class="n">RepresentationNuisance</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Inverse of PopCode &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PopCodeInv.inverse"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PopCode</span><span class="p">()</span> <span class="c"># XXX: cannot pass resolution</span>
+</div>
+<div class="viewcode-block" id="PopCodeInv.transform_spec"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv.transform_spec">[docs]</a>    <span class="k">def</span> <span class="nf">transform_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_spec</span><span class="p">):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">stream_spec</span><span class="o">.</span><span class="n">shape</span><span class="p">()</span>
+        <span class="n">streamels</span> <span class="o">=</span> <span class="n">stream_spec</span><span class="o">.</span><span class="n">get_streamels</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="s">&quot;I only accept 2D signals.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ValueFormats</span><span class="o">.</span><span class="n">Continuous</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="s">&quot;I only accept continuous signals.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="s">&quot;I only accept signals with lower=0.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="s">&quot;I only accept signals with upper=1.&quot;</span><span class="p">)</span>
+
+        <span class="n">N</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">shape</span>
+        <span class="n">shape2</span> <span class="o">=</span> <span class="n">N</span><span class="p">,</span>
+        <span class="n">streamels2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">streamel_dtype</span><span class="p">)</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">ValueFormats</span><span class="o">.</span><span class="n">Continuous</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="n">popcode_inv</span><span class="p">(</span><span class="n">stream_spec</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">())</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">default</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;float32&#39;</span><span class="p">)</span>
+
+<span class="c">#        print &#39;old default&#39;, streamels[&#39;default&#39;]</span>
+<span class="c">#</span>
+<span class="c">#        print &#39;new default&#39;, streamels2[&#39;default&#39;]</span>
+
+        <span class="k">return</span> <span class="n">StreamSpec</span><span class="p">(</span><span class="n">id_stream</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="c"># XXX</span>
+                           <span class="n">streamels</span><span class="o">=</span><span class="n">streamels2</span><span class="p">,</span>
+                           <span class="n">extra</span><span class="o">=</span><span class="bp">None</span> <span class="c"># XXX</span>
+                           <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PopCodeInv.transform_value"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv.transform_value">[docs]</a>    <span class="k">def</span> <span class="nf">transform_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<span class="c">#        print(&quot;inverting %s&quot; % values)</span>
+        <span class="k">return</span> <span class="n">popcode_inv</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;float32&#39;</span><span class="p">))</span>
+</div>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;PopCodeInv()&#39;</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

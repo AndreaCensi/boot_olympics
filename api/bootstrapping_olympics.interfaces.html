@@ -1,0 +1,879 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>interfaces Package &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="interfaces-package">
+<h1>interfaces Package<a class="headerlink" href="#interfaces-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">interfaces</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-bootstrapping_olympics.interfaces"></span><p>The software interface to the various objects.</p>
+</div>
+<div class="section" id="module-bootstrapping_olympics.interfaces.agent">
+<span id="agent-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">agent</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.interfaces.agent" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.interfaces.agent.AgentInterface">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.interfaces.agent.</tt><tt class="descname">AgentInterface</tt><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/agent.html#AgentInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.AgentInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This is the interface that the agents must implement.</p>
+<p>The following is a list of conventions that we use.</p>
+<p>init(boot_spec) is called first. 
+process_observations() is guaranteed to be called at least once
+before choose_commands().</p>
+<p>The function <tt class="docutils literal"><span class="pre">process_observations()</span></tt> is given an instance
+of the class Observations, which contains many info other than
+the raw sensel values.</p>
+<p>Use the function <tt class="docutils literal"><span class="pre">self.info(msg)</span></tt> to log stuff.
+Do not use <tt class="docutils literal"><span class="pre">rospy.loginfo</span></tt> or <tt class="docutils literal"><span class="pre">print</span></tt>: the agents implementation s
+hould be independent of ROS.</p>
+<p>Implement the functions <tt class="docutils literal"><span class="pre">set_state()</span></tt> and <tt class="docutils literal"><span class="pre">get_state()</span></tt>. 
+<tt class="docutils literal"><span class="pre">get_state()</span></tt> can return anything that is Pickable. 
+<tt class="docutils literal"><span class="pre">set_state()</span></tt> will be given whatever <tt class="docutils literal"><span class="pre">get_state()</span></tt> returned.</p>
+<p>Implement the function <tt class="docutils literal"><span class="pre">publish()</span></tt> to output information, such
+as graphs, statistics, etc. The function is given an instance of the 
+class Publisher, whose implementation is hidden.</p>
+<p>During a ROS simulation, Publisher will be a ROSPublisher that 
+will publish the data as ROS topics which can be subscribed by RViz.</p>
+<p>During offline learning, the data will be written to HTML files.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.agent.AgentInterface.choose_commands">
+<tt class="descname">choose_commands</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/agent.html#AgentInterface.choose_commands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.AgentInterface.choose_commands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chooses commands to be generated; must return a sequence 
+of numbers or array.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.agent.AgentInterface.get_state">
+<tt class="descname">get_state</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/agent.html#AgentInterface.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.AgentInterface.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the state for the agent so that it can be saved.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.agent.AgentInterface.get_state_vars">
+<tt class="descname">get_state_vars</tt><big>(</big><em>state_vars</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/agent.html#AgentInterface.get_state_vars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.AgentInterface.get_state_vars" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.agent.AgentInterface.info">
+<tt class="descname">info</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/agent.html#AgentInterface.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.AgentInterface.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs something.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.agent.AgentInterface.init">
+<tt class="descname">init</tt><big>(</big><em>boot_spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/agent.html#AgentInterface.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.AgentInterface.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when the observations and commands shape are available,
+so that the agent can initialize its data structures.</p>
+<p>The agent might throw the exception UnsupportedSpec if the 
+spec is not supported.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>boot_spec</strong> &#8211; An instance of the class BootSpec, which
+describes the specifications of the sensorimotor cascades.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="bootstrapping_olympics.interfaces.agent.AgentInterface.logger">
+<tt class="descname">logger</tt><em class="property"> = None</em><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.AgentInterface.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.agent.AgentInterface.process_observations">
+<tt class="descname">process_observations</tt><big>(</big><em>observations</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/agent.html#AgentInterface.process_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.AgentInterface.process_observations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process new observations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>observations</strong> &#8211; a structure of type Observations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.agent.AgentInterface.publish">
+<tt class="descname">publish</tt><big>(</big><em>publisher</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/agent.html#AgentInterface.publish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.AgentInterface.publish" title="Permalink to this definition">¶</a></dt>
+<dd><p>Publish debug information. <tt class="docutils literal"><span class="pre">publisher</span></tt> is an instance 
+of the class PublisherInterface.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.agent.AgentInterface.set_state">
+<tt class="descname">set_state</tt><big>(</big><em>state</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/agent.html#AgentInterface.set_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.AgentInterface.set_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the given state (obtained by &#8216;get_state&#8217;).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.agent.AgentInterface.set_state_vars">
+<tt class="descname">set_state_vars</tt><big>(</big><em>state</em>, <em>state_vars</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/agent.html#AgentInterface.set_state_vars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.AgentInterface.set_state_vars" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.agent.AgentInterface.state_vars">
+<tt class="descname">state_vars</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/agent.html#AgentInterface.state_vars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.AgentInterface.state_vars" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="bootstrapping_olympics.interfaces.agent.UnsupportedSpec">
+<em class="property">exception </em><tt class="descclassname">bootstrapping_olympics.interfaces.agent.</tt><tt class="descname">UnsupportedSpec</tt><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/agent.html#UnsupportedSpec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.agent.UnsupportedSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Thrown by agents if they do not support the spec.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.interfaces.boot_spec">
+<span id="boot-spec-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">boot_spec</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.interfaces.boot_spec" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.interfaces.boot_spec.BootSpec">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.interfaces.boot_spec.</tt><tt class="descname">BootSpec</tt><big>(</big><em>obs_spec</em>, <em>cmd_spec</em>, <em>id_robot=None</em>, <em>desc=None</em>, <em>extra=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/boot_spec.html#BootSpec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.boot_spec.BootSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents the interface of a sensorimotor
+interface.</p>
+<dl class="staticmethod">
+<dt id="bootstrapping_olympics.interfaces.boot_spec.BootSpec.from_yaml">
+<em class="property">static </em><tt class="descname">from_yaml</tt><big>(</big><em>xo</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/boot_spec.html#BootSpec.from_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.boot_spec.BootSpec.from_yaml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.boot_spec.BootSpec.get_commands">
+<tt class="descname">get_commands</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/boot_spec.html#BootSpec.get_commands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.boot_spec.BootSpec.get_commands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a StreamSpec instance representing the commands.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">StreamSpec</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.boot_spec.BootSpec.get_observations">
+<tt class="descname">get_observations</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/boot_spec.html#BootSpec.get_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.boot_spec.BootSpec.get_observations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a StreamSpec instance representing the observations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">StreamSpec</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.boot_spec.BootSpec.to_yaml">
+<tt class="descname">to_yaml</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/boot_spec.html#BootSpec.to_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.boot_spec.BootSpec.to_yaml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.interfaces.observations">
+<span id="observations-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">observations</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.interfaces.observations" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.interfaces.observations.ObsKeeper">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.interfaces.observations.</tt><tt class="descname">ObsKeeper</tt><big>(</big><em>boot_spec</em>, <em>id_robot</em>, <em>check_valid_values=True</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/observations.html#ObsKeeper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.observations.ObsKeeper" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a simple utility class to fill in the redundant 
+fields in the Observations class.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.observations.ObsKeeper.push">
+<tt class="descname">push</tt><big>(</big><em>timestamp</em>, <em>observations</em>, <em>commands</em>, <em>commands_source</em>, <em>id_episode</em>, <em>id_world</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/observations.html#ObsKeeper.push"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.observations.ObsKeeper.push" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the observations structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>commands</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </li>
+<li><strong>timestamp</strong> (<tt class="docutils literal"><span class="pre">number</span></tt>) &#8211; </li>
+<li><strong>id_episode</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>observations</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </li>
+<li><strong>id_world</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>commands_source</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.observations.get_observations_dtype">
+<tt class="descclassname">bootstrapping_olympics.interfaces.observations.</tt><tt class="descname">get_observations_dtype</tt><big>(</big><em>boot_spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/observations.html#get_observations_dtype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.observations.get_observations_dtype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.interfaces.publisher">
+<span id="publisher-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">publisher</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.interfaces.publisher" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.interfaces.publisher.Publisher">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.interfaces.publisher.</tt><tt class="descname">Publisher</tt><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/publisher.html#Publisher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.publisher.Publisher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This is the interface that the agents can use to publish
+debug information.</p>
+<dl class="attribute">
+<dt id="bootstrapping_olympics.interfaces.publisher.Publisher.FILTER_POSNEG">
+<tt class="descname">FILTER_POSNEG</tt><em class="property"> = 'posneg'</em><a class="headerlink" href="#bootstrapping_olympics.interfaces.publisher.Publisher.FILTER_POSNEG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="bootstrapping_olympics.interfaces.publisher.Publisher.FILTER_SCALE">
+<tt class="descname">FILTER_SCALE</tt><em class="property"> = 'scale'</em><a class="headerlink" href="#bootstrapping_olympics.interfaces.publisher.Publisher.FILTER_SCALE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.publisher.Publisher.array">
+<tt class="descname">array</tt><big>(</big><em>name</em>, <em>value</em>, <em>caption=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/publisher.html#Publisher.array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.publisher.Publisher.array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Publishes an array; the publisher decides how to visualize it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>value</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.publisher.Publisher.array_as_image">
+<tt class="descname">array_as_image</tt><big>(</big><em>name</em>, <em>value</em>, <em>filter='posneg'</em>, <em>filter_params={}</em>, <em>caption=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/publisher.html#Publisher.array_as_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.publisher.Publisher.array_as_image" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Publishes an array as a false-color image. </dt>
+<dd><p class="first"><tt class="docutils literal"><span class="pre">filter</span></tt> is the name of a filter.
+<tt class="docutils literal"><span class="pre">filter_params</span></tt> are parameters to pass to the filter.</p>
+<p>Usage example:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">publisher</span><span class="o">.</span><span class="n">array_as_image</span><span class="p">(</span><span class="s">&#39;covariance&#39;</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="s">&#39;posneg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>value</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.publisher.Publisher.plot">
+<tt class="descname">plot</tt><big>(</big><em>name</em>, <em>caption=None</em>, <em>**args</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/publisher.html#Publisher.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.publisher.Publisher.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Usage example:</p>
+<dl class="docutils">
+<dt>with publisher.plot(&#8216;my plot&#8217;) as pylab:</dt>
+<dd>pylab.plot(Ey, label=&#8217;E(y)&#8217;)
+pylab.plot(y_max, label=&#8217;y_max&#8217;)
+pylab.plot(y_min, label=&#8217;y_min&#8217;)
+pylab.legend()</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.publisher.Publisher.section">
+<tt class="descname">section</tt><big>(</big><em>section_name</em>, <em>cols=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/publisher.html#Publisher.section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.publisher.Publisher.section" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.publisher.Publisher.text">
+<tt class="descname">text</tt><big>(</big><em>name</em>, <em>text</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/publisher.html#Publisher.text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.publisher.Publisher.text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Publishes a text object.</p>
+<blockquote>
+<div><p>Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">publisher</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">,</span> <span class="s">&#39;I am ok&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>text</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>name</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.interfaces.rep_nuisance">
+<span id="rep-nuisance-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">rep_nuisance</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.interfaces.rep_nuisance" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.interfaces.rep_nuisance.</tt><tt class="descname">RepresentationNuisance</tt><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/rep_nuisance.html#RepresentationNuisance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.inverse">
+<tt class="descname">inverse</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/rep_nuisance.html#RepresentationNuisance.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the inverse representation nuisance, or 
+NuisanceNotInvertible</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.transform_spec">
+<tt class="descname">transform_spec</tt><big>(</big><em>stream_spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/rep_nuisance.html#RepresentationNuisance.transform_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.transform_spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the changed StreamSpec, or throws
+UnsupportedSpec if the spec is not supported.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.transform_value">
+<tt class="descname">transform_value</tt><big>(</big><em>values</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/rep_nuisance.html#RepresentationNuisance.transform_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.transform_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the transformed value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="bootstrapping_olympics.interfaces.rep_nuisance.NuisanceNotInvertible">
+<em class="property">exception </em><tt class="descclassname">bootstrapping_olympics.interfaces.rep_nuisance.</tt><tt class="descname">NuisanceNotInvertible</tt><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/rep_nuisance.html#NuisanceNotInvertible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.rep_nuisance.NuisanceNotInvertible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.ValueError</span></tt></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.interfaces.robot">
+<span id="robot-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">robot</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.interfaces.robot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.interfaces.robot.EpisodeDesc">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.interfaces.robot.</tt><tt class="descname">EpisodeDesc</tt><big>(</big><em>id_episode</em>, <em>id_environment</em>, <em>extra=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/robot.html#EpisodeDesc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.robot.EpisodeDesc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure that must be returned by new_episode().</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="bootstrapping_olympics.interfaces.robot.RobotObservations">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.interfaces.robot.</tt><tt class="descname">RobotObservations</tt><big>(</big><em>timestamp</em>, <em>observations</em>, <em>commands</em>, <em>commands_source</em>, <em>episode_end</em>, <em>robot_pose</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/robot.html#RobotObservations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.robot.RobotObservations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure that must be returned by get_observations().</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="bootstrapping_olympics.interfaces.robot.RobotInterface">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.interfaces.robot.</tt><tt class="descname">RobotInterface</tt><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/robot.html#RobotInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.robot.RobotInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This is the basic class for robot simulators.</p>
+<p>get_spec()</p>
+<p>new_episode() must be called before get_observations(</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.robot.RobotInterface.get_observations">
+<tt class="descname">get_observations</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/robot.html#RobotInterface.get_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.robot.RobotInterface.get_observations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get observations. Must return an instance of RobotObservations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">RobotObservations</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.robot.RobotInterface.get_spec">
+<tt class="descname">get_spec</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/robot.html#RobotInterface.get_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.robot.RobotInterface.get_spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the sensorimotor spec for this robot
+(a BootSpec object).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">BootSpec</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.robot.RobotInterface.get_state">
+<tt class="descname">get_state</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/robot.html#RobotInterface.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.robot.RobotInterface.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return the state so that it can be saved. </dt>
+<dd>This should be either a dictionary with YAML-serializable entries,
+or None.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">None|dict</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.robot.RobotInterface.new_episode">
+<tt class="descname">new_episode</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/robot.html#RobotInterface.new_episode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.robot.RobotInterface.new_episode" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Skips to the next episode. </dt>
+<dd><p class="first">In real robots, the platform might return to start position.</p>
+<p>Guaranteed to be called at least once before get_observations().</p>
+<p class="last">Should return an instance of EpisodeDesc.</p>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">EpisodeDesc</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.robot.RobotInterface.set_commands">
+<tt class="descname">set_commands</tt><big>(</big><em>commands</em>, <em>commands_source</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/robot.html#RobotInterface.set_commands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.robot.RobotInterface.set_commands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send the given commands.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>commands</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </li>
+<li><strong>commands_source</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.robot.RobotInterface.set_state">
+<tt class="descname">set_state</tt><big>(</big><em>state</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/robot.html#RobotInterface.set_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.robot.RobotInterface.set_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the given state (obtained by &#8216;get_state&#8217;).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<tt class="docutils literal"><span class="pre">dict</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.interfaces.stream_spec">
+<span id="stream-spec-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">stream_spec</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.interfaces.stream_spec" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.BootInvalidValue">
+<em class="property">exception </em><tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">BootInvalidValue</tt><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#BootInvalidValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.BootInvalidValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.ValueError</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">StreamSpec</tt><big>(</big><em>id_stream</em>, <em>streamels</em>, <em>extra</em>, <em>filtered=None</em>, <em>desc=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="staticmethod">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.check_same_spec">
+<em class="property">static </em><tt class="descname">check_same_spec</tt><big>(</big><em>spec1</em>, <em>spec2</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.check_same_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.check_same_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.check_valid_value">
+<tt class="descname">check_valid_value</tt><big>(</big><em>x</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.check_valid_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.check_valid_value" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Checks if the value x is valid according to this spec</dt>
+<dd>and raises BootInvalidValue (derived from ValueError) if it is not.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.from_yaml">
+<em class="property">static </em><tt class="descname">from_yaml</tt><big>(</big><em>spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.from_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.from_yaml" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>spec</strong> (<tt class="docutils literal"><span class="pre">dict</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_default_value">
+<tt class="descname">get_default_value</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.get_default_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_default_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a &#8220;default value&#8221; for this stream.</p>
+<blockquote>
+<div><p>For commands streams, this has the semantics of being
+a &#8220;at rest&#8221; value.</p>
+<p>For observations, this is an &#8220;example&#8221;
+value, used for visualization.</p>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_id_stream">
+<tt class="descname">get_id_stream</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.get_id_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_id_stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_random_value">
+<tt class="descname">get_random_value</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.get_random_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_random_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a &#8220;random value&#8221; for this stream.</p>
+<blockquote>
+<div>This is distributed uniformly in the lower/upper bound range. 
+Note this is not intrinsic and is representation dependent.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_streamels">
+<tt class="descname">get_streamels</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.get_streamels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_streamels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.join">
+<em class="property">static </em><tt class="descname">join</tt><big>(</big><em>obs1</em>, <em>obs2</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.join"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the spec obtained by concatenating two of them.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape">
+<tt class="descname">shape</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the shape of the stream, as a sequence of positive 
+integers (like Numpy&#8217;s shape).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">seq[&gt;0](int,&gt;0)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size">
+<tt class="descname">size</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of total elements in the stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">int,&gt;0</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.to_yaml">
+<tt class="descname">to_yaml</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.to_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.to_yaml" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">dict</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.all_same_spec">
+<tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">all_same_spec</tt><big>(</big><em>streamels</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#all_same_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.all_same_spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that all streamels have the same attributes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.check_valid_bounds">
+<tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">check_valid_bounds</tt><big>(</big><em>bounds</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#check_valid_bounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.check_valid_bounds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.expect_one_of">
+<tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">expect_one_of</tt><big>(</big><em>x</em>, <em>options</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#expect_one_of"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.expect_one_of" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.expect_size">
+<tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">expect_size</tt><big>(</big><em>x</em>, <em>l</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#expect_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.expect_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.get_streamel_range">
+<tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">get_streamel_range</tt><big>(</big><em>streamel</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#get_streamel_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.get_streamel_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.only_one_value">
+<tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">only_one_value</tt><big>(</big><em>array</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#only_one_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.only_one_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the array has only one value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.set_streamel_range">
+<tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">set_streamel_range</tt><big>(</big><em>streamel</em>, <em>bounds</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#set_streamel_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.set_streamel_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.streamels_all_of_kind">
+<tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">streamels_all_of_kind</tt><big>(</big><em>streamels</em>, <em>kind</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#streamels_all_of_kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.streamels_all_of_kind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if all streamels are of the same given kind (&#8216;C&#8217;,&#8217;D&#8217;)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.streamels_from_spec">
+<tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">streamels_from_spec</tt><big>(</big><em>shape</em>, <em>format</em>, <em>range</em>, <em>default</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#streamels_from_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.streamels_from_spec" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>range</strong> (<tt class="docutils literal"><span class="pre">list</span></tt>) &#8211; </li>
+<li><strong>shape</strong> (<tt class="docutils literal"><span class="pre">list[int]</span></tt>) &#8211; </li>
+<li><strong>format</strong> (<tt class="docutils literal"><span class="pre">list|str</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">array</span></tt></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.interfaces.streamels">
+<span id="streamels-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">streamels</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.interfaces.streamels" title="Permalink to this headline">¶</a></h2>
+<p>A streamel (stream element) describes the <em>format</em> of the data stream.
+It specifies what are the valid values that the data can take.</p>
+<dl class="class">
+<dt id="bootstrapping_olympics.interfaces.streamels.ValueFormats">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.interfaces.streamels.</tt><tt class="descname">ValueFormats</tt><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/streamels.html#ValueFormats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.streamels.ValueFormats" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="bootstrapping_olympics.interfaces.streamels.ValueFormats.Continuous">
+<tt class="descname">Continuous</tt><em class="property"> = 'C'</em><a class="headerlink" href="#bootstrapping_olympics.interfaces.streamels.ValueFormats.Continuous" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="bootstrapping_olympics.interfaces.streamels.ValueFormats.Discrete">
+<tt class="descname">Discrete</tt><em class="property"> = 'D'</em><a class="headerlink" href="#bootstrapping_olympics.interfaces.streamels.ValueFormats.Discrete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="bootstrapping_olympics.interfaces.streamels.ValueFormats.Invalid">
+<tt class="descname">Invalid</tt><em class="property"> = 'I'</em><a class="headerlink" href="#bootstrapping_olympics.interfaces.streamels.ValueFormats.Invalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="bootstrapping_olympics.interfaces.streamels.ValueFormats.valid">
+<tt class="descname">valid</tt><em class="property"> = ['C', 'D', 'I']</em><a class="headerlink" href="#bootstrapping_olympics.interfaces.streamels.ValueFormats.valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.streamels.new_streamels">
+<tt class="descclassname">bootstrapping_olympics.interfaces.streamels.</tt><tt class="descname">new_streamels</tt><big>(</big><em>shape</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/streamels.html#new_streamels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.streamels.new_streamels" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Creates a new array of streamels, initialized with all invalid</dt>
+<dd>values. This is useful to check if we forgot to initialize 
+some fields.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>shape</strong> (<tt class="docutils literal"><span class="pre">int,&gt;0|seq[&gt;0](int,&gt;0)</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.streamels.streamel_array">
+<tt class="descclassname">bootstrapping_olympics.interfaces.streamels.</tt><tt class="descname">streamel_array</tt><big>(</big><em>x</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/streamels.html#streamel_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.streamels.streamel_array" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Checks that the argument is a non-empty array of streamels. </dt>
+<dd>This checks only the data type, not the validity of the data.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.streamels.check_valid_streamels">
+<tt class="descclassname">bootstrapping_olympics.interfaces.streamels.</tt><tt class="descname">check_valid_streamels</tt><big>(</big><em>streamels</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/streamels.html#check_valid_streamels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.streamels.check_valid_streamels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises a ValueError if the data in the structure is not coherent.</p>
+<blockquote>
+<div>This checks, for example, that the default value given respects
+the declared upper/lower bounds.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>streamels</strong> (<tt class="docutils literal"><span class="pre">streamel_array</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">interfaces Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">interfaces</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.interfaces.agent"><tt class="docutils literal"><span class="pre">agent</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.interfaces.boot_spec"><tt class="docutils literal"><span class="pre">boot_spec</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.interfaces.observations"><tt class="docutils literal"><span class="pre">observations</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.interfaces.publisher"><tt class="docutils literal"><span class="pre">publisher</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.interfaces.rep_nuisance"><tt class="docutils literal"><span class="pre">rep_nuisance</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.interfaces.robot"><tt class="docutils literal"><span class="pre">robot</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.interfaces.stream_spec"><tt class="docutils literal"><span class="pre">stream_spec</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.interfaces.streamels"><tt class="docutils literal"><span class="pre">streamels</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/api/bootstrapping_olympics.interfaces.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

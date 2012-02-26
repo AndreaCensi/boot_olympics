@@ -1,0 +1,227 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.manager.meat.servo.report &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics.programs.manager.meat.servo" href="../servo.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../servo.html" accesskey="U">bootstrapping_olympics.programs.manager.meat.servo</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.manager.meat.servo.report</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">np</span><span class="p">,</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">reprep.plot_utils.styles</span> <span class="kn">import</span> <span class="p">(</span><span class="n">style_ieee_fullcol_xy</span><span class="p">,</span>
+    <span class="n">style_ieee_halfcol_xy</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="servo_stats_report"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servo.html#bootstrapping_olympics.programs.manager.meat.servo.report.servo_stats_report">[docs]</a><span class="k">def</span> <span class="nf">servo_stats_report</span><span class="p">(</span><span class="n">data_central</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">summaries</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">reprep</span> <span class="kn">import</span> <span class="n">Report</span>
+    <span class="kn">from</span> <span class="nn">reprep.plot_utils</span> <span class="kn">import</span> <span class="n">x_axis_balanced</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">summaries</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Empty summaries&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">s</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">summaries</span><span class="p">])</span>
+
+    <span class="n">initial_distance</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="s">&#39;initial_distance&#39;</span><span class="p">)</span>
+    <span class="n">initial_rotation</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="s">&#39;initial_rotation&#39;</span><span class="p">)</span>
+
+    <span class="n">dist_xy_converged</span> <span class="o">=</span> <span class="mf">0.25</span>
+    <span class="n">dist_th_converged</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">summaries</span><span class="p">:</span>
+        <span class="n">dist_xy</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">]</span>
+        <span class="n">dist_th</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th&#39;</span><span class="p">]</span>
+        <span class="c">#converged = (dist_xy[0] &gt; dist_xy[-1]) and (dist_th[0] &gt; dist_th[-1])</span>
+
+        <span class="n">converged</span> <span class="o">=</span> <span class="p">((</span><span class="n">dist_xy</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">dist_xy_converged</span><span class="p">)</span> <span class="ow">and</span>
+                     <span class="p">(</span><span class="n">dist_th</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">dist_th_converged</span><span class="p">))</span>
+        <span class="n">s</span><span class="p">[</span><span class="s">&#39;converged&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">converged</span>
+        <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th_deg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th&#39;</span><span class="p">])</span>
+        <span class="n">s</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;b&#39;</span> <span class="k">if</span> <span class="n">converged</span> <span class="k">else</span> <span class="s">&#39;r&#39;</span>
+
+    <span class="n">basename</span> <span class="o">=</span> <span class="s">&#39;servo_analysis-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">Report</span><span class="p">(</span><span class="n">basename</span><span class="p">)</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">f</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s">&#39;image_L2_error&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pylab</span><span class="p">:</span>
+        <span class="n">style_ieee_fullcol_xy</span><span class="p">(</span><span class="n">pylab</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">summaries</span><span class="p">:</span>
+            <span class="n">errors</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;errors&#39;</span><span class="p">]</span>
+            <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">])</span>
+
+    <span class="k">with</span> <span class="n">f</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s">&#39;dist_xy&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pylab</span><span class="p">:</span>
+        <span class="n">style_ieee_fullcol_xy</span><span class="p">(</span><span class="n">pylab</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">summaries</span><span class="p">:</span>
+            <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">f</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s">&#39;dist_th&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pylab</span><span class="p">:</span>
+        <span class="n">style_ieee_fullcol_xy</span><span class="p">(</span><span class="n">pylab</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">summaries</span><span class="p">:</span>
+            <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th&#39;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">f</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s">&#39;dist_xy_th&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pl</span><span class="p">:</span>
+        <span class="n">style_ieee_fullcol_xy</span><span class="p">(</span><span class="n">pylab</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">summaries</span><span class="p">:</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th_deg&#39;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;dist x-y&#39;</span><span class="p">)</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;dist th (deg)&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">f</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s">&#39;dist_xy_th_log&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pl</span><span class="p">:</span>
+        <span class="n">style_ieee_fullcol_xy</span><span class="p">(</span><span class="n">pylab</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">summaries</span><span class="p">:</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">semilogx</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">],</span>
+                        <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th_deg&#39;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;.&#39;</span><span class="p">)</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;dist x-y&#39;</span><span class="p">)</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;dist th (deg)&#39;</span><span class="p">)</span>
+
+    <span class="n">mark_start</span> <span class="o">=</span> <span class="s">&#39;s&#39;</span>
+    <span class="n">mark_end</span> <span class="o">=</span> <span class="s">&#39;o&#39;</span>
+
+    <span class="k">with</span> <span class="n">f</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s">&#39;dist_xy_th_start&#39;</span><span class="p">,</span>
+                <span class="n">caption</span><span class="o">=</span><span class="s">&quot;Initial error (blue: converged)&quot;</span>
+                <span class="p">)</span> <span class="k">as</span> <span class="n">pl</span><span class="p">:</span>
+        <span class="n">style_ieee_fullcol_xy</span><span class="p">(</span><span class="n">pylab</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">summaries</span><span class="p">:</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+                     <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th_deg&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                       <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th_deg&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th_deg&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">s</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mark_start</span><span class="p">)</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th_deg&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">s</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mark_end</span><span class="p">)</span>
+
+        <span class="n">pl</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;dist x-y&#39;</span><span class="p">)</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;dist th (deg)&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">f</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s">&#39;dist_xy_th_start2&#39;</span><span class="p">,</span>
+                <span class="n">caption</span><span class="o">=</span><span class="s">&quot;Trajectories. If converged, plot square at beginning&quot;</span>
+                <span class="s">&quot; and cross at end. If not converged, plot trajectory (red).&quot;</span>
+                <span class="p">)</span> <span class="k">as</span> <span class="n">pl</span><span class="p">:</span>
+        <span class="n">style_ieee_fullcol_xy</span><span class="p">(</span><span class="n">pylab</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">summaries</span><span class="p">:</span>
+            <span class="k">if</span>  <span class="n">s</span><span class="p">[</span><span class="s">&#39;converged&#39;</span><span class="p">]:</span> <span class="k">continue</span>
+
+            <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+                     <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th_deg&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th_deg&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="s">&#39;r-&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">summaries</span><span class="p">:</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th_deg&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mark_start</span><span class="p">)</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_xy&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;dist_th_deg&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mark_end</span><span class="p">)</span>
+
+        <span class="n">pl</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;dist x-y&#39;</span><span class="p">)</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;dist th (deg)&#39;</span><span class="p">)</span>
+
+
+    <span class="k">with</span> <span class="n">f</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s">&#39;initial_rotation&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pylab</span><span class="p">:</span>
+        <span class="n">style_ieee_halfcol_xy</span><span class="p">(</span><span class="n">pylab</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">initial_rotation</span><span class="p">))</span>
+        <span class="n">x_axis_balanced</span><span class="p">(</span><span class="n">pylab</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Initial rotation (deg)&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">f</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s">&#39;initial_distance&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pylab</span><span class="p">:</span>
+        <span class="n">style_ieee_halfcol_xy</span><span class="p">(</span><span class="n">pylab</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">initial_distance</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Initial distance (m)&#39;</span><span class="p">)</span>
+
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">get_dir_structure</span><span class="p">()</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">get_report_filename</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                                       <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                       <span class="n">id_state</span><span class="o">=</span><span class="s">&#39;servo_stats&#39;</span><span class="p">,</span>
+                                       <span class="n">phase</span><span class="o">=</span><span class="s">&#39;servo_stats&#39;</span><span class="p">)</span>
+    <span class="n">res_rd</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">get_report_res_dir</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                                       <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                       <span class="n">id_state</span><span class="o">=</span><span class="s">&#39;servo_stats&#39;</span><span class="p">,</span>
+                                       <span class="n">phase</span><span class="o">=</span><span class="s">&#39;servo_stats&#39;</span><span class="p">)</span>
+<span class="c">#    filename = os.path.join(report_dir, &#39;servo_stats_report.html&#39;)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Writing output to </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">resources_dir</span><span class="o">=</span><span class="n">res_rd</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../servo.html" >bootstrapping_olympics.programs.manager.meat.servo</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

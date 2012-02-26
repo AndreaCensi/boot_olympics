@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.library.nuisances.bits.encrypt</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.library-module.html">Package&nbsp;library</a> ::
+        <a href="bootstrapping_olympics.library.nuisances-module.html">Package&nbsp;nuisances</a> ::
+        <a href="bootstrapping_olympics.library.nuisances.bits-module.html">Package&nbsp;bits</a> ::
+        Module&nbsp;encrypt
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.library.nuisances.bits.encrypt-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="bootstrapping_olympics.library.nuisances.bits.encrypt-module.html">Module bootstrapping_olympics.library.nuisances.bits.encrypt</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt> <tt class="py-keyword">import</tt> <tt class="py-op">(</tt><tt id="link-0" class="py-name" targets="Function bootstrapping_olympics.library.nuisances.bits.encrypt_utils.bits_encrypt()=bootstrapping_olympics.library.nuisances.bits.encrypt_utils-module.html#bits_encrypt"><a title="bootstrapping_olympics.library.nuisances.bits.encrypt_utils.bits_encrypt" class="py-name" href="#" onclick="return doclink('link-0', 'bits_encrypt', 'link-0');">bits_encrypt</a></tt><tt class="py-op">,</tt> <tt id="link-1" class="py-name" targets="Function bootstrapping_olympics.library.nuisances.bits.encrypt_utils.bits_decrypt()=bootstrapping_olympics.library.nuisances.bits.encrypt_utils-module.html#bits_decrypt"><a title="bootstrapping_olympics.library.nuisances.bits.encrypt_utils.bits_decrypt" class="py-name" href="#" onclick="return doclink('link-1', 'bits_decrypt', 'link-1');">bits_decrypt</a></tt><tt class="py-op">,</tt> <tt class="py-name">contract</tt><tt class="py-op">,</tt> <tt class="py-name">np</tt><tt class="py-op">,</tt> <tt id="link-2" class="py-name" targets="Function bootstrapping_olympics.library.nuisances.bits.bits_utils.nbytes_to_encrypt()=bootstrapping_olympics.library.nuisances.bits.bits_utils-module.html#nbytes_to_encrypt"><a title="bootstrapping_olympics.library.nuisances.bits.bits_utils.nbytes_to_encrypt" class="py-name" href="#" onclick="return doclink('link-2', 'nbytes_to_encrypt', 'link-2');">nbytes_to_encrypt</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line">    <tt id="link-3" class="py-name" targets="Variable bootstrapping_olympics.library.nuisances.NBITS_IN_BYTE=bootstrapping_olympics.library.nuisances-module.html#NBITS_IN_BYTE,Variable bootstrapping_olympics.library.nuisances.bits.NBITS_IN_BYTE=bootstrapping_olympics.library.nuisances.bits-module.html#NBITS_IN_BYTE,Variable bootstrapping_olympics.library.nuisances.bits.bits_utils.NBITS_IN_BYTE=bootstrapping_olympics.library.nuisances.bits.bits_utils-module.html#NBITS_IN_BYTE,Variable bootstrapping_olympics.library.nuisances.bits.encrypt.NBITS_IN_BYTE=bootstrapping_olympics.library.nuisances.bits.encrypt-module.html#NBITS_IN_BYTE,Variable bootstrapping_olympics.library.nuisances.bits.encrypt_utils.NBITS_IN_BYTE=bootstrapping_olympics.library.nuisances.bits.encrypt_utils-module.html#NBITS_IN_BYTE"><a title="bootstrapping_olympics.library.nuisances.NBITS_IN_BYTE
+bootstrapping_olympics.library.nuisances.bits.NBITS_IN_BYTE
+bootstrapping_olympics.library.nuisances.bits.bits_utils.NBITS_IN_BYTE
+bootstrapping_olympics.library.nuisances.bits.encrypt.NBITS_IN_BYTE
+bootstrapping_olympics.library.nuisances.bits.encrypt_utils.NBITS_IN_BYTE" class="py-name" href="#" onclick="return doclink('link-3', 'NBITS_IN_BYTE', 'link-3');">NBITS_IN_BYTE</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name" targets="Package bootstrapping_olympics=bootstrapping_olympics-module.html"><a title="bootstrapping_olympics" class="py-name" href="#" onclick="return doclink('link-4', 'bootstrapping_olympics', 'link-4');">bootstrapping_olympics</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">(</tt><tt id="link-5" class="py-name" targets="Class bootstrapping_olympics.interfaces.stream_spec.StreamSpec=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec" class="py-name" href="#" onclick="return doclink('link-5', 'StreamSpec', 'link-5');">StreamSpec</a></tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name" targets="Class bootstrapping_olympics.interfaces.agent.UnsupportedSpec=bootstrapping_olympics.interfaces.agent.UnsupportedSpec-class.html"><a title="bootstrapping_olympics.interfaces.agent.UnsupportedSpec" class="py-name" href="#" onclick="return doclink('link-6', 'UnsupportedSpec', 'link-6');">UnsupportedSpec</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line">    <tt id="link-7" class="py-name" targets="Function bootstrapping_olympics.interfaces.stream_spec.streamels_all_of_kind()=bootstrapping_olympics.interfaces.stream_spec-module.html#streamels_all_of_kind"><a title="bootstrapping_olympics.interfaces.stream_spec.streamels_all_of_kind" class="py-name" href="#" onclick="return doclink('link-7', 'streamels_all_of_kind', 'link-7');">streamels_all_of_kind</a></tt><tt class="py-op">,</tt> <tt id="link-8" class="py-name" targets="Class bootstrapping_olympics.interfaces.streamels.ValueFormats=bootstrapping_olympics.interfaces.streamels.ValueFormats-class.html"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats" class="py-name" href="#" onclick="return doclink('link-8', 'ValueFormats', 'link-8');">ValueFormats</a></tt><tt class="py-op">,</tt> <tt id="link-9" class="py-name" targets="Variable bootstrapping_olympics.interfaces.stream_spec.streamel_dtype=bootstrapping_olympics.interfaces.stream_spec-module.html#streamel_dtype,Variable bootstrapping_olympics.interfaces.streamel_dtype=bootstrapping_olympics.interfaces-module.html#streamel_dtype,Variable bootstrapping_olympics.interfaces.streamels.streamel_dtype=bootstrapping_olympics.interfaces.streamels-module.html#streamel_dtype,Variable bootstrapping_olympics.library.nuisances.bits.encrypt.streamel_dtype=bootstrapping_olympics.library.nuisances.bits.encrypt-module.html#streamel_dtype,Variable bootstrapping_olympics.library.nuisances.bits.int2bits.streamel_dtype=bootstrapping_olympics.library.nuisances.bits.int2bits-module.html#streamel_dtype,Variable bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.streamel_dtype=bootstrapping_olympics.library.nuisances.misc_linear.generic_linear-module.html#streamel_dtype,Variable bootstrapping_olympics.library.nuisances.normalize_min.streamel_dtype=bootstrapping_olympics.library.nuisances.normalize_min-module.html#streamel_dtype,Variable bootstrapping_olympics.library.nuisances.normalize_minmax.streamel_dtype=bootstrapping_olympics.library.nuisances.normalize_minmax-module.html#streamel_dtype,Variable bootstrapping_olympics.library.nuisances.popcode_nuisance.streamel_dtype=bootstrapping_olympics.library.nuisances.popcode_nuisance-module.html#streamel_dtype,Variable bootstrapping_olympics.library.nuisances.streamel_dtype=bootstrapping_olympics.library.nuisances-module.html#streamel_dtype,Variable bootstrapping_olympics.streamel_dtype=bootstrapping_olympics-module.html#streamel_dtype"><a title="bootstrapping_olympics.interfaces.stream_spec.streamel_dtype
+bootstrapping_olympics.interfaces.streamel_dtype
+bootstrapping_olympics.interfaces.streamels.streamel_dtype
+bootstrapping_olympics.library.nuisances.bits.encrypt.streamel_dtype
+bootstrapping_olympics.library.nuisances.bits.int2bits.streamel_dtype
+bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.streamel_dtype
+bootstrapping_olympics.library.nuisances.normalize_min.streamel_dtype
+bootstrapping_olympics.library.nuisances.normalize_minmax.streamel_dtype
+bootstrapping_olympics.library.nuisances.popcode_nuisance.streamel_dtype
+bootstrapping_olympics.library.nuisances.streamel_dtype
+bootstrapping_olympics.streamel_dtype" class="py-name" href="#" onclick="return doclink('link-9', 'streamel_dtype', 'link-9');">streamel_dtype</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line">    <tt id="link-10" class="py-name" targets="Class bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance=bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html"><a title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" class="py-name" href="#" onclick="return doclink('link-10', 'RepresentationNuisance', 'link-10');">RepresentationNuisance</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'Encrypt'</tt><tt class="py-op">,</tt> <tt class="py-string">'Decrypt'</tt><tt class="py-op">]</tt> </tt>
+<a name="check_1d_bit_sequence"></a><div id="check_1d_bit_sequence-def"><a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt> <a class="py-toggle" href="#" id="check_1d_bit_sequence-toggle" onclick="return toggle('check_1d_bit_sequence');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.library.nuisances.bits.encrypt-module.html#check_1d_bit_sequence">check_1d_bit_sequence</a><tt class="py-op">(</tt><tt class="py-param">streamels</tt><tt class="py-op">,</tt> <tt class="py-param">who</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="check_1d_bit_sequence-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="check_1d_bit_sequence-expanded"><a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line">    <tt class="py-docstring">''' Checks that it is a 1D sequence of bits (integers in {0,1}). '''</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-11" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.streamels_all_of_kind" class="py-name" href="#" onclick="return doclink('link-11', 'streamels_all_of_kind', 'link-7');">streamels_all_of_kind</a></tt><tt class="py-op">(</tt><tt id="link-12" class="py-name" targets="Module bootstrapping_olympics.interfaces.streamels=bootstrapping_olympics.interfaces.streamels-module.html"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-12', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">,</tt> <tt id="link-13" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats" class="py-name" href="#" onclick="return doclink('link-13', 'ValueFormats', 'link-8');">ValueFormats</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Variable bootstrapping_olympics.interfaces.streamels.ValueFormats.Discrete=bootstrapping_olympics.interfaces.streamels.ValueFormats-class.html#Discrete"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Discrete" class="py-name" href="#" onclick="return doclink('link-14', 'Discrete', 'link-14');">Discrete</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line">        <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-string">'%s only supports discrete streams.'</tt> <tt class="py-op">%</tt> <tt class="py-name">who</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-15" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.UnsupportedSpec" class="py-name" href="#" onclick="return doclink('link-15', 'UnsupportedSpec', 'link-6');">UnsupportedSpec</a></tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-16" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-16', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">.</tt><tt class="py-name">ndim</tt> <tt class="py-op">!=</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">        <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-string">'%s only works with 1D streams.'</tt> <tt class="py-op">%</tt> <tt class="py-name">who</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-17" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.UnsupportedSpec" class="py-name" href="#" onclick="return doclink('link-17', 'UnsupportedSpec', 'link-6');">UnsupportedSpec</a></tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">any</tt><tt class="py-op">(</tt><tt id="link-18" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-18', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt> <tt class="py-op">!=</tt> <tt class="py-number">0</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">         <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">any</tt><tt class="py-op">(</tt><tt id="link-19" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-19', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt> <tt class="py-op">!=</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">        <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-string">'%s expects only bits as input.'</tt> <tt class="py-op">%</tt> <tt class="py-name">who</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-20" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.UnsupportedSpec" class="py-name" href="#" onclick="return doclink('link-20', 'UnsupportedSpec', 'link-6');">UnsupportedSpec</a></tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="Encrypt"></a><div id="Encrypt-def"><a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt> <a class="py-toggle" href="#" id="Encrypt-toggle" onclick="return toggle('Encrypt');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt-class.html">Encrypt</a><tt class="py-op">(</tt><tt class="py-base-class">RepresentationNuisance</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Encrypt-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Encrypt-expanded"><a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">    <tt class="py-docstring">""" </tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">        This nuisance encrypts the bits.</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-docstring">        The output is padded to 8 bits.</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="Encrypt.__init__"></a><div id="Encrypt.__init__-def"><a name="L33"></a><tt class="py-lineno"> 33</tt> <a class="py-toggle" href="#" id="Encrypt.__init__-toggle" onclick="return toggle('Encrypt.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">password</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Encrypt.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Encrypt.__init__-expanded"><a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">password</tt> <tt class="py-op">=</tt> <tt class="py-name">password</tt> </tt>
+</div><a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">contract</tt><tt class="py-op">(</tt><tt id="link-21" class="py-name" targets="Module bootstrapping_olympics.interfaces.stream_spec=bootstrapping_olympics.interfaces.stream_spec-module.html"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-21', 'stream_spec', 'link-21');">stream_spec</a></tt><tt class="py-op">=</tt><tt id="link-22" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec" class="py-name" href="#" onclick="return doclink('link-22', 'StreamSpec', 'link-5');">StreamSpec</a></tt><tt class="py-op">)</tt> </tt>
+<a name="Encrypt.transform_spec"></a><div id="Encrypt.transform_spec-def"><a name="L37"></a><tt class="py-lineno"> 37</tt> <a class="py-toggle" href="#" id="Encrypt.transform_spec-toggle" onclick="return toggle('Encrypt.transform_spec');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt-class.html#transform_spec">transform_spec</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">stream_spec</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Encrypt.transform_spec-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Encrypt.transform_spec-expanded"><a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">        <tt id="link-23" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-23', 'streamels', 'link-12');">streamels</a></tt> <tt class="py-op">=</tt> <tt id="link-24" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-24', 'stream_spec', 'link-21');">stream_spec</a></tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Method bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_streamels()=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#get_streamels"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_streamels" class="py-name" href="#" onclick="return doclink('link-25', 'get_streamels', 'link-25');">get_streamels</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt id="link-26" class="py-name" targets="Function bootstrapping_olympics.library.nuisances.bits.encrypt.check_1d_bit_sequence()=bootstrapping_olympics.library.nuisances.bits.encrypt-module.html#check_1d_bit_sequence"><a title="bootstrapping_olympics.library.nuisances.bits.encrypt.check_1d_bit_sequence" class="py-name" href="#" onclick="return doclink('link-26', 'check_1d_bit_sequence', 'link-26');">check_1d_bit_sequence</a></tt><tt class="py-op">(</tt><tt id="link-27" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-27', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Encrypt'</tt><tt class="py-op">)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nbits</tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-28', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size()=bootstrapping_olympics.interfaces.stream_spec.StreamSpec-class.html#size"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size" class="py-name" href="#" onclick="return doclink('link-29', 'size', 'link-29');">size</a></tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-name">bytes_required</tt> <tt class="py-op">=</tt> <tt id="link-30" class="py-name"><a title="bootstrapping_olympics.library.nuisances.bits.bits_utils.nbytes_to_encrypt" class="py-name" href="#" onclick="return doclink('link-30', 'nbytes_to_encrypt', 'link-2');">nbytes_to_encrypt</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nbits</tt><tt class="py-op">)</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-name">bits_required</tt> <tt class="py-op">=</tt> <tt class="py-name">bytes_required</tt> <tt class="py-op">*</tt> <tt id="link-31" class="py-name"><a title="bootstrapping_olympics.library.nuisances.NBITS_IN_BYTE
+bootstrapping_olympics.library.nuisances.bits.NBITS_IN_BYTE
+bootstrapping_olympics.library.nuisances.bits.bits_utils.NBITS_IN_BYTE
+bootstrapping_olympics.library.nuisances.bits.encrypt.NBITS_IN_BYTE
+bootstrapping_olympics.library.nuisances.bits.encrypt_utils.NBITS_IN_BYTE" class="py-name" href="#" onclick="return doclink('link-31', 'NBITS_IN_BYTE', 'link-3');">NBITS_IN_BYTE</a></tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">zeros</tt><tt class="py-op">(</tt><tt class="py-name">bits_required</tt><tt class="py-op">,</tt> <tt id="link-32" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.streamel_dtype
+bootstrapping_olympics.interfaces.streamel_dtype
+bootstrapping_olympics.interfaces.streamels.streamel_dtype
+bootstrapping_olympics.library.nuisances.bits.encrypt.streamel_dtype
+bootstrapping_olympics.library.nuisances.bits.int2bits.streamel_dtype
+bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.streamel_dtype
+bootstrapping_olympics.library.nuisances.normalize_min.streamel_dtype
+bootstrapping_olympics.library.nuisances.normalize_minmax.streamel_dtype
+bootstrapping_olympics.library.nuisances.popcode_nuisance.streamel_dtype
+bootstrapping_olympics.library.nuisances.streamel_dtype
+bootstrapping_olympics.streamel_dtype" class="py-name" href="#" onclick="return doclink('link-32', 'streamel_dtype', 'link-9');">streamel_dtype</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'kind'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-33" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats" class="py-name" href="#" onclick="return doclink('link-33', 'ValueFormats', 'link-8');">ValueFormats</a></tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Discrete" class="py-name" href="#" onclick="return doclink('link-34', 'Discrete', 'link-14');">Discrete</a></tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Method bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.transform_value()=bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt.transform_value()=bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt.transform_value()=bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_value()=bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_value()=bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.discretize.Discretize.transform_value()=bootstrapping_olympics.library.nuisances.discretize.Discretize-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.flatten.Flatten.transform_value()=bootstrapping_olympics.library.nuisances.flatten.Flatten-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.flatten.Reshape.transform_value()=bootstrapping_olympics.library.nuisances.flatten.Reshape-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.identity.Identity.transform_value()=bootstrapping_olympics.library.nuisances.identity.Identity-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.linear.GLNuisance.transform_value()=bootstrapping_olympics.library.nuisances.linear.GLNuisance-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.GenericLinear.transform_value()=bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.GenericLinear-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.normalize_min.NormalizeMin.transform_value()=bootstrapping_olympics.library.nuisances.normalize_min.NormalizeMin-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.normalize_min.NormalizeMinInverse.transform_value()=bootstrapping_olympics.library.nuisances.normalize_min.NormalizeMinInverse-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.normalize_minmax.NormalizeMinMax.transform_value()=bootstrapping_olympics.library.nuisances.normalize_minmax.NormalizeMinMax-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode.transform_value()=bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv.transform_value()=bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.random_permutation.RandomPermutation.transform_value()=bootstrapping_olympics.library.nuisances.random_permutation.RandomPermutation-class.html#transform_value,Method bootstrapping_olympics.library.nuisances.select.Select.transform_value()=bootstrapping_olympics.library.nuisances.select.Select-class.html#transform_value"><a title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.transform_value
+bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt.transform_value
+bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt.transform_value
+bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_value
+bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_value
+bootstrapping_olympics.library.nuisances.discretize.Discretize.transform_value
+bootstrapping_olympics.library.nuisances.flatten.Flatten.transform_value
+bootstrapping_olympics.library.nuisances.flatten.Reshape.transform_value
+bootstrapping_olympics.library.nuisances.identity.Identity.transform_value
+bootstrapping_olympics.library.nuisances.linear.GLNuisance.transform_value
+bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.GenericLinear.transform_value
+bootstrapping_olympics.library.nuisances.normalize_min.NormalizeMin.transform_value
+bootstrapping_olympics.library.nuisances.normalize_min.NormalizeMinInverse.transform_value
+bootstrapping_olympics.library.nuisances.normalize_minmax.NormalizeMinMax.transform_value
+bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode.transform_value
+bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv.transform_value
+bootstrapping_olympics.library.nuisances.random_permutation.RandomPermutation.transform_value
+bootstrapping_olympics.library.nuisances.select.Select.transform_value" class="py-name" href="#" onclick="return doclink('link-35', 'transform_value', 'link-35');">transform_value</a></tt><tt class="py-op">(</tt><tt id="link-36" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-36', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-name">stream_spec2</tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec" class="py-name" href="#" onclick="return doclink('link-37', 'StreamSpec', 'link-5');">StreamSpec</a></tt><tt class="py-op">(</tt><tt class="py-name">id_stream</tt><tt class="py-op">=</tt><tt id="link-38" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-38', 'stream_spec', 'link-21');">stream_spec</a></tt><tt class="py-op">.</tt><tt class="py-name">id_stream</tt><tt class="py-op">,</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">                                  <tt id="link-39" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-39', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">=</tt><tt class="py-name">streamels2</tt><tt class="py-op">,</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">                                  <tt class="py-name">extra</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">                                  <tt class="py-name">filtered</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">                                  <tt class="py-name">desc</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">stream_spec2</tt> </tt>
+</div><a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"> </tt>
+<a name="Encrypt.inverse"></a><div id="Encrypt.inverse-def"><a name="L59"></a><tt class="py-lineno"> 59</tt> <a class="py-toggle" href="#" id="Encrypt.inverse-toggle" onclick="return toggle('Encrypt.inverse');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt-class.html#inverse">inverse</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Encrypt.inverse-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Encrypt.inverse-expanded"><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-40" class="py-name" targets="Class bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt=bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt-class.html"><a title="bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt" class="py-name" href="#" onclick="return doclink('link-40', 'Decrypt', 'link-40');">Decrypt</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">password</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nbits</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">contract</tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">=</tt><tt class="py-string">'array[N](=0|=1)'</tt><tt class="py-op">,</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">              <tt class="py-name">returns</tt><tt class="py-op">=</tt><tt class="py-string">'array[X](=0|=1),X&gt;=N,X&lt;=N+64'</tt><tt class="py-op">)</tt> <tt class="py-comment"># XXX</tt> </tt>
+<a name="Encrypt.transform_value"></a><div id="Encrypt.transform_value-def"><a name="L64"></a><tt class="py-lineno"> 64</tt> <a class="py-toggle" href="#" id="Encrypt.transform_value-toggle" onclick="return toggle('Encrypt.transform_value');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt-class.html#transform_value">transform_value</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Encrypt.transform_value-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Encrypt.transform_value-expanded"><a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-41" class="py-name"><a title="bootstrapping_olympics.library.nuisances.bits.encrypt_utils.bits_encrypt" class="py-name" href="#" onclick="return doclink('link-41', 'bits_encrypt', 'link-0');">bits_encrypt</a></tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">password</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"> </tt>
+<a name="Decrypt"></a><div id="Decrypt-def"><a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt> <a class="py-toggle" href="#" id="Decrypt-toggle" onclick="return toggle('Decrypt');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt-class.html">Decrypt</a><tt class="py-op">(</tt><tt class="py-base-class">RepresentationNuisance</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Decrypt-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Decrypt-expanded"><a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"> </tt>
+<a name="Decrypt.__init__"></a><div id="Decrypt.__init__-def"><a name="L70"></a><tt class="py-lineno"> 70</tt> <a class="py-toggle" href="#" id="Decrypt.__init__-toggle" onclick="return toggle('Decrypt.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">password</tt><tt class="py-op">,</tt> <tt class="py-param">ngoodbits</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Decrypt.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Decrypt.__init__-expanded"><a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">password</tt> <tt class="py-op">=</tt> <tt class="py-name">password</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ngoodbits</tt> <tt class="py-op">=</tt> <tt class="py-name">ngoodbits</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-name">bytes_required</tt> <tt class="py-op">=</tt> <tt id="link-42" class="py-name"><a title="bootstrapping_olympics.library.nuisances.bits.bits_utils.nbytes_to_encrypt" class="py-name" href="#" onclick="return doclink('link-42', 'nbytes_to_encrypt', 'link-2');">nbytes_to_encrypt</a></tt><tt class="py-op">(</tt><tt class="py-name">ngoodbits</tt><tt class="py-op">)</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">expect_nbits</tt> <tt class="py-op">=</tt> <tt class="py-name">bytes_required</tt> <tt class="py-op">*</tt> <tt id="link-43" class="py-name"><a title="bootstrapping_olympics.library.nuisances.NBITS_IN_BYTE
+bootstrapping_olympics.library.nuisances.bits.NBITS_IN_BYTE
+bootstrapping_olympics.library.nuisances.bits.bits_utils.NBITS_IN_BYTE
+bootstrapping_olympics.library.nuisances.bits.encrypt.NBITS_IN_BYTE
+bootstrapping_olympics.library.nuisances.bits.encrypt_utils.NBITS_IN_BYTE" class="py-name" href="#" onclick="return doclink('link-43', 'NBITS_IN_BYTE', 'link-3');">NBITS_IN_BYTE</a></tt> </tt>
+</div><a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">contract</tt><tt class="py-op">(</tt><tt id="link-44" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-44', 'stream_spec', 'link-21');">stream_spec</a></tt><tt class="py-op">=</tt><tt id="link-45" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec" class="py-name" href="#" onclick="return doclink('link-45', 'StreamSpec', 'link-5');">StreamSpec</a></tt><tt class="py-op">)</tt> </tt>
+<a name="Decrypt.transform_spec"></a><div id="Decrypt.transform_spec-def"><a name="L77"></a><tt class="py-lineno"> 77</tt> <a class="py-toggle" href="#" id="Decrypt.transform_spec-toggle" onclick="return toggle('Decrypt.transform_spec');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt-class.html#transform_spec">transform_spec</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">stream_spec</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Decrypt.transform_spec-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Decrypt.transform_spec-expanded"><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt id="link-46" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-46', 'streamels', 'link-12');">streamels</a></tt> <tt class="py-op">=</tt> <tt id="link-47" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-47', 'stream_spec', 'link-21');">stream_spec</a></tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_streamels" class="py-name" href="#" onclick="return doclink('link-48', 'get_streamels', 'link-25');">get_streamels</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt id="link-49" class="py-name"><a title="bootstrapping_olympics.library.nuisances.bits.encrypt.check_1d_bit_sequence" class="py-name" href="#" onclick="return doclink('link-49', 'check_1d_bit_sequence', 'link-26');">check_1d_bit_sequence</a></tt><tt class="py-op">(</tt><tt id="link-50" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-50', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Decrypt'</tt><tt class="py-op">)</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-51" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-51', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size" class="py-name" href="#" onclick="return doclink('link-52', 'size', 'link-29');">size</a></tt> <tt class="py-op">!=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">expect_nbits</tt><tt class="py-op">:</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">            <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-string">'I expect %d bits to decrypt.'</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">expect_nbits</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt id="link-53" class="py-name"><a title="bootstrapping_olympics.interfaces.agent.UnsupportedSpec" class="py-name" href="#" onclick="return doclink('link-53', 'UnsupportedSpec', 'link-6');">UnsupportedSpec</a></tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">zeros</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ngoodbits</tt><tt class="py-op">,</tt> <tt id="link-54" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.streamel_dtype
+bootstrapping_olympics.interfaces.streamel_dtype
+bootstrapping_olympics.interfaces.streamels.streamel_dtype
+bootstrapping_olympics.library.nuisances.bits.encrypt.streamel_dtype
+bootstrapping_olympics.library.nuisances.bits.int2bits.streamel_dtype
+bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.streamel_dtype
+bootstrapping_olympics.library.nuisances.normalize_min.streamel_dtype
+bootstrapping_olympics.library.nuisances.normalize_minmax.streamel_dtype
+bootstrapping_olympics.library.nuisances.popcode_nuisance.streamel_dtype
+bootstrapping_olympics.library.nuisances.streamel_dtype
+bootstrapping_olympics.streamel_dtype" class="py-name" href="#" onclick="return doclink('link-54', 'streamel_dtype', 'link-9');">streamel_dtype</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'kind'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-55" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats" class="py-name" href="#" onclick="return doclink('link-55', 'ValueFormats', 'link-8');">ValueFormats</a></tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels.ValueFormats.Discrete" class="py-name" href="#" onclick="return doclink('link-56', 'Discrete', 'link-14');">Discrete</a></tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'lower'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'upper'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-name">streamels2</tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance.transform_value
+bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt.transform_value
+bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt.transform_value
+bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_value
+bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_value
+bootstrapping_olympics.library.nuisances.discretize.Discretize.transform_value
+bootstrapping_olympics.library.nuisances.flatten.Flatten.transform_value
+bootstrapping_olympics.library.nuisances.flatten.Reshape.transform_value
+bootstrapping_olympics.library.nuisances.identity.Identity.transform_value
+bootstrapping_olympics.library.nuisances.linear.GLNuisance.transform_value
+bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.GenericLinear.transform_value
+bootstrapping_olympics.library.nuisances.normalize_min.NormalizeMin.transform_value
+bootstrapping_olympics.library.nuisances.normalize_min.NormalizeMinInverse.transform_value
+bootstrapping_olympics.library.nuisances.normalize_minmax.NormalizeMinMax.transform_value
+bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode.transform_value
+bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv.transform_value
+bootstrapping_olympics.library.nuisances.random_permutation.RandomPermutation.transform_value
+bootstrapping_olympics.library.nuisances.select.Select.transform_value" class="py-name" href="#" onclick="return doclink('link-57', 'transform_value', 'link-35');">transform_value</a></tt><tt class="py-op">(</tt><tt id="link-58" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-58', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-name">stream_spec2</tt> <tt class="py-op">=</tt> <tt id="link-59" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec.StreamSpec" class="py-name" href="#" onclick="return doclink('link-59', 'StreamSpec', 'link-5');">StreamSpec</a></tt><tt class="py-op">(</tt><tt class="py-name">id_stream</tt><tt class="py-op">=</tt><tt id="link-60" class="py-name"><a title="bootstrapping_olympics.interfaces.stream_spec" class="py-name" href="#" onclick="return doclink('link-60', 'stream_spec', 'link-21');">stream_spec</a></tt><tt class="py-op">.</tt><tt class="py-name">id_stream</tt><tt class="py-op">,</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">                                  <tt id="link-61" class="py-name"><a title="bootstrapping_olympics.interfaces.streamels" class="py-name" href="#" onclick="return doclink('link-61', 'streamels', 'link-12');">streamels</a></tt><tt class="py-op">=</tt><tt class="py-name">streamels2</tt><tt class="py-op">,</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">                                  <tt class="py-name">extra</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">                                  <tt class="py-name">filtered</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">                                  <tt class="py-name">desc</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">stream_spec2</tt> </tt>
+</div><a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"> </tt>
+<a name="Decrypt.inverse"></a><div id="Decrypt.inverse-def"><a name="L99"></a><tt class="py-lineno"> 99</tt> <a class="py-toggle" href="#" id="Decrypt.inverse-toggle" onclick="return toggle('Decrypt.inverse');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt-class.html#inverse">inverse</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Decrypt.inverse-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Decrypt.inverse-expanded"><a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-62" class="py-name" targets="Class bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt=bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt-class.html"><a title="bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt" class="py-name" href="#" onclick="return doclink('link-62', 'Encrypt', 'link-62');">Encrypt</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">password</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">contract</tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">=</tt><tt class="py-string">'array[N](=0|=1)'</tt><tt class="py-op">,</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">              <tt class="py-name">returns</tt><tt class="py-op">=</tt><tt class="py-string">'array[X](=0|=1),X&lt;=N,X&gt;=N-64'</tt><tt class="py-op">)</tt> <tt class="py-comment"># XXX</tt> </tt>
+<a name="Decrypt.transform_value"></a><div id="Decrypt.transform_value-def"><a name="L104"></a><tt class="py-lineno">104</tt> <a class="py-toggle" href="#" id="Decrypt.transform_value-toggle" onclick="return toggle('Decrypt.transform_value');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt-class.html#transform_value">transform_value</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Decrypt.transform_value-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Decrypt.transform_value-expanded"><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-63" class="py-name"><a title="bootstrapping_olympics.library.nuisances.bits.encrypt_utils.bits_decrypt" class="py-name" href="#" onclick="return doclink('link-63', 'bits_decrypt', 'link-1');">bits_decrypt</a></tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">password</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ngoodbits</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sun Feb 26 11:44:35 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

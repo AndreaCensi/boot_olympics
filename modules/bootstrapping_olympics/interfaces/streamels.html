@@ -1,0 +1,192 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.interfaces.streamels &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.interfaces.streamels</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A streamel (stream element) describes the *format* of the data stream.</span>
+<span class="sd">    It specifies what are the valid values that the data can take. </span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">contract</span><span class="p">,</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">indent</span><span class="p">,</span> <span class="n">show_differences</span>
+<span class="kn">from</span> <span class="nn">contracts</span> <span class="kn">import</span> <span class="n">check</span><span class="p">,</span> <span class="n">new_contract</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;ValueFormats&#39;</span><span class="p">,</span> <span class="s">&#39;streamel_dtype&#39;</span><span class="p">,</span> <span class="s">&#39;new_streamels&#39;</span><span class="p">,</span>
+           <span class="s">&#39;streamel_array&#39;</span><span class="p">,</span> <span class="s">&#39;check_valid_streamels&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="ValueFormats"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.streamels.ValueFormats">[docs]</a><span class="k">class</span> <span class="nc">ValueFormats</span><span class="p">:</span>
+    <span class="n">Continuous</span> <span class="o">=</span> <span class="s">&#39;C&#39;</span> <span class="c"># range is [lower, upper]</span>
+    <span class="n">Discrete</span> <span class="o">=</span> <span class="s">&#39;D&#39;</span> <span class="c"># finite number of elements </span>
+    <span class="n">Invalid</span> <span class="o">=</span> <span class="s">&#39;I&#39;</span> <span class="c"># invalid/not used # TODO: tests for invalid values</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="p">[</span><span class="n">Continuous</span><span class="p">,</span> <span class="n">Discrete</span><span class="p">,</span> <span class="n">Invalid</span><span class="p">]</span>
+</div>
+<span class="n">streamel_dtype</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="p">(</span><span class="s">&#39;kind&#39;</span><span class="p">,</span> <span class="s">&#39;S1&#39;</span><span class="p">),</span> <span class="c"># &#39;I&#39;,&#39;D&#39;,&#39;C&#39;</span>
+      <span class="p">(</span><span class="s">&#39;lower&#39;</span><span class="p">,</span> <span class="s">&#39;float&#39;</span><span class="p">),</span> <span class="c"># This must be a finite value.</span>
+      <span class="p">(</span><span class="s">&#39;upper&#39;</span><span class="p">,</span> <span class="s">&#39;float&#39;</span><span class="p">),</span> <span class="c"># This must be a finite value.</span>
+      <span class="p">(</span><span class="s">&#39;default&#39;</span><span class="p">,</span> <span class="s">&#39;float&#39;</span><span class="p">)</span>  <span class="c"># This must respect the bounds.</span>
+<span class="p">]</span>
+
+
+<span class="nd">@contract</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="s">&#39;(int,&gt;0)|seq[&gt;0](int,&gt;0)&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="new_streamels"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.streamels.new_streamels">[docs]</a><span class="k">def</span> <span class="nf">new_streamels</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Creates a new array of streamels, initialized with all invalid</span>
+<span class="sd">        values. This is useful to check if we forgot to initialize </span>
+<span class="sd">        some fields.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">streamel_dtype</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;?&#39;</span>
+    <span class="n">x</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">x</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">x</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+</div>
+<span class="nd">@new_contract</span>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="streamel_array"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.streamels.streamel_array">[docs]</a><span class="k">def</span> <span class="nf">streamel_array</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Checks that the argument is a non-empty array of streamels. </span>
+<span class="sd">        This checks only the data type, not the validity of the data.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c"># TODO: register_dtype(x, contract)</span>
+    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">streamel_dtype</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Expected streamels array, obtained: </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">streamels</span><span class="o">=</span><span class="s">&#39;streamel_array&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="check_valid_streamels"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.streamels.check_valid_streamels">[docs]</a><span class="k">def</span> <span class="nf">check_valid_streamels</span><span class="p">(</span><span class="n">streamels</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Raises a ValueError if the data in the structure is not coherent.</span>
+<span class="sd">        </span>
+<span class="sd">        This checks, for example, that the default value given respects</span>
+<span class="sd">        the declared upper/lower bounds. </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c"># XXX: how about invalid values?</span>
+        <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">which</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">which</span><span class="p">):</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="n">show_differences</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span>
+                                         <span class="n">is_failure</span><span class="o">=</span><span class="p">(</span><span class="o">~</span><span class="n">which</span><span class="p">),</span> <span class="n">condition</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+        <span class="n">not_discrete</span> <span class="o">=</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">ValueFormats</span><span class="o">.</span><span class="n">Discrete</span>
+        <span class="n">invalid</span> <span class="o">=</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ValueFormats</span><span class="o">.</span><span class="n">Invalid</span>
+
+        <span class="n">check</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">invalid</span><span class="p">,</span>
+                            <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]),</span>
+              <span class="s">&#39;lower&lt;upper&#39;</span><span class="p">,</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">],</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">])</span>
+        <span class="n">check</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">invalid</span><span class="p">,</span>
+                            <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]),</span>
+              <span class="s">&#39;default&lt;=upper&#39;</span><span class="p">,</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">],</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">])</span>
+        <span class="n">check</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">invalid</span><span class="p">,</span>
+                            <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]),</span>
+              <span class="s">&#39;default&lt;=upper&#39;</span><span class="p">,</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">],</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">])</span>
+
+        <span class="n">check</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">not_discrete</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]),</span>
+                            <span class="s">&#39;default is discrete&#39;</span><span class="p">,</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]),</span>
+                            <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;This streamel specification is not coherent:</span><span class="se">\n</span><span class="s">&#39;</span>
+                <span class="s">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span>
+                <span class="s">&#39;streamels: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                <span class="p">(</span><span class="n">indent</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="s">&#39;&gt;&#39;</span><span class="p">),</span> <span class="n">streamels</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

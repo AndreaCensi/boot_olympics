@@ -1,0 +1,35 @@
+misc_linear Package
+===================
+
+:mod:`misc_linear` Package
+--------------------------
+
+.. automodule:: bootstrapping_olympics.library.nuisances.misc_linear
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`generic_linear` Module
+----------------------------
+
+.. automodule:: bootstrapping_olympics.library.nuisances.misc_linear.generic_linear
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`normalize` Module
+-----------------------
+
+.. automodule:: bootstrapping_olympics.library.nuisances.misc_linear.normalize
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`random_scaling` Module
+----------------------------
+
+.. automodule:: bootstrapping_olympics.library.nuisances.misc_linear.random_scaling
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

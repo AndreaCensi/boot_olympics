@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.manager.batch.batch_learn &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.manager.batch.batch_learn</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;Some functions to help in writing experiments scripts&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="p">(</span><span class="n">default_expl_videos</span><span class="p">,</span> <span class="n">default_servo_videos</span><span class="p">,</span>
+    <span class="n">default_servonav_videos</span><span class="p">,</span> <span class="n">contract</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="p">(</span><span class="n">create_video</span><span class="p">,</span> <span class="n">servo_stats_report</span><span class="p">,</span> <span class="n">servo_stats_summaries</span><span class="p">,</span>
+    <span class="n">simulate</span><span class="p">,</span> <span class="n">task_predict</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">learn_log</span><span class="p">,</span> <span class="n">publish_once</span><span class="p">,</span> <span class="n">np</span><span class="p">,</span> <span class="n">task_servo</span><span class="p">,</span>
+    <span class="n">task_servonav</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics</span> <span class="kn">import</span> <span class="n">UnsupportedSpec</span>
+<span class="kn">from</span> <span class="nn">conf_tools</span> <span class="kn">import</span> <span class="n">SemanticMistake</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">compmake</span> <span class="kn">import</span> <span class="n">comp</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+    <span class="c"># TODO: add message</span>
+
+
+<div class="viewcode-block" id="batch_jobs1"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.batch_jobs1">[docs]</a><span class="k">def</span> <span class="nf">batch_jobs1</span><span class="p">(</span><span class="n">data_central</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">TaskRegister</span><span class="p">(</span><span class="n">data_central</span><span class="p">)</span>
+
+    <span class="n">tr</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="TaskRegister"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister">[docs]</a><span class="k">class</span> <span class="nc">TaskRegister</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_central</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_central</span> <span class="o">=</span> <span class="n">data_central</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">deps</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="s">&#39;str&#39;</span><span class="p">,</span> <span class="n">K</span><span class="o">=</span><span class="s">&#39;int&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="TaskRegister.episode_id_exploration"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.episode_id_exploration">[docs]</a>    <span class="k">def</span> <span class="nf">episode_id_exploration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">K</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;ep_expl_</span><span class="si">%s</span><span class="s">_</span><span class="si">%05d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
+</div>
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="s">&#39;str&#39;</span><span class="p">,</span> <span class="n">K</span><span class="o">=</span><span class="s">&#39;int&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="TaskRegister.episode_id_servoing"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.episode_id_servoing">[docs]</a>    <span class="k">def</span> <span class="nf">episode_id_servoing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">K</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;ep_serv_</span><span class="si">%s</span><span class="s">_</span><span class="si">%05d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
+</div>
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="s">&#39;str&#39;</span><span class="p">,</span> <span class="n">K</span><span class="o">=</span><span class="s">&#39;int&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="TaskRegister.episode_id_servonav"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.episode_id_servonav">[docs]</a>    <span class="k">def</span> <span class="nf">episode_id_servonav</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">K</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;ep_servonav_</span><span class="si">%s</span><span class="s">_</span><span class="si">%05d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.agent_has_predictor"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.agent_has_predictor">[docs]</a>    <span class="k">def</span> <span class="nf">agent_has_predictor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">):</span>
+        <span class="n">agent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="o">.</span><span class="n">get_bo_config</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">id_agent</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="s">&#39;get_predictor&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.agent_has_servo"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.agent_has_servo">[docs]</a>    <span class="k">def</span> <span class="nf">agent_has_servo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">):</span>
+        <span class="n">agent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="o">.</span><span class="n">get_bo_config</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">id_agent</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="s">&#39;get_servo&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.get_tranches"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.get_tranches">[docs]</a>    <span class="k">def</span> <span class="nf">get_tranches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">episodes_per_tranche</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns a list of list &quot;&quot;&quot;</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">num_tranches</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">episodes_per_tranche</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_tranches</span><span class="p">):</span>
+            <span class="n">e_from</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="n">episodes_per_tranche</span>
+            <span class="n">e_to</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">),</span> <span class="n">e_from</span> <span class="o">+</span> <span class="n">episodes_per_tranche</span><span class="p">)</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e_from</span><span class="p">,</span> <span class="n">e_to</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">l</span>
+
+    <span class="c">#</span>
+    <span class="c"># Dependencies</span>
+    <span class="c">#</span></div>
+<div class="viewcode-block" id="TaskRegister.set_dep"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.set_dep">[docs]</a>    <span class="k">def</span> <span class="nf">set_dep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">job</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">deps</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Job </span><span class="si">%s</span><span class="s"> already defined&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deps</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">job</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.get_dep"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.get_dep">[docs]</a>    <span class="k">def</span> <span class="nf">get_dep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">deps</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;No job </span><span class="si">%s</span><span class="s"> defined&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">deps</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.set_dep_agent_has_learned"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.set_dep_agent_has_learned">[docs]</a>    <span class="k">def</span> <span class="nf">set_dep_agent_has_learned</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">job</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dep</span><span class="p">((</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="s">&#39;learn&#39;</span><span class="p">),</span> <span class="n">job</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.dep_agent_has_learned"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.dep_agent_has_learned">[docs]</a>    <span class="k">def</span> <span class="nf">dep_agent_has_learned</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; The agent has completed learning &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dep</span><span class="p">((</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="s">&#39;learn&#39;</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.dep_episode_done"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.dep_episode_done">[docs]</a>    <span class="k">def</span> <span class="nf">dep_episode_done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_episode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; The given episode was completed &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dep</span><span class="p">((</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_episode</span><span class="p">,</span> <span class="s">&#39;episode&#39;</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.set_dep_episode_done"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.set_dep_episode_done">[docs]</a>    <span class="k">def</span> <span class="nf">set_dep_episode_done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_episode</span><span class="p">,</span> <span class="n">job</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dep</span><span class="p">((</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_episode</span><span class="p">,</span> <span class="s">&#39;episode&#39;</span><span class="p">),</span> <span class="n">job</span><span class="p">)</span>
+</div>
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">servo</span><span class="o">=</span><span class="s">&#39;None|dict&#39;</span><span class="p">,</span>
+              <span class="n">servonav</span><span class="o">=</span><span class="s">&#39;None|dict&#39;</span><span class="p">,</span>
+              <span class="n">predict</span><span class="o">=</span><span class="s">&#39;None|dict&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="TaskRegister.main"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agents</span><span class="p">,</span> <span class="n">robots</span><span class="p">,</span>
+                    <span class="n">explore</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="n">servo</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">servonav</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">predict</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">robots</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SemanticMistake</span><span class="p">(</span><span class="s">&#39;Please specify at least one robot.&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">agents</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SemanticMistake</span><span class="p">(</span><span class="s">&#39;Please specify at least one agent.&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">explore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">id_robot</span> <span class="ow">in</span> <span class="n">robots</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_tasks_explore</span><span class="p">(</span><span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span> <span class="o">**</span><span class="n">explore</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span> <span class="ow">in</span>  <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">robots</span><span class="p">,</span> <span class="n">agents</span><span class="p">):</span>
+            <span class="n">compatible</span> <span class="o">=</span> <span class="n">are_compatible</span><span class="p">(</span><span class="n">data_central</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="p">,</span>
+                                        <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">compatible</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Avoiding combination </span><span class="si">%s</span><span class="s"> / </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                             <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">))</span>
+                <span class="k">continue</span>
+
+            <span class="c"># FIXME: num_ep_expl (should work also for logs)</span>
+            <span class="n">num_ep_expl</span> <span class="o">=</span> <span class="n">explore</span><span class="p">[</span><span class="s">&#39;num_episodes&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_learning</span><span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">num_ep_expl</span><span class="p">,</span>
+                              <span class="n">explorer</span><span class="o">=</span><span class="n">explore</span><span class="p">[</span><span class="s">&#39;explorer&#39;</span><span class="p">],</span> <span class="c"># XXX</span>
+                              <span class="n">publish_progress</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">servo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_tasks_servo</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                     <span class="o">**</span><span class="n">servo</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">servonav</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_tasks_servonav</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                        <span class="o">**</span><span class="n">servonav</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">predict</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">predict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_tasks_predict</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                       <span class="o">**</span><span class="n">predict</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.add_tasks_predict"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_tasks_predict">[docs]</a>    <span class="k">def</span> <span class="nf">add_tasks_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">):</span>
+        <span class="n">has_predictor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent_has_predictor</span><span class="p">(</span><span class="n">id_agent</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">has_predictor</span><span class="p">:</span>
+            <span class="c">#logger.debug(&#39;Agent %s does not support predicting.&#39;</span>
+            <span class="c">#             % id_agent)</span>
+            <span class="k">return</span>
+
+        <span class="n">extra_dep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dep_agent_has_learned</span><span class="p">(</span><span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                               <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">)</span>
+
+        <span class="c"># FIXME: here we are using *all* streams </span>
+        <span class="n">comp</span><span class="p">(</span><span class="n">task_predict</span><span class="p">,</span> <span class="n">data_central</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="p">,</span>
+             <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+             <span class="n">interval_print</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+             <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;predict-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">),</span>
+             <span class="n">extra_dep</span><span class="o">=</span><span class="n">extra_dep</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.add_learning"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_learning">[docs]</a>    <span class="k">def</span> <span class="nf">add_learning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">num_ep_expl</span><span class="p">,</span> <span class="n">explorer</span><span class="p">,</span> <span class="c"># XXX</span>
+                     <span class="n">publish_progress</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">all_id_episodes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">episode_id_exploration</span><span class="p">(</span><span class="n">explorer</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_ep_expl</span><span class="p">)]</span>
+
+        <span class="k">def</span> <span class="nf">get_deps_for_episodes</span><span class="p">(</span><span class="n">id_episodes</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot; Gets all dependencies for the episodes. &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dep_episode_done</span><span class="p">(</span><span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                                  <span class="n">id_episode</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">id_episodes</span><span class="p">))</span>
+
+        <span class="n">previous_state</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">tranches</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tranches</span><span class="p">(</span><span class="n">all_id_episodes</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">id_episodes</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tranches</span><span class="p">):</span>
+            <span class="n">reset</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+
+            <span class="n">extra_dep</span> <span class="o">=</span> <span class="n">get_deps_for_episodes</span><span class="p">(</span><span class="n">id_episodes</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">previous_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">extra_dep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">previous_state</span><span class="p">)</span>
+
+            <span class="n">previous_state</span> <span class="o">=</span> <span class="n">comp</span><span class="p">(</span><span class="n">learn_log</span><span class="p">,</span> <span class="n">data_central</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="p">,</span>
+                                  <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                                  <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                  <span class="n">reset</span><span class="o">=</span><span class="n">reset</span><span class="p">,</span>
+                                  <span class="n">episodes</span><span class="o">=</span><span class="n">id_episodes</span><span class="p">,</span>
+                                  <span class="n">publish_interval</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                                  <span class="n">publish_once</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                                  <span class="n">interval_save</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+                                  <span class="n">interval_print</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                                  <span class="n">extra_dep</span><span class="o">=</span><span class="n">extra_dep</span><span class="p">,</span>
+                                  <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;learn-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">of</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                                    <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tranches</span><span class="p">)))</span>
+
+            <span class="k">if</span> <span class="n">publish_progress</span><span class="p">:</span>
+                <span class="n">comp</span><span class="p">(</span><span class="n">publish_once</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span>
+                     <span class="n">phase</span><span class="o">=</span><span class="s">&#39;learn&#39;</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="s">&#39;t</span><span class="si">%03d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">t</span><span class="p">,</span>
+                     <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;report-learn-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span>
+                     <span class="n">extra_dep</span><span class="o">=</span><span class="n">previous_state</span><span class="p">)</span>
+
+        <span class="n">all_learned</span> <span class="o">=</span> <span class="n">comp</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="s">&#39;all learned&#39;</span><span class="p">,</span>
+                            <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;learn-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">),</span>
+                            <span class="n">extra_dep</span><span class="o">=</span><span class="p">[</span><span class="n">previous_state</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dep_agent_has_learned</span><span class="p">(</span><span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                                       <span class="n">job</span><span class="o">=</span><span class="n">all_learned</span><span class="p">)</span>
+
+        <span class="n">comp</span><span class="p">(</span><span class="n">publish_once</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span>
+             <span class="n">phase</span><span class="o">=</span><span class="s">&#39;learn&#39;</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="s">&#39;all&#39;</span><span class="p">,</span>
+             <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;report-learn-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">),</span>
+             <span class="n">extra_dep</span><span class="o">=</span><span class="n">all_learned</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.add_tasks_explore"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_tasks_explore">[docs]</a>    <span class="k">def</span> <span class="nf">add_tasks_explore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">explorer</span><span class="p">,</span>
+                                <span class="n">num_episodes</span><span class="p">,</span>
+                                <span class="n">episodes_per_tranche</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                   <span class="n">num_episodes_videos</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                   <span class="n">videos</span><span class="o">=</span><span class="n">default_expl_videos</span><span class="p">,</span>
+                                   <span class="n">max_episode_len</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">num_episodes_videos</span> <span class="o">&gt;</span> <span class="n">num_episodes</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Requested </span><span class="si">%d</span><span class="s"> videos for only </span><span class="si">%d</span><span class="s"> episodes&#39;</span> <span class="o">%</span>
+                   <span class="p">(</span><span class="n">num_episodes_videos</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">SemanticMistake</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c"># Divide the simulation in parallel tranches</span>
+        <span class="n">all_id_episodes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">episode_id_exploration</span><span class="p">(</span><span class="n">explorer</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">)]</span>
+
+        <span class="c"># These are episodes for which we want to save extra information</span>
+        <span class="n">id_episodes_with_extra</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">episode_id_exploration</span><span class="p">(</span><span class="n">explorer</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                                  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_episodes_videos</span><span class="p">)]</span>
+
+        <span class="n">tranches</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">episodes_tranches</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tranches</span><span class="p">(</span><span class="n">all_id_episodes</span><span class="p">,</span>
+                                              <span class="n">episodes_per_tranche</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">id_episodes</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">episodes_tranches</span><span class="p">):</span>
+            <span class="n">write_extra</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">id_episodes</span><span class="p">)</span> <span class="o">&amp;</span>
+                              <span class="nb">set</span><span class="p">(</span><span class="n">id_episodes_with_extra</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+            <span class="n">tranche</span> <span class="o">=</span> <span class="n">comp</span><span class="p">(</span><span class="n">simulate</span><span class="p">,</span>
+                            <span class="n">data_central</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="p">,</span>
+                             <span class="n">id_agent</span><span class="o">=</span><span class="n">explorer</span><span class="p">,</span>
+                             <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                             <span class="n">max_episode_len</span><span class="o">=</span><span class="n">max_episode_len</span><span class="p">,</span>
+                             <span class="n">stateful</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                             <span class="n">interval_print</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                             <span class="n">num_episodes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">id_episodes</span><span class="p">),</span>
+                             <span class="n">id_episodes</span><span class="o">=</span><span class="n">id_episodes</span><span class="p">,</span>
+                             <span class="n">cumulative</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                             <span class="n">write_extra</span><span class="o">=</span><span class="n">write_extra</span><span class="p">,</span>
+                            <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;explore-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">of</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                                    <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">explorer</span><span class="p">,</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                                     <span class="nb">len</span><span class="p">(</span><span class="n">episodes_tranches</span><span class="p">)))</span>
+
+            <span class="n">tranches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tranche</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">id_episode</span> <span class="ow">in</span> <span class="n">id_episodes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_dep_episode_done</span><span class="p">(</span><span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                          <span class="n">id_episode</span><span class="o">=</span><span class="n">id_episode</span><span class="p">,</span> <span class="n">job</span><span class="o">=</span><span class="n">tranche</span><span class="p">)</span>
+
+        <span class="n">comp</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="s">&#39;all simulations&#39;</span><span class="p">,</span>
+                         <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;simulate-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">),</span>
+                         <span class="n">extra_dep</span><span class="o">=</span><span class="n">tranches</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_videos</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="n">explorer</span><span class="p">,</span> <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                        <span class="n">id_episodes</span><span class="o">=</span><span class="n">id_episodes_with_extra</span><span class="p">,</span> <span class="n">videos</span><span class="o">=</span><span class="n">videos</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.add_videos"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_videos">[docs]</a>    <span class="k">def</span> <span class="nf">add_videos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_episodes</span><span class="p">,</span> <span class="n">videos</span><span class="p">):</span>
+        <span class="c"># todo: temporary videos</span>
+        <span class="k">for</span> <span class="n">id_episode</span><span class="p">,</span> <span class="n">id_video</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">id_episodes</span><span class="p">,</span> <span class="n">videos</span><span class="p">):</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="o">.</span><span class="n">get_bo_config</span><span class="p">()</span>
+            <span class="n">code_spec</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">specs</span><span class="p">[</span><span class="s">&#39;videos&#39;</span><span class="p">][</span><span class="n">id_video</span><span class="p">]</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">code_spec</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">model_params</span> <span class="o">=</span> <span class="n">code_spec</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="n">extra_dep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dep_episode_done</span><span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_episode</span><span class="p">)</span>
+
+            <span class="n">comp</span><span class="p">(</span><span class="n">create_video</span><span class="p">,</span>
+                 <span class="n">data_central</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="p">,</span>
+                 <span class="n">id_episode</span><span class="o">=</span><span class="n">id_episode</span><span class="p">,</span>
+                 <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                 <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                 <span class="n">suffix</span><span class="o">=</span><span class="n">id_video</span><span class="p">,</span>
+                 <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+                 <span class="n">model_params</span><span class="o">=</span><span class="n">model_params</span><span class="p">,</span>
+                 <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;video-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                    <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_episode</span><span class="p">,</span> <span class="n">id_video</span><span class="p">),</span>
+                 <span class="n">extra_dep</span><span class="o">=</span><span class="n">extra_dep</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.add_tasks_servonav"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_tasks_servonav">[docs]</a>    <span class="k">def</span> <span class="nf">add_tasks_servonav</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span>
+                                 <span class="n">num_episodes</span><span class="p">,</span>
+                                 <span class="n">episodes_per_tranche</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                 <span class="n">num_episodes_videos</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                 <span class="n">max_episode_len</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                 <span class="n">resolution</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                 <span class="n">fail_if_not_working</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                                 <span class="n">videos</span><span class="o">=</span><span class="n">default_servonav_videos</span><span class="p">):</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Adding servonav for </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                    <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">,</span>
+                     <span class="n">num_episodes_videos</span><span class="p">))</span>
+
+        <span class="n">has_servo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent_has_servo</span><span class="p">(</span><span class="n">id_agent</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">has_servo</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Agent </span><span class="si">%s</span><span class="s"> does not support servoing.&#39;</span> <span class="o">%</span> <span class="n">id_agent</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">num_episodes_videos</span> <span class="o">&gt;</span> <span class="n">num_episodes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SemanticMistake</span><span class="p">(</span><span class="s">&#39;More videos than episodes requested.&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">num_episodes</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;No servonav episodes&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">all_id_episodes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">episode_id_servonav</span><span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">)]</span>
+        <span class="n">id_episodes_with_extra</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">episode_id_servonav</span><span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_episodes_videos</span><span class="p">)]</span>
+
+        <span class="n">all_tranches</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">episodes_tranches</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tranches</span><span class="p">(</span><span class="n">all_id_episodes</span><span class="p">,</span>
+                                              <span class="n">episodes_per_tranche</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">st</span><span class="p">,</span> <span class="n">id_episodes</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">episodes_tranches</span><span class="p">):</span>
+            <span class="n">num_episodes_with_robot_state</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">id_episodes</span><span class="p">)</span> <span class="o">&amp;</span>
+                                                <span class="nb">set</span><span class="p">(</span><span class="n">id_episodes_with_extra</span><span class="p">))</span>
+
+            <span class="n">tranche</span> <span class="o">=</span> <span class="n">comp</span><span class="p">(</span><span class="n">task_servonav</span><span class="p">,</span> <span class="n">data_central</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="p">,</span>
+             <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+             <span class="n">max_episode_len</span><span class="o">=</span><span class="n">max_episode_len</span><span class="p">,</span>
+             <span class="n">num_episodes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">id_episodes</span><span class="p">),</span>
+             <span class="n">id_episodes</span><span class="o">=</span><span class="n">id_episodes</span><span class="p">,</span>
+             <span class="n">cumulative</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+             <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
+             <span class="n">interval_print</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+             <span class="n">fail_if_not_working</span><span class="o">=</span><span class="n">fail_if_not_working</span><span class="p">,</span>
+             <span class="n">num_episodes_with_robot_state</span><span class="o">=</span><span class="n">num_episodes_with_robot_state</span><span class="p">,</span>
+             <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;servonav-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">of</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+             <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">st</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">episodes_tranches</span><span class="p">)),</span>
+             <span class="n">extra_dep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dep_agent_has_learned</span><span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">))</span>
+
+            <span class="n">all_tranches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tranche</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">id_episode</span> <span class="ow">in</span> <span class="n">id_episodes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_dep_episode_done</span><span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_episode</span><span class="p">,</span> <span class="n">tranche</span><span class="p">)</span>
+
+<span class="c">#        logger.info(&#39;Tranches: %s&#39; % all_tranches)</span>
+
+        <span class="n">comp</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="s">&#39;all servonav&#39;</span><span class="p">,</span>
+                        <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;servonav-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">),</span>
+                        <span class="n">extra_dep</span><span class="o">=</span><span class="n">all_tranches</span><span class="p">)</span>
+
+<span class="c">#        summaries = comp(servo_stats_summaries, self.data_central,</span>
+<span class="c">#                         id_agent, id_robot,</span>
+<span class="c">#                         job_id=(&#39;servo-%s-%s-summary&#39; %</span>
+<span class="c">#                                  (id_robot, id_agent)),</span>
+<span class="c">#                         extra_dep=all_servonav)</span>
+<span class="c">#</span>
+<span class="c">#        comp(servo_stats_report, self.data_central, id_agent,</span>
+<span class="c">#             id_robot, summaries,</span>
+<span class="c">#             job_id=&#39;servo-%s-%s-report&#39; % (id_robot, id_agent))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_videos</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                          <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                          <span class="n">id_episodes</span><span class="o">=</span><span class="n">id_episodes_with_extra</span><span class="p">,</span>
+                          <span class="n">videos</span><span class="o">=</span><span class="n">videos</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TaskRegister.add_tasks_servo"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_tasks_servo">[docs]</a>    <span class="k">def</span> <span class="nf">add_tasks_servo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span>
+                        <span class="n">num_episodes</span><span class="p">,</span>
+                        <span class="n">num_episodes_videos</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="n">max_episode_len</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                        <span class="n">displacement</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                        <span class="n">videos</span><span class="o">=</span><span class="n">default_servo_videos</span><span class="p">):</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Adding servo for </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">; </span><span class="si">%s</span><span class="s"> episodes of which &#39;</span>
+                    <span class="s">&#39;</span><span class="si">%s</span><span class="s"> with video.&#39;</span> <span class="o">%</span>
+                    <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">,</span>
+                     <span class="n">num_episodes_videos</span><span class="p">))</span>
+
+        <span class="n">has_servo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent_has_servo</span><span class="p">(</span><span class="n">id_agent</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">num_episodes_videos</span> <span class="o">&gt;</span> <span class="n">num_episodes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SemanticMistake</span><span class="p">(</span><span class="s">&#39;More videos than episodes requested.&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">has_servo</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Agent </span><span class="si">%s</span><span class="s"> does not support servoing.&#39;</span> <span class="o">%</span> <span class="n">id_agent</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">num_episodes</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;No servo episodes&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Creating servo episodes&#39;</span><span class="p">)</span>
+
+        <span class="n">all_id_episodes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">episode_id_servoing</span><span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">)]</span>
+        <span class="n">id_episodes_with_extra</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">episode_id_servoing</span><span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_episodes_videos</span><span class="p">)]</span>
+
+        <span class="n">all_tranches</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">episodes_tranches</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tranches</span><span class="p">(</span><span class="n">all_id_episodes</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">st</span><span class="p">,</span> <span class="n">id_episodes</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">episodes_tranches</span><span class="p">):</span>
+            <span class="n">num_episodes_with_robot_state</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">id_episodes</span><span class="p">)</span> <span class="o">&amp;</span>
+                                                <span class="nb">set</span><span class="p">(</span><span class="n">id_episodes_with_extra</span><span class="p">))</span>
+
+            <span class="n">tranche</span> <span class="o">=</span> <span class="n">comp</span><span class="p">(</span><span class="n">task_servo</span><span class="p">,</span> <span class="n">data_central</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="p">,</span>
+             <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+             <span class="n">max_episode_len</span><span class="o">=</span><span class="n">max_episode_len</span><span class="p">,</span>
+             <span class="n">num_episodes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">id_episodes</span><span class="p">),</span>
+             <span class="n">id_episodes</span><span class="o">=</span><span class="n">id_episodes</span><span class="p">,</span>
+             <span class="n">cumulative</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+             <span class="n">displacement</span><span class="o">=</span><span class="n">displacement</span><span class="p">,</span>
+             <span class="n">interval_print</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+             <span class="n">num_episodes_with_robot_state</span><span class="o">=</span><span class="n">num_episodes_with_robot_state</span><span class="p">,</span>
+             <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;servo-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">of</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">st</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                                             <span class="nb">len</span><span class="p">(</span><span class="n">episodes_tranches</span><span class="p">)),</span>
+             <span class="n">extra_dep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dep_agent_has_learned</span><span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">))</span>
+
+            <span class="n">all_tranches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tranche</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">id_episode</span> <span class="ow">in</span> <span class="n">id_episodes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_dep_episode_done</span><span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_episode</span><span class="p">,</span> <span class="n">tranche</span><span class="p">)</span>
+
+        <span class="n">all_servo</span> <span class="o">=</span> <span class="n">comp</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="s">&#39;all servo&#39;</span><span class="p">,</span>
+                        <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;servo-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">),</span>
+                        <span class="n">extra_dep</span><span class="o">=</span><span class="n">all_tranches</span><span class="p">)</span>
+
+        <span class="n">summaries</span> <span class="o">=</span> <span class="n">comp</span><span class="p">(</span><span class="n">servo_stats_summaries</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="p">,</span>
+                         <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                         <span class="n">id_episodes</span><span class="o">=</span><span class="n">all_id_episodes</span><span class="p">,</span>
+                         <span class="n">job_id</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;servo-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">-summary&#39;</span> <span class="o">%</span>
+                                  <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">)),</span>
+                         <span class="n">extra_dep</span><span class="o">=</span><span class="n">all_servo</span><span class="p">)</span>
+
+        <span class="n">comp</span><span class="p">(</span><span class="n">servo_stats_report</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_central</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span>
+             <span class="n">id_robot</span><span class="p">,</span> <span class="n">summaries</span><span class="p">,</span>
+             <span class="n">job_id</span><span class="o">=</span><span class="s">&#39;report-servo-</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_videos</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                          <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                          <span class="n">id_episodes</span><span class="o">=</span><span class="n">id_episodes_with_extra</span><span class="p">,</span>
+                          <span class="n">videos</span><span class="o">=</span><span class="n">videos</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="are_compatible"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.are_compatible">[docs]</a><span class="k">def</span> <span class="nf">are_compatible</span><span class="p">(</span><span class="n">data_central</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">):</span>
+    <span class="c"># XXX: this is wasteful</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">get_bo_config</span><span class="p">()</span>
+    <span class="n">robot</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">robots</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">id_robot</span><span class="p">)</span>
+    <span class="n">agent</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">id_agent</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">agent</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">robot</span><span class="o">.</span><span class="n">get_spec</span><span class="p">())</span>
+    <span class="k">except</span> <span class="n">UnsupportedSpec</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+</div>
+<div class="viewcode-block" id="checkpoint"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.batch.html#bootstrapping_olympics.programs.manager.batch.batch_learn.checkpoint">[docs]</a><span class="k">def</span> <span class="nf">checkpoint</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Dummy function for job. &#39;&#39;&#39;</span>
+    <span class="c">#print(msg)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

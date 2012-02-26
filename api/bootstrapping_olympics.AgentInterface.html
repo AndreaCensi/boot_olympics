@@ -1,0 +1,123 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.AgentInterface &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="bootstrapping-olympics-agentinterface">
+<h1>bootstrapping_olympics.AgentInterface<a class="headerlink" href="#bootstrapping-olympics-agentinterface" title="Permalink to this headline">¶</a></h1>
+<dl class="data">
+<dt id="bootstrapping_olympics.AgentInterface">
+<tt class="descclassname">bootstrapping_olympics.</tt><tt class="descname">AgentInterface</tt><em class="property"> = &lt;class 'bootstrapping_olympics.interfaces.agent.AgentInterface'&gt;</em><a class="headerlink" href="#bootstrapping_olympics.AgentInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the interface that the agents must implement.</p>
+<p>The following is a list of conventions that we use.</p>
+<p>init(boot_spec) is called first. 
+process_observations() is guaranteed to be called at least once
+before choose_commands().</p>
+<p>The function <tt class="docutils literal"><span class="pre">process_observations()</span></tt> is given an instance
+of the class Observations, which contains many info other than
+the raw sensel values.</p>
+<p>Use the function <tt class="docutils literal"><span class="pre">self.info(msg)</span></tt> to log stuff.
+Do not use <tt class="docutils literal"><span class="pre">rospy.loginfo</span></tt> or <tt class="docutils literal"><span class="pre">print</span></tt>: the agents implementation s
+hould be independent of ROS.</p>
+<p>Implement the functions <tt class="docutils literal"><span class="pre">set_state()</span></tt> and <tt class="docutils literal"><span class="pre">get_state()</span></tt>. 
+<tt class="docutils literal"><span class="pre">get_state()</span></tt> can return anything that is Pickable. 
+<tt class="docutils literal"><span class="pre">set_state()</span></tt> will be given whatever <tt class="docutils literal"><span class="pre">get_state()</span></tt> returned.</p>
+<p>Implement the function <tt class="docutils literal"><span class="pre">publish()</span></tt> to output information, such
+as graphs, statistics, etc. The function is given an instance of the 
+class Publisher, whose implementation is hidden.</p>
+<p>During a ROS simulation, Publisher will be a ROSPublisher that 
+will publish the data as ROS topics which can be subscribed by RViz.</p>
+<p>During offline learning, the data will be written to HTML files.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/api/bootstrapping_olympics.AgentInterface.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+boot_gui Package
+================
+
+:mod:`boot_gui` Package
+-----------------------
+
+.. automodule:: boot_gui
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`boot_gui` Module
+----------------------
+
+.. automodule:: boot_gui.boot_gui
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`boot_gui_mdi` Module
+--------------------------
+
+.. automodule:: boot_gui.boot_gui_mdi
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`boot_gui_run` Module
+--------------------------
+
+.. automodule:: boot_gui.boot_gui_run
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

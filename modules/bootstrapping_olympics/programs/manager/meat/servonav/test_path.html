@@ -1,0 +1,160 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.manager.meat.servonav.test_path &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics.programs.manager.meat.servonav" href="../servonav.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../servonav.html" accesskey="U">bootstrapping_olympics.programs.manager.meat.servonav</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.manager.meat.servonav.test_path</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics.configuration.master</span> <span class="kn">import</span> <span class="n">BootOlympicsConfig</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics.programs.manager.meat.servonav.find_path</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_grid</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vehicles</span> <span class="kn">import</span> <span class="n">VehiclesConfig</span>
+<span class="kn">from</span> <span class="nn">vehicles_cairo</span> <span class="kn">import</span> <span class="p">(</span><span class="n">cairo_ref_frame</span><span class="p">,</span> <span class="n">cairo_rototranslate</span><span class="p">,</span>
+    <span class="n">vehicles_cairo_display_png</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">geometry</span> <span class="kn">import</span> <span class="n">SE2_from_SE3</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics.utils</span> <span class="kn">import</span> <span class="n">yaml_dump</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.test_path.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c"># Instance robot object</span>
+    <span class="n">id_robot</span> <span class="o">=</span> <span class="s">&#39;r_cam_A&#39;</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s">&#39;test.png&#39;</span>
+    <span class="n">resolution</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+    <span class="n">config</span> <span class="o">=</span> <span class="n">BootOlympicsConfig</span>
+    <span class="n">vconfig</span> <span class="o">=</span> <span class="n">VehiclesConfig</span>
+    <span class="n">cd1</span> <span class="o">=</span> <span class="s">&#39;/Users/andrea/scm/boot11_env/src/vehicles/src/vehicles/configs&#39;</span>
+    <span class="n">cd2</span> <span class="o">=</span> <span class="s">&#39;/Users/andrea/scm/boot11_env/src/bvapps/bo_app1/config&#39;</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cd1</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cd2</span><span class="p">)</span>
+    <span class="n">vconfig</span><span class="o">.</span><span class="n">load</span><span class="p">()</span> <span class="c"># Default</span>
+    <span class="n">vconfig</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cd2</span><span class="p">)</span>
+
+    <span class="n">robot</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">robots</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">id_robot</span><span class="p">)</span> <span class="c">#@UndefinedVariable</span>
+    <span class="n">robot</span><span class="o">.</span><span class="n">new_episode</span><span class="p">()</span>
+
+    <span class="n">locations</span> <span class="o">=</span> <span class="n">get_grid</span><span class="p">(</span><span class="n">robot</span><span class="o">=</span><span class="n">robot</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                        <span class="n">world</span><span class="o">=</span><span class="n">robot</span><span class="o">.</span><span class="n">world</span><span class="p">,</span>
+                        <span class="n">vehicle</span><span class="o">=</span><span class="n">robot</span><span class="o">.</span><span class="n">vehicle</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">)</span>
+    <span class="n">poses</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">locations</span><span class="p">]</span>
+
+<span class="c">#    poses = elastic(poses, alpha=0.1, num_iterations=20)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Converting to yaml...&#39;</span><span class="p">)</span>
+    <span class="n">robot</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">set_pose</span><span class="p">(</span><span class="n">poses</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">()</span>
+
+    <span class="n">pprint</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">yaml_dump</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">extra_draw_world</span><span class="p">(</span><span class="n">cr</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">pose</span> <span class="ow">in</span> <span class="n">poses</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">cairo_rototranslate</span><span class="p">(</span><span class="n">cr</span><span class="p">,</span> <span class="n">SE2_from_SE3</span><span class="p">(</span><span class="n">pose</span><span class="p">)):</span>
+                <span class="n">cairo_ref_frame</span><span class="p">(</span><span class="n">cr</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                            <span class="n">x_color</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y_color</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">plotting_params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">plotting_params</span><span class="p">[</span><span class="s">&#39;extra_draw_world&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extra_draw_world</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Writing to: </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="n">vehicles_cairo_display_png</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+                                <span class="n">sim_state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
+                               <span class="o">**</span><span class="n">plotting_params</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;... done&#39;</span><span class="p">)</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../servonav.html" >bootstrapping_olympics.programs.manager.meat.servonav</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

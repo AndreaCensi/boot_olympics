@@ -1,0 +1,177 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.manager.meat.servonav.astar_algo &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics.programs.manager.meat.servonav" href="../servonav.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../servonav.html" accesskey="U">bootstrapping_olympics.programs.manager.meat.servonav</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.manager.meat.servonav.astar_algo</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">np</span><span class="p">,</span> <span class="n">contract</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+
+<span class="n">NodeInfo</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;NodeInfo&#39;</span><span class="p">,</span> <span class="s">&#39;parent cost_to_come min_cost_to_go&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="astar"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.astar">[docs]</a><span class="k">def</span> <span class="nf">astar</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">node2children</span><span class="p">,</span> <span class="n">heuristics</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        start, target: nodes</span>
+<span class="sd">        node2children: given a node, returns a list of tuples (children, cost)</span>
+<span class="sd">        Returns a tuple (path, cost).     </span>
+<span class="sd">        </span>
+<span class="sd">        heuristics(node, target)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cost_to_come</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">nodes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">nodes</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="n">NodeInfo</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+    <span class="n">nodes</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="n">NodeInfo</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">heuristics</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+    <span class="n">open_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">start</span><span class="p">])</span>
+
+    <span class="k">while</span> <span class="n">open_nodes</span><span class="p">:</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="n">argmin</span><span class="p">(</span><span class="n">open_nodes</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">nodes</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">min_cost_to_go</span><span class="p">)</span>
+        <span class="n">open_nodes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">nodes</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">cost_to_come</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+        <span class="k">for</span> <span class="n">child</span><span class="p">,</span> <span class="n">action_cost</span> <span class="ow">in</span> <span class="n">node2children</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+            <span class="n">cost_to_come</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">cost_to_come</span> <span class="o">+</span> <span class="n">action_cost</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">cost_to_come</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="n">min_cost_to_go</span> <span class="o">=</span> <span class="n">cost_to_come</span> <span class="o">+</span> <span class="n">heuristics</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">((</span><span class="ow">not</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">)</span> <span class="ow">or</span>
+                <span class="p">(</span><span class="n">cost_to_come</span> <span class="o">&lt;</span> <span class="n">nodes</span><span class="p">[</span><span class="n">child</span><span class="p">]</span><span class="o">.</span><span class="n">cost_to_come</span> <span class="ow">and</span>
+                 <span class="n">min_cost_to_go</span> <span class="o">&lt;</span> <span class="n">nodes</span><span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="o">.</span><span class="n">cost_to_come</span><span class="p">)):</span>
+
+                <span class="n">nodes</span><span class="p">[</span><span class="n">child</span><span class="p">]</span> <span class="o">=</span> <span class="n">NodeInfo</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">cost_to_come</span><span class="p">,</span> <span class="n">min_cost_to_go</span><span class="p">)</span>
+                <span class="n">open_nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">nodes</span><span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">target</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">nodes</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nodes</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">path</span><span class="p">,</span> <span class="n">nodes</span><span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="o">.</span><span class="n">cost_to_come</span>
+
+</div>
+<div class="viewcode-block" id="argmin"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.argmin">[docs]</a><span class="k">def</span> <span class="nf">argmin</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">min</span><span class="p">([(</span><span class="n">x</span><span class="p">,</span> <span class="n">key</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="s">&#39;tuple(int,int)&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s">&#39;tuple((int,&gt;0),(int,&gt;0))&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="node2children_grid"><a class="viewcode-back" href="../../../../../../api/bootstrapping_olympics.programs.manager.meat.servonav.html#bootstrapping_olympics.programs.manager.meat.servonav.astar_algo.node2children_grid">[docs]</a><span class="k">def</span> <span class="nf">node2children_grid</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">cell_free</span><span class="p">,</span> <span class="n">cost</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        cell_free((a,b)) should return True if the cell is free. </span>
+<span class="sd">        cost((a,b), (c,d)) returns the cost of the transition</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">consider</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">((</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">and</span><span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">b</span> <span class="o">&lt;</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">cell_free</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)):</span>
+            <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">cost</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))))</span>
+
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">node</span>
+
+    <span class="n">diff</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">],</span>
+             <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">],</span>
+             <span class="p">[</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">]]</span>
+
+    <span class="k">for</span> <span class="n">di</span><span class="p">,</span> <span class="n">dj</span> <span class="ow">in</span> <span class="n">diff</span><span class="p">:</span>
+        <span class="n">consider</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">di</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">dj</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nodes</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
+          <li><a href="../servonav.html" >bootstrapping_olympics.programs.manager.meat.servonav</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

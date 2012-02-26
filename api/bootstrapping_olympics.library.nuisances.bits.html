@@ -1,0 +1,514 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bits Package &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="bits-package">
+<h1>bits Package<a class="headerlink" href="#bits-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">bits</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-bootstrapping_olympics.library.nuisances.bits"></span></div>
+<div class="section" id="module-bootstrapping_olympics.library.nuisances.bits.bits_utils">
+<span id="bits-utils-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">bits_utils</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.bits.bits_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.bits_utils.bits2bytes">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.bits_utils.</tt><tt class="descname">bits2bytes</tt><big>(</big><em>bits</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/bits_utils.html#bits2bytes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.bits_utils.bits2bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Packs the bits in a string, padding at 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bits</strong> (<tt class="docutils literal"><span class="pre">seq[&gt;0](0|1)</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.bits_utils.bits2string">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.bits_utils.</tt><tt class="descname">bits2string</tt><big>(</big><em>bits</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/bits_utils.html#bits2string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.bits_utils.bits2string" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bits</strong> (<tt class="docutils literal"><span class="pre">seq(0|1)</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">str</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.bits_utils.bits2value">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.bits_utils.</tt><tt class="descname">bits2value</tt><big>(</big><em>b</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/bits_utils.html#bits2value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.bits_utils.bits2value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the bits back into integers. LSB first.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>b</strong> (<tt class="docutils literal"><span class="pre">seq[N](=0|=1)</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">int</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.bits_utils.bytes2bits">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.bits_utils.</tt><tt class="descname">bytes2bits</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/bits_utils.html#bytes2bits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.bits_utils.bytes2bits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the bits in a string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<tt class="docutils literal"><span class="pre">seq[N](int,&gt;=0,&lt;256)</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">seq[8*N](0|1)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.bits_utils.nbytes_to_encrypt">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.bits_utils.</tt><tt class="descname">nbytes_to_encrypt</tt><big>(</big><em>nbits</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/bits_utils.html#nbytes_to_encrypt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.bits_utils.nbytes_to_encrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of bytes necessary to hold the given number
+of bits. Takes into account padding of the message to 8 bits.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.bits_utils.nbytes_to_hold">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.bits_utils.</tt><tt class="descname">nbytes_to_hold</tt><big>(</big><em>nbits</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/bits_utils.html#nbytes_to_hold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.bits_utils.nbytes_to_hold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of bytes necessary to hold the given number
+of bits.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.bits_utils.string2bits">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.bits_utils.</tt><tt class="descname">string2bits</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/bits_utils.html#string2bits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.bits_utils.string2bits" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">seq(0|1)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.bits_utils.value2bits">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.bits_utils.</tt><tt class="descname">value2bits</tt><big>(</big><em>x</em>, <em>nbits</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/bits_utils.html#value2bits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.bits_utils.value2bits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an integer to its bit representation.
+LSB first.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<tt class="docutils literal"><span class="pre">int,&gt;=0</span></tt>) &#8211; </li>
+<li><strong>nbits</strong> (<tt class="docutils literal"><span class="pre">N,int,&gt;=1</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">array[N](=0|=1)</span></tt></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.library.nuisances.bits.bits_utils_test">
+<span id="bits-utils-test-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">bits_utils_test</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.bits.bits_utils_test" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.bits_utils_test.test_conversions">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.bits_utils_test.</tt><tt class="descname">test_conversions</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/bits_utils_test.html#test_conversions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.bits_utils_test.test_conversions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.library.nuisances.bits.encrypt">
+<span id="encrypt-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">encrypt</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.bits.encrypt" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.encrypt.</tt><tt class="descname">Encrypt</tt><big>(</big><em>password</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt.html#Encrypt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
+<p>This nuisance encrypts the bits.</p>
+<p>The output is padded to 8 bits.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt.inverse">
+<tt class="descname">inverse</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt.html#Encrypt.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt.inverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt.transform_spec">
+<tt class="descname">transform_spec</tt><big>(</big><em>stream_spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt.html#Encrypt.transform_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt.transform_spec" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stream_spec</strong> (<tt class="docutils literal"><span class="pre">StreamSpec</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt.transform_value">
+<tt class="descname">transform_value</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt.html#Encrypt.transform_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt.transform_value" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<tt class="docutils literal"><span class="pre">array[N](=0|=1)</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array[X](=0|=1),X&gt;=N,X&lt;=N+64</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.encrypt.</tt><tt class="descname">Decrypt</tt><big>(</big><em>password</em>, <em>ngoodbits</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt.html#Decrypt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt.inverse">
+<tt class="descname">inverse</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt.html#Decrypt.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt.inverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt.transform_spec">
+<tt class="descname">transform_spec</tt><big>(</big><em>stream_spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt.html#Decrypt.transform_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt.transform_spec" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stream_spec</strong> (<tt class="docutils literal"><span class="pre">StreamSpec</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt.transform_value">
+<tt class="descname">transform_value</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt.html#Decrypt.transform_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt.transform_value" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<tt class="docutils literal"><span class="pre">array[N](=0|=1)</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array[X](=0|=1),X&lt;=N,X&gt;=N-64</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.library.nuisances.bits.encrypt_utils">
+<span id="encrypt-utils-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">encrypt_utils</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.bits.encrypt_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt_utils.bits_decrypt">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.encrypt_utils.</tt><tt class="descname">bits_decrypt</tt><big>(</big><em>bits</em>, <em>password</em>, <em>ngoodbits</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt_utils.html#bits_decrypt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt_utils.bits_decrypt" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ngoodbits</strong> (<tt class="docutils literal"><span class="pre">int,X,&gt;0,&lt;=N</span></tt>) &#8211; </li>
+<li><strong>password</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>bits</strong> (<tt class="docutils literal"><span class="pre">seq[N](0|1)</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">array[X](=0|=1)</span></tt></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt_utils.bits_encrypt">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.encrypt_utils.</tt><tt class="descname">bits_encrypt</tt><big>(</big><em>bits</em>, <em>password</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt_utils.html#bits_encrypt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt_utils.bits_encrypt" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>password</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>bits</strong> (<tt class="docutils literal"><span class="pre">seq[N](0|1)</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">array[X](=0|=1),X&gt;=N,X&lt;=N+63</span></tt></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt_utils.bits_pad_to_byte">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.encrypt_utils.</tt><tt class="descname">bits_pad_to_byte</tt><big>(</big><em>bits</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt_utils.html#bits_pad_to_byte"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt_utils.bits_pad_to_byte" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bits</strong> (<tt class="docutils literal"><span class="pre">seq[N](0|1)</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array[X](=0|=1),X&gt;=N,X&lt;=N+7</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt_utils.string_pad_to_block_size">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.encrypt_utils.</tt><tt class="descname">string_pad_to_block_size</tt><big>(</big><em>s</em>, <em>block_size</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt_utils.html#string_pad_to_block_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt_utils.string_pad_to_block_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.library.nuisances.bits.encrypt_utils_test">
+<span id="encrypt-utils-test-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">encrypt_utils_test</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.bits.encrypt_utils_test" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.encrypt_utils_test.test_encryption">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.encrypt_utils_test.</tt><tt class="descname">test_encryption</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt_utils_test.html#test_encryption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt_utils_test.test_encryption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.library.nuisances.bits.gray">
+<span id="gray-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">gray</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.bits.gray" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.gray.gray">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.gray.</tt><tt class="descname">gray</tt><big>(</big><em>n</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/gray.html#gray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.gray.gray" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<tt class="docutils literal"><span class="pre">int,&gt;0</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.library.nuisances.bits.gray_test">
+<span id="gray-test-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">gray_test</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.bits.gray_test" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.gray_test.check_gray_code">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.gray_test.</tt><tt class="descname">check_gray_code</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/gray_test.html#check_gray_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.gray_test.check_gray_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.library.nuisances.bits.gray_test.test_gray">
+<tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.gray_test.</tt><tt class="descname">test_gray</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/gray_test.html#test_gray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.gray_test.test_gray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.library.nuisances.bits.int2bits">
+<span id="int2bits-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">int2bits</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.bits.int2bits" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.int2bits.</tt><tt class="descname">Int2bits</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/int2bits.html#Int2bits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
+<p>This nuisance represents integer values with
+their bit representation (0-1).</p>
+<p>Converts a M array into an MxN array, 
+using N bits, where N is the mininum used to
+represent all the numbers in the array.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.inverse">
+<tt class="descname">inverse</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/int2bits.html#Int2bits.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.inverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_spec">
+<tt class="descname">transform_spec</tt><big>(</big><em>stream_spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/int2bits.html#Int2bits.transform_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_spec" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stream_spec</strong> (<tt class="docutils literal"><span class="pre">StreamSpec</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_value">
+<tt class="descname">transform_value</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/int2bits.html#Int2bits.transform_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_value" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<tt class="docutils literal"><span class="pre">array[N]</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array[NxM](=0|=1)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.int2bits.</tt><tt class="descname">Bits2int</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/int2bits.html#Bits2int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
+<p>This nuisance represents transforms back 
+a bit representation into integer values.</p>
+<p>Converts an MxN array (N: number of bits), to
+an M array.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.inverse">
+<tt class="descname">inverse</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/int2bits.html#Bits2int.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.inverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_spec">
+<tt class="descname">transform_spec</tt><big>(</big><em>stream_spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/int2bits.html#Bits2int.transform_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_spec" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stream_spec</strong> (<tt class="docutils literal"><span class="pre">StreamSpec</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_value">
+<tt class="descname">transform_value</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/int2bits.html#Bits2int.transform_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_value" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<tt class="docutils literal"><span class="pre">array[NxM](=0|=1)</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array[N]</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">bits Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">bits</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.bits.bits_utils"><tt class="docutils literal"><span class="pre">bits_utils</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.bits.bits_utils_test"><tt class="docutils literal"><span class="pre">bits_utils_test</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.bits.encrypt"><tt class="docutils literal"><span class="pre">encrypt</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.bits.encrypt_utils"><tt class="docutils literal"><span class="pre">encrypt_utils</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.bits.encrypt_utils_test"><tt class="docutils literal"><span class="pre">encrypt_utils_test</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.bits.gray"><tt class="docutils literal"><span class="pre">gray</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.bits.gray_test"><tt class="docutils literal"><span class="pre">gray_test</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.bits.int2bits"><tt class="docutils literal"><span class="pre">int2bits</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/api/bootstrapping_olympics.library.nuisances.bits.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

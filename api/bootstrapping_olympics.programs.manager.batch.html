@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>batch Package &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="batch-package">
+<h1>batch Package<a class="headerlink" href="#batch-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">batch</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-bootstrapping_olympics.programs.manager.batch"></span><p>Utilities for creating parallel jobs using Compmake.</p>
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.batch.batch_config">
+<span id="batch-config-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">batch_config</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.batch.batch_config" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_config.BatchConfigMaster">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.programs.manager.batch.batch_config.</tt><tt class="descname">BatchConfigMaster</tt><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_config.html#BatchConfigMaster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_config.BatchConfigMaster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">conf_tools.master.ConfigMaster</span></tt></p>
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_config.BatchConfigMaster.get_default_dir">
+<tt class="descname">get_default_dir</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_config.html#BatchConfigMaster.get_default_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_config.BatchConfigMaster.get_default_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_config.check_valid_set_config">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.batch.batch_config.</tt><tt class="descname">check_valid_set_config</tt><big>(</big><em>struct</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_config.html#check_valid_set_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_config.check_valid_set_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.batch.batch_learn">
+<span id="batch-learn-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">batch_learn</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.batch.batch_learn" title="Permalink to this headline">¶</a></h2>
+<p>Some functions to help in writing experiments scripts</p>
+<dl class="class">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.programs.manager.batch.batch_learn.</tt><tt class="descname">TaskRegister</tt><big>(</big><em>data_central</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_learning">
+<tt class="descname">add_learning</tt><big>(</big><em>id_robot</em>, <em>id_agent</em>, <em>num_ep_expl</em>, <em>explorer</em>, <em>publish_progress=False</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.add_learning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_learning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_tasks_explore">
+<tt class="descname">add_tasks_explore</tt><big>(</big><em>id_robot, explorer, num_episodes, episodes_per_tranche=10, num_episodes_videos=1, videos=['mp4z2sb', 'mp4z0no'], max_episode_len=10</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.add_tasks_explore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_tasks_explore" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_tasks_predict">
+<tt class="descname">add_tasks_predict</tt><big>(</big><em>id_agent</em>, <em>id_robot</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.add_tasks_predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_tasks_predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_tasks_servo">
+<tt class="descname">add_tasks_servo</tt><big>(</big><em>id_agent, id_robot, num_episodes, num_episodes_videos=0, max_episode_len=10, displacement=3, videos=['mp4f2sr', 'mp4f2no']</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.add_tasks_servo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_tasks_servo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_tasks_servonav">
+<tt class="descname">add_tasks_servonav</tt><big>(</big><em>id_agent, id_robot, num_episodes, episodes_per_tranche=1, num_episodes_videos=0, max_episode_len=10, resolution=1, fail_if_not_working=False, videos=['mp4f2sr', 'mp4f2no']</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.add_tasks_servonav"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_tasks_servonav" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_videos">
+<tt class="descname">add_videos</tt><big>(</big><em>id_agent</em>, <em>id_robot</em>, <em>id_episodes</em>, <em>videos</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.add_videos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.add_videos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.agent_has_predictor">
+<tt class="descname">agent_has_predictor</tt><big>(</big><em>id_agent</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.agent_has_predictor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.agent_has_predictor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.agent_has_servo">
+<tt class="descname">agent_has_servo</tt><big>(</big><em>id_agent</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.agent_has_servo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.agent_has_servo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.dep_agent_has_learned">
+<tt class="descname">dep_agent_has_learned</tt><big>(</big><em>id_robot</em>, <em>id_agent</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.dep_agent_has_learned"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.dep_agent_has_learned" title="Permalink to this definition">¶</a></dt>
+<dd><p>The agent has completed learning</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.dep_episode_done">
+<tt class="descname">dep_episode_done</tt><big>(</big><em>id_robot</em>, <em>id_episode</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.dep_episode_done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.dep_episode_done" title="Permalink to this definition">¶</a></dt>
+<dd><p>The given episode was completed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.episode_id_exploration">
+<tt class="descname">episode_id_exploration</tt><big>(</big><em>id_agent</em>, <em>K</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.episode_id_exploration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.episode_id_exploration" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id_agent</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>K</strong> (<tt class="docutils literal"><span class="pre">int</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.episode_id_servoing">
+<tt class="descname">episode_id_servoing</tt><big>(</big><em>id_agent</em>, <em>K</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.episode_id_servoing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.episode_id_servoing" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id_agent</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>K</strong> (<tt class="docutils literal"><span class="pre">int</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.episode_id_servonav">
+<tt class="descname">episode_id_servonav</tt><big>(</big><em>id_agent</em>, <em>K</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.episode_id_servonav"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.episode_id_servonav" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id_agent</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>K</strong> (<tt class="docutils literal"><span class="pre">int</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.get_dep">
+<tt class="descname">get_dep</tt><big>(</big><em>x</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.get_dep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.get_dep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.get_tranches">
+<tt class="descname">get_tranches</tt><big>(</big><em>ids</em>, <em>episodes_per_tranche=10</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.get_tranches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.get_tranches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.main">
+<tt class="descname">main</tt><big>(</big><em>agents</em>, <em>robots</em>, <em>explore=None</em>, <em>servo=None</em>, <em>servonav=None</em>, <em>predict=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.main" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>predict</strong> (<tt class="docutils literal"><span class="pre">None|dict</span></tt>) &#8211; </li>
+<li><strong>servonav</strong> (<tt class="docutils literal"><span class="pre">None|dict</span></tt>) &#8211; </li>
+<li><strong>servo</strong> (<tt class="docutils literal"><span class="pre">None|dict</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.set_dep">
+<tt class="descname">set_dep</tt><big>(</big><em>x</em>, <em>job</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.set_dep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.set_dep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.set_dep_agent_has_learned">
+<tt class="descname">set_dep_agent_has_learned</tt><big>(</big><em>id_robot</em>, <em>id_agent</em>, <em>job</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.set_dep_agent_has_learned"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.set_dep_agent_has_learned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.set_dep_episode_done">
+<tt class="descname">set_dep_episode_done</tt><big>(</big><em>id_robot</em>, <em>id_episode</em>, <em>job</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#TaskRegister.set_dep_episode_done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.TaskRegister.set_dep_episode_done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.are_compatible">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.batch.batch_learn.</tt><tt class="descname">are_compatible</tt><big>(</big><em>data_central</em>, <em>id_robot</em>, <em>id_agent</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#are_compatible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.are_compatible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.batch_jobs1">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.batch.batch_learn.</tt><tt class="descname">batch_jobs1</tt><big>(</big><em>data_central</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#batch_jobs1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.batch_jobs1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_learn.checkpoint">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.batch.batch_learn.</tt><tt class="descname">checkpoint</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_learn.html#checkpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_learn.checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dummy function for job.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.batch.batch_manager">
+<span id="batch-manager-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">batch_manager</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.batch.batch_manager" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_manager.batch_process_manager">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.batch.batch_manager.</tt><tt class="descname">batch_process_manager</tt><big>(</big><em>data_central</em>, <em>which_sets</em>, <em>command=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_manager.html#batch_process_manager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_manager.batch_process_manager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.batch.batch_manager.batch_set">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.batch.batch_manager.</tt><tt class="descname">batch_set</tt><big>(</big><em>data_central</em>, <em>id_set</em>, <em>spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/batch/batch_manager.html#batch_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.batch.batch_manager.batch_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">batch Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">batch</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.batch.batch_config"><tt class="docutils literal"><span class="pre">batch_config</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.batch.batch_learn"><tt class="docutils literal"><span class="pre">batch_learn</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.batch.batch_manager"><tt class="docutils literal"><span class="pre">batch_manager</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/api/bootstrapping_olympics.programs.manager.batch.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

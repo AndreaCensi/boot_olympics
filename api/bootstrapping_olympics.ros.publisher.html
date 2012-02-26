@@ -1,0 +1,187 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>publisher Package &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="publisher-package">
+<h1>publisher Package<a class="headerlink" href="#publisher-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">publisher</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-bootstrapping_olympics.ros.publisher"></span></div>
+<div class="section" id="module-bootstrapping_olympics.ros.publisher.ros_publisher">
+<span id="ros-publisher-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">ros_publisher</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.ros.publisher.ros_publisher" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.ros.publisher.ros_publisher.</tt><tt class="descname">ROSPublisher</tt><a class="reference internal" href="../modules/bootstrapping_olympics/ros/publisher/ros_publisher.html#ROSPublisher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.publisher.Publisher" title="bootstrapping_olympics.interfaces.publisher.Publisher"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.publisher.Publisher</span></tt></a></p>
+<p>This is the interface that the agents can use to publish
+debug information.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.array">
+<tt class="descname">array</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/ros/publisher/ros_publisher.html#ROSPublisher.array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.array" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<tt class="docutils literal"><span class="pre">str|seq[&gt;0](str)</span></tt>) &#8211; </li>
+<li><strong>value</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.array_as_image">
+<tt class="descname">array_as_image</tt><big>(</big><em>name</em>, <em>value</em>, <em>filter='posneg'</em>, <em>filter_params={}</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/ros/publisher/ros_publisher.html#ROSPublisher.array_as_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.array_as_image" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<tt class="docutils literal"><span class="pre">str|seq[&gt;0](str)</span></tt>) &#8211; </li>
+<li><strong>value</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.plot">
+<tt class="descname">plot</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/ros/publisher/ros_publisher.html#ROSPublisher.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.text">
+<tt class="descname">text</tt><big>(</big><em>name</em>, <em>text</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/ros/publisher/ros_publisher.html#ROSPublisher.text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.ros.publisher.ros_publisher.ROSPublisher.text" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>text</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>name</strong> (<tt class="docutils literal"><span class="pre">str|seq[&gt;0](str)</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.ros.publisher.ros_publisher.normalize">
+<tt class="descclassname">bootstrapping_olympics.ros.publisher.ros_publisher.</tt><tt class="descname">normalize</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/ros/publisher/ros_publisher.html#normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.ros.publisher.ros_publisher.normalize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.ros.publisher.ros_publisher.numpy_to_imgmsg">
+<tt class="descclassname">bootstrapping_olympics.ros.publisher.ros_publisher.</tt><tt class="descname">numpy_to_imgmsg</tt><big>(</big><em>image</em>, <em>stamp=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/ros/publisher/ros_publisher.html#numpy_to_imgmsg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.ros.publisher.ros_publisher.numpy_to_imgmsg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">publisher Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">publisher</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.ros.publisher.ros_publisher"><tt class="docutils literal"><span class="pre">ros_publisher</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/api/bootstrapping_olympics.ros.publisher.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+ros Package
+===========
+
+:mod:`ros` Package
+------------------
+
+.. automodule:: bootstrapping_olympics.ros
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+
+    bootstrapping_olympics.ros.adapters
+    bootstrapping_olympics.ros.create_launch
+    bootstrapping_olympics.ros.launch_xml
+    bootstrapping_olympics.ros.publisher
+    bootstrapping_olympics.ros.ros_logs
+    bootstrapping_olympics.ros.ros_script_utils
+

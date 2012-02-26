@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>robots Package &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="robots-package">
+<h1>robots Package<a class="headerlink" href="#robots-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">robots</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-bootstrapping_olympics.library.robots"></span><p>Minimal examples of robots.</p>
+</div>
+<div class="section" id="module-bootstrapping_olympics.library.robots.equiv_robot">
+<span id="equiv-robot-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">equiv_robot</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.robots.equiv_robot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.library.robots.equiv_robot.EquivRobot">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.robots.equiv_robot.</tt><tt class="descname">EquivRobot</tt><big>(</big><em>robot</em>, <em>obs_nuisance=</em><span class="optional">[</span><span class="optional">]</span>, <em>cmd_nuisance=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/robots/equiv_robot.html#EquivRobot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.robot.RobotInterface" title="bootstrapping_olympics.interfaces.robot.RobotInterface"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.robot.RobotInterface</span></tt></a></p>
+<p>This is used to create the perturbed version of a robot.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.get_observations">
+<tt class="descname">get_observations</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/robots/equiv_robot.html#EquivRobot.get_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.get_observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.get_original_robot">
+<tt class="descname">get_original_robot</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/robots/equiv_robot.html#EquivRobot.get_original_robot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.get_original_robot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the robot that we are wrapping with this nuisance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.get_spec">
+<tt class="descname">get_spec</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/robots/equiv_robot.html#EquivRobot.get_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.get_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.get_state">
+<tt class="descname">get_state</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/robots/equiv_robot.html#EquivRobot.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.get_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.new_episode">
+<tt class="descname">new_episode</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/robots/equiv_robot.html#EquivRobot.new_episode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.new_episode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.set_commands">
+<tt class="descname">set_commands</tt><big>(</big><em>commands</em>, <em>commands_source</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/robots/equiv_robot.html#EquivRobot.set_commands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.robots.equiv_robot.EquivRobot.set_commands" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commands</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.library.robots.random_robot">
+<span id="random-robot-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">random_robot</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.robots.random_robot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.library.robots.random_robot.RandomRobot">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.robots.random_robot.</tt><tt class="descname">RandomRobot</tt><big>(</big><em>boot_spec</em>, <em>dt=0.1</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/robots/random_robot.html#RandomRobot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.robots.random_robot.RandomRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.robot.RobotInterface" title="bootstrapping_olympics.interfaces.robot.RobotInterface"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.robot.RobotInterface</span></tt></a></p>
+<p>This is a sensorimotor cascade generating uniform noise,
+and ignores any command given.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.random_robot.RandomRobot.get_observations">
+<tt class="descname">get_observations</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/robots/random_robot.html#RandomRobot.get_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.robots.random_robot.RandomRobot.get_observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.random_robot.RandomRobot.get_spec">
+<tt class="descname">get_spec</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/robots/random_robot.html#RandomRobot.get_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.robots.random_robot.RandomRobot.get_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.random_robot.RandomRobot.new_episode">
+<tt class="descname">new_episode</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/robots/random_robot.html#RandomRobot.new_episode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.robots.random_robot.RandomRobot.new_episode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.random_robot.RandomRobot.set_commands">
+<tt class="descname">set_commands</tt><big>(</big><em>commands</em>, <em>commands_source</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/robots/random_robot.html#RandomRobot.set_commands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.robots.random_robot.RandomRobot.set_commands" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commands</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">robots Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">robots</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.robots.equiv_robot"><tt class="docutils literal"><span class="pre">equiv_robot</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.robots.random_robot"><tt class="docutils literal"><span class="pre">random_robot</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/api/bootstrapping_olympics.library.robots.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

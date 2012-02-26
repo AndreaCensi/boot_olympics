@@ -1,0 +1,174 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.library.nuisances.bits.bits_utils &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.library.nuisances.bits.bits_utils</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">contract</span><span class="p">,</span> <span class="n">np</span>
+
+<span class="n">BLOCK_SIZE</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">PAD_CHAR</span> <span class="o">=</span> <span class="s">&#39;?&#39;</span>
+<span class="n">NBITS_IN_BYTE</span> <span class="o">=</span> <span class="mi">8</span>
+
+
+<div class="viewcode-block" id="nbytes_to_hold"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.bits_utils.nbytes_to_hold">[docs]</a><span class="k">def</span> <span class="nf">nbytes_to_hold</span><span class="p">(</span><span class="n">nbits</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Returns the number of bytes necessary to hold the given number</span>
+<span class="sd">        of bits. </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">nbits</span><span class="p">)</span> <span class="o">/</span> <span class="n">NBITS_IN_BYTE</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="nbytes_to_encrypt"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.bits_utils.nbytes_to_encrypt">[docs]</a><span class="k">def</span> <span class="nf">nbytes_to_encrypt</span><span class="p">(</span><span class="n">nbits</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Returns the number of bytes necessary to hold the given number</span>
+<span class="sd">        of bits. Takes into account padding of the message to 8 bits. </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">nbytes</span> <span class="o">=</span> <span class="n">nbytes_to_hold</span><span class="p">(</span><span class="n">nbits</span><span class="p">)</span>
+    <span class="n">nblocks</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">nbytes</span><span class="p">)</span> <span class="o">/</span> <span class="n">BLOCK_SIZE</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">nblocks</span> <span class="o">*</span> <span class="n">BLOCK_SIZE</span>
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">&#39;int,&gt;=0&#39;</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="s">&#39;N,int,&gt;=1&#39;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;array[N](=0|=1)&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="value2bits"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.bits_utils.value2bits">[docs]</a><span class="k">def</span> <span class="nf">value2bits</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">nbits</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Converts an integer to its bit representation.</span>
+<span class="sd">        LSB first. &#39;&#39;&#39;</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nbits</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nbits</span><span class="p">):</span>
+        <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">b</span>
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="s">&#39;seq[N](=0|=1)&#39;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;int&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="bits2value"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.bits_utils.bits2value">[docs]</a><span class="k">def</span> <span class="nf">bits2value</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Converts the bits back into integers. LSB first. &#39;&#39;&#39;</span>
+    <span class="n">bit_values</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">bit_values</span><span class="p">))</span>
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s">&#39;seq[N](int,&gt;=0,&lt;256)&#39;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;seq[8*N](0|1)&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="bytes2bits"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.bits_utils.bytes2bits">[docs]</a><span class="k">def</span> <span class="nf">bytes2bits</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Returns the bits in a string &#39;&#39;&#39;</span>
+    <span class="n">bits</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+        <span class="n">bits</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">value2bits</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">bits</span><span class="o">=</span><span class="s">&#39;seq[&gt;0](0|1)&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="bits2bytes"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.bits_utils.bits2bytes">[docs]</a><span class="k">def</span> <span class="nf">bits2bytes</span><span class="p">(</span><span class="n">bits</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Packs the bits in a string, padding at 0. &#39;&#39;&#39;</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">L</span> <span class="o">%</span> <span class="mi">8</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;I expect a sequence of length divisible by 8, got </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">L</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">bits</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">nbytes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span> <span class="o">/</span> <span class="mi">8</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">nbytes</span><span class="p">):</span>
+        <span class="c"># bits for the i-th byte</span>
+        <span class="n">bi</span> <span class="o">=</span> <span class="n">bits</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">8</span><span class="p">:(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span><span class="p">]</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bits2value</span><span class="p">(</span><span class="n">bi</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="s">&#39;str&#39;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;seq(0|1)&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="string2bits"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.bits_utils.string2bits">[docs]</a><span class="k">def</span> <span class="nf">string2bits</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">bytes2bits</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+</div>
+<span class="nd">@contract</span><span class="p">(</span><span class="n">returns</span><span class="o">=</span><span class="s">&#39;str&#39;</span><span class="p">,</span> <span class="n">bits</span><span class="o">=</span><span class="s">&#39;seq(0|1)&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="bits2string"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.bits_utils.bits2string">[docs]</a><span class="k">def</span> <span class="nf">bits2string</span><span class="p">(</span><span class="n">bits</span><span class="p">):</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">bits2bytes</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.manager.meat.directory_structure &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.manager.meat.directory_structure</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BootOlympicsConfig</span><span class="p">,</span> <span class="n">BootOlympicsConstants</span><span class="p">,</span>
+    <span class="n">LogsFormat</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">check_contained</span><span class="p">,</span> <span class="n">expand_environment</span><span class="p">,</span>
+    <span class="n">substitute</span><span class="p">,</span> <span class="n">mkdirs_thread_safe</span><span class="p">,</span> <span class="n">warn_good_identifier</span><span class="p">,</span> <span class="n">warn_good_filename</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+
+<div class="viewcode-block" id="DirectoryStructure"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure">[docs]</a><span class="k">class</span> <span class="nc">DirectoryStructure</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        This class knows how to organize the output of the various programs</span>
+<span class="sd">        on the filesystem.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">DEFAULT_ROOT</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span>
+
+    <span class="n">DIR_REPORTS</span> <span class="o">=</span> <span class="s">&#39;reports&#39;</span>
+    <span class="n">DIR_VIDEOS</span> <span class="o">=</span> <span class="s">&#39;videos&#39;</span>
+    <span class="n">DIR_CONFIG</span> <span class="o">=</span> <span class="s">&#39;config&#39;</span>
+    <span class="n">DIR_LOGS</span> <span class="o">=</span> <span class="s">&#39;logs&#39;</span>
+    <span class="n">DIR_STORAGE</span> <span class="o">=</span> <span class="s">&#39;storage&#39;</span>
+    <span class="n">DIR_STATES</span> <span class="o">=</span> <span class="s">&#39;states&#39;</span>
+
+    <span class="c"># XXX: use generic separator</span>
+    <span class="n">pattern_simulation</span> <span class="o">=</span> <span class="s">&#39;simulations/${id_robot}/${id_agent}/&#39;</span>
+    <span class="n">pattern_report</span> <span class="o">=</span> <span class="s">&#39;${id_robot}-${id_agent}-${phase}.html&#39;</span>
+    <span class="n">pattern_report_rd</span> <span class="o">=</span> <span class="s">&#39;resources&#39;</span>
+    <span class="n">pattern_video</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;${id_robot}-${id_agent}-${id_episode}&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">DEFAULT_ROOT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">expand_environment</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;The root directory </span><span class="si">%r</span><span class="s"> does not exist.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_format</span> <span class="o">=</span> <span class="n">BootOlympicsConstants</span><span class="o">.</span><span class="n">DEFAULT_LOG_FORMAT</span>
+
+<div class="viewcode-block" id="DirectoryStructure.set_log_format"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.set_log_format">[docs]</a>    <span class="k">def</span> <span class="nf">set_log_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_format</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Sets the log format to write logs with. &#39;&#39;&#39;</span>
+        <span class="n">check_contained</span><span class="p">(</span><span class="n">log_format</span><span class="p">,</span> <span class="n">LogsFormat</span><span class="o">.</span><span class="n">formats</span><span class="p">,</span> <span class="s">&#39;format&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_format</span> <span class="o">=</span> <span class="n">log_format</span>
+</div>
+<div class="viewcode-block" id="DirectoryStructure.get_config_directories"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.get_config_directories">[docs]</a>    <span class="k">def</span> <span class="nf">get_config_directories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dirs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dirs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BootOlympicsConfig</span><span class="o">.</span><span class="n">get_default_dir</span><span class="p">())</span>
+        <span class="n">dirs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">DIR_CONFIG</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">dirs</span>
+</div>
+<div class="viewcode-block" id="DirectoryStructure.get_simulated_logs_dir"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.get_simulated_logs_dir">[docs]</a>    <span class="k">def</span> <span class="nf">get_simulated_logs_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns the main directory where simulated logs are placed. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">DIR_LOGS</span><span class="p">,</span>
+                            <span class="s">&#39;simulations&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DirectoryStructure.get_storage_dir"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.get_storage_dir">[docs]</a>    <span class="k">def</span> <span class="nf">get_storage_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns a directory where intermediate results can be placed. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">DIR_STORAGE</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DirectoryStructure.get_log_directories"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.get_log_directories">[docs]</a>    <span class="k">def</span> <span class="nf">get_log_directories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns a list of the directories where to look for logs. &#39;&#39;&#39;</span>
+        <span class="n">dirs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dirs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">DIR_LOGS</span><span class="p">))</span>
+        <span class="c"># TODO: additional</span>
+        <span class="k">return</span> <span class="n">dirs</span>
+</div>
+<div class="viewcode-block" id="DirectoryStructure.get_state_db_directory"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.get_state_db_directory">[docs]</a>    <span class="k">def</span> <span class="nf">get_state_db_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DIR_STATES</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DirectoryStructure.get_simlog_filename"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.get_simlog_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_simlog_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_stream</span><span class="p">,</span>
+                                  <span class="n">logs_format</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+        <span class="n">warn_good_identifier</span><span class="p">(</span><span class="n">id_stream</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">logs_format</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">logs_format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_format</span>
+        <span class="n">check_contained</span><span class="p">(</span><span class="n">logs_format</span><span class="p">,</span> <span class="n">LogsFormat</span><span class="o">.</span><span class="n">formats</span><span class="p">,</span> <span class="s">&#39;format&#39;</span><span class="p">)</span>
+
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">pattern_simulation</span>
+        <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">DIR_LOGS</span><span class="p">,</span>
+                               <span class="n">substitute</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span>
+                                          <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                                          <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                          <span class="n">id_stream</span><span class="o">=</span><span class="n">id_stream</span><span class="p">))</span>
+        <span class="n">mkdirs_thread_safe</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+
+        <span class="c"># Add a unique string to the file</span>
+        <span class="n">tmpfile</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span>
+                                          <span class="n">suffix</span><span class="o">=</span><span class="s">&#39;.</span><span class="si">%s</span><span class="s">.active&#39;</span> <span class="o">%</span> <span class="n">logs_format</span><span class="p">,</span>
+                                          <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">-&#39;</span> <span class="o">%</span> <span class="n">id_stream</span><span class="p">,</span>
+                                          <span class="nb">dir</span><span class="o">=</span><span class="n">dirname</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">tmpfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;To be used&#39;</span><span class="p">)</span>
+
+        <span class="n">tmp_filename</span> <span class="o">=</span> <span class="n">tmpfile</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">tmp_filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.active&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="n">tmpfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Writing on file </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+
+        <span class="n">warn_good_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">warn_good_filename</span><span class="p">(</span><span class="n">tmp_filename</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">filename</span>
+</div>
+<div class="viewcode-block" id="DirectoryStructure.get_report_res_dir"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.get_report_res_dir">[docs]</a>    <span class="k">def</span> <span class="nf">get_report_res_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_state</span><span class="p">,</span> <span class="n">phase</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns the directory for the resources of the report. &#39;&#39;&#39;</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">pattern_report_rd</span>
+        <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">DIR_REPORTS</span><span class="p">,</span>
+                               <span class="n">substitute</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span>
+                                          <span class="n">phase</span><span class="o">=</span><span class="n">phase</span><span class="p">,</span>
+                                          <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                                          <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                          <span class="n">id_state</span><span class="o">=</span><span class="n">id_state</span><span class="p">))</span>
+        <span class="n">mkdirs_thread_safe</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dirname</span>
+</div>
+<div class="viewcode-block" id="DirectoryStructure.get_report_filename"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.get_report_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_report_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_state</span><span class="p">,</span> <span class="n">phase</span><span class="p">):</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">pattern_report</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">DIR_REPORTS</span><span class="p">,</span>
+                               <span class="n">substitute</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span>
+                                          <span class="n">phase</span><span class="o">=</span><span class="n">phase</span><span class="p">,</span>
+                                          <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                                          <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                          <span class="n">id_state</span><span class="o">=</span><span class="n">id_state</span><span class="p">))</span>
+        <span class="n">mkdirs_thread_safe</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">filename</span>
+</div>
+<div class="viewcode-block" id="DirectoryStructure.get_video_basename"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.get_video_basename">[docs]</a>    <span class="k">def</span> <span class="nf">get_video_basename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_episode</span><span class="p">):</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">pattern_video</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">id_episode</span><span class="p">:</span>
+            <span class="n">id_episode</span> <span class="o">=</span> <span class="s">&quot;alleps&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">id_agent</span><span class="p">:</span>
+            <span class="n">id_agent</span> <span class="o">=</span> <span class="s">&quot;allags&quot;</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">DirectoryStructure</span><span class="o">.</span><span class="n">DIR_VIDEOS</span><span class="p">,</span>
+                               <span class="n">substitute</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span>
+                                          <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                          <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                                          <span class="n">id_episode</span><span class="o">=</span><span class="n">id_episode</span><span class="p">))</span>
+        <span class="n">warn_good_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">filename</span>
+</div>
+<div class="viewcode-block" id="DirectoryStructure.file_is_done"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.directory_structure.DirectoryStructure.file_is_done">[docs]</a>    <span class="k">def</span> <span class="nf">file_is_done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename_or_basename</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">            Notifies that some file is done writing. </span>
+<span class="sd">            Used to create a list of recent files that are done.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># TODO: add implementation of notification</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

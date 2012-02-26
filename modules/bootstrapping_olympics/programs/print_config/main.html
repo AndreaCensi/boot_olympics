@@ -1,0 +1,185 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.print_config.main &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.print_config.main</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="n">BootOlympicsConfig</span>
+<span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">wrap_script_entry_point</span><span class="p">,</span> <span class="n">natsorted</span>
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">usage</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+
+<span class="s">    This program writes a simple summary of all the configuration available.</span>
+
+<span class="s">    boot_olympics_print_config [-d &lt;config directory&gt;] -o outputdir</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="boot_olympics_print_config"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.programs.print_config.html#bootstrapping_olympics.programs.print_config.main.boot_olympics_print_config">[docs]</a><span class="k">def</span> <span class="nf">boot_olympics_print_config</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--outdir&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;outdir&#39;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;Output directory&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;base directory for configuration&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Spurious arguments&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">outdir</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Please pass --outdir.&#39;</span><span class="p">)</span>
+
+    <span class="n">print_configuration</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">outdir</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="print_configuration"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.programs.print_config.html#bootstrapping_olympics.programs.print_config.main.print_configuration">[docs]</a><span class="k">def</span> <span class="nf">print_configuration</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">outdir</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">reprep</span> <span class="kn">import</span> <span class="n">Report</span>
+
+    <span class="n">BootOlympicsConfig</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">write_report</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outdir</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.html&#39;</span> <span class="o">%</span> <span class="n">r</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">rd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outdir</span><span class="p">,</span> <span class="s">&#39;images&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Writing to </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">out</span><span class="p">)</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">resources_dir</span><span class="o">=</span><span class="n">rd</span><span class="p">)</span>
+
+<span class="c">#    tasks = BootOlympicsConfig.tasks</span>
+<span class="c">#    r = Report(&#39;tasks&#39;)</span>
+<span class="c">#    create_generic_table(r, &#39;configuration&#39;, tasks, [&#39;desc&#39;, &#39;code&#39;])</span>
+<span class="c">#    write_report(r)</span>
+
+    <span class="n">agents</span> <span class="o">=</span> <span class="n">BootOlympicsConfig</span><span class="o">.</span><span class="n">agents</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">Report</span><span class="p">(</span><span class="s">&#39;agents&#39;</span><span class="p">)</span>
+    <span class="n">create_generic_table</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="s">&#39;configuration&#39;</span><span class="p">,</span> <span class="n">agents</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;desc&#39;</span><span class="p">,</span> <span class="s">&#39;code&#39;</span><span class="p">])</span>
+    <span class="n">write_report</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="n">robots</span> <span class="o">=</span> <span class="n">BootOlympicsConfig</span><span class="o">.</span><span class="n">robots</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">Report</span><span class="p">(</span><span class="s">&#39;robots&#39;</span><span class="p">)</span>
+    <span class="n">create_generic_table</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="s">&#39;configuration&#39;</span><span class="p">,</span> <span class="n">robots</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;desc&#39;</span><span class="p">,</span> <span class="s">&#39;ros-node&#39;</span><span class="p">])</span>
+    <span class="n">write_report</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="n">nuisances</span> <span class="o">=</span> <span class="n">BootOlympicsConfig</span><span class="o">.</span><span class="n">nuisances</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">Report</span><span class="p">(</span><span class="s">&#39;nuisances&#39;</span><span class="p">)</span>
+    <span class="n">create_generic_table</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="s">&#39;configuration&#39;</span><span class="p">,</span> <span class="n">nuisances</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;desc&#39;</span><span class="p">,</span> <span class="s">&#39;code&#39;</span><span class="p">])</span>
+    <span class="n">write_report</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+<span class="c">#    events = BootOlympicsConfig.events</span>
+<span class="c">#    r = Report(&#39;events&#39;)</span>
+<span class="c">#    create_generic_table(r, &#39;configuration&#39;, events,</span>
+<span class="c">#                         [&#39;desc&#39;, &#39;tasks&#39;, &#39;agents&#39;, &#39;robots&#39;])</span>
+<span class="c">#    write_report(r)</span>
+
+</div>
+<div class="viewcode-block" id="create_generic_table"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.programs.print_config.html#bootstrapping_olympics.programs.print_config.main.create_generic_table">[docs]</a><span class="k">def</span> <span class="nf">create_generic_table</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">nid</span><span class="p">,</span> <span class="n">name2entry</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">caption</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">natsorted</span><span class="p">(</span><span class="n">name2entry</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">names</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">name2entry</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+                <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">nid</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span>
+                <span class="n">cols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="n">names</span><span class="p">,</span> <span class="n">caption</span><span class="o">=</span><span class="n">caption</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&#39;warn&#39;</span><span class="p">,</span> <span class="s">&#39;Empty </span><span class="si">%r</span><span class="s"> table&#39;</span> <span class="o">%</span> <span class="n">nid</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.programs.print_config.html#bootstrapping_olympics.programs.print_config.main.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">wrap_script_entry_point</span><span class="p">(</span><span class="n">boot_olympics_print_config</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

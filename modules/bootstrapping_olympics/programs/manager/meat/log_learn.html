@@ -1,0 +1,242 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.programs.manager.meat.log_learn &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.programs.manager.meat.log_learn</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">load_agent_state</span><span class="p">,</span> <span class="n">publish_agent_output</span><span class="p">,</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics</span> <span class="kn">import</span> <span class="n">AgentInterface</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics.utils</span> <span class="kn">import</span> <span class="n">InAWhile</span><span class="p">,</span> <span class="n">UserError</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+
+<div class="viewcode-block" id="learn_log"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.programs.manager.meat.html#bootstrapping_olympics.programs.manager.meat.log_learn.learn_log">[docs]</a><span class="k">def</span> <span class="nf">learn_log</span><span class="p">(</span><span class="n">data_central</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span>
+              <span class="n">reset</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+              <span class="n">publish_interval</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+              <span class="n">publish_once</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+              <span class="n">interval_save</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+              <span class="n">interval_print</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+              <span class="n">episodes</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; If episodes is not None, it is a list of episodes id to learn. &#39;&#39;&#39;</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Learning episodes </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">episodes</span><span class="p">)</span>
+
+    <span class="n">log_index</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">get_log_index</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">log_index</span><span class="o">.</span><span class="n">has_streams_for_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;No log for robot </span><span class="si">%r</span><span class="s"> found. I know: </span><span class="si">%s</span><span class="s">.&#39;</span>
+               <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_index</span><span class="o">.</span><span class="n">robots2streams</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">bo_config</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">get_bo_config</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">id_agent</span> <span class="ow">in</span> <span class="n">bo_config</span><span class="o">.</span><span class="n">agents</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Agent </span><span class="si">%r</span><span class="s"> not found in configuration. I know: </span><span class="si">%s</span><span class="s">.&#39;</span>
+               <span class="o">%</span> <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bo_config</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+        <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">agent_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;BO.learn:</span><span class="si">%s</span><span class="s">(</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">))</span>
+    <span class="n">agent_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="n">AgentInterface</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">agent_logger</span>
+
+    <span class="n">agent</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="n">load_agent_state</span><span class="p">(</span><span class="n">data_central</span><span class="p">,</span>
+                                    <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                                    <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                    <span class="n">reset_state</span><span class="o">=</span><span class="n">reset</span><span class="p">)</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">get_agent_state_db</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">publish_interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">publish_once</span><span class="p">:</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">get_dir_structure</span><span class="p">()</span>
+        <span class="n">report_dir</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">get_report_dir</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                                       <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                       <span class="n">id_state</span><span class="o">=</span><span class="n">state</span><span class="o">.</span><span class="n">id_state</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Writing output to directory </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">report_dir</span><span class="p">)</span>
+        <span class="n">publish_agent_output</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">report_dir</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s">&#39;once&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">publish_once</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;As requested, exiting after publishing information.&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">streams</span> <span class="o">=</span> <span class="n">log_index</span><span class="o">.</span><span class="n">get_streams_for_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">)</span>
+    <span class="c"># TODO: progress bar</span>
+    <span class="n">num_episodes_total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_episodes_remaining</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_observations_total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_observations_remaining</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
+        <span class="c"># Check if all learned</span>
+        <span class="n">stream_episodes</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id_episodes</span><span class="p">()</span>
+        <span class="n">num_episodes_total</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stream_episodes</span><span class="p">)</span>
+        <span class="n">num_observations_total</span> <span class="o">+=</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_num_observations</span><span class="p">()</span>
+        <span class="n">to_learn</span> <span class="o">=</span> <span class="n">stream_episodes</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">id_episodes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">episodes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">to_learn</span> <span class="o">=</span> <span class="n">to_learn</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">episodes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">to_learn</span><span class="p">:</span>
+            <span class="n">num_episodes_remaining</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">to_learn</span><span class="p">)</span>
+            <span class="n">num_observations_remaining</span> <span class="o">+=</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_num_observations</span><span class="p">()</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%20s</span><span class="s">: </span><span class="si">%7d</span><span class="s"> episodes, </span><span class="si">%7d</span><span class="s"> observations.&#39;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">template</span> <span class="o">%</span> <span class="p">(</span><span class="s">&#39;total&#39;</span><span class="p">,</span>
+                            <span class="n">num_episodes_total</span><span class="p">,</span>
+                            <span class="n">num_observations_total</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">template</span> <span class="o">%</span> <span class="p">(</span><span class="s">&#39;already learned&#39;</span><span class="p">,</span>
+                            <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">id_episodes</span><span class="p">),</span>
+                            <span class="n">state</span><span class="o">.</span><span class="n">num_observations</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">template</span> <span class="o">%</span> <span class="p">(</span><span class="s">&#39;remaining&#39;</span><span class="p">,</span>
+                            <span class="n">num_episodes_remaining</span><span class="p">,</span>
+                            <span class="n">num_observations_remaining</span><span class="p">))</span>
+
+    <span class="n">tracker_save</span> <span class="o">=</span> <span class="n">InAWhile</span><span class="p">(</span><span class="n">interval_save</span><span class="p">)</span>
+
+    <span class="n">tracker</span> <span class="o">=</span> <span class="n">InAWhile</span><span class="p">(</span><span class="n">interval_print</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
+        <span class="c"># Check if all learned</span>
+        <span class="n">to_learn</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id_episodes</span><span class="p">()</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">id_episodes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">episodes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">to_learn</span> <span class="o">=</span> <span class="n">to_learn</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">episodes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">to_learn</span><span class="p">:</span>
+            <span class="c">#logger.info(&#39;Stream %s already completely learned.&#39; % stream)</span>
+            <span class="k">continue</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">compmake</span> <span class="kn">import</span> <span class="n">progress</span>
+            <span class="n">progress</span><span class="p">(</span><span class="s">&#39;Learning&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">id_episodes</span><span class="p">),</span>
+                                  <span class="n">num_episodes_total</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">cur_stream_observations</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">only_episodes</span><span class="o">=</span><span class="n">to_learn</span><span class="p">):</span>
+            <span class="n">state</span><span class="o">.</span><span class="n">num_observations</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">cur_stream_observations</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">tracker</span><span class="o">.</span><span class="n">its_time</span><span class="p">():</span>
+                <span class="n">progress</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">num_observations</span><span class="p">)</span> <span class="o">/</span>
+                                  <span class="n">num_observations_total</span><span class="p">)</span>
+                <span class="n">progress_log</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">cur_stream_observations</span><span class="p">)</span> <span class="o">/</span>
+                                      <span class="n">stream</span><span class="o">.</span><span class="n">get_num_observations</span><span class="p">())</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;overall </span><span class="si">%.2f%%</span><span class="s"> (log </span><span class="si">%3d%%</span><span class="s">) (eps: </span><span class="si">%4d</span><span class="s">/</span><span class="si">%d</span><span class="s">, obs: </span><span class="si">%4d</span><span class="s">/</span><span class="si">%d</span><span class="s">);&#39;</span>
+                       <span class="s">&#39; </span><span class="si">%5.1f</span><span class="s"> fps&#39;</span> <span class="o">%</span>
+                       <span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">progress_log</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">id_episodes</span><span class="p">),</span>
+                         <span class="n">num_episodes_total</span><span class="p">,</span>
+                        <span class="n">state</span><span class="o">.</span><span class="n">num_observations</span><span class="p">,</span> <span class="n">num_observations_total</span><span class="p">,</span>
+                        <span class="n">tracker</span><span class="o">.</span><span class="n">fps</span><span class="p">()))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">tracker_save</span><span class="o">.</span><span class="n">its_time</span><span class="p">():</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Saving state (periodic)&#39;</span><span class="p">)</span>
+                <span class="c"># note: episodes not updated</span>
+                <span class="n">state</span><span class="o">.</span><span class="n">agent_state</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span> <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">)</span>
+
+            <span class="n">agent</span><span class="o">.</span><span class="n">process_observations</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">publish_interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="mi">0</span> <span class="o">==</span> <span class="n">state</span><span class="o">.</span><span class="n">num_observations</span> <span class="o">%</span> <span class="n">publish_interval</span><span class="p">:</span>
+                    <span class="n">publish_agent_output</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">report_dir</span><span class="p">,</span>
+                                    <span class="n">basename</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%05d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">state</span><span class="o">.</span><span class="n">num_observations</span><span class="p">)</span>
+
+        <span class="n">state</span><span class="o">.</span><span class="n">id_episodes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">to_learn</span><span class="p">)</span>
+
+    <span class="c"># Saving agent state</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Saving state (end of streams)&#39;</span><span class="p">)</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">agent_state</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span> <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">publish_interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">data_central</span><span class="o">.</span><span class="n">get_dir_structure</span><span class="p">()</span>
+        <span class="n">report_dir</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">get_report_dir</span><span class="p">(</span><span class="n">id_agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">,</span>
+                                       <span class="n">id_robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span>
+                                       <span class="n">id_state</span><span class="o">=</span><span class="n">state</span><span class="o">.</span><span class="n">id_state</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Writing output to directory </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">report_dir</span><span class="p">)</span>
+        <span class="n">publish_agent_output</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">report_dir</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s">&#39;all&#39;</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

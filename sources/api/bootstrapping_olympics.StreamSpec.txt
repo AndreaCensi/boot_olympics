@@ -1,0 +1,6 @@
+bootstrapping_olympics.StreamSpec
+=================================
+
+.. currentmodule:: bootstrapping_olympics
+
+.. autodata:: StreamSpec

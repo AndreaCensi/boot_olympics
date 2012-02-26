@@ -1,0 +1,251 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>servo Package &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="servo-package">
+<h1>servo Package<a class="headerlink" href="#servo-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">servo</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-bootstrapping_olympics.programs.manager.meat.servo"></span><dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.task_servo">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servo.</tt><tt class="descname">task_servo</tt><big>(</big><em>data_central</em>, <em>id_agent</em>, <em>id_robot</em>, <em>max_episode_len</em>, <em>num_episodes</em>, <em>displacement</em>, <em>id_episodes=None</em>, <em>cumulative=False</em>, <em>interval_print=None</em>, <em>num_episodes_with_robot_state=0</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.task_servo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of the episodes IDs simulated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>interval_print</strong> (<tt class="docutils literal"><span class="pre">None|&gt;=0</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.servo_stats_report">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servo.</tt><tt class="descname">servo_stats_report</tt><big>(</big><em>data_central</em>, <em>id_agent</em>, <em>id_robot</em>, <em>summaries</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.servo_stats_report" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.servo_stats_summaries">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servo.</tt><tt class="descname">servo_stats_summaries</tt><big>(</big><em>data_central</em>, <em>id_agent</em>, <em>id_robot</em>, <em>id_episodes=None</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.servo_stats_summaries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.meat.servo.bookkeeping">
+<span id="bookkeeping-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">bookkeeping</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.meat.servo.bookkeeping" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.</tt><tt class="descname">BookkeepingServo</tt><big>(</big><em>data_central</em>, <em>id_robot</em>, <em>id_agent</em>, <em>num_episodes</em>, <em>cumulative=True</em>, <em>interval_print=5</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servo/bookkeeping.html#BookkeepingServo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple class to keep track of how many we have to simulate.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.another_episode_todo">
+<tt class="descname">another_episode_todo</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servo/bookkeeping.html#BookkeepingServo.another_episode_todo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.another_episode_todo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.episode_done">
+<tt class="descname">episode_done</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servo/bookkeeping.html#BookkeepingServo.episode_done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.episode_done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.get_all_episodes">
+<tt class="descname">get_all_episodes</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servo/bookkeeping.html#BookkeepingServo.get_all_episodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.get_all_episodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of all episodes, both the already present
+and the simulated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.get_id_episodes">
+<tt class="descname">get_id_episodes</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servo/bookkeeping.html#BookkeepingServo.get_id_episodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.get_id_episodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of episodes simulated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.observations">
+<tt class="descname">observations</tt><big>(</big><em>observations</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servo/bookkeeping.html#BookkeepingServo.observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.bookkeeping.BookkeepingServo.observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.meat.servo.report">
+<span id="report-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">report</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.meat.servo.report" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.report.servo_stats_report">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servo.report.</tt><tt class="descname">servo_stats_report</tt><big>(</big><em>data_central</em>, <em>id_agent</em>, <em>id_robot</em>, <em>summaries</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servo/report.html#servo_stats_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.report.servo_stats_report" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.meat.servo.run_simulation">
+<span id="run-simulation-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">run_simulation</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.meat.servo.run_simulation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.run_simulation.run_simulation_servo">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servo.run_simulation.</tt><tt class="descname">run_simulation_servo</tt><big>(</big><em>id_robot</em>, <em>robot</em>, <em>id_agent</em>, <em>agent</em>, <em>max_observations</em>, <em>max_time</em>, <em>id_episode</em>, <em>id_environment</em>, <em>check_valid_values=True</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servo/run_simulation.html#run_simulation_servo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.run_simulation.run_simulation_servo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs an episode of the simulation. The agent should already been
+init()ed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>max_observations</strong> (<tt class="docutils literal"><span class="pre">&gt;=1</span></tt>) &#8211; </li>
+<li><strong>id_agent</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+<li><strong>max_time</strong> (<tt class="docutils literal"><span class="pre">&gt;0</span></tt>) &#8211; </li>
+<li><strong>robot</strong> (<tt class="docutils literal"><span class="pre">RobotInterface</span></tt>) &#8211; </li>
+<li><strong>id_robot</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.meat.servo.servo">
+<span id="servo-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">servo</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.meat.servo.servo" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.servo.servoing_episode">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servo.servo.</tt><tt class="descname">servoing_episode</tt><big>(</big><em>id_robot</em>, <em>robot</em>, <em>id_servo_agent</em>, <em>servo_agent</em>, <em>writer</em>, <em>id_episode</em>, <em>displacement</em>, <em>max_episode_len</em>, <em>save_robot_state</em>, <em>converged_dist_t_m=0.1</em>, <em>converged_dist_th_deg=1</em>, <em>max_tries=10000</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servo/servo.html#servoing_episode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.servo.servoing_episode" title="Permalink to this definition">¶</a></dt>
+<dd><p>:arg:displacement: Time in seconds to displace the robot.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.servo.task_servo">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servo.servo.</tt><tt class="descname">task_servo</tt><big>(</big><em>data_central</em>, <em>id_agent</em>, <em>id_robot</em>, <em>max_episode_len</em>, <em>num_episodes</em>, <em>displacement</em>, <em>id_episodes=None</em>, <em>cumulative=False</em>, <em>interval_print=None</em>, <em>num_episodes_with_robot_state=0</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servo/servo.html#task_servo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.servo.task_servo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of the episodes IDs simulated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>interval_print</strong> (<tt class="docutils literal"><span class="pre">None|&gt;=0</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.meat.servo.summaries">
+<span id="summaries-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">summaries</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.meat.servo.summaries" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.summaries.servo_stats_summaries">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servo.summaries.</tt><tt class="descname">servo_stats_summaries</tt><big>(</big><em>data_central</em>, <em>id_agent</em>, <em>id_robot</em>, <em>id_episodes=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servo/summaries.html#servo_stats_summaries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.summaries.servo_stats_summaries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.programs.manager.meat.servo.utils">
+<span id="utils-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">utils</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.programs.manager.meat.servo.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.programs.manager.meat.servo.utils.get_vsim_from_robot">
+<tt class="descclassname">bootstrapping_olympics.programs.manager.meat.servo.utils.</tt><tt class="descname">get_vsim_from_robot</tt><big>(</big><em>robot</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/programs/manager/meat/servo/utils.html#get_vsim_from_robot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.programs.manager.meat.servo.utils.get_vsim_from_robot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the robot is a VehicleSimulation
+or an EquivRobot. If not, it raises an exception.
+Returns an instance to the VehicleSimulation.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">servo Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">servo</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.meat.servo.bookkeeping"><tt class="docutils literal"><span class="pre">bookkeeping</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.meat.servo.report"><tt class="docutils literal"><span class="pre">report</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.meat.servo.run_simulation"><tt class="docutils literal"><span class="pre">run_simulation</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.meat.servo.servo"><tt class="docutils literal"><span class="pre">servo</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.meat.servo.summaries"><tt class="docutils literal"><span class="pre">summaries</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.programs.manager.meat.servo.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/api/bootstrapping_olympics.programs.manager.meat.servo.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>logs Package &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="logs-package">
+<h1>logs Package<a class="headerlink" href="#logs-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">logs</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-bootstrapping_olympics.logs"></span><p>Abstractions for reading and writing logs in various formats.</p>
+</div>
+<div class="section" id="module-bootstrapping_olympics.logs.boot_stream">
+<span id="boot-stream-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">boot_stream</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.logs.boot_stream" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.logs.boot_stream.BootStream">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.logs.boot_stream.</tt><tt class="descname">BootStream</tt><big>(</big><em>id_robot</em>, <em>filename</em>, <em>topic</em>, <em>spec</em>, <em>summaries</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#BootStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.BootStream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This class represents the structure used in the .bag index.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.BootStream.get_episodes">
+<tt class="descname">get_episodes</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#BootStream.get_episodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.BootStream.get_episodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.BootStream.get_filename">
+<tt class="descname">get_filename</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#BootStream.get_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.BootStream.get_filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.BootStream.get_id_agents">
+<tt class="descname">get_id_agents</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#BootStream.get_id_agents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.BootStream.get_id_agents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.BootStream.get_id_episodes">
+<tt class="descname">get_id_episodes</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#BootStream.get_id_episodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.BootStream.get_id_episodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.BootStream.get_id_robot">
+<tt class="descname">get_id_robot</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#BootStream.get_id_robot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.BootStream.get_id_robot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.BootStream.get_length">
+<tt class="descname">get_length</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#BootStream.get_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.BootStream.get_length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.BootStream.get_num_observations">
+<tt class="descname">get_num_observations</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#BootStream.get_num_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.BootStream.get_num_observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.BootStream.get_spec">
+<tt class="descname">get_spec</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#BootStream.get_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.BootStream.get_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.BootStream.get_topic">
+<tt class="descname">get_topic</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#BootStream.get_topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.BootStream.get_topic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.BootStream.read">
+<tt class="descname">read</tt><big>(</big><em>only_episodes=None</em>, <em>read_extra=False</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#BootStream.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.BootStream.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="bootstrapping_olympics.logs.boot_stream.EpisodeSummary">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.logs.boot_stream.</tt><tt class="descname">EpisodeSummary</tt><big>(</big><em>id_episode</em>, <em>id_agent</em>, <em>id_world</em>, <em>num_observations</em>, <em>length</em>, <em>extras</em>, <em>timestamp</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#EpisodeSummary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.EpisodeSummary" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_id_agent">
+<tt class="descname">get_id_agent</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#EpisodeSummary.get_id_agent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_id_agent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_id_episode">
+<tt class="descname">get_id_episode</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#EpisodeSummary.get_id_episode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_id_episode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_length">
+<tt class="descname">get_length</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#EpisodeSummary.get_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_num_observations">
+<tt class="descname">get_num_observations</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#EpisodeSummary.get_num_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_num_observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_timestamp">
+<tt class="descname">get_timestamp</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/boot_stream.html#EpisodeSummary.get_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.boot_stream.EpisodeSummary.get_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.logs.log_index">
+<span id="log-index-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">log_index</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.logs.log_index" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.logs.log_index.LogIndex">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.logs.log_index.</tt><tt class="descname">LogIndex</tt><a class="reference internal" href="../modules/bootstrapping_olympics/logs/log_index.html#LogIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.log_index.LogIndex" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="bootstrapping_olympics.logs.log_index.LogIndex.get_episodes_for_robot">
+<tt class="descname">get_episodes_for_robot</tt><big>(</big><em>id_robot</em>, <em>id_agent=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/log_index.html#LogIndex.get_episodes_for_robot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.log_index.LogIndex.get_episodes_for_robot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all episodes for the given robot (and
+agent if it is given).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.log_index.LogIndex.get_robot_spec">
+<tt class="descname">get_robot_spec</tt><big>(</big><em>id_robot</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/log_index.html#LogIndex.get_robot_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.log_index.LogIndex.get_robot_spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the spec of the robot as stored in the files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.log_index.LogIndex.get_streams_for">
+<tt class="descname">get_streams_for</tt><big>(</big><em>id_robot</em>, <em>id_agent=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/log_index.html#LogIndex.get_streams_for"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.log_index.LogIndex.get_streams_for" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">list</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.log_index.LogIndex.get_streams_for_robot">
+<tt class="descname">get_streams_for_robot</tt><big>(</big><em>id_robot</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/log_index.html#LogIndex.get_streams_for_robot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.log_index.LogIndex.get_streams_for_robot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">list</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.log_index.LogIndex.has_streams_for_robot">
+<tt class="descname">has_streams_for_robot</tt><big>(</big><em>id_robot</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/log_index.html#LogIndex.has_streams_for_robot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.log_index.LogIndex.has_streams_for_robot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.log_index.LogIndex.index">
+<tt class="descname">index</tt><big>(</big><em>directory</em>, <em>ignore_cache=False</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/log_index.html#LogIndex.index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.log_index.LogIndex.index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.log_index.LogIndex.read_all_robot_streams">
+<tt class="descname">read_all_robot_streams</tt><big>(</big><em>id_robot</em>, <em>id_agent=None</em>, <em>read_extra=False</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/log_index.html#LogIndex.read_all_robot_streams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.log_index.LogIndex.read_all_robot_streams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads all the data corresponding to a robot.
+If agent is not None, it filters by agent.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.log_index.LogIndex.read_robot_episode">
+<tt class="descname">read_robot_episode</tt><big>(</big><em>id_robot</em>, <em>id_episode</em>, <em>read_extra=False</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/log_index.html#LogIndex.read_robot_episode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.log_index.LogIndex.read_robot_episode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads only one episode.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.log_index.LogIndex.reindex">
+<tt class="descname">reindex</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/log_index.html#LogIndex.reindex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.log_index.LogIndex.reindex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.logs.logs_format">
+<span id="logs-format-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">logs_format</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.logs.logs_format" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.logs.logs_format.LogsFormat">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.logs.logs_format.</tt><tt class="descname">LogsFormat</tt><a class="reference internal" href="../modules/bootstrapping_olympics/logs/logs_format.html#LogsFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.logs_format.LogsFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="attribute">
+<dt id="bootstrapping_olympics.logs.logs_format.LogsFormat.formats">
+<tt class="descname">formats</tt><em class="property"> = {'bag': &lt;bootstrapping_olympics.ros.ros_logs.interface.ROSLogsFormat object at 0x255ff10&gt;, 'h5': &lt;bootstrapping_olympics.logs.hdf.interface.HDFLogsFormat object at 0x1e72910&gt;}</em><a class="headerlink" href="#bootstrapping_olympics.logs.logs_format.LogsFormat.formats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="bootstrapping_olympics.logs.logs_format.LogsFormat.get_reader_for">
+<em class="property">static </em><tt class="descname">get_reader_for</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/logs_format.html#LogsFormat.get_reader_for"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.logs_format.LogsFormat.get_reader_for" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.logs_format.LogsFormat.index_file">
+<tt class="descname">index_file</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/logs_format.html#LogsFormat.index_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.logs_format.LogsFormat.index_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of BootStream objects.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.logs_format.LogsFormat.index_file_cached">
+<tt class="descname">index_file_cached</tt><big>(</big><em>filename</em>, <em>ignore_cache=False</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/logs_format.html#LogsFormat.index_file_cached"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.logs_format.LogsFormat.index_file_cached" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.logs_format.LogsFormat.read_from_stream">
+<tt class="descname">read_from_stream</tt><big>(</big><em>filename</em>, <em>id_stream</em>, <em>only_episodes=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/logs_format.html#LogsFormat.read_from_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.logs_format.LogsFormat.read_from_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields observations from the stream.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.logs_format.LogsFormat.read_stream">
+<tt class="descname">read_stream</tt><big>(</big><em>boot_stream</em>, <em>only_episodes=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/logs_format.html#LogsFormat.read_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.logs_format.LogsFormat.read_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields observations from the stream.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.logs.logs_format.LogsFormat.write_stream">
+<tt class="descname">write_stream</tt><big>(</big><em>filename</em>, <em>id_stream</em>, <em>boot_spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/logs/logs_format.html#LogsFormat.write_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.logs.logs_format.LogsFormat.write_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields a writer object (interface TBD).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bootstrapping_olympics.logs.hdf.html">hdf Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bootstrapping_olympics.logs.hdf.html#id1"><tt class="docutils literal"><span class="pre">hdf</span></tt> Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bootstrapping_olympics.logs.hdf.html#module-bootstrapping_olympics.logs.hdf.index"><tt class="docutils literal"><span class="pre">index</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bootstrapping_olympics.logs.hdf.html#module-bootstrapping_olympics.logs.hdf.interface"><tt class="docutils literal"><span class="pre">interface</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bootstrapping_olympics.logs.hdf.html#module-bootstrapping_olympics.logs.hdf.read"><tt class="docutils literal"><span class="pre">read</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bootstrapping_olympics.logs.hdf.html#module-bootstrapping_olympics.logs.hdf.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bootstrapping_olympics.logs.hdf.html#module-bootstrapping_olympics.logs.hdf.write"><tt class="docutils literal"><span class="pre">write</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">logs Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">logs</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.logs.boot_stream"><tt class="docutils literal"><span class="pre">boot_stream</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.logs.log_index"><tt class="docutils literal"><span class="pre">log_index</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.logs.logs_format"><tt class="docutils literal"><span class="pre">logs_format</span></tt> Module</a></li>
+<li><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/api/bootstrapping_olympics.logs.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

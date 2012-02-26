@@ -1,0 +1,6 @@
+bootstrapping_olympics.Publisher
+================================
+
+.. currentmodule:: bootstrapping_olympics
+
+.. autodata:: Publisher

@@ -48,8 +48,135 @@
             
   <div class="section" id="bootolympics-public-api-reference">
 <span id="api-reference"></span><h1>BootOlympics public API reference<a class="headerlink" href="#bootolympics-public-api-reference" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-boot_olympics"></span><div class="section" id="example-function">
-<h2>Example function<a class="headerlink" href="#example-function" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-bootstrapping_olympics"></span><div class="section" id="main-interfaces-and-related-data">
+<h2>Main interfaces and related data<a class="headerlink" href="#main-interfaces-and-related-data" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.AgentInterface.html#bootstrapping_olympics.AgentInterface" title="bootstrapping_olympics.AgentInterface"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.AgentInterface</span></tt></a></td>
+<td>This is the interface that the agents must implement.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.RepresentationNuisance.html#bootstrapping_olympics.RepresentationNuisance" title="bootstrapping_olympics.RepresentationNuisance"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.RepresentationNuisance</span></tt></a></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.RobotInterface.html#bootstrapping_olympics.RobotInterface" title="bootstrapping_olympics.RobotInterface"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.RobotInterface</span></tt></a></td>
+<td>This is the basic class for robot simulators.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.BootSpec.html#bootstrapping_olympics.BootSpec" title="bootstrapping_olympics.BootSpec"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.BootSpec</span></tt></a>(obs_spec,&nbsp;...)</td>
+<td>This class represents the interface of a sensorimotor</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.StreamSpec.html#bootstrapping_olympics.StreamSpec" title="bootstrapping_olympics.StreamSpec"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.StreamSpec</span></tt></a>(id_stream,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.Publisher.html#bootstrapping_olympics.Publisher" title="bootstrapping_olympics.Publisher"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.Publisher</span></tt></a></td>
+<td>This is the interface that the agents can use to publish</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="data">
+<h3>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.boot_observations_dtype.html#bootstrapping_olympics.boot_observations_dtype" title="bootstrapping_olympics.boot_observations_dtype"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.boot_observations_dtype</span></tt></a></td>
+<td>list() -&gt; new empty list</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.boot_observations_version.html#bootstrapping_olympics.boot_observations_version" title="bootstrapping_olympics.boot_observations_version"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.boot_observations_version</span></tt></a></td>
+<td>list() -&gt; new empty list</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.RobotObservations.html#bootstrapping_olympics.RobotObservations" title="bootstrapping_olympics.RobotObservations"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.RobotObservations</span></tt></a>(...)</td>
+<td>Structure that must be returned by get_observations().</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.EpisodeDesc.html#bootstrapping_olympics.EpisodeDesc" title="bootstrapping_olympics.EpisodeDesc"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.EpisodeDesc</span></tt></a>(...[,&nbsp;extra])</td>
+<td>Structure that must be returned by new_episode().</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.ObsKeeper.html#bootstrapping_olympics.ObsKeeper" title="bootstrapping_olympics.ObsKeeper"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.ObsKeeper</span></tt></a>(boot_spec,&nbsp;...)</td>
+<td>This is a simple utility class to fill in the redundant</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="exceptions">
+<h3>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.BootInvalidValue.html#bootstrapping_olympics.BootInvalidValue" title="bootstrapping_olympics.BootInvalidValue"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.BootInvalidValue</span></tt></a></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.NuisanceNotInvertible.html#bootstrapping_olympics.NuisanceNotInvertible" title="bootstrapping_olympics.NuisanceNotInvertible"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.NuisanceNotInvertible</span></tt></a></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.UnsupportedSpec.html#bootstrapping_olympics.UnsupportedSpec" title="bootstrapping_olympics.UnsupportedSpec"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.UnsupportedSpec</span></tt></a></td>
+<td>Thrown by agents if they do not support the spec.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="streamels-functions">
+<h2>Streamels functions<a class="headerlink" href="#streamels-functions" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.check_valid_streamels.html#bootstrapping_olympics.check_valid_streamels" title="bootstrapping_olympics.check_valid_streamels"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.check_valid_streamels</span></tt></a>(...)</td>
+<td>Raises a ValueError if the data in the structure is not coherent.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.expect_size.html#bootstrapping_olympics.expect_size" title="bootstrapping_olympics.expect_size"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.expect_size</span></tt></a>(x,&nbsp;l)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.streamel_dtype.html#bootstrapping_olympics.streamel_dtype" title="bootstrapping_olympics.streamel_dtype"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.streamel_dtype</span></tt></a></td>
+<td>list() -&gt; new empty list</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.ValueFormats.html#bootstrapping_olympics.ValueFormats" title="bootstrapping_olympics.ValueFormats"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.ValueFormats</span></tt></a></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.new_streamels.html#bootstrapping_olympics.new_streamels" title="bootstrapping_olympics.new_streamels"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.new_streamels</span></tt></a>(shape)</td>
+<td>Creates a new array of streamels, initialized with all invalid        values.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.check_valid_bounds.html#bootstrapping_olympics.check_valid_bounds" title="bootstrapping_olympics.check_valid_bounds"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.check_valid_bounds</span></tt></a>(bounds)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.only_one_value.html#bootstrapping_olympics.only_one_value" title="bootstrapping_olympics.only_one_value"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.only_one_value</span></tt></a>(array)</td>
+<td>Checks that the array has only one value.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.check_valid_streamels.html#bootstrapping_olympics.check_valid_streamels" title="bootstrapping_olympics.check_valid_streamels"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.check_valid_streamels</span></tt></a>(...)</td>
+<td>Raises a ValueError if the data in the structure is not coherent.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.set_streamel_range.html#bootstrapping_olympics.set_streamel_range" title="bootstrapping_olympics.set_streamel_range"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.set_streamel_range</span></tt></a>(...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.expect_one_of.html#bootstrapping_olympics.expect_one_of" title="bootstrapping_olympics.expect_one_of"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.expect_one_of</span></tt></a>(x,&nbsp;options)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.streamel_array.html#bootstrapping_olympics.streamel_array" title="bootstrapping_olympics.streamel_array"><tt class="xref py py-obj docutils literal"><span class="pre">bootstrapping_olympics.streamel_array</span></tt></a>(x)</td>
+<td>Checks that the argument is a non-empty array of streamels.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="library-agents">
+<h2>Library: agents<a class="headerlink" href="#library-agents" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="library-robots">
+<h2>Library: robots<a class="headerlink" href="#library-robots" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="library-representation-nuisances">
+<h2>Library: representation nuisances<a class="headerlink" href="#library-representation-nuisances" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
 </div>
 </div>
 
@@ -62,7 +189,23 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">BootOlympics public API reference</a><ul>
-<li><a class="reference internal" href="#example-function">Example function</a></li>
+<li><a class="reference internal" href="#main-interfaces-and-related-data">Main interfaces and related data</a><ul>
+<li><a class="reference internal" href="#data">Data</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#exceptions">Exceptions</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#streamels-functions">Streamels functions</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#library-agents">Library: agents</a></li>
+<li><a class="reference internal" href="#library-robots">Library: robots</a></li>
+<li><a class="reference internal" href="#library-representation-nuisances">Library: representation nuisances</a><ul>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

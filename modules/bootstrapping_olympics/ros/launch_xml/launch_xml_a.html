@@ -1,0 +1,150 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.ros.launch_xml.launch_xml_a &mdash; BootOlympics 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.ros.launch_xml.launch_xml_a</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">create_ros_node_xml</span>
+<span class="kn">from</span> <span class="nn">...configuration</span> <span class="kn">import</span> <span class="n">check_valid_ros_node_spec</span>
+<span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">indent</span>
+<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">Template</span>
+
+
+<div class="viewcode-block" id="create_launch_xml"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.ros.launch_xml.html#bootstrapping_olympics.ros.launch_xml.launch_xml_a.create_launch_xml">[docs]</a><span class="k">def</span> <span class="nf">create_launch_xml</span><span class="p">(</span><span class="n">agent_ros_node</span><span class="p">,</span>
+                      <span class="n">robot_ros_node</span><span class="p">,</span>
+                      <span class="n">agent_node_id</span><span class="o">=</span><span class="s">&#39;my_agent&#39;</span><span class="p">,</span>
+                      <span class="n">robot_node_id</span><span class="o">=</span><span class="s">&#39;my_robot&#39;</span><span class="p">,</span>
+                      <span class="n">namespace</span><span class="o">=</span><span class="s">&#39;boot_olympics&#39;</span><span class="p">,</span>
+                      <span class="n">bag</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                      <span class="n">output</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        output: None or &#39;screen&#39;</span>
+<span class="sd">        bag: None or name of the file</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">check_valid_ros_node_spec</span><span class="p">(</span><span class="n">agent_ros_node</span><span class="p">)</span>
+    <span class="n">check_valid_ros_node_spec</span><span class="p">(</span><span class="n">robot_ros_node</span><span class="p">)</span>
+
+    <span class="n">node_robot</span> <span class="o">=</span> <span class="n">create_ros_node_xml</span><span class="p">(</span><span class="n">robot_node_id</span><span class="p">,</span>
+                                     <span class="n">robot_ros_node</span><span class="p">,</span>
+                                     <span class="n">remap</span><span class="o">=</span><span class="p">{},</span>
+                                     <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+    <span class="n">remap</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;observations&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/observations&#39;</span> <span class="o">%</span> <span class="n">robot_node_id</span><span class="p">,</span>
+        <span class="s">&#39;commands&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/commands&#39;</span> <span class="o">%</span> <span class="n">robot_node_id</span>
+    <span class="p">}</span>
+
+    <span class="n">node_agent</span> <span class="o">=</span> <span class="n">create_ros_node_xml</span><span class="p">(</span><span class="n">agent_node_id</span><span class="p">,</span> <span class="n">agent_ros_node</span><span class="p">,</span>
+                                     <span class="n">remap</span><span class="o">=</span><span class="n">remap</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">bag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">node_bag</span> <span class="o">=</span> <span class="n">create_ros_node_xml</span><span class="p">(</span><span class="s">&#39;record&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;rosbag/record&#39;</span><span class="p">,</span> <span class="p">{}],</span>
+                                        <span class="n">args</span><span class="o">=</span><span class="s">&quot;-a -o </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">bag</span><span class="p">,</span>
+                                        <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">node_bag</span> <span class="o">=</span> <span class="s">&quot;&lt;!-- bag disabled --&gt;&quot;</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;&lt;launch&gt;</span>
+<span class="s">    &lt;group ns=&quot;${namespace}&quot; clear_params=&quot;true&quot;&gt;</span>
+<span class="s">        &lt;!-- Robot node --&gt;</span>
+<span class="s">${node_robot}</span>
+<span class="s">        &lt;!-- Agent node --&gt;</span>
+<span class="s">${node_agent}</span>
+<span class="s">${node_bag}</span>
+<span class="s">    &lt;/group&gt;</span>
+<span class="s">&lt;/launch&gt;&quot;&quot;&quot;</span>
+    <span class="n">final</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span><span class="o">.</span><span class="n">substitute</span><span class="p">(</span>
+                <span class="n">node_robot</span><span class="o">=</span><span class="n">indent</span><span class="p">(</span><span class="n">node_robot</span><span class="p">,</span> <span class="s">&#39; &#39;</span> <span class="o">*</span> <span class="mi">8</span><span class="p">),</span>
+                <span class="n">node_agent</span><span class="o">=</span><span class="n">indent</span><span class="p">(</span><span class="n">node_agent</span><span class="p">,</span> <span class="s">&#39; &#39;</span> <span class="o">*</span> <span class="mi">8</span><span class="p">),</span>
+                <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+                <span class="n">node_bag</span><span class="o">=</span><span class="n">indent</span><span class="p">(</span><span class="n">node_bag</span><span class="p">,</span> <span class="s">&#39; &#39;</span> <span class="o">*</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">final</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>
