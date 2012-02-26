@@ -62,6 +62,9 @@
 </table>
 <!-- ==================== MODULE DESCRIPTION ==================== -->
 <h1 class="epydoc">Module streamels</h1><p class="nomargin-top"><span class="codelink"><a href="bootstrapping_olympics.interfaces.streamels-pysrc.html">source&nbsp;code</a></span></p>
+A streamel (stream element) describes the <em>format</em> of the data stream.
+It specifies what are the valid values that the data can take.
+
 <!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -114,6 +117,41 @@
       Raises a ValueError if the data in the structure is not coherent.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.interfaces.streamels-pysrc.html#check_valid_streamels">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.interfaces.streamels-module.html#new_streamels" class="summary-sig-name">new_streamels</a>(<span class="summary-sig-arg">shape</span>)</span><br />
+      Creates a new array of streamels, initialized with all invalid
+values.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="bootstrapping_olympics.interfaces.streamels-pysrc.html#new_streamels">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.interfaces.streamels-module.html#streamel_array" class="summary-sig-name">streamel_array</a>(<span class="summary-sig-arg">x</span>)</span><br />
+      Checks that the argument is a non-empty array of streamels.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="bootstrapping_olympics.interfaces.streamels-pysrc.html#streamel_array">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -189,11 +227,66 @@
     </td>
   </tr></table>
   
-  Raises a ValueError if the data in the structure is not coherent.
+  <blockquote>
+<p>Raises a ValueError if the data in the structure is not coherent.</p>
+<p>This checks, for example, that the default value given respects
+the declared upper/lower bounds.</p>
+</blockquote>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>streamels</code></strong> (<tt class="rst-docutils literal">array</tt>)</li>
+        <li><strong class="pname"><code>streamels</code></strong> (<tt class="rst-docutils literal">streamel_array</tt>)</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="new_streamels"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">new_streamels</span>(<span class="sig-arg">shape</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="bootstrapping_olympics.interfaces.streamels-pysrc.html#new_streamels">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <blockquote>
+Creates a new array of streamels, initialized with all invalid
+values. This is useful to check if we forgot to initialize
+some fields.</blockquote>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>shape</code></strong> (<tt class="rst-docutils literal"><span class="pre">int,&gt;0|seq[&gt;0](int,&gt;0)</span></tt>)</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="streamel_array"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">streamel_array</span>(<span class="sig-arg">x</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="bootstrapping_olympics.interfaces.streamels-pysrc.html#streamel_array">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <blockquote>
+Checks that the argument is a non-empty array of streamels.
+This checks only the data type, not the validity of the data.</blockquote>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>x</code></strong> (<tt class="rst-docutils literal">array</tt>)</li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -270,7 +363,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 22 20:30:56 2012
+    Generated by Epydoc 3.0.1 on Sat Feb 25 23:20:12 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
