@@ -1,7 +1,6 @@
 from . import check_streamels_1D, check_streamels_continuous, contract, np
 from bootstrapping_olympics import (NuisanceNotInvertible, streamel_dtype,
     StreamSpec, RepresentationNuisance, ValueFormats)
-from bootstrapping_olympics.examples.rep_nuisances.commons import check_streamels_range
 
 __all__ = ['NormalizeMinMax']
 

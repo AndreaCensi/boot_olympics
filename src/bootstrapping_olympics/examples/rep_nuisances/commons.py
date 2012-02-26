@@ -1,7 +1,6 @@
-from bootstrapping_olympics.interfaces.agent import UnsupportedSpec
-from bootstrapping_olympics.interfaces.stream_spec import streamels_all_of_kind
-from bootstrapping_olympics.interfaces.streamels import ValueFormats
 from . import contract, np
+from bootstrapping_olympics import (UnsupportedSpec, streamels_all_of_kind,
+    ValueFormats)
 from numpy.core.numeric import allclose
 
 
