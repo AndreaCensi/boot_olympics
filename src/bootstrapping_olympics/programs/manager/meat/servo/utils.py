@@ -1,4 +1,4 @@
-from bootstrapping_olympics.examples.robots.equiv_robot import EquivRobot
+from bootstrapping_olympics.library.robots.equiv_robot import EquivRobot
 from contracts import describe_type
 
 
