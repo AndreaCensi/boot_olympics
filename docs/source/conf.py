@@ -43,6 +43,10 @@ if False:
         'http://matplotlib.sourceforge.net/': None,
         'http://docs.scipy.org/doc/numpy/': None}
     
+#autodoc_default_flags = ['members', 'undoc-members', 'private-members', 'special-members', 'inherited-members', 'show-inheritance']
+ 
+#autodoc_default_flags = ['no-show-inheritance']
+    
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['my_templates']
 
@@ -71,8 +75,9 @@ try:
     version = bootstrapping_olympics.__version__
     # The full version, including alpha/beta/rc tags.
     release = bootstrapping_olympics.__version__
-except:
-    print('---- Warning: could not get version info; is "MAIN_PACKAGE" installed?')
+except Exception as e:
+    print('---- Warning: could not get version info; is "bootstrapping_olympics" installed?')
+    print ('%s'%e)
     version = 'unknown'
     release = 'unknown'
     

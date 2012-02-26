@@ -12,8 +12,9 @@ BootOlympics
 
 The documentation is being written; not much is ready yet. Check back soon!
 
-* For an introduction/tutorial, see the Wiki_.
-* For reference, see the `API docs`__.
+- :ref:`api_reference`; automatically generated `API docs`__.
+- For an introduction/tutorial, see the Wiki_.
+
 
 .. __: static/apidocs/index.html
 .. _wiki: http://github.com/AndreaCensi/boot_olympics/wiki

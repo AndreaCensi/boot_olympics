@@ -8,6 +8,9 @@ from . import contract, np
 from ..utils import indent, show_differences
 from contracts import check, new_contract
 
+__all__ = ['ValueFormats', 'streamel_dtype', 'new_streamels',
+           'streamel_array', 'check_valid_streamels']
+
 
 class ValueFormats:
     Continuous = 'C' # range is [lower, upper]

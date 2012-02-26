@@ -1,10 +1,10 @@
 from . import logger
 from bootstrapping_olympics import BootOlympicsConfig
 from bootstrapping_olympics.configuration import check_valid_agent_config
-from bootstrapping_olympics.ros.launch_xml.launch_xml import create_launch_xml
 from vehicles.configuration import VehiclesConfig, dereference_vehicle_spec
 import os
 import shutil
+from bootstrapping_olympics.ros.launch_xml.launch_xml_a import create_launch_xml
 
 
 def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir,

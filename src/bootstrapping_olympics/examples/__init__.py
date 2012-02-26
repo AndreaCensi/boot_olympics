@@ -1,5 +1,10 @@
-''' Some example applications of agents, robots, etc. ''' 
+''' Some example applications of agents, robots, etc. '''
 from .. import logger, np, contract
-from .agents import *
-from .robots import *
-from .rep_nuisances import *
+
+__all__ = ['agents', 'robots', 'nuisances', 'rep_nuisances'] # XXX remove
+
+from . import agents
+from . import robots
+from . import rep_nuisances
+
+nuisances = rep_nuisances

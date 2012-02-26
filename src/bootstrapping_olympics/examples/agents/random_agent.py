@@ -2,7 +2,7 @@
 
 from ... import AgentInterface
 
-__all__ = ['RandomAgent']
+__all__ = ['RandomAgent', 'RandomAgentPredictor', 'RandomAgentServo']
 
 
 class RandomAgent(AgentInterface):

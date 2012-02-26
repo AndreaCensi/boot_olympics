@@ -1,6 +1,6 @@
 - id: random_agent
   desc: A simple random agent
   code:
-      - bootstrapping_olympics.examples.RandomAgent
+      - bootstrapping_olympics.library.agents.RandomAgent
       - {}
           

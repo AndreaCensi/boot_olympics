@@ -6,6 +6,10 @@ from contracts import check, describe_type, describe_value
 from numbers import Number
 
 
+#__all__ = ['BootInvalidValue', 'StreamSpec']
+
+
+# TODO: check how it is used
 class BootInvalidValue(ValueError):
     pass
 

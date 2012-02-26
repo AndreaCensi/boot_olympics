@@ -4,7 +4,7 @@ Changelog
 .. _changelog: 
 
 0.2 -- Released 2011-07-23
---------------------
+---------------------------
 
 New features:
 

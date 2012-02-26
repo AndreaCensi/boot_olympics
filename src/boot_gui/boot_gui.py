@@ -79,7 +79,6 @@ class MyConfigFrame(ConfigFrame):
         else:
             self.bg_config_status.SetLabel('Stock configuration.')
 
-
     def check_correctness(self):
         try:
             parsed = yaml.load(self.bg_config.GetValue())

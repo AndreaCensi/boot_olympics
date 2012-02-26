@@ -33,7 +33,7 @@ from .configuration import BootOlympicsConfig
 
 
 # Try to load ROS components
-from .ros import *
+from . import ros
 
 from .programs.manager.batch.batch_learn import batch_jobs1
 

@@ -1,7 +1,7 @@
 - id: random_1_6
   desc: random robot
   code:
-  - bootstrapping_olympics.examples.RandomRobot
+  - bootstrapping_olympics.library.robots.RandomRobot
   - boot_spec:
       observations:
         shape: [6]
@@ -16,7 +16,7 @@
 - id: random_1_6x5
   desc: 'Random robot (2D observations)'
   code:
-  - bootstrapping_olympics.examples.RandomRobot
+  - bootstrapping_olympics.library.robots.RandomRobot
   - boot_spec:
       observations:
         shape: [6,5]
@@ -31,7 +31,7 @@
 - id: random_nuis
   desc: "A perturbed version of the random robot."
   code:
-  - bootstrapping_olympics.examples.EquivRobot
+  - bootstrapping_olympics.library.robots.EquivRobot
   - robot: random_1_6
     cmd_nuisance: [n_rpermB, n_rscaleA]
     obs_nuisance: [n_rscaleA, n_rpermA]
@@ -40,7 +40,7 @@
 - id: random_bits2
   desc: "A perturbed version of the random robot that uses discretization to give bits."
   code:
-  - bootstrapping_olympics.examples.EquivRobot
+  - bootstrapping_olympics.library.robots.EquivRobot
   - robot: random_1_6
     cmd_nuisance: []
     obs_nuisance: [n_discretize_32, n_int2bits, n_flatten]
@@ -48,7 +48,7 @@
 - id: random_bits1
   desc: "A perturbed version of the random robot that uses discretization to give bits"
   code:
-  - bootstrapping_olympics.examples.EquivRobot
+  - bootstrapping_olympics.library.robots.EquivRobot
   - robot: random_1_6
     cmd_nuisance: []
     obs_nuisance: [n_discretize_32, n_int2bits]
