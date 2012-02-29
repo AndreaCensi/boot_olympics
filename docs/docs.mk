@@ -13,7 +13,7 @@ webgit=git --git-dir $(webdir)/.git --work-tree=$(webdir)/
 all: upload
 	
 compile-website: website epydoc generate
-	PYTHONPATH=`pwd`:$(PYTHONPATH) sphinx-build -W -E -n -a -b html $(source) $(webdir)
+	PYTHONPATH=`pwd`:$(PYTHONPATH) sphinx-build -E -n -a -b html $(source) $(webdir)
 
 generate:
 	rm -rf  $(autogen)

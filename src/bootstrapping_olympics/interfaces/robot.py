@@ -46,12 +46,11 @@ class RobotObservations:
 
 
 class RobotInterface:
-    ''' This is the basic class for robot simulators. 
-    
-        get_spec() 
+    ''' 
+        This is the basic class for robots. 
         
-        new_episode() must be called before get_observations(
-    
+        Protocol notes:
+        - new_episode() must be called before get_observations()
     '''
     __metaclass__ = ABCMeta
 
