@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bootstrapping_olympics.library.nuisances.RepresentationNuisance</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
+        <a href="bootstrapping_olympics.library-module.html">Package&nbsp;library</a> ::
+        <a href="bootstrapping_olympics.library.nuisances-module.html">Package&nbsp;nuisances</a> ::
+        Class&nbsp;RepresentationNuisance
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.library.nuisances.RepresentationNuisance-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class RepresentationNuisance</h1><p class="nomargin-top"><span class="codelink"><a href="bootstrapping_olympics.library.nuisances-pysrc.html#RepresentationNuisance">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_bootstra_29" name="uml_class_diagram_for_bootstra_29">
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.Bits2int-class.html" title="This nuisance represents transforms back a bit representation into integer values." alt="" coords="16,155,75,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.Encrypt-class.html" title="This nuisance encrypts the bits." alt="" coords="125,155,184,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.GLNuisance-class.html" title="A general linear transformation." alt="" coords="235,155,320,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.Identity-class.html" title="The dummy identity nuisance." alt="" coords="371,155,427,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.Flatten-class.html" title="A nuisance that flattens the streamels." alt="" coords="477,155,531,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.PopCode-class.html" title="This nuisance transforms a 1D representation of the signal into a 2D representation." alt="" coords="581,155,648,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.Reshape-class.html" title="bootstrapping_olympics.library.nuisances.Reshape" alt="" coords="699,155,763,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.Decrypt-class.html" title="bootstrapping_olympics.library.nuisances.Decrypt" alt="" coords="813,155,872,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.PopCodeInv-class.html" title="Inverse of PopCode" alt="" coords="923,155,1005,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.GenericLinear-class.html" title="This represents a generic linear transformation between 1D continuous signals." alt="" coords="1056,155,1149,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.RandomScaling-class.html" title="A fixed random scaling of the signal." alt="" coords="973,211,1077,237"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.NormalizeMean-class.html" title="This instantaneous transformation takes a vector of N values and transforms them into a vector of N+1 values." alt="" coords="1128,211,1232,237"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.RepresentationNuisance-class.html#__abstractmethods__" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance.__abstractmethods__" alt="" coords="861,28,1067,47"/>
+<area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="861,47,1067,65"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.RepresentationNuisance-class.html#inverse" title="Returns the inverse representation nuisance, or NuisanceNotInvertible" alt="" coords="861,68,1067,87"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.RepresentationNuisance-class.html#transform_spec" title="Returns the changed StreamSpec, or throws UnsupportedSpec if the spec is not supported." alt="" coords="861,87,1067,105"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.RepresentationNuisance-class.html#transform_value" title="Returns the transformed value." alt="" coords="861,105,1067,124"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.RepresentationNuisance-class.html" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance" alt="" coords="860,11,1068,125"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.Int2bits-class.html" title="This nuisance represents integer values with their bit representation (0&#45;1)." alt="" coords="1200,155,1256,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.NormalizeMinMax-class.html" title="Transforms: .." alt="" coords="1307,155,1424,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.RandomPermutation-class.html" title="A fixed random permutation of the signal." alt="" coords="1475,155,1608,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.NormalizeMinInverse-class.html" title="This is the inverse of NormalizeMin." alt="" coords="1659,155,1792,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.Discretize-class.html" title="This nuisance discretizes a float stream into an integer representation." alt="" coords="1843,155,1915,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.Select-class.html" title="A non&#45;invertible nuisance that selects some of the sensels." alt="" coords="1965,155,2016,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.NormalizeMin-class.html" title="Transforms: .." alt="" coords="2067,155,2160,181"/>
+</map>
+  <img src="uml_class_diagram_for_bootstra_29.gif" alt='' usemap="#uml_class_diagram_for_bootstra_29" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="abc.ABCMeta-class.html" class="summary-name">__metaclass__</a><br />
+      Metaclass for defining Abstract Base Classes (ABCs).
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="inverse"></a><span class="summary-sig-name">inverse</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the inverse representation nuisance, or
+NuisanceNotInvertible</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="bootstrapping_olympics.interfaces.rep_nuisance-pysrc.html">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="transform_spec"></a><span class="summary-sig-name">transform_spec</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">stream_spec</span>)</span><br />
+      Returns the changed StreamSpec, or throws
+UnsupportedSpec if the spec is not supported.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="bootstrapping_olympics.interfaces.rep_nuisance-pysrc.html">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="transform_value"></a><span class="summary-sig-name">transform_value</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">values</span>)</span><br />
+      Returns the transformed value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="bootstrapping_olympics.interfaces.rep_nuisance-pysrc.html">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__init__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="bootstrapping_olympics.library.nuisances.RepresentationNuisance-class.html#__abstractmethods__" class="summary-name">__abstractmethods__</a> = <code title="frozenset(['inverse', 'transform_spec', 'transform_value'])"><code class="variable-group">frozenset([</code><code class="variable-quote">'</code><code class="variable-string">inverse</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">transform_spec</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_abc_cache"></a><span class="summary-name">_abc_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x27c5650&gt;">&lt;_weakrefset.WeakSet object at 0x27c5650&gt;</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_abc_negative_cache"></a><span class="summary-name">_abc_negative_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x27c55d0&gt;">&lt;_weakrefset.WeakSet object at 0x27c55d0&gt;</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_abc_negative_cache_version"></a><span class="summary-name">_abc_negative_cache_version</span> = <code title="14">14</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_abc_registry"></a><span class="summary-name">_abc_registry</span> = <code title="&lt;_weakrefset.WeakSet object at 0x27c56d0&gt;">&lt;_weakrefset.WeakSet object at 0x27c56d0&gt;</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLE DETAILS ==================== -->
+<a name="section-ClassVariableDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variable Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariableDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__abstractmethods__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">__abstractmethods__</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">frozenset([</code><code class="variable-quote">'</code><code class="variable-string">inverse</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">transform_spec</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">transform_value</code><code class="variable-quote">'</code><code class="variable-group">])</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="bootstrapping_olympics-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Bootstrapping Olympics</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Feb 29 14:33:39 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -64,26 +64,26 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class RobotInterface</h1><p class="nomargin-top"><span class="codelink"><a href="bootstrapping_olympics.interfaces.robot-pysrc.html#RobotInterface">source&nbsp;code</a></span></p>
 <center>
-<center>  <map id="uml_class_diagram_for_bootstra_10" name="uml_class_diagram_for_bootstra_10">
-<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#__abstractmethods__" title="bootstrapping_olympics.interfaces.robot.RobotInterface.__abstractmethods__" alt="" coords="119,28,431,47"/>
-<area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="119,47,431,65"/>
-<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#get_observations" title="Get observations." alt="" coords="119,68,431,87"/>
-<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#get_spec" title="(a BootSpec object)." alt="" coords="119,87,431,105"/>
-<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#get_state" title="Return the state so that it can be saved." alt="" coords="119,105,431,124"/>
-<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#new_episode" title="Skips to the next episode." alt="" coords="119,124,431,143"/>
-<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#set_commands" title="Send the given commands." alt="" coords="119,143,431,161"/>
-<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#set_state" title="Load the given state (obtained by &#39;get_state&#39;)." alt="" coords="119,161,431,180"/>
-<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html" title="This is the basic class for robot simulators." alt="" coords="117,11,432,181"/>
-<area shape="rect" href="bootstrapping_olympics.library.robots.equiv_robot.EquivRobot-class.html" title="This is used to create the perturbed version of a robot." alt="" coords="16,211,243,237"/>
-<area shape="rect" href="bootstrapping_olympics.library.robots.random_robot.RandomRobot-class.html" title="This is a sensorimotor cascade generating uniform noise, and ignores any command given." alt="" coords="293,211,549,237"/>
+<center>  <map id="uml_class_diagram_for_bootstra_7" name="uml_class_diagram_for_bootstra_7">
+<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#__abstractmethods__" title="bootstrapping_olympics.interfaces.robot.RobotInterface.__abstractmethods__" alt="" coords="47,28,359,47"/>
+<area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="47,47,359,65"/>
+<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#get_observations" title="Get observations." alt="" coords="47,68,359,87"/>
+<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#get_spec" title="(a BootSpec object)." alt="" coords="47,87,359,105"/>
+<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#get_state" title="Return the state so that it can be saved." alt="" coords="47,105,359,124"/>
+<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#new_episode" title="Skips to the next episode." alt="" coords="47,124,359,143"/>
+<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#set_commands" title="Send the given commands." alt="" coords="47,143,359,161"/>
+<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html#set_state" title="Load the given state (obtained by &#39;get_state&#39;)." alt="" coords="47,161,359,180"/>
+<area shape="rect" href="bootstrapping_olympics.interfaces.robot.RobotInterface-class.html" title="This is the basic class for robots." alt="" coords="45,11,360,181"/>
+<area shape="rect" href="bootstrapping_olympics.library.robots.EquivRobot-class.html" title="This is used to create the perturbed version of a robot." alt="" coords="16,211,173,237"/>
+<area shape="rect" href="bootstrapping_olympics.library.robots.RandomRobot-class.html" title="This is a sensorimotor cascade generating uniform noise, and ignores any command given." alt="" coords="224,211,397,237"/>
 </map>
-  <img src="uml_class_diagram_for_bootstra_10.gif" alt='' usemap="#uml_class_diagram_for_bootstra_10" ismap="ismap" class="graph-without-title" />
+  <img src="uml_class_diagram_for_bootstra_7.gif" alt='' usemap="#uml_class_diagram_for_bootstra_7" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
 <hr />
-<p>This is the basic class for robot simulators.</p>
-<p>get_spec()</p>
-<p>new_episode() must be called before get_observations(</p>
+<p>This is the basic class for robots.</p>
+<p>Protocol notes:
+- new_episode() must be called before get_observations()</p>
 
 <!-- ==================== NESTED CLASSES ==================== -->
 <a name="section-NestedClasses"></a>
@@ -284,14 +284,14 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="_abc_cache"></a><span class="summary-name">_abc_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x227bed0&gt;">&lt;_weakrefset.WeakSet object at 0x227bed0&gt;</code>
+        <a name="_abc_cache"></a><span class="summary-name">_abc_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x27b7050&gt;">&lt;_weakrefset.WeakSet object at 0x27b7050&gt;</code>
     </td>
   </tr>
 <tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="_abc_negative_cache"></a><span class="summary-name">_abc_negative_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x227b650&gt;">&lt;_weakrefset.WeakSet object at 0x227b650&gt;</code>
+        <a name="_abc_negative_cache"></a><span class="summary-name">_abc_negative_cache</span> = <code title="&lt;_weakrefset.WeakSet object at 0x27b7550&gt;">&lt;_weakrefset.WeakSet object at 0x27b7550&gt;</code>
     </td>
   </tr>
 <tr class="private">
@@ -305,7 +305,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="_abc_registry"></a><span class="summary-name">_abc_registry</span> = <code title="&lt;_weakrefset.WeakSet object at 0x227bf50&gt;">&lt;_weakrefset.WeakSet object at 0x227bf50&gt;</code>
+        <a name="_abc_registry"></a><span class="summary-name">_abc_registry</span> = <code title="&lt;_weakrefset.WeakSet object at 0x27b7190&gt;">&lt;_weakrefset.WeakSet object at 0x27b7190&gt;</code>
     </td>
   </tr>
 </table>
@@ -542,7 +542,7 @@ In real robots, the platform might return to start position.</p>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sun Feb 26 11:44:31 2012
+    Generated by Epydoc 3.0.1 on Wed Feb 29 14:33:38 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

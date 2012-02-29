@@ -66,7 +66,7 @@
     <span class="k">pass</span>
 
 </div>
-<div class="viewcode-block" id="StreamSpec"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.StreamSpec">[docs]</a><span class="k">class</span> <span class="nc">StreamSpec</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">StreamSpec</span><span class="p">:</span>
 
     <span class="nd">@contract</span><span class="p">(</span><span class="n">id_stream</span><span class="o">=</span><span class="s">&#39;None|str&#39;</span><span class="p">,</span> <span class="n">streamels</span><span class="o">=</span><span class="s">&#39;streamel_array&#39;</span><span class="p">,</span>
               <span class="n">extra</span><span class="o">=</span><span class="s">&#39;None|dict&#39;</span><span class="p">,</span> <span class="n">filtered</span><span class="o">=</span><span class="s">&#39;None|dict&#39;</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s">&#39;None|str&#39;</span><span class="p">)</span>
@@ -89,19 +89,19 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">streamels</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">streamels</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="StreamSpec.check_same_spec"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.check_same_spec">[docs]</a>    <span class="k">def</span> <span class="nf">check_same_spec</span><span class="p">(</span><span class="n">spec1</span><span class="p">,</span> <span class="n">spec2</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">check_same_spec</span><span class="p">(</span><span class="n">spec1</span><span class="p">,</span> <span class="n">spec2</span><span class="p">):</span>
         <span class="n">s1</span> <span class="o">=</span> <span class="n">spec1</span><span class="o">.</span><span class="n">get_streamels</span><span class="p">()</span>
         <span class="n">s2</span> <span class="o">=</span> <span class="n">spec2</span><span class="o">.</span><span class="n">get_streamels</span><span class="p">()</span>
         <span class="n">assert_allequal_verbose</span><span class="p">(</span><span class="n">s1</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">],</span> <span class="n">s2</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">])</span>
         <span class="n">assert_allclose_verbose</span><span class="p">(</span><span class="n">s1</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">],</span> <span class="n">s2</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">])</span>
         <span class="n">assert_allclose_verbose</span><span class="p">(</span><span class="n">s1</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">],</span> <span class="n">s2</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">])</span>
         <span class="n">assert_allclose_verbose</span><span class="p">(</span><span class="n">s1</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">],</span> <span class="n">s2</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">])</span>
-</div>
-<div class="viewcode-block" id="StreamSpec.get_streamels"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_streamels">[docs]</a>    <span class="k">def</span> <span class="nf">get_streamels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get_streamels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">streamels</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-</div>
+
     <span class="nd">@contract</span><span class="p">(</span><span class="n">returns</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">)</span>
-<div class="viewcode-block" id="StreamSpec.get_default_value"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_default_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_default_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_default_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; </span>
 <span class="sd">            Returns a &quot;default value&quot; for this stream. </span>
 <span class="sd">            </span>
@@ -112,9 +112,9 @@
 <span class="sd">            value, used for visualization. </span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]</span>
-</div>
+
     <span class="nd">@contract</span><span class="p">(</span><span class="n">returns</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">)</span>
-<div class="viewcode-block" id="StreamSpec.get_random_value"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_random_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_random_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_random_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; </span>
 <span class="sd">            Returns a &quot;random value&quot; for this stream. </span>
 <span class="sd">        </span>
@@ -138,9 +138,9 @@
                 <span class="k">assert</span> <span class="bp">False</span>
             <span class="n">x</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
         <span class="k">return</span> <span class="n">x</span>
-</div>
+
     <span class="nd">@contract</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">)</span>
-<div class="viewcode-block" id="StreamSpec.check_valid_value"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.check_valid_value">[docs]</a>    <span class="k">def</span> <span class="nf">check_valid_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">check_valid_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; </span>
 <span class="sd">            Checks if the value x is valid according to this spec</span>
 <span class="sd">            and raises BootInvalidValue (derived from ValueError) if it is not.</span>
@@ -193,21 +193,21 @@
                    <span class="n">display_some_extended</span><span class="p">(</span><span class="n">xv</span><span class="p">,</span>
                                          <span class="bp">self</span><span class="o">.</span><span class="n">streamels</span><span class="p">[</span><span class="n">valid</span><span class="p">],</span> <span class="n">out_of_range</span><span class="p">))</span>
             <span class="n">bail</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-</div>
+
     <span class="nd">@contract</span><span class="p">(</span><span class="n">returns</span><span class="o">=</span><span class="s">&#39;int,&gt;0&#39;</span><span class="p">)</span>
-<div class="viewcode-block" id="StreamSpec.size"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Returns the number of total elements in the stream. &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">streamels</span><span class="o">.</span><span class="n">size</span>
-</div>
+
     <span class="nd">@contract</span><span class="p">(</span><span class="n">returns</span><span class="o">=</span><span class="s">&#39;seq[&gt;0](int,&gt;0)&#39;</span><span class="p">)</span>
-<div class="viewcode-block" id="StreamSpec.shape"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape">[docs]</a>    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Returns the shape of the stream, as a sequence of positive </span>
 <span class="sd">            integers (like Numpy&#39;s shape). &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">streamels</span><span class="o">.</span><span class="n">shape</span>
-</div>
+
     <span class="nd">@staticmethod</span>
     <span class="nd">@contract</span><span class="p">(</span><span class="n">spec</span><span class="o">=</span><span class="s">&#39;dict&#39;</span><span class="p">)</span>
-<div class="viewcode-block" id="StreamSpec.from_yaml"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.from_yaml">[docs]</a>    <span class="k">def</span> <span class="nf">from_yaml</span><span class="p">(</span><span class="n">spec</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_yaml</span><span class="p">(</span><span class="n">spec</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Expected a dict, got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">spec</span><span class="p">)</span>
@@ -240,9 +240,9 @@
         <span class="k">except</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Error while parsing the StreamSpec:</span><span class="se">\n</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">spec</span><span class="p">)</span>
             <span class="k">raise</span>
-</div>
+
     <span class="nd">@contract</span><span class="p">(</span><span class="n">returns</span><span class="o">=</span><span class="s">&#39;dict&#39;</span><span class="p">)</span>
-<div class="viewcode-block" id="StreamSpec.to_yaml"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.to_yaml">[docs]</a>    <span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">arange</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
@@ -280,12 +280,12 @@
             <span class="n">data</span><span class="p">[</span><span class="s">&#39;range&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">arange</span>
 
         <span class="k">return</span> <span class="n">data</span>
-</div>
+
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">&#39;StreamSpec(</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">streamels</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="StreamSpec.join"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="n">obs2</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="n">obs2</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Returns the spec obtained by concatenating two of them. &#39;&#39;&#39;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obs1</span><span class="p">,</span> <span class="n">StreamSpec</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obs2</span><span class="p">,</span> <span class="n">StreamSpec</span><span class="p">)</span>
@@ -316,16 +316,16 @@
         <span class="k">return</span> <span class="n">StreamSpec</span><span class="p">(</span><span class="n">id_stream</span><span class="o">=</span><span class="n">id_stream</span><span class="p">,</span>
                           <span class="n">streamels</span><span class="o">=</span><span class="n">streamels</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra</span><span class="p">,</span>
                           <span class="n">filtered</span><span class="o">=</span><span class="n">filtered</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">desc</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="StreamSpec.get_id_stream"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_id_stream">[docs]</a>    <span class="k">def</span> <span class="nf">get_id_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get_id_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_stream</span>
 
-</div></div>
-<div class="viewcode-block" id="streamels_all_of_kind"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.streamels_all_of_kind">[docs]</a><span class="k">def</span> <span class="nf">streamels_all_of_kind</span><span class="p">(</span><span class="n">streamels</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">streamels_all_of_kind</span><span class="p">(</span><span class="n">streamels</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Returns True if all streamels are of the same given kind (&#39;C&#39;,&#39;D&#39;) &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">kind</span><span class="p">)</span>
 
-</div>
+
 <div class="viewcode-block" id="all_same_spec"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.stream_spec.all_same_spec">[docs]</a><span class="k">def</span> <span class="nf">all_same_spec</span><span class="p">(</span><span class="n">streamels</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Checks that all streamels have the same attributes. &#39;&#39;&#39;</span>
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">,</span> <span class="s">&#39;lower&#39;</span><span class="p">,</span> <span class="s">&#39;kind&#39;</span><span class="p">,</span> <span class="s">&#39;default&#39;</span><span class="p">]:</span>

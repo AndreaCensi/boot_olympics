@@ -51,6 +51,102 @@
 <div class="section" id="id1">
 <h2><tt class="xref py py-mod docutils literal"><span class="pre">agents</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="module-bootstrapping_olympics.library.agents"></span><p>Minimal examples of agents.</p>
+<dl class="class">
+<dt id="bootstrapping_olympics.library.agents.RandomAgent">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.agents.</tt><tt class="descname">RandomAgent</tt><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.agent.AgentInterface" title="bootstrapping_olympics.interfaces.agent.AgentInterface"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.agent.AgentInterface</span></tt></a></p>
+<p>A dummy agent that gives random commands.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.library.agents.RandomAgent.choose_commands">
+<tt class="descname">choose_commands</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgent.choose_commands" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.agents.RandomAgent.get_predictor">
+<tt class="descname">get_predictor</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgent.get_predictor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.agents.RandomAgent.get_servo">
+<tt class="descname">get_servo</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgent.get_servo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.agents.RandomAgent.init">
+<tt class="descname">init</tt><big>(</big><em>boot_spec</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgent.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.agents.RandomAgent.process_observations">
+<tt class="descname">process_observations</tt><big>(</big><em>observations</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgent.process_observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="bootstrapping_olympics.library.agents.RandomAgentPredictor">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.agents.</tt><tt class="descname">RandomAgentPredictor</tt><big>(</big><em>boot_spec</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgentPredictor" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="bootstrapping_olympics.library.agents.RandomAgentPredictor.predict_y">
+<tt class="descname">predict_y</tt><big>(</big><em>dt</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgentPredictor.predict_y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.agents.RandomAgentPredictor.process_observations">
+<tt class="descname">process_observations</tt><big>(</big><em>obs</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgentPredictor.process_observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="bootstrapping_olympics.library.agents.RandomAgentServo">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.agents.</tt><tt class="descname">RandomAgentServo</tt><big>(</big><em>boot_spec</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgentServo" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="bootstrapping_olympics.library.agents.RandomAgentServo.choose_commands">
+<tt class="descname">choose_commands</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgentServo.choose_commands" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.agents.RandomAgentServo.process_observations">
+<tt class="descname">process_observations</tt><big>(</big><em>obs</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgentServo.process_observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.agents.RandomAgentServo.set_goal_observations">
+<tt class="descname">set_goal_observations</tt><big>(</big><em>goal</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.RandomAgentServo.set_goal_observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="bootstrapping_olympics.library.agents.TestAgent">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.agents.</tt><tt class="descname">TestAgent</tt><big>(</big><em>cmd</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.TestAgent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.agent.AgentInterface" title="bootstrapping_olympics.interfaces.agent.AgentInterface"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.agent.AgentInterface</span></tt></a></p>
+<p>A simple agent useful for testing.</p>
+<p>It executes any command specified on the constructor. 
+If the command is a string, then it is eval()uated.</p>
+<p>You can use the variables:</p>
+<ul class="simple">
+<li>&#8220;t&#8221; for time.</li>
+<li>&#8220;y&#8221; for the observations.</li>
+</ul>
+<dl class="method">
+<dt id="bootstrapping_olympics.library.agents.TestAgent.choose_commands">
+<tt class="descname">choose_commands</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.TestAgent.choose_commands" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.agents.TestAgent.init">
+<tt class="descname">init</tt><big>(</big><em>boot_spec</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.TestAgent.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.agents.TestAgent.process_observations">
+<tt class="descname">process_observations</tt><big>(</big><em>observations</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.agents.TestAgent.process_observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-bootstrapping_olympics.library.agents.random_agent">
 <span id="random-agent-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">random_agent</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.agents.random_agent" title="Permalink to this headline">¶</a></h2>

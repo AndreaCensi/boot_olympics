@@ -51,6 +51,88 @@
 <div class="section" id="id1">
 <h2><tt class="xref py py-mod docutils literal"><span class="pre">robots</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="module-bootstrapping_olympics.library.robots"></span><p>Minimal examples of robots.</p>
+<dl class="class">
+<dt id="bootstrapping_olympics.library.robots.EquivRobot">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.robots.</tt><tt class="descname">EquivRobot</tt><big>(</big><em>robot</em>, <em>obs_nuisance=</em><span class="optional">[</span><span class="optional">]</span>, <em>cmd_nuisance=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.robots.EquivRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.robot.RobotInterface" title="bootstrapping_olympics.interfaces.robot.RobotInterface"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.robot.RobotInterface</span></tt></a></p>
+<p>This is used to create the perturbed version of a robot.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.EquivRobot.get_observations">
+<tt class="descname">get_observations</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.robots.EquivRobot.get_observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.EquivRobot.get_original_robot">
+<tt class="descname">get_original_robot</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.robots.EquivRobot.get_original_robot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the robot that we are wrapping with this nuisance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.EquivRobot.get_spec">
+<tt class="descname">get_spec</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.robots.EquivRobot.get_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.EquivRobot.get_state">
+<tt class="descname">get_state</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.robots.EquivRobot.get_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.EquivRobot.new_episode">
+<tt class="descname">new_episode</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.robots.EquivRobot.new_episode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.EquivRobot.set_commands">
+<tt class="descname">set_commands</tt><big>(</big><em>commands</em>, <em>commands_source</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.robots.EquivRobot.set_commands" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commands</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="bootstrapping_olympics.library.robots.RandomRobot">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.robots.</tt><tt class="descname">RandomRobot</tt><big>(</big><em>boot_spec</em>, <em>dt=0.1</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.robots.RandomRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.robot.RobotInterface" title="bootstrapping_olympics.interfaces.robot.RobotInterface"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.robot.RobotInterface</span></tt></a></p>
+<p>This is a sensorimotor cascade generating uniform noise,
+and ignores any command given.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.RandomRobot.get_observations">
+<tt class="descname">get_observations</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.robots.RandomRobot.get_observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.RandomRobot.get_spec">
+<tt class="descname">get_spec</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.robots.RandomRobot.get_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.RandomRobot.new_episode">
+<tt class="descname">new_episode</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.robots.RandomRobot.new_episode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.robots.RandomRobot.set_commands">
+<tt class="descname">set_commands</tt><big>(</big><em>commands</em>, <em>commands_source</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.robots.RandomRobot.set_commands" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commands</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-bootstrapping_olympics.library.robots.equiv_robot">
 <span id="equiv-robot-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">equiv_robot</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.robots.equiv_robot" title="Permalink to this headline">¶</a></h2>

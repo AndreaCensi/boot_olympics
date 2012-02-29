@@ -69,14 +69,14 @@ Streamels functions
 Library: agents
 ----------------------------------
 
-.. automodule:: bootstrapping_olympics.examples.agents
+.. automodule:: bootstrapping_olympics.library.agents
    :members:
    :undoc-members:
 
 Library: robots
 ----------------------------------
 
-.. automodule:: bootstrapping_olympics.examples.robots
+.. automodule:: bootstrapping_olympics.library.robots
    :members:
    :undoc-members:
 
@@ -84,10 +84,12 @@ Library: robots
 Library: representation nuisances
 ----------------------------------
 
-.. automodule:: bootstrapping_olympics.examples.rep_nuisances
+
+.. automodule:: bootstrapping_olympics.library.nuisances
    :members:
    :undoc-members:
 
+	
 .. toctree::
    :hidden:
    
