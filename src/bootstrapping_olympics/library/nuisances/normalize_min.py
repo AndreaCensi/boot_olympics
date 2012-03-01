@@ -1,12 +1,15 @@
-from . import (check_streamels_1D, check_streamels_continuous, contract, np,
+from . import (check_streamels_1D, check_streamels_continuous, np,
     check_streamels_range)
 from bootstrapping_olympics import (NuisanceNotInvertible, streamel_dtype,
-    StreamSpec, RepresentationNuisance, ValueFormats)
+     RepresentationNuisance, ValueFormats)
 
 
 class NormalizeMin(RepresentationNuisance):
     ''' 
-        Transforms: ..
+        Normalizes the streamels into a ``[0,1]`` range by removing the 
+        minimum and linearly scaling.
+        
+        Transforms: ::
         
             z[:n] = (y - min(y)) /  max(y) - min(y) 
             z[n]  = min(y) 
@@ -18,9 +21,7 @@ class NormalizeMin(RepresentationNuisance):
     def inverse(self):
         return NormalizeMinInverse()
 
-    @contract(stream_spec=StreamSpec)
-    def transform_spec(self, stream_spec):
-        streamels = stream_spec.get_streamels()
+    def transform_streamels(self, streamels):
         check_streamels_1D(streamels)
         check_streamels_continuous(streamels)
         check_streamels_range(streamels, 0, 1)
@@ -47,13 +48,7 @@ class NormalizeMin(RepresentationNuisance):
 
         streamels2['default'] = self.transform_value(streamels['default'])
 
-        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered={},
-                                  desc=stream_spec.desc)
-
-        return stream_spec2
+        return streamels2
 
     def transform_value(self, value):
         vmin = np.min(value)
@@ -90,9 +85,7 @@ class NormalizeMinInverse(RepresentationNuisance):
     def inverse(self):
         raise NuisanceNotInvertible('Not implemented')
 
-    @contract(stream_spec=StreamSpec)
-    def transform_spec(self, stream_spec):
-        streamels = stream_spec.get_streamels()
+    def transform_streamels(self, streamels):
         check_streamels_1D(streamels)
         check_streamels_continuous(streamels)
         check_streamels_range(streamels, 0.0, 1.0)
@@ -106,13 +99,7 @@ class NormalizeMinInverse(RepresentationNuisance):
 
         streamels2['default'] = self.transform_value(streamels['default'])
 
-        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered={},
-                                  desc=stream_spec.desc)
-
-        return stream_spec2
+        return streamels2
 
     def transform_value(self, value):
         z = value[:-2]

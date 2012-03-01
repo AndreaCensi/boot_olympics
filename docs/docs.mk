@@ -16,11 +16,11 @@ compile-website: website epydoc generate
 	PYTHONPATH=`pwd`:$(PYTHONPATH) sphinx-build -E -n -a -b html $(source) $(webdir)
 
 generate:
-	rm -rf  $(autogen)
+	#rm -rf $(autogen)
 	sphinx-autogen -o $(autogen) $(source)/*.rst
 	sphinx-apidoc  -o $(autogen) ../src
 	 
-compile: generate
+compile: generate generate-custom
 	PYTHONPATH=`pwd`:$(PYTHONPATH) sphinx-build -E -n -a -b html $(source) $(webdir)
 	
 website: distclean

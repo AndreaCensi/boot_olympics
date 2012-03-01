@@ -1,112 +1,127 @@
-- id: n_id
+- id: id
   desc: The identity nuisance
   code:
   - bootstrapping_olympics.library.nuisances.Identity
   - {}
 
-- id: n_GLa
+- id: GLa
   desc: Linear transformation
   code:
   - bootstrapping_olympics.library.nuisances.GLNuisance
   - A: [[-0.5,+0.5],[+0.5,+0.5]]
 
 
-- id: n_rpermA
+- id: rpermA
   desc: Random permutation
   code:
   - bootstrapping_olympics.library.nuisances.RandomPermutation
   - seed: 100
 
-- id: n_rpermB
+- id: rpermB
   desc: Random permutation
   code:
   - bootstrapping_olympics.library.nuisances.RandomPermutation
   - seed: 200
 
-- id: n_rscaleA
+- id: rscaleA
   desc: Random scaling
   code:
   - bootstrapping_olympics.library.nuisances.RandomScaling
   - seed: 200
 
-- id: n_rscaleB
+- id: rscaleB
   desc: Random scaling 
   code:
   - bootstrapping_olympics.library.nuisances.RandomScaling
   - seed: 300
 
-- id: n_popcode128
+- id: popcode128
   desc: Population code with resolution = 127
   code:
   - bootstrapping_olympics.library.nuisances.PopCode
   - resolution: 32
 
 
-- id: n_flatten
+- id: flatten
   desc: Flattens the array.
   code:
   - bootstrapping_olympics.library.nuisances.Flatten
   - {}
 
 
-- id: n_select1
+- id: to2d
+  desc: Promotes a 1D array to a 2D array (1xN).
+  code:
+  - bootstrapping_olympics.library.nuisances.To2D
+  - {}
+
+
+- id: select1
   desc: Selects the first element of the array (not invertible)
   code:
   - bootstrapping_olympics.library.nuisances.Select
   - which: 1
 
-- id: n_select2
+- id: sel01
   desc: Selects the first two elements of the array (not invertible)
   code:
     - bootstrapping_olympics.library.nuisances.Select
     - which: [0, 1]
     
 
-- id: n_discretize_32
+- id: d32
   desc: Discretizes the float stream to 32 levels
   code:
     - bootstrapping_olympics.library.nuisances.Discretize
     - levels: 32
     
+
+- id: d16
+  desc: Discretizes the float stream to 16 levels
+  code:
+    - bootstrapping_olympics.library.nuisances.Discretize
+    - levels: 16
+    
+
  
-- id: n_bits2int
+- id: bits2int
   desc: Converts bits back into integers.
   code:
     - bootstrapping_olympics.library.nuisances.Bits2int
     - code: base2
  
-- id: n_int2bits
+- id: int2bits
   desc: Converts integers into their bits representation.
   code:
     - bootstrapping_olympics.library.nuisances.Int2bits
     - code: base2
 
-- id: n_int2gray
+- id: int2gray
   desc: Converts integers into their bits representation using a Gray code.
   code:
     - bootstrapping_olympics.library.nuisances.Int2bits
     - code: gray
 
-- id: n_encrypt1
+- id: encrypt1
   desc: Converts integers into their bits representation.
   code:
     - bootstrapping_olympics.library.nuisances.Encrypt
     - password: ciaociao
 
-- id: n_normalize_mean
+- id: normalize_mean
   desc: Subtracts the mean from the data.
   code:
     - bootstrapping_olympics.library.nuisances.NormalizeMean
     - {}
 
-- id: n_normalize_mmax
+- id: normalize_mmax
   desc: 'Normalizes the data in the [-1,1] range (instantaneously)'
   code:
     - bootstrapping_olympics.library.nuisances.NormalizeMinMax
     - {}
 
 
-- id: n_normalize_min
+- id: normalize_min
   desc: 'Normalizes the data in the [0,1] range (instantaneously)'
   code:
     - bootstrapping_olympics.library.nuisances.NormalizeMin 

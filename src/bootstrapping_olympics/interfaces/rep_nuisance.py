@@ -1,4 +1,6 @@
 from abc import abstractmethod, ABCMeta
+from . import contract
+from bootstrapping_olympics.interfaces.stream_spec import StreamSpec
 
 __all__ = ['RepresentationNuisance', 'NuisanceNotInvertible']
 
@@ -20,10 +22,28 @@ class RepresentationNuisance:
         ''' Returns the inverse representation nuisance, or 
             NuisanceNotInvertible '''
 
-    @abstractmethod
     def transform_spec(self, stream_spec):
-        ''' Returns the changed StreamSpec, or throws
-            UnsupportedSpec if the spec is not supported. '''
+        ''' 
+            Returns the changed StreamSpec, or throws
+            UnsupportedSpec if the spec is not supported.
+            
+            You can either subclass this or :py:function:`transform_sensels`. 
+        '''
+
+        streamels = stream_spec.get_streamels()
+
+        streamels2 = self.transform_streamels(streamels)
+
+        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
+                                  streamels=streamels2,
+                                  extra={}, # TODO: annotate
+                                  filtered={},
+                                  desc=stream_spec.desc)
+        return stream_spec2
+
+    @contract(streamels='streamel_array', returns='streamel_array')
+    def transform_streamels(self, streamels):
+        raise NotImplementedError()
 
     @abstractmethod
     def transform_value(self, values):

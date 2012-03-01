@@ -1,6 +1,6 @@
-from . import check_streamels_1D, contract, np
-from bootstrapping_olympics import (StreamSpec, UnsupportedSpec,
-    RepresentationNuisance, NuisanceNotInvertible)
+from . import check_streamels_1D, np
+from bootstrapping_olympics import (UnsupportedSpec, RepresentationNuisance,
+    NuisanceNotInvertible)
 
 __all__ = ['Select']
 
@@ -28,25 +28,17 @@ class Select(RepresentationNuisance):
     def inverse(self):
         raise NuisanceNotInvertible()
 
-    @contract(stream_spec=StreamSpec)
-    def transform_spec(self, stream_spec):
-        streamels = stream_spec.get_streamels()
+    def transform_streamels(self, streamels):
         check_streamels_1D(streamels)
 
-        size = stream_spec.size()
         min_size = max(self.select) + 1
-        if min_size > size:
+        if min_size > streamels.size:
             msg = ('This nuisance requires a stream with at least %d '
-                   'streamels; found %s.' % (min_size, size))
+                   'streamels; found %s.' % (min_size, streamels.size))
             raise UnsupportedSpec(msg)
 
         streamels2 = streamels[self.select]
-
-        return StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered={},
-                                  desc="%s (scaled)" % stream_spec.desc)
+        return streamels2
 
     def transform_value(self, value):
         return value[self.select]

@@ -1,4 +1,4 @@
-from ...interfaces import RepresentationNuisance
+from bootstrapping_olympics import RepresentationNuisance
 
 __all__ = ['Identity']
 
@@ -13,9 +13,9 @@ class Identity(RepresentationNuisance):
     def __init__(self):
         self.transform_spec_called = False
 
-    def transform_spec(self, stream_spec):
+    def transform_streamels(self, streamels):
         self.transform_spec_called = True
-        return stream_spec
+        return streamels.copy()
 
     def inverse(self):
         if not self.transform_spec_called:

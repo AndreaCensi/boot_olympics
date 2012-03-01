@@ -19,16 +19,20 @@ from . import contract, np
 
 boot_observations_version = [1, 0]
 
+# TODO: check this somewhere
+max_identifiers_size = 256
+strings_format = 'S%d' % max_identifiers_size
+
 boot_observations_dtype = [
     ('timestamp', 'float64'),
     # ('observations',) # This will be added when the shape is known. 
     # ('commands',)  # This will be added later.
 
     ('version', ('uint8', 2)),
-    ('commands_source', 'S64'),
-    ('id_robot', 'S64'),
-    ('id_episode', 'S64'),
-    ('id_world', 'S64'),
+    ('commands_source', strings_format),
+    ('id_robot', strings_format),
+    ('id_episode', strings_format),
+    ('id_world', strings_format),
     ('counter', 'int'), # steps from id_episodes
     ('episode_start', 'bool'), # True if episode started
 
@@ -62,6 +66,9 @@ class ObsKeeper: # TODO: move away from here
             :param check_valid_values: checks that the commands and 
                 observations respect the spec
         '''
+        if len(id_robot) > max_identifiers_size:
+            msg = "Robot id %r is too long." % id_robot
+            raise ValueError(msg)
         self.episode_started = False
         self.observations = None
         self.boot_spec = boot_spec
@@ -80,6 +87,14 @@ class ObsKeeper: # TODO: move away from here
     def push(self, timestamp, observations, commands, commands_source,
                    id_episode, id_world):
         ''' Returns the observations structure. '''
+
+        if len(id_episode) > max_identifiers_size:
+            msg = "Episode id %r is too long." % id_episode
+            raise ValueError(msg)
+
+        if len(id_world) > max_identifiers_size:
+            msg = "World id %r is too long." % id_world
+            raise ValueError(msg)
 
         if self.id_episode != id_episode:
             self.id_episode = id_episode

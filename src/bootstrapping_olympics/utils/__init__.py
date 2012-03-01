@@ -22,3 +22,4 @@ from .strings import *
 from .np_comparisons import *
 from .cocher import *
 from .display_some_values import *
+from .change_module import *

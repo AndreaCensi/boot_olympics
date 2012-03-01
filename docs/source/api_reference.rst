@@ -12,25 +12,22 @@ Main interfaces and related data
 .. autosummary::  
    :toctree: api
    
-	bootstrapping_olympics.AgentInterface            
-	bootstrapping_olympics.RepresentationNuisance     
-	bootstrapping_olympics.RobotInterface      
-	bootstrapping_olympics.BootSpec                  
-	bootstrapping_olympics.StreamSpec                 
-	bootstrapping_olympics.Publisher            
+	AgentInterface            
+	RepresentationNuisance     
+	RobotInterface      
+	BootSpec                  
+	StreamSpec     
 	
-
-Data
-^^^^^^^^^^
+The following are ...
 
 .. autosummary::  
    :toctree: api
 
-    bootstrapping_olympics.boot_observations_dtype   
-    bootstrapping_olympics.boot_observations_version  
-	bootstrapping_olympics.RobotObservations
-    bootstrapping_olympics.EpisodeDesc                
-    bootstrapping_olympics.ObsKeeper                  
+	boot_observations_dtype   
+	RobotObservations
+	EpisodeDesc                
+	Publisher            
+
   
 Exceptions
 ^^^^^^^^^^
@@ -69,29 +66,14 @@ Streamels functions
 Library: agents
 ----------------------------------
 
-.. automodule:: bootstrapping_olympics.examples.agents
-   :members:
-   :undoc-members:
+.. include:: api/agents.rst.inc
 
 Library: robots
 ----------------------------------
 
-.. automodule:: bootstrapping_olympics.examples.robots
-   :members:
-   :undoc-members:
-
+.. include:: api/robots.rst.inc
 
 Library: representation nuisances
 ----------------------------------
 
-.. automodule:: bootstrapping_olympics.examples.rep_nuisances
-   :members:
-   :undoc-members:
-
-.. toctree::
-   :hidden:
-   
-   bootstrapping_olympics.examples.rep_nuisances
-   bootstrapping_olympics.examples.robots
-   bootstrapping_olympics.examples.agents
-   
+.. include:: api/nuisances.rst.inc

@@ -33,8 +33,8 @@
   code:
   - bootstrapping_olympics.library.robots.EquivRobot
   - robot: random_1_6
-    cmd_nuisance: [n_rpermB, n_rscaleA]
-    obs_nuisance: [n_rscaleA, n_rpermA]
+    cmd_nuisance: [rpermB, rscaleA]
+    obs_nuisance: [rscaleA, rpermA]
 
 
 - id: random_bits2
@@ -43,7 +43,7 @@
   - bootstrapping_olympics.library.robots.EquivRobot
   - robot: random_1_6
     cmd_nuisance: []
-    obs_nuisance: [n_discretize_32, n_int2bits, n_flatten]
+    obs_nuisance: [d32, int2bits, flatten]
 
 - id: random_bits1
   desc: "A perturbed version of the random robot that uses discretization to give bits"
@@ -51,4 +51,70 @@
   - bootstrapping_olympics.library.robots.EquivRobot
   - robot: random_1_6
     cmd_nuisance: []
-    obs_nuisance: [n_discretize_32, n_int2bits]
+    obs_nuisance: [d32, int2bits]
+
+
+
+- id: "${robot}-bits"
+  desc: "Converts to bits"
+  code:
+  - bootstrapping_olympics.library.robots.EquivRobot
+  - robot: "${robot}"
+    cmd_nuisance: []
+    obs_nuisance: [int2bits]
+          
+- id: "${robot}-gray"
+  desc: "Converts to gray code"
+  code:
+  - bootstrapping_olympics.library.robots.EquivRobot
+  - robot: "${robot}"
+    cmd_nuisance: []
+    obs_nuisance: [int2gray]
+          
+
+- id: "${robot}-d32"
+  desc: "Discretizes to 32 levels"
+  code:
+  - bootstrapping_olympics.library.robots.EquivRobot
+  - robot: "${robot}"
+    cmd_nuisance: []
+    obs_nuisance: [d32]
+          
+          
+- id: "${robot}-shuffle"
+  desc: "Shuffles the sensels"
+  code:
+  - bootstrapping_olympics.library.robots.EquivRobot
+  - robot: "${robot}"
+    cmd_nuisance: []
+    obs_nuisance: [rpermA]
+          
+          
+- id: "${robot}-flatten"
+  desc: "Flattens to 1D array"
+  code:
+  - bootstrapping_olympics.library.robots.EquivRobot
+  - robot: "${robot}"
+    cmd_nuisance: []
+    obs_nuisance: [flatten]
+    
+          
+- id: "${robot}-crypt"
+  desc: "Encrypts the bits."
+  code:
+  - bootstrapping_olympics.library.robots.EquivRobot
+  - robot: "${robot}"
+    cmd_nuisance: []
+    obs_nuisance: [encrypt1]
+          
+          
+# Generic observation nuisance
+- id: "n_${nuisance}-${robot}"
+  desc: "Robot ${robot} with nuisance ${nuisance}"
+  code:
+  - bootstrapping_olympics.library.robots.EquivRobot
+  - robot: "${robot}"
+    cmd_nuisance: []
+    obs_nuisance: ["${nuisance}"]
+          
+

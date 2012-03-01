@@ -1,5 +1,5 @@
 from . import gray, np
-from bootstrapping_olympics.utils.numpy_backported import assert_allclose
+from bootstrapping_olympics.utils import assert_allclose
 
 
 def test_gray():

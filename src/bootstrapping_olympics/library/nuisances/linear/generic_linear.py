@@ -1,6 +1,6 @@
 from .. import (check_streamels_1D, check_streamels_continuous, contract, np,
     find_polytope_bounds_after_linear, check_streamels_1D_size)
-from bootstrapping_olympics import (StreamSpec, RepresentationNuisance,
+from bootstrapping_olympics import (RepresentationNuisance,
     ValueFormats, streamel_dtype, NuisanceNotInvertible)
 
 __all__ = ['GenericLinear']
@@ -39,8 +39,7 @@ class GenericLinear(RepresentationNuisance):
                 raise ValueError(msg)
         return A
 
-    def transform_spec(self, stream_spec):
-        streamels = stream_spec.get_streamels()
+    def transform_streamels(self, streamels):
         check_streamels_1D(streamels)
         check_streamels_continuous(streamels)
 
@@ -62,13 +61,7 @@ class GenericLinear(RepresentationNuisance):
 
         streamels2['default'] = self.transform_value(streamels['default'])
 
-        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered={},
-                                  desc=stream_spec.desc)
-
-        return stream_spec2
+        return streamels2
 
     def transform_value(self, value):
         value2 = np.dot(self.A, value)

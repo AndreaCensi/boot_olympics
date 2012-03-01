@@ -1,5 +1,5 @@
 from . import check_streamels_continuous, contract, np
-from ... import (StreamSpec, RepresentationNuisance, ValueFormats,
+from ... import (RepresentationNuisance, ValueFormats,
     NuisanceNotInvertible)
 
 __all__ = ['Discretize']
@@ -17,9 +17,7 @@ class Discretize(RepresentationNuisance):
     def __init__(self, levels):
         self.levels = levels
 
-    @contract(stream_spec=StreamSpec)
-    def transform_spec(self, stream_spec):
-        streamels = stream_spec.get_streamels()
+    def transform_streamels(self, streamels):
         check_streamels_continuous(streamels)
 
         # Save these so we can use them later
@@ -31,14 +29,7 @@ class Discretize(RepresentationNuisance):
         streamels2['lower'] = 0
         streamels2['upper'] = self.levels - 1
         streamels2['default'] = self.transform_value(streamels['default'])
-
-        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered={},
-                                  desc=None)
-
-        return stream_spec2
+        return streamels2
 
     def transform_value(self, value):
         # Value normalized in [0,1]

@@ -1,5 +1,5 @@
 from . import check_streamels_1D, contract, np
-from ... import StreamSpec, RepresentationNuisance
+from bootstrapping_olympics import  RepresentationNuisance, new_streamels
 
 __all__ = ['RandomPermutation']
 
@@ -16,30 +16,20 @@ class RandomPermutation(RepresentationNuisance):
     def inverse(self):
         return RandomPermutation(self.seed, not self.inverted)
 
-    @contract(stream_spec=StreamSpec)
-    def transform_spec(self, stream_spec):
-        streamels = stream_spec.get_streamels()
+    def transform_streamels(self, streamels):
         check_streamels_1D(streamels)
 
-        n = stream_spec.size()
+        n = streamels.size
         self.perm = random_permutation(n, self.seed)
         if self.inverted:
             self.perm = invert_permutation(self.perm)
 
-        streamels = stream_spec.get_streamels().copy() # XXX
-
-        streamels['kind'] = streamels['kind'][self.perm]
-        streamels['lower'] = streamels['lower'][self.perm]
-        streamels['upper'] = streamels['upper'][self.perm]
-        streamels['default'] = streamels['default'][self.perm]
-
-        if stream_spec.id_stream:
-            id_stream = stream_spec.id_stream + '-rperm%s' % self.seed
-        else:
-            id_stream = None
-        return StreamSpec(id_stream=id_stream,
-                          streamels=streamels,
-                          extra=stream_spec.extra)
+        streamels2 = new_streamels(streamels.shape)
+        streamels2['kind'] = streamels['kind'][self.perm]
+        streamels2['lower'] = streamels['lower'][self.perm]
+        streamels2['upper'] = streamels['upper'][self.perm]
+        streamels2['default'] = self.transform_value(streamels['default'])
+        return streamels2
 
     def transform_value(self, values):
         if self.perm is None:

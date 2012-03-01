@@ -50,6 +50,7 @@ class RobotInterface:
         This is the basic class for robots. 
         
         Protocol notes:
+        
         - new_episode() must be called before get_observations()
     '''
     __metaclass__ = ABCMeta

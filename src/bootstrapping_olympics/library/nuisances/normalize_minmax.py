@@ -1,6 +1,6 @@
-from . import check_streamels_1D, check_streamels_continuous, contract, np
+from . import check_streamels_1D, check_streamels_continuous, np
 from bootstrapping_olympics import (NuisanceNotInvertible, streamel_dtype,
-    StreamSpec, RepresentationNuisance, ValueFormats)
+     RepresentationNuisance, ValueFormats)
 
 __all__ = ['NormalizeMinMax']
 
@@ -17,9 +17,7 @@ class NormalizeMinMax(RepresentationNuisance):
     def inverse(self):
         raise NuisanceNotInvertible('Not implemented')
 
-    @contract(stream_spec=StreamSpec)
-    def transform_spec(self, stream_spec):
-        streamels = stream_spec.get_streamels()
+    def transform_streamels(self, streamels):
         check_streamels_1D(streamels)
         check_streamels_continuous(streamels)
 
@@ -45,13 +43,7 @@ class NormalizeMinMax(RepresentationNuisance):
 
         streamels2['default'] = self.transform_value(streamels['default'])
 
-        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered={},
-                                  desc=stream_spec.desc)
-
-        return stream_spec2
+        return streamels2
 
     def transform_value(self, value):
         mean = np.mean(value)

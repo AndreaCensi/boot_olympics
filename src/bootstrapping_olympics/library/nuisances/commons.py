@@ -7,7 +7,16 @@ from numpy.core.numeric import allclose
 @contract(streamels='streamel_array')
 def check_streamels_1D(streamels):
     if len(streamels.shape) != 1:
-        msg = 'Only 1D streams are supported.'
+        msg = ('Only 1D streams are supported; shape is %s.'
+                % str(streamels.shape))
+        raise UnsupportedSpec(msg)
+
+
+@contract(streamels='streamel_array')
+def check_streamels_2D(streamels):
+    if len(streamels.shape) != 2:
+        msg = ('Only 2D streams are supported; shape is %s.'
+                % str(streamels.shape))
         raise UnsupportedSpec(msg)
 
 
@@ -43,6 +52,22 @@ def check_streamels_range(streamels, lower, upper):
         raise UnsupportedSpec(msg)
     if not np.all(upper == streamels['upper']):
         msg = 'Not all streamels have upper bound %f.' % lower
+        raise UnsupportedSpec(msg)
+
+
+def check_1d_bit_sequence(streamels, who):
+    ''' Checks that it is a 1D sequence of bits (integers in {0,1}). '''
+    if not streamels_all_of_kind(streamels, ValueFormats.Discrete):
+        msg = '%s only supports discrete streams.' % who
+        raise UnsupportedSpec(msg)
+
+    if streamels.ndim != 1:
+        msg = '%s only works with 1D streams.' % who
+        raise UnsupportedSpec(msg)
+
+    if (np.any(streamels['lower'] != 0) or
+         np.any(streamels['upper'] != 1)):
+        msg = '%s expects only bits as input.' % who
         raise UnsupportedSpec(msg)
 
 

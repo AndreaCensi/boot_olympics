@@ -1,7 +1,7 @@
-from . import contract
-from ... import (StreamSpec, UnsupportedSpec, RepresentationNuisance)
+from . import check_streamels_1D, contract
+from bootstrapping_olympics import UnsupportedSpec, RepresentationNuisance
 
-__all__ = ['Flatten', 'Reshape']
+__all__ = ['Flatten', 'Reshape', 'To2D']
 
 
 class Flatten(RepresentationNuisance):
@@ -9,32 +9,26 @@ class Flatten(RepresentationNuisance):
 
     def __init__(self):
         self.cur_shape = None
-        pass
 
-    @contract(stream_spec=StreamSpec)
-    def transform_spec(self, stream_spec):
-        if len(stream_spec.shape()) == 1:
+    def transform_streamels(self, streamels):
+        if len(streamels.shape) == 1:
             msg = 'Flatten only works with non-1D streams.'
             raise UnsupportedSpec(msg)
 
-        streamels = stream_spec.get_streamels()
+        self.cur_shape = streamels.shape
+        self.cur_size = streamels.size
+
         streamels2 = streamels.flatten()
 
-        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered={},
-                                  desc="%s (flatened)" % stream_spec.desc)
-
-        self.cur_shape = stream_spec.shape()
-        self.cur_size = stream_spec.size()
-
-        return stream_spec2
+        return streamels2
 
     def inverse(self):
+        ''' The inverse operation is a :py:class:`Reshape` operation. '''
         return Reshape((self.cur_size,), self.cur_shape)
 
+    @contract(value='array', returns='array[N]')
     def transform_value(self, value):
+        ''' Flattens the given value. '''
         return value.flatten()
 
     def __repr__(self):
@@ -42,35 +36,54 @@ class Flatten(RepresentationNuisance):
 
 
 class Reshape(RepresentationNuisance):
+    ''' Reshape the values to a given shape. '''
 
+    @contract(shape_from='seq[>=1](int)', shape_to='seq[>=1](int)')
     def __init__(self, shape_from, shape_to):
+        ''' 
+            The two shapes should have the same number of elements. 
+        
+            :param shape_from: The shape the data is expected to be.
+            :param shape_to: The new shape for the data.
+        '''
+        # TODO: check same number of elements
         self.shape_from = shape_from
         self.shape_to = shape_to
 
     def inverse(self):
         return Reshape(self.shape_to, self.shape_from)
 
-    @contract(stream_spec=StreamSpec)
-    def transform_spec(self, stream_spec):
-        cur_shape = stream_spec.shape()
+    def transform_streamels(self, streamels):
+        cur_shape = streamels.shape
         if cur_shape != self.shape_from:
             msg = ('Cannot apply %s to array of size %s.' %
                    (self, cur_shape))
             raise UnsupportedSpec(msg)
 
-        streamels = stream_spec.get_streamels()
-        streamels2 = streamels.reshape(self.shape_to)
-
-        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered={},
-                                  desc=stream_spec.desc # XXX
-                                  )
-        return stream_spec2
+        return streamels.reshape(self.shape_to)
 
     def transform_value(self, value):
+        # TODO: check value shape
         return value.reshape(self.shape_to)
 
     def __repr__(self):
         return 'Reshape({}, {})'.format(self.shape_from, self.shape_to)
+
+
+class To2D(RepresentationNuisance):
+    ''' Transforms a stream of shape ``(n)`` into one of shape ``(1,n)``. '''
+
+    def inverse(self):
+        ''' The inverse is the :py:class:`Flatten` nuisance. '''
+        return Flatten()
+
+    def transform_streamels(self, streamels):
+        check_streamels_1D(streamels)
+        streamels2 = streamels.reshape((1, streamels.size))
+        return streamels2
+
+    def transform_value(self, value):
+        return value.reshape((1, value.size))
+
+    def __repr__(self):
+        return 'To2D()'

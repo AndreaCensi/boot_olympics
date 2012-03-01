@@ -1,5 +1,5 @@
 from . import GenericLinear
-from .. import   contract, np
+from .. import contract, np
 
 
 __all__ = ['RandomScaling']

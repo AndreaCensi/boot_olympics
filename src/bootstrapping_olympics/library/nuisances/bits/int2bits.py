@@ -1,5 +1,6 @@
 from . import contract, np, value2bits, gray
-from .... import (StreamSpec, UnsupportedSpec, RepresentationNuisance,
+from .. import check_streamels_2D
+from bootstrapping_olympics import (UnsupportedSpec, RepresentationNuisance,
     streamels_all_of_kind, ValueFormats, streamel_dtype)
 
 __all__ = ['Int2bits', 'Bits2int']
@@ -42,7 +43,7 @@ class Int2bits(RepresentationNuisance):
         their bit representation (0-1).   
         
         Converts a M array into an MxN array, 
-        using N bits, where N is the mininum used to
+        using N bits, where N is the minimum necessary to
         represent all the numbers in the array.
     '''
 
@@ -55,10 +56,7 @@ class Int2bits(RepresentationNuisance):
         self.codefunc = allowed_codes[code]
         self.code = code
 
-    @contract(stream_spec=StreamSpec)
-    def transform_spec(self, stream_spec):
-        streamels = stream_spec.get_streamels()
-
+    def transform_streamels(self, streamels):
         if not streamels_all_of_kind(streamels, ValueFormats.Discrete):
             msg = 'Int2bits only supports discrete streams.'
             raise UnsupportedSpec(msg)
@@ -88,14 +86,7 @@ class Int2bits(RepresentationNuisance):
         streamels2['lower'] = 0
         streamels2['upper'] = 1
         streamels2['default'] = self.transform_value(streamels['default'])
-
-        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered={},
-                                  desc=None)
-
-        return stream_spec2
+        return streamels2
 
     @contract(value='array[N]', # TODO: add generic int
               returns='array[NxM](=0|=1)')
@@ -133,17 +124,12 @@ class Bits2int(RepresentationNuisance):
         self.code = code
         self.codefunc = allowed_codes[code]
 
-    @contract(stream_spec=StreamSpec)
-    def transform_spec(self, stream_spec):
-        streamels = stream_spec.get_streamels()
+    def transform_streamels(self, streamels):
+        check_streamels_2D(streamels)
         shape = streamels.shape
         # TODO: use normal function
         if not streamels_all_of_kind(streamels, ValueFormats.Discrete):
             msg = 'Bits2int only supports discrete streams.'
-            raise UnsupportedSpec(msg)
-
-        if streamels.ndim != 2:
-            msg = 'Bits2int only works with 2D streams.'
             raise UnsupportedSpec(msg)
 
         if (np.any(streamels['lower'] != 0) or
@@ -158,21 +144,14 @@ class Bits2int(RepresentationNuisance):
         self.codewords_inv = {}
         for i, x in enumerate(self.codewords):
             self.codewords_inv[x] = i
-        print('codewords: %s' % self.codewords)
+        #print('codewords: %s' % self.codewords)
 
         streamels2 = np.zeros(nvalues, streamel_dtype)
         streamels2['kind'] = ValueFormats.Discrete
         streamels2['lower'] = 0
         streamels2['upper'] = 2 ** nbits - 1
         streamels2['default'] = self.transform_value(streamels['default'])
-
-        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered={},
-                                  desc=None)
-
-        return stream_spec2
+        return streamels2
 
     @contract(value='array[NxM](=0|=1)', returns='array[N]') # XXX
     def transform_value(self, value):

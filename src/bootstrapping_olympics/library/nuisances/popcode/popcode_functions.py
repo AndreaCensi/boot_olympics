@@ -1,6 +1,8 @@
 from . import contract, np
 from bootstrapping_olympics.utils import assert_allclose
 
+__all__ = ['popcode', 'popcode_inv']
+
 
 @contract(y='array[N](>=0,<=1)',
           resolution='int,>1,M',
