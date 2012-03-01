@@ -56,7 +56,7 @@
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.GenericLinear">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.</tt><tt class="descname">GenericLinear</tt><big>(</big><em>A=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/misc_linear/generic_linear.html#GenericLinear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.misc_linear.generic_linear.GenericLinear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>This represents a generic linear transformation
 between 1D continuous signals. The subclasses 
 only need to provide the matrix by either passing
@@ -100,7 +100,7 @@ it in the constructor or implementing get_matrix().</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.misc_linear.normalize.NormalizeMean">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.misc_linear.normalize.</tt><tt class="descname">NormalizeMean</tt><big>(</big><em>A=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/misc_linear/normalize.html#NormalizeMean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.misc_linear.normalize.NormalizeMean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.GenericLinear" title="bootstrapping_olympics.library.nuisances.GenericLinear"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.GenericLinear</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.GenericLinear" title="bootstrapping_olympics.library.nuisances.GenericLinear"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.GenericLinear</span></tt></a></p>
 <p>This instantaneous transformation takes a vector of N values
 and transforms them into a vector of N+1 values.</p>
 <p>z[0:n-1] = y - mean(y)
@@ -118,7 +118,7 @@ z[n] = mean(y)</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.misc_linear.random_scaling.RandomScaling">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.misc_linear.random_scaling.</tt><tt class="descname">RandomScaling</tt><big>(</big><em>seed</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/misc_linear/random_scaling.html#RandomScaling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.misc_linear.random_scaling.RandomScaling" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.GenericLinear" title="bootstrapping_olympics.library.nuisances.GenericLinear"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.GenericLinear</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.GenericLinear" title="bootstrapping_olympics.library.nuisances.GenericLinear"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.GenericLinear</span></tt></a></p>
 <p>A fixed random scaling of the signal.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.misc_linear.random_scaling.RandomScaling.get_matrix">

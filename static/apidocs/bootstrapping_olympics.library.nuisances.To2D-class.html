@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>bootstrapping_olympics.library.nuisances.PopCode</title>
+  <title>bootstrapping_olympics.library.nuisances.To2D</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -45,7 +45,7 @@
         <a href="bootstrapping_olympics-module.html">Package&nbsp;bootstrapping_olympics</a> ::
         <a href="bootstrapping_olympics.library-module.html">Package&nbsp;library</a> ::
         <a href="bootstrapping_olympics.library.nuisances-module.html">Package&nbsp;nuisances</a> ::
-        Class&nbsp;PopCode
+        Class&nbsp;To2D
       </span>
     </td>
     <td>
@@ -55,32 +55,30 @@
     onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.library.nuisances.PopCode-class.html"
+            >]&nbsp;|&nbsp;<a href="bootstrapping_olympics.library.nuisances.To2D-class.html"
             target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class PopCode</h1><p class="nomargin-top"><span class="codelink"><a href="bootstrapping_olympics.library.nuisances-pysrc.html#PopCode">source&nbsp;code</a></span></p>
+<h1 class="epydoc">Class To2D</h1><p class="nomargin-top"><span class="codelink"><a href="bootstrapping_olympics.library.nuisances-pysrc.html#To2D">source&nbsp;code</a></span></p>
 <center>
-<center>  <map id="uml_class_diagram_for_bootstra_27" name="uml_class_diagram_for_bootstra_27">
-<area shape="rect" href="bootstrapping_olympics.library.nuisances.PopCode-class.html#__abstractmethods__" title="bootstrapping_olympics.library.nuisances.PopCode.__abstractmethods__" alt="" coords="56,103,261,121"/>
-<area shape="rect" href="bootstrapping_olympics.library.nuisances.PopCode-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="56,124,261,143"/>
-<area shape="rect" href="bootstrapping_olympics.library.nuisances.PopCode-class.html#__repr__" title="repr(x)" alt="" coords="56,143,261,161"/>
-<area shape="rect" href="bootstrapping_olympics.library.nuisances.PopCode-class.html#inverse" title="Returns the inverse representation nuisance, or NuisanceNotInvertible" alt="" coords="56,161,261,180"/>
-<area shape="rect" href="bootstrapping_olympics.library.nuisances.PopCode-class.html#transform_spec" title="Returns the changed StreamSpec, or throws UnsupportedSpec if the spec is not supported." alt="" coords="56,180,261,199"/>
-<area shape="rect" href="bootstrapping_olympics.library.nuisances.PopCode-class.html#transform_value" title="Returns the transformed value." alt="" coords="56,199,261,217"/>
-<area shape="rect" href="bootstrapping_olympics.library.nuisances.PopCode-class.html" title="This nuisance transforms a 1D representation of the signal into a 2D representation." alt="" coords="55,85,263,219"/>
+<center>  <map id="uml_class_diagram_for_bootstra_33" name="uml_class_diagram_for_bootstra_33">
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.To2D-class.html#__abstractmethods__" title="bootstrapping_olympics.library.nuisances.To2D.__abstractmethods__" alt="" coords="56,103,261,121"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.To2D-class.html#__repr__" title="repr(x)" alt="" coords="56,124,261,143"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.To2D-class.html#inverse" title="The inverse is the :py:class:`Flatten` nuisance." alt="" coords="56,143,261,161"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.To2D-class.html#transform_spec" title="Returns the changed StreamSpec, or throws UnsupportedSpec if the spec is not supported." alt="" coords="56,161,261,180"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.To2D-class.html#transform_value" title="Returns the transformed value." alt="" coords="56,180,261,199"/>
+<area shape="rect" href="bootstrapping_olympics.library.nuisances.To2D-class.html" title="Transforms a stream of shape (n) into one of shape (1,n)." alt="" coords="55,85,263,200"/>
 <area shape="rect" href="abc.ABCMeta-class.html" title="Metaclass for defining Abstract Base Classes (ABCs)." alt="" coords="17,28,300,47"/>
 <area shape="rect" href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" alt="" coords="16,11,301,56"/>
 </map>
-  <img src="uml_class_diagram_for_bootstra_27.gif" alt='' usemap="#uml_class_diagram_for_bootstra_27" ismap="ismap" class="graph-without-title" />
+  <img src="uml_class_diagram_for_bootstra_33.gif" alt='' usemap="#uml_class_diagram_for_bootstra_33" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
 <hr />
-This nuisance transforms a 1D representation of the signal
-into a 2D representation.
+Transforms a stream of shape <tt class="rst-rst-rst-rst-docutils literal rst-rst-rst-docutils literal rst-rst-docutils literal rst-docutils literal">(n)</tt> into one of shape <tt class="rst-rst-rst-rst-docutils literal rst-rst-rst-docutils literal rst-rst-docutils literal rst-docutils literal">(1,n)</tt>.
 
 <!-- ==================== NESTED CLASSES ==================== -->
 <a name="section-NestedClasses"></a>
@@ -130,28 +128,10 @@ into a 2D representation.
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances.PopCode-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">resolution</span>=<span class="summary-sig-default">128</span>)</span><br />
-      x.__init__(...) initializes x; see help(type(x)) for signature</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.library.nuisances.popcode_nuisance-pysrc.html">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances.PopCode-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances.To2D-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
       repr(x)</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.library.nuisances.popcode_nuisance-pysrc.html">source&nbsp;code</a></span>
+            <span class="codelink"><a href="bootstrapping_olympics.library.nuisances.flatten-pysrc.html">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -165,11 +145,10 @@ into a 2D representation.
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances.PopCode-class.html#inverse" class="summary-sig-name">inverse</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Returns the inverse representation nuisance, or
-NuisanceNotInvertible</td>
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances.To2D-class.html#inverse" class="summary-sig-name">inverse</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      The inverse is the :py:class:`Flatten` nuisance.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.library.nuisances.popcode_nuisance-pysrc.html">source&nbsp;code</a></span>
+            <span class="codelink"><a href="bootstrapping_olympics.library.nuisances.flatten-pysrc.html">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -183,12 +162,12 @@ NuisanceNotInvertible</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances.PopCode-class.html#transform_spec" class="summary-sig-name">transform_spec</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances.To2D-class.html#transform_spec" class="summary-sig-name">transform_spec</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">stream_spec</span>)</span><br />
       Returns the changed StreamSpec, or throws
 UnsupportedSpec if the spec is not supported.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.library.nuisances.popcode_nuisance-pysrc.html">source&nbsp;code</a></span>
+            <span class="codelink"><a href="bootstrapping_olympics.library.nuisances.flatten-pysrc.html">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -202,11 +181,11 @@ UnsupportedSpec if the spec is not supported.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances.PopCode-class.html#transform_value" class="summary-sig-name">transform_value</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">values</span>)</span><br />
+          <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances.To2D-class.html#transform_value" class="summary-sig-name">transform_value</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
       Returns the transformed value.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.library.nuisances.popcode_nuisance-pysrc.html">source&nbsp;code</a></span>
+            <span class="codelink"><a href="bootstrapping_olympics.library.nuisances.flatten-pysrc.html">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -221,6 +200,7 @@ UnsupportedSpec if the spec is not supported.</td>
       <code>__format__</code>,
       <code>__getattribute__</code>,
       <code>__hash__</code>,
+      <code>__init__</code>,
       <code>__new__</code>,
       <code>__reduce__</code>,
       <code>__reduce_ex__</code>,
@@ -316,31 +296,6 @@ UnsupportedSpec if the spec is not supported.</td>
   </td>
 </tr>
 </table>
-<a name="__init__"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">resolution</span>=<span class="sig-default">128</span>)</span>
-    <br /><em class="fname">(Constructor)</em>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.library.nuisances.popcode_nuisance-pysrc.html">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  x.__init__(...) initializes x; see help(type(x)) for signature
-  <dl class="fields">
-    <dt>Overrides:
-        object.__init__
-        <dd><em class="note">(inherited documentation)</em></dd>
-    </dt>
-  </dl>
-</td></tr></table>
-</div>
 <a name="__repr__"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -352,7 +307,7 @@ UnsupportedSpec if the spec is not supported.</td>
     <br /><em class="fname">(Representation operator)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.library.nuisances.popcode_nuisance-pysrc.html">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="bootstrapping_olympics.library.nuisances.flatten-pysrc.html">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
@@ -375,16 +330,17 @@ UnsupportedSpec if the spec is not supported.</td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">inverse</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.library.nuisances.popcode_nuisance-pysrc.html">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="bootstrapping_olympics.library.nuisances.flatten-pysrc.html">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  Returns the inverse representation nuisance, or
-NuisanceNotInvertible
+  <pre class="literalblock">
+The inverse is the :py:class:`Flatten` nuisance. 
+
+</pre>
   <dl class="fields">
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#inverse">interfaces.rep_nuisance.RepresentationNuisance.inverse</a>
-        <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
 </td></tr></table>
@@ -400,16 +356,19 @@ NuisanceNotInvertible
         <span class="sig-arg">stream_spec</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.library.nuisances.popcode_nuisance-pysrc.html">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="bootstrapping_olympics.library.nuisances.flatten-pysrc.html">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
   Returns the changed StreamSpec, or throws
 UnsupportedSpec if the spec is not supported.
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>stream_spec</code></strong> (<tt class="rst-docutils literal">StreamSpec</tt>)</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance-class.html#transform_spec">interfaces.rep_nuisance.RepresentationNuisance.transform_spec</a>
-        <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
 </td></tr></table>
@@ -422,10 +381,10 @@ UnsupportedSpec if the spec is not supported.
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">transform_value</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">values</span>)</span>
+        <span class="sig-arg">value</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.library.nuisances.popcode_nuisance-pysrc.html">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="bootstrapping_olympics.library.nuisances.flatten-pysrc.html">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
@@ -470,7 +429,7 @@ UnsupportedSpec if the spec is not supported.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Mar  1 14:07:40 2012
+    Generated by Epydoc 3.0.1 on Thu Mar  1 14:07:41 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

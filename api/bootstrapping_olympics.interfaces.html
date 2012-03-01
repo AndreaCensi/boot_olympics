@@ -419,8 +419,10 @@ UnsupportedSpec if the spec is not supported.</p>
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.interfaces.robot.</tt><tt class="descname">RobotInterface</tt><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/robot.html#RobotInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.robot.RobotInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>This is the basic class for robots.</p>
-<p>Protocol notes:
-- new_episode() must be called before get_observations()</p>
+<p>Protocol notes:</p>
+<ul class="simple">
+<li>new_episode() must be called before get_observations()</li>
+</ul>
 <dl class="method">
 <dt id="bootstrapping_olympics.interfaces.robot.RobotInterface.get_observations">
 <tt class="descname">get_observations</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/robot.html#RobotInterface.get_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.robot.RobotInterface.get_observations" title="Permalink to this definition">¶</a></dt>
@@ -531,6 +533,141 @@ or None.</dd>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.ValueError</span></tt></p>
 </dd></dl>
 
+<dl class="class">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">StreamSpec</tt><big>(</big><em>id_stream</em>, <em>streamels</em>, <em>extra</em>, <em>filtered=None</em>, <em>desc=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="staticmethod">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.check_same_spec">
+<em class="property">static </em><tt class="descname">check_same_spec</tt><big>(</big><em>spec1</em>, <em>spec2</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.check_same_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.check_same_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.check_valid_value">
+<tt class="descname">check_valid_value</tt><big>(</big><em>x</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.check_valid_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.check_valid_value" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Checks if the value x is valid according to this spec</dt>
+<dd>and raises BootInvalidValue (derived from ValueError) if it is not.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.from_yaml">
+<em class="property">static </em><tt class="descname">from_yaml</tt><big>(</big><em>spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.from_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.from_yaml" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>spec</strong> (<tt class="docutils literal"><span class="pre">dict</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_default_value">
+<tt class="descname">get_default_value</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.get_default_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_default_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a &#8220;default value&#8221; for this stream.</p>
+<blockquote>
+<div><p>For commands streams, this has the semantics of being
+a &#8220;at rest&#8221; value.</p>
+<p>For observations, this is an &#8220;example&#8221;
+value, used for visualization.</p>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_id_stream">
+<tt class="descname">get_id_stream</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.get_id_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_id_stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_random_value">
+<tt class="descname">get_random_value</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.get_random_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_random_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a &#8220;random value&#8221; for this stream.</p>
+<blockquote>
+<div>This is distributed uniformly in the lower/upper bound range. 
+Note this is not intrinsic and is representation dependent.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_streamels">
+<tt class="descname">get_streamels</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.get_streamels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.get_streamels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.join">
+<em class="property">static </em><tt class="descname">join</tt><big>(</big><em>obs1</em>, <em>obs2</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.join"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the spec obtained by concatenating two of them.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape">
+<tt class="descname">shape</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the shape of the stream, as a sequence of positive 
+integers (like Numpy&#8217;s shape).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">seq[&gt;0](int,&gt;0)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size">
+<tt class="descname">size</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of total elements in the stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">int,&gt;0</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.StreamSpec.to_yaml">
+<tt class="descname">to_yaml</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#StreamSpec.to_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.StreamSpec.to_yaml" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">dict</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="bootstrapping_olympics.interfaces.stream_spec.all_same_spec">
 <tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">all_same_spec</tt><big>(</big><em>streamels</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#all_same_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.all_same_spec" title="Permalink to this definition">¶</a></dt>
@@ -567,6 +704,12 @@ or None.</dd>
 <dt id="bootstrapping_olympics.interfaces.stream_spec.set_streamel_range">
 <tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">set_streamel_range</tt><big>(</big><em>streamel</em>, <em>bounds</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#set_streamel_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.set_streamel_range" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.interfaces.stream_spec.streamels_all_of_kind">
+<tt class="descclassname">bootstrapping_olympics.interfaces.stream_spec.</tt><tt class="descname">streamels_all_of_kind</tt><big>(</big><em>streamels</em>, <em>kind</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/interfaces/stream_spec.html#streamels_all_of_kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.interfaces.stream_spec.streamels_all_of_kind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if all streamels are of the same given kind (&#8216;C&#8217;,&#8217;D&#8217;)</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="bootstrapping_olympics.interfaces.stream_spec.streamels_from_spec">

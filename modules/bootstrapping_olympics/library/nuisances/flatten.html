@@ -53,8 +53,9 @@
   <h1>Source code for bootstrapping_olympics.library.nuisances.flatten</h1><div class="highlight"><pre>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">contract</span>
 <span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="p">(</span><span class="n">StreamSpec</span><span class="p">,</span> <span class="n">UnsupportedSpec</span><span class="p">,</span> <span class="n">RepresentationNuisance</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics.library.nuisances.commons</span> <span class="kn">import</span> <span class="n">check_streamels_1D</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Flatten&#39;</span><span class="p">,</span> <span class="s">&#39;Reshape&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Flatten&#39;</span><span class="p">,</span> <span class="s">&#39;Reshape&#39;</span><span class="p">,</span> <span class="s">&#39;To2D&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="Flatten"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.flatten.Flatten">[docs]</a><span class="k">class</span> <span class="nc">Flatten</span><span class="p">(</span><span class="n">RepresentationNuisance</span><span class="p">):</span>
@@ -62,7 +63,6 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cur_shape</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">pass</span>
 
     <span class="nd">@contract</span><span class="p">(</span><span class="n">stream_spec</span><span class="o">=</span><span class="n">StreamSpec</span><span class="p">)</span>
 <div class="viewcode-block" id="Flatten.transform_spec"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.flatten.Flatten.transform_spec">[docs]</a>    <span class="k">def</span> <span class="nf">transform_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_spec</span><span class="p">):</span>
@@ -85,9 +85,12 @@
         <span class="k">return</span> <span class="n">stream_spec2</span>
 </div>
 <div class="viewcode-block" id="Flatten.inverse"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.flatten.Flatten.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; The inverse operation is a :py:class:`Reshape` operation. &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">Reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">cur_size</span><span class="p">,),</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur_shape</span><span class="p">)</span>
 </div>
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;array[N]&#39;</span><span class="p">)</span>
 <div class="viewcode-block" id="Flatten.transform_value"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.flatten.Flatten.transform_value">[docs]</a>    <span class="k">def</span> <span class="nf">transform_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Flattens the given value. &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 </div>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -95,8 +98,17 @@
 
 </div>
 <div class="viewcode-block" id="Reshape"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.flatten.Reshape">[docs]</a><span class="k">class</span> <span class="nc">Reshape</span><span class="p">(</span><span class="n">RepresentationNuisance</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Reshape the values to a given shape. &#39;&#39;&#39;</span>
 
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">shape_from</span><span class="o">=</span><span class="s">&#39;seq[&gt;=1](int)&#39;</span><span class="p">,</span> <span class="n">shape_to</span><span class="o">=</span><span class="s">&#39;seq[&gt;=1](int)&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape_from</span><span class="p">,</span> <span class="n">shape_to</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">            The two shapes should have the same number of elements. </span>
+<span class="sd">        </span>
+<span class="sd">            :param shape_from: The shape the data is expected to be.</span>
+<span class="sd">            :param shape_to: The new shape for the data.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c"># TODO: check same number of elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shape_from</span> <span class="o">=</span> <span class="n">shape_from</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shape_to</span> <span class="o">=</span> <span class="n">shape_to</span>
 
@@ -123,10 +135,39 @@
         <span class="k">return</span> <span class="n">stream_spec2</span>
 </div>
 <div class="viewcode-block" id="Reshape.transform_value"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.flatten.Reshape.transform_value">[docs]</a>    <span class="k">def</span> <span class="nf">transform_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c"># TODO: check value shape</span>
         <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape_to</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;Reshape({}, {})&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape_from</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_to</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s">&#39;Reshape({}, {})&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape_from</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_to</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="To2D"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.flatten.To2D">[docs]</a><span class="k">class</span> <span class="nc">To2D</span><span class="p">(</span><span class="n">RepresentationNuisance</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Transforms a stream of shape ``(n)`` into one of shape ``(1,n)``. &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="To2D.inverse"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.flatten.To2D.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; The inverse is the :py:class:`Flatten` nuisance. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">Flatten</span><span class="p">()</span>
+</div>
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">stream_spec</span><span class="o">=</span><span class="n">StreamSpec</span><span class="p">)</span>
+<div class="viewcode-block" id="To2D.transform_spec"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.flatten.To2D.transform_spec">[docs]</a>    <span class="k">def</span> <span class="nf">transform_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_spec</span><span class="p">):</span>
+        <span class="n">streamels</span> <span class="o">=</span> <span class="n">stream_spec</span><span class="o">.</span><span class="n">get_streamels</span><span class="p">()</span>
+        <span class="n">check_streamels_1D</span><span class="p">(</span><span class="n">streamels</span><span class="p">)</span>
+        <span class="n">streamels2</span> <span class="o">=</span> <span class="n">streamels</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">streamels</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+
+        <span class="n">stream_spec2</span> <span class="o">=</span> <span class="n">StreamSpec</span><span class="p">(</span><span class="n">id_stream</span><span class="o">=</span><span class="n">stream_spec</span><span class="o">.</span><span class="n">id_stream</span><span class="p">,</span>
+                                  <span class="n">streamels</span><span class="o">=</span><span class="n">streamels2</span><span class="p">,</span>
+                                  <span class="n">extra</span><span class="o">=</span><span class="p">{},</span>
+                                  <span class="n">filtered</span><span class="o">=</span><span class="p">{},</span>
+                                  <span class="n">desc</span><span class="o">=</span><span class="n">stream_spec</span><span class="o">.</span><span class="n">desc</span> <span class="c"># XXX</span>
+                                  <span class="p">)</span>
+        <span class="k">return</span> <span class="n">stream_spec2</span>
+</div>
+<div class="viewcode-block" id="To2D.transform_value"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.flatten.To2D.transform_value">[docs]</a>    <span class="k">def</span> <span class="nf">transform_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+</div>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;To2D()&#39;</span></div>
 </pre></div>
 
           </div>

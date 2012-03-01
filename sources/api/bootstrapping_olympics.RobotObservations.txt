@@ -1,6 +1,0 @@
-bootstrapping_olympics.RobotObservations
-========================================
-
-.. currentmodule:: bootstrapping_olympics
-
-.. autodata:: RobotObservations

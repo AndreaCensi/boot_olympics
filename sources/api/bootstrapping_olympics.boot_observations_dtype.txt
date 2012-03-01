@@ -1,6 +1,0 @@
-bootstrapping_olympics.boot_observations_dtype
-==============================================
-
-.. currentmodule:: bootstrapping_olympics
-
-.. autodata:: boot_observations_dtype

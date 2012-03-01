@@ -224,7 +224,8 @@ and transforms them into a vector of N+1 values.
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="bootstrapping_olympics.library.nuisances.NormalizeMin-class.html" class="summary-name">NormalizeMin</a><br />
-      Transforms: ..
+      Normalizes the streamels into a <tt class="rst-rst-docutils literal rst-docutils literal">[0,1]</tt> range by removing the
+minimum and linearly scaling.
     </td>
   </tr>
 <tr>
@@ -241,13 +242,6 @@ and transforms them into a vector of N+1 values.
     </td><td class="summary">
         <a href="bootstrapping_olympics.library.nuisances.NormalizeMinMax-class.html" class="summary-name">NormalizeMinMax</a><br />
       Transforms: ..
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="bootstrapping_olympics.library.nuisances.NuisanceNotInvertible-class.html" class="summary-name">NuisanceNotInvertible</a>
     </td>
   </tr>
 <tr>
@@ -287,14 +281,8 @@ into a 2D representation.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="bootstrapping_olympics.library.nuisances.RepresentationNuisance-class.html" class="summary-name">RepresentationNuisance</a>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="bootstrapping_olympics.library.nuisances.Reshape-class.html" class="summary-name">Reshape</a>
+        <a href="bootstrapping_olympics.library.nuisances.Reshape-class.html" class="summary-name">Reshape</a><br />
+      Reshape the values to a given shape.
     </td>
   </tr>
 <tr>
@@ -309,22 +297,8 @@ into a 2D representation.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="bootstrapping_olympics.library.nuisances.StreamSpec-class.html" class="summary-name">StreamSpec</a>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="bootstrapping_olympics.library.nuisances.UnsupportedSpec-class.html" class="summary-name">UnsupportedSpec</a><br />
-      Thrown by agents if they do not support the spec.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="bootstrapping_olympics.library.nuisances.ValueFormats-class.html" class="summary-name">ValueFormats</a>
+        <a href="bootstrapping_olympics.library.nuisances.To2D-class.html" class="summary-name">To2D</a><br />
+      Transforms a stream of shape <tt class="rst-rst-docutils literal rst-docutils literal">(n)</tt> into one of shape <tt class="rst-rst-docutils literal rst-docutils literal">(1,n)</tt>.
     </td>
   </tr>
 </table>
@@ -345,26 +319,6 @@ into a 2D representation.
     </table>
   </td>
 </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances-module.html#allclose" class="summary-sig-name">allclose</a>(<span class="summary-sig-arg">a</span>,
-        <span class="summary-sig-arg">b</span>,
-        <span class="summary-sig-arg">rtol</span>=<span class="summary-sig-default">1e-05</span>,
-        <span class="summary-sig-arg">atol</span>=<span class="summary-sig-default">1e-08</span>)</span><br />
-      Returns True if two arrays are element-wise equal within a tolerance.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.library.nuisances-pysrc.html#allclose">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
@@ -558,24 +512,6 @@ into a 2D representation.
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances-module.html#contract" class="summary-sig-name">contract</a>(<span class="summary-sig-arg">*arg</span>,
-        <span class="summary-sig-arg">**kwargs</span>)</span><br />
-      Decorator for adding contracts to functions.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.library.nuisances-pysrc.html#contract">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances-module.html#find_polytope_bounds_after_linear" class="summary-sig-name">find_polytope_bounds_after_linear</a>(<span class="summary-sig-arg">streamels</span>,
         <span class="summary-sig-arg">A</span>,
         <span class="summary-sig-arg">streamels2</span>)</span><br />
@@ -668,24 +604,6 @@ of bits.</td>
           <td><span class="summary-sig"><a href="bootstrapping_olympics.library.nuisances-module.html#popcode_inv" class="summary-sig-name">popcode_inv</a>(<span class="summary-sig-arg">z</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="bootstrapping_olympics.library.nuisances-pysrc.html#popcode_inv">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="streamels_all_of_kind"></a><span class="summary-sig-name">streamels_all_of_kind</span>(<span class="summary-sig-arg">streamels</span>,
-        <span class="summary-sig-arg">kind</span>)</span><br />
-      Returns True if all streamels are of the same given kind ('C','D')</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="bootstrapping_olympics.library.nuisances-pysrc.html#streamels_all_of_kind">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -794,7 +712,7 @@ of bits.</td>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="logger"></a><span class="summary-name">logger</span> = <code title="&lt;logging.Logger object at 0x2706290&gt;">&lt;logging.Logger object at 0x2706290&gt;</code>
+        <a name="logger"></a><span class="summary-name">logger</span> = <code title="&lt;logging.Logger object at 0x2cd6590&gt;">&lt;logging.Logger object at 0x2cd6590&gt;</code>
     </td>
   </tr>
 <tr>
@@ -826,78 +744,6 @@ of bits.</td>
   </td>
 </tr>
 </table>
-<a name="allclose"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">allclose</span>(<span class="sig-arg">a</span>,
-        <span class="sig-arg">b</span>,
-        <span class="sig-arg">rtol</span>=<span class="sig-default">1e-05</span>,
-        <span class="sig-arg">atol</span>=<span class="sig-default">1e-08</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.library.nuisances-pysrc.html#allclose">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Returns True if two arrays are element-wise equal within a tolerance.</p>
-<p>The tolerance values are positive, typically very small numbers.  The
-relative difference (<code class="link">rtol</code> * abs(<code class="link">b</code>)) and the absolute difference
-<code class="link">atol</code> are added together to compare against the absolute difference
-between <code class="link">a</code> and <code class="link">b</code>.</p>
-<div class="rst-section" id="rst-parameters">
-<h1 class="heading">Parameters</h1>
-<dl class="rst-docutils">
-<dt>a, b <span class="classifier-delimiter">:</span> <span class="rst-classifier">array_like</span></dt>
-<dd>Input arrays to compare.</dd>
-<dt>rtol <span class="classifier-delimiter">:</span> <span class="rst-classifier">float</span></dt>
-<dd>The relative tolerance parameter (see Notes).</dd>
-<dt>atol <span class="classifier-delimiter">:</span> <span class="rst-classifier">float</span></dt>
-<dd>The absolute tolerance parameter (see Notes).</dd>
-</dl>
-</div>
-<div class="rst-section" id="rst-returns">
-<h1 class="heading">Returns</h1>
-<dl class="rst-docutils">
-<dt>y <span class="classifier-delimiter">:</span> <span class="rst-classifier">bool</span></dt>
-<dd>Returns True if the two arrays are equal within the given
-tolerance; False otherwise. If either array contains NaN, then
-False is returned.</dd>
-</dl>
-</div>
-<div class="rst-section" id="rst-see-also">
-<h1 class="heading">See Also</h1>
-<p>all, any, alltrue, sometrue</p>
-</div>
-<div class="rst-section" id="rst-notes">
-<h1 class="heading">Notes</h1>
-<p>If the following equation is element-wise True, then allclose returns
-True.</p>
-<blockquote>
-absolute(<code class="link">a</code> - <code class="link">b</code>) &lt;= (<code class="link">atol</code> + <code class="link">rtol</code> * absolute(<code class="link">b</code>))</blockquote>
-<p>The above equation is not symmetric in <code class="link">a</code> and <code class="link">b</code>, so that
-<a href="bootstrapping_olympics.library.nuisances-module.html#allclose" class="link">allclose(a, b)</a> might be different from <a href="bootstrapping_olympics.library.nuisances-module.html#allclose" class="link">allclose(b, a)</a> in
-some rare cases.</p>
-</div>
-<div class="rst-section" id="rst-examples">
-<h1 class="heading">Examples</h1>
-<pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>np.allclose([1e10,1e-7], [1.00001e10,1e-8])
-<span class="py-output">False</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>np.allclose([1e10,1e-8], [1.00001e10,1e-9])
-<span class="py-output">True</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>np.allclose([1e10,1e-8], [1.0001e10,1e-9])
-<span class="py-output">False</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>np.allclose([1.0, np.nan], [1.0, np.nan])
-<span class="py-output">False</span></pre>
-</div>
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
 <a name="bits2bytes"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1171,95 +1017,6 @@ Checks that all streamels have the same range.</blockquote>
   </dl>
 </td></tr></table>
 </div>
-<a name="contract"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">contract</span>(<span class="sig-arg">*arg</span>,
-        <span class="sig-arg">**kwargs</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="bootstrapping_olympics.library.nuisances-pysrc.html#contract">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <pre class="literalblock">
-
-Decorator for adding contracts to functions.
-
-It is smart enough to support functions with variable number of 
-arguments and keyword arguments.
-
-There are three ways to specify the contracts. In order of precedence:
-
-- As arguments to this decorator. For example: ::
-
-      @contract(a='int,&gt;0',b='list[N],N&gt;0',returns='list[N]')
-      def my_function(a, b):
-          # ...
-          pass
-
-- As annotations (supported only in Python 3): ::
-
-      @contract
-      def my_function(a:'int,&gt;0', b:'list[N],N&gt;0') -&gt; 'list[N]': 
-          # ...
-          pass
-
-- Using ``:type:`` and ``:rtype:`` tags in the function's docstring: ::
-
-      @contract
-      def my_function(a, b): 
-          &quot;&quot;&quot; Function description.
-              :type a: int,&gt;0
-              :type b: list[N],N&gt;0
-              :rtype: list[N]
-          &quot;&quot;&quot;
-          pass
-
-**Signature and docstrings**: The signature of the decorated
-function is conserved. By default, the docstring is modified
-by adding ``:type:`` and ``:rtype:`` definitions. To avoid that,
-pass ``modify_docstring=False`` as a parameter.
-
-         
-**Contracts evaluation**: Note that all contracts for the arguments 
-and the return values
-are evaluated in the same context. This make it possible to use
-common variables in the contract expression. For example, in the 
-example above, the return value is constrained to be a list of the same 
-length (``N``) as the parameter ``b``. 
-
-**Using docstrings** Note that, by convention, those annotations must 
-be parseable as RestructuredText. This is relevant if you are using 
-Sphinx.
-If the contract string has special RST characters in it, like ``*``,
-you can include it in double ticks. |pycontracts| will remove
-the double ticks before interpreting the string.
-  
-For example, the two annotations in this docstring are equivalent
-for |pycontracts|, but the latter is better for Sphinx: ::
-   
-      &quot;&quot;&quot; My function 
-      
-          :param a: First parameter
-          :type a: list(tuple(str,*))
-          
-          :param b: First parameter
-          :type b: ``list(tuple(str,*))``
-      &quot;&quot;&quot;
-
-:raise: ContractException, if arguments are not coherent 
-:raise: ContractSyntaxError
-
-</pre>
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
 <a name="find_polytope_bounds_after_linear"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1507,7 +1264,7 @@ of bits. Takes into account padding of the message to 8 bits.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 29 14:33:38 2012
+    Generated by Epydoc 3.0.1 on Thu Mar  1 14:07:38 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

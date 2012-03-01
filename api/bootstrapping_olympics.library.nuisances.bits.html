@@ -67,7 +67,7 @@
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.encrypt.</tt><tt class="descname">Encrypt</tt><big>(</big><em>password</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt.html#Encrypt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt.Encrypt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>This nuisance encrypts the bits.</p>
 <p>The output is padded to 8 bits.</p>
 <dl class="method">
@@ -108,7 +108,7 @@
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.encrypt.</tt><tt class="descname">Decrypt</tt><big>(</big><em>password</em>, <em>ngoodbits</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt.html#Decrypt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt.inverse">
 <tt class="descname">inverse</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/encrypt.html#Decrypt.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.encrypt.Decrypt.inverse" title="Permalink to this definition">¶</a></dt>
@@ -177,11 +177,11 @@
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.int2bits.</tt><tt class="descname">Int2bits</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/int2bits.html#Int2bits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>This nuisance represents integer values with
 their bit representation (0-1).</p>
 <p>Converts a M array into an MxN array, 
-using N bits, where N is the mininum used to
+using N bits, where N is the minimum necessary to
 represent all the numbers in the array.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.inverse">
@@ -221,7 +221,7 @@ represent all the numbers in the array.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.bits.int2bits.</tt><tt class="descname">Bits2int</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/bits/int2bits.html#Bits2int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>This nuisance represents transforms back 
 a bit representation into integer values.</p>
 <p>Converts an MxN array (N: number of bits), to

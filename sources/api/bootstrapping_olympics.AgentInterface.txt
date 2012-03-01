@@ -1,6 +1,0 @@
-bootstrapping_olympics.AgentInterface
-=====================================
-
-.. currentmodule:: bootstrapping_olympics
-
-.. autodata:: AgentInterface

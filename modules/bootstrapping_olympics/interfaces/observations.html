@@ -71,16 +71,20 @@
 
 <span class="n">boot_observations_version</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 
+<span class="c"># TODO: check this somewhere</span>
+<span class="n">max_identifiers_size</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">strings_format</span> <span class="o">=</span> <span class="s">&#39;S</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">max_identifiers_size</span>
+
 <span class="n">boot_observations_dtype</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="s">&#39;timestamp&#39;</span><span class="p">,</span> <span class="s">&#39;float64&#39;</span><span class="p">),</span>
     <span class="c"># (&#39;observations&#39;,) # This will be added when the shape is known. </span>
     <span class="c"># (&#39;commands&#39;,)  # This will be added later.</span>
 
     <span class="p">(</span><span class="s">&#39;version&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;uint8&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s">&#39;commands_source&#39;</span><span class="p">,</span> <span class="s">&#39;S64&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;id_robot&#39;</span><span class="p">,</span> <span class="s">&#39;S64&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;id_episode&#39;</span><span class="p">,</span> <span class="s">&#39;S64&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;id_world&#39;</span><span class="p">,</span> <span class="s">&#39;S64&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;commands_source&#39;</span><span class="p">,</span> <span class="n">strings_format</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;id_robot&#39;</span><span class="p">,</span> <span class="n">strings_format</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;id_episode&#39;</span><span class="p">,</span> <span class="n">strings_format</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;id_world&#39;</span><span class="p">,</span> <span class="n">strings_format</span><span class="p">),</span>
     <span class="p">(</span><span class="s">&#39;counter&#39;</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">),</span> <span class="c"># steps from id_episodes</span>
     <span class="p">(</span><span class="s">&#39;episode_start&#39;</span><span class="p">,</span> <span class="s">&#39;bool&#39;</span><span class="p">),</span> <span class="c"># True if episode started</span>
 
@@ -114,6 +118,9 @@
 <span class="sd">            :param check_valid_values: checks that the commands and </span>
 <span class="sd">                observations respect the spec</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">id_robot</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_identifiers_size</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Robot id </span><span class="si">%r</span><span class="s"> is too long.&quot;</span> <span class="o">%</span> <span class="n">id_robot</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">episode_started</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observations</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boot_spec</span> <span class="o">=</span> <span class="n">boot_spec</span>
@@ -132,6 +139,14 @@
 <div class="viewcode-block" id="ObsKeeper.push"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.observations.ObsKeeper.push">[docs]</a>    <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">observations</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span> <span class="n">commands_source</span><span class="p">,</span>
                    <span class="n">id_episode</span><span class="p">,</span> <span class="n">id_world</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Returns the observations structure. &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">id_episode</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_identifiers_size</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Episode id </span><span class="si">%r</span><span class="s"> is too long.&quot;</span> <span class="o">%</span> <span class="n">id_episode</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">id_world</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_identifiers_size</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;World id </span><span class="si">%r</span><span class="s"> is too long.&quot;</span> <span class="o">%</span> <span class="n">id_world</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_episode</span> <span class="o">!=</span> <span class="n">id_episode</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">id_episode</span> <span class="o">=</span> <span class="n">id_episode</span>

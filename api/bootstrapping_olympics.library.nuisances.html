@@ -54,7 +54,7 @@
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.Bits2int">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">Bits2int</tt><big>(</big><em>code</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Bits2int" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>This nuisance represents transforms back 
 a bit representation into integer values.</p>
 <p>Converts an MxN array (N: number of bits), to
@@ -97,7 +97,7 @@ an M array.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.Decrypt">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">Decrypt</tt><big>(</big><em>password</em>, <em>ngoodbits</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Decrypt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.Decrypt.inverse">
 <tt class="descname">inverse</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Decrypt.inverse" title="Permalink to this definition">¶</a></dt>
@@ -136,7 +136,7 @@ an M array.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.Discretize">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">Discretize</tt><big>(</big><em>levels</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Discretize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>This nuisance discretizes a float stream into 
 an integer representation.</p>
 <p>There is an inverse, but it is imprecise.</p>
@@ -168,7 +168,7 @@ an integer representation.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.Encrypt">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">Encrypt</tt><big>(</big><em>password</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Encrypt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>This nuisance encrypts the bits.</p>
 <p>The output is padded to 8 bits.</p>
 <dl class="method">
@@ -209,12 +209,13 @@ an integer representation.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.Flatten">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">Flatten</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Flatten" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>A nuisance that flattens the streamels.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.Flatten.inverse">
 <tt class="descname">inverse</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Flatten.inverse" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The inverse operation is a <a class="reference internal" href="#bootstrapping_olympics.library.nuisances.Reshape" title="bootstrapping_olympics.library.nuisances.Reshape"><tt class="xref py py-class docutils literal"><span class="pre">Reshape</span></tt></a> operation.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.Flatten.transform_spec">
@@ -232,14 +233,25 @@ an integer representation.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.Flatten.transform_value">
 <tt class="descname">transform_value</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Flatten.transform_value" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Flattens the given value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array[N]</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.GLNuisance">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">GLNuisance</tt><big>(</big><em>A</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.GLNuisance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>A general linear transformation.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.GLNuisance.inverse">
@@ -269,7 +281,7 @@ an integer representation.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.GenericLinear">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">GenericLinear</tt><big>(</big><em>A=None</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.GenericLinear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>This represents a generic linear transformation
 between 1D continuous signals. The subclasses 
 only need to provide the matrix by either passing
@@ -310,7 +322,7 @@ it in the constructor or implementing get_matrix().</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.Identity">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">Identity</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Identity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>The dummy identity nuisance.</p>
 <p>There are some other checks useful for checking the protocl.</p>
 <dl class="method">
@@ -333,11 +345,11 @@ it in the constructor or implementing get_matrix().</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.Int2bits">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">Int2bits</tt><big>(</big><em>code</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Int2bits" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>This nuisance represents integer values with
 their bit representation (0-1).</p>
 <p>Converts a M array into an MxN array, 
-using N bits, where N is the mininum used to
+using N bits, where N is the minimum necessary to
 represent all the numbers in the array.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.Int2bits.inverse">
@@ -377,7 +389,7 @@ represent all the numbers in the array.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.NormalizeMean">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">NormalizeMean</tt><big>(</big><em>A=None</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.NormalizeMean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.GenericLinear" title="bootstrapping_olympics.library.nuisances.GenericLinear"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.GenericLinear</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bootstrapping_olympics.library.nuisances.GenericLinear" title="bootstrapping_olympics.library.nuisances.GenericLinear"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.GenericLinear</span></tt></a></p>
 <p>This instantaneous transformation takes a vector of N values
 and transforms them into a vector of N+1 values.</p>
 <p>z[0:n-1] = y - mean(y)
@@ -392,12 +404,15 @@ z[n] = mean(y)</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.NormalizeMin">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">NormalizeMin</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.NormalizeMin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
-<p>Transforms: ..</p>
-<blockquote>
-<div>z[:n] = (y - min(y)) /  max(y) - min(y) 
-z[n]  = min(y) 
-z[n+1]= max(y)</div></blockquote>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
+<p>Normalizes the streamels into a <tt class="docutils literal"><span class="pre">[0,1]</span></tt> range by removing the 
+minimum and linearly scaling.</p>
+<p>Transforms:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">z</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">/</span>  <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> 
+<span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>  <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> 
+<span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> 
+</pre></div>
+</div>
 <p>To make this invertible, the streamels must have range in [0,1].</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.NormalizeMin.inverse">
@@ -427,7 +442,7 @@ z[n+1]= max(y)</div></blockquote>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.NormalizeMinInverse">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">NormalizeMinInverse</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.NormalizeMinInverse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>This is the inverse of NormalizeMin.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.NormalizeMinInverse.inverse">
@@ -457,7 +472,7 @@ z[n+1]= max(y)</div></blockquote>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.NormalizeMinMax">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">NormalizeMinMax</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.NormalizeMinMax" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>Transforms: ..</p>
 <blockquote>
 <div>z[:n] = (y-mean(y)) /  max(y) - min(y)  in -1,1
@@ -488,16 +503,10 @@ z[n+1]= max(y) - min(y)</div></blockquote>
 
 </dd></dl>
 
-<dl class="exception">
-<dt id="bootstrapping_olympics.library.nuisances.NuisanceNotInvertible">
-<em class="property">exception </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">NuisanceNotInvertible</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.NuisanceNotInvertible" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.ValueError</span></tt></p>
-</dd></dl>
-
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.PopCode">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">PopCode</tt><big>(</big><em>resolution=128</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.PopCode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>This nuisance transforms a 1D representation of the signal
 into a 2D representation.</p>
 <dl class="method">
@@ -520,7 +529,7 @@ into a 2D representation.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.PopCodeInv">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">PopCodeInv</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.PopCodeInv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>Inverse of PopCode</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.PopCodeInv.inverse">
@@ -542,7 +551,7 @@ into a 2D representation.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.RandomPermutation">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">RandomPermutation</tt><big>(</big><em>seed</em>, <em>inverted=False</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.RandomPermutation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>A fixed random permutation of the signal.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.RandomPermutation.inverse">
@@ -572,7 +581,7 @@ into a 2D representation.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.RandomScaling">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">RandomScaling</tt><big>(</big><em>seed</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.RandomScaling" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.GenericLinear" title="bootstrapping_olympics.library.nuisances.GenericLinear"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.GenericLinear</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bootstrapping_olympics.library.nuisances.GenericLinear" title="bootstrapping_olympics.library.nuisances.GenericLinear"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.GenericLinear</span></tt></a></p>
 <p>A fixed random scaling of the signal.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.RandomScaling.get_matrix">
@@ -592,35 +601,10 @@ into a 2D representation.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="bootstrapping_olympics.library.nuisances.RepresentationNuisance">
-<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">RepresentationNuisance</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.RepresentationNuisance.inverse">
-<tt class="descname">inverse</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.RepresentationNuisance.inverse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the inverse representation nuisance, or 
-NuisanceNotInvertible</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.RepresentationNuisance.transform_spec">
-<tt class="descname">transform_spec</tt><big>(</big><em>stream_spec</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.RepresentationNuisance.transform_spec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the changed StreamSpec, or throws
-UnsupportedSpec if the spec is not supported.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.RepresentationNuisance.transform_value">
-<tt class="descname">transform_value</tt><big>(</big><em>values</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.RepresentationNuisance.transform_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the transformed value.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.Reshape">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">Reshape</tt><big>(</big><em>shape_from</em>, <em>shape_to</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Reshape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
+<p>Reshape the values to a given shape.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.Reshape.inverse">
 <tt class="descname">inverse</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Reshape.inverse" title="Permalink to this definition">¶</a></dt>
@@ -649,7 +633,7 @@ UnsupportedSpec if the spec is not supported.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.Select">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">Select</tt><big>(</big><em>which</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.Select" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>A non-invertible nuisance that selects some of the sensels. 
 Works only for 1D streams.</p>
 <dl class="method">
@@ -678,212 +662,34 @@ Works only for 1D streams.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="bootstrapping_olympics.library.nuisances.StreamSpec">
-<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">StreamSpec</tt><big>(</big><em>id_stream</em>, <em>streamels</em>, <em>extra</em>, <em>filtered=None</em>, <em>desc=None</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.StreamSpec" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="staticmethod">
-<dt id="bootstrapping_olympics.library.nuisances.StreamSpec.check_same_spec">
-<em class="property">static </em><tt class="descname">check_same_spec</tt><big>(</big><em>spec1</em>, <em>spec2</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.StreamSpec.check_same_spec" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dt id="bootstrapping_olympics.library.nuisances.To2D">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">To2D</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.To2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
+<p>Transforms a stream of shape <tt class="docutils literal"><span class="pre">(n)</span></tt> into one of shape <tt class="docutils literal"><span class="pre">(1,n)</span></tt>.</p>
 <dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.StreamSpec.check_valid_value">
-<tt class="descname">check_valid_value</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.StreamSpec.check_valid_value" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Checks if the value x is valid according to this spec</dt>
-<dd>and raises BootInvalidValue (derived from ValueError) if it is not.</dd>
-</dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </td>
-</tr>
-</tbody>
-</table>
+<dt id="bootstrapping_olympics.library.nuisances.To2D.inverse">
+<tt class="descname">inverse</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.To2D.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>The inverse is the <a class="reference internal" href="#bootstrapping_olympics.library.nuisances.Flatten" title="bootstrapping_olympics.library.nuisances.Flatten"><tt class="xref py py-class docutils literal"><span class="pre">Flatten</span></tt></a> nuisance.</p>
 </dd></dl>
 
-<dl class="staticmethod">
-<dt id="bootstrapping_olympics.library.nuisances.StreamSpec.from_yaml">
-<em class="property">static </em><tt class="descname">from_yaml</tt><big>(</big><em>spec</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.StreamSpec.from_yaml" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.To2D.transform_spec">
+<tt class="descname">transform_spec</tt><big>(</big><em>stream_spec</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.To2D.transform_spec" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>spec</strong> (<tt class="docutils literal"><span class="pre">dict</span></tt>) &#8211; </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stream_spec</strong> (<tt class="docutils literal"><span class="pre">StreamSpec</span></tt>) &#8211; </td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.StreamSpec.get_default_value">
-<tt class="descname">get_default_value</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.StreamSpec.get_default_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a &#8220;default value&#8221; for this stream.</p>
-<blockquote>
-<div><p>For commands streams, this has the semantics of being
-a &#8220;at rest&#8221; value.</p>
-<p>For observations, this is an &#8220;example&#8221;
-value, used for visualization.</p>
-</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array</span></tt></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.StreamSpec.get_id_stream">
-<tt class="descname">get_id_stream</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.StreamSpec.get_id_stream" title="Permalink to this definition">¶</a></dt>
+<dt id="bootstrapping_olympics.library.nuisances.To2D.transform_value">
+<tt class="descname">transform_value</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.To2D.transform_value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.StreamSpec.get_random_value">
-<tt class="descname">get_random_value</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.StreamSpec.get_random_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a &#8220;random value&#8221; for this stream.</p>
-<blockquote>
-<div>This is distributed uniformly in the lower/upper bound range. 
-Note this is not intrinsic and is representation dependent.</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array</span></tt></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.StreamSpec.get_streamels">
-<tt class="descname">get_streamels</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.StreamSpec.get_streamels" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="staticmethod">
-<dt id="bootstrapping_olympics.library.nuisances.StreamSpec.join">
-<em class="property">static </em><tt class="descname">join</tt><big>(</big><em>obs1</em>, <em>obs2</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.StreamSpec.join" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the spec obtained by concatenating two of them.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.StreamSpec.shape">
-<tt class="descname">shape</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.StreamSpec.shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the shape of the stream, as a sequence of positive 
-integers (like Numpy&#8217;s shape).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">seq[&gt;0](int,&gt;0)</span></tt></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.StreamSpec.size">
-<tt class="descname">size</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.StreamSpec.size" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the number of total elements in the stream.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">int,&gt;0</span></tt></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.StreamSpec.to_yaml">
-<tt class="descname">to_yaml</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.StreamSpec.to_yaml" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">dict</span></tt></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="exception">
-<dt id="bootstrapping_olympics.library.nuisances.UnsupportedSpec">
-<em class="property">exception </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">UnsupportedSpec</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.UnsupportedSpec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
-<p>Thrown by agents if they do not support the spec.</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="bootstrapping_olympics.library.nuisances.ValueFormats">
-<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">ValueFormats</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.ValueFormats" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="bootstrapping_olympics.library.nuisances.ValueFormats.Continuous">
-<tt class="descname">Continuous</tt><em class="property"> = 'C'</em><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.ValueFormats.Continuous" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="bootstrapping_olympics.library.nuisances.ValueFormats.Discrete">
-<tt class="descname">Discrete</tt><em class="property"> = 'D'</em><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.ValueFormats.Discrete" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="bootstrapping_olympics.library.nuisances.ValueFormats.Invalid">
-<tt class="descname">Invalid</tt><em class="property"> = 'I'</em><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.ValueFormats.Invalid" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="bootstrapping_olympics.library.nuisances.ValueFormats.valid">
-<tt class="descname">valid</tt><em class="property"> = ['C', 'D', 'I']</em><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.ValueFormats.valid" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="bootstrapping_olympics.library.nuisances.allclose">
-<tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">allclose</tt><big>(</big><em>a</em>, <em>b</em>, <em>rtol=1e-05</em>, <em>atol=1e-08</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.allclose" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns True if two arrays are element-wise equal within a tolerance.</p>
-<p>The tolerance values are positive, typically very small numbers.  The
-relative difference (<cite>rtol</cite> * abs(<cite>b</cite>)) and the absolute difference
-<cite>atol</cite> are added together to compare against the absolute difference
-between <cite>a</cite> and <cite>b</cite>.</p>
-<dl class="docutils">
-<dt>a, b <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
-<dd>Input arrays to compare.</dd>
-<dt>rtol <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd>The relative tolerance parameter (see Notes).</dd>
-<dt>atol <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd>The absolute tolerance parameter (see Notes).</dd>
-</dl>
-<dl class="docutils">
-<dt>y <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd>Returns True if the two arrays are equal within the given
-tolerance; False otherwise. If either array contains NaN, then
-False is returned.</dd>
-</dl>
-<p>all, any, alltrue, sometrue</p>
-<p>If the following equation is element-wise True, then allclose returns
-True.</p>
-<blockquote>
-<div>absolute(<cite>a</cite> - <cite>b</cite>) &lt;= (<cite>atol</cite> + <cite>rtol</cite> * absolute(<cite>b</cite>))</div></blockquote>
-<p>The above equation is not symmetric in <cite>a</cite> and <cite>b</cite>, so that
-<cite>allclose(a, b)</cite> might be different from <cite>allclose(b, a)</cite> in
-some rare cases.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">([</span><span class="mf">1e10</span><span class="p">,</span><span class="mf">1e-7</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.00001e10</span><span class="p">,</span><span class="mf">1e-8</span><span class="p">])</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">([</span><span class="mf">1e10</span><span class="p">,</span><span class="mf">1e-8</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.00001e10</span><span class="p">,</span><span class="mf">1e-9</span><span class="p">])</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">([</span><span class="mf">1e10</span><span class="p">,</span><span class="mf">1e-8</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0001e10</span><span class="p">,</span><span class="mf">1e-9</span><span class="p">])</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
-<span class="go">False</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -1171,12 +977,6 @@ of bits.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="bootstrapping_olympics.library.nuisances.streamels_all_of_kind">
-<tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">streamels_all_of_kind</tt><big>(</big><em>streamels</em>, <em>kind</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.streamels_all_of_kind" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns True if all streamels are of the same given kind (&#8216;C&#8217;,&#8217;D&#8217;)</p>
-</dd></dl>
-
-<dl class="function">
 <dt id="bootstrapping_olympics.library.nuisances.string2bits">
 <tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">string2bits</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.string2bits" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
@@ -1227,7 +1027,7 @@ LSB first.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.discretize.Discretize">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.discretize.</tt><tt class="descname">Discretize</tt><big>(</big><em>levels</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/discretize.html#Discretize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.discretize.Discretize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>This nuisance discretizes a float stream into 
 an integer representation.</p>
 <p>There is an inverse, but it is imprecise.</p>
@@ -1262,12 +1062,13 @@ an integer representation.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.flatten.Flatten">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.flatten.</tt><tt class="descname">Flatten</tt><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/flatten.html#Flatten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.flatten.Flatten" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>A nuisance that flattens the streamels.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.flatten.Flatten.inverse">
 <tt class="descname">inverse</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/flatten.html#Flatten.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.flatten.Flatten.inverse" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The inverse operation is a <a class="reference internal" href="#bootstrapping_olympics.library.nuisances.flatten.Reshape" title="bootstrapping_olympics.library.nuisances.flatten.Reshape"><tt class="xref py py-class docutils literal"><span class="pre">Reshape</span></tt></a> operation.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.flatten.Flatten.transform_spec">
@@ -1285,14 +1086,26 @@ an integer representation.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.flatten.Flatten.transform_value">
 <tt class="descname">transform_value</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/flatten.html#Flatten.transform_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.flatten.Flatten.transform_value" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Flattens the given value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array[N]</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.flatten.Reshape">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.flatten.</tt><tt class="descname">Reshape</tt><big>(</big><em>shape_from</em>, <em>shape_to</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/flatten.html#Reshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.flatten.Reshape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
+<p>Reshape the values to a given shape.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.flatten.Reshape.inverse">
 <tt class="descname">inverse</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/flatten.html#Reshape.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.flatten.Reshape.inverse" title="Permalink to this definition">¶</a></dt>
@@ -1318,13 +1131,44 @@ an integer representation.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="bootstrapping_olympics.library.nuisances.flatten.To2D">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.flatten.</tt><tt class="descname">To2D</tt><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/flatten.html#To2D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.flatten.To2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
+<p>Transforms a stream of shape <tt class="docutils literal"><span class="pre">(n)</span></tt> into one of shape <tt class="docutils literal"><span class="pre">(1,n)</span></tt>.</p>
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.flatten.To2D.inverse">
+<tt class="descname">inverse</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/flatten.html#To2D.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.flatten.To2D.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>The inverse is the <a class="reference internal" href="#bootstrapping_olympics.library.nuisances.flatten.Flatten" title="bootstrapping_olympics.library.nuisances.flatten.Flatten"><tt class="xref py py-class docutils literal"><span class="pre">Flatten</span></tt></a> nuisance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.flatten.To2D.transform_spec">
+<tt class="descname">transform_spec</tt><big>(</big><em>stream_spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/flatten.html#To2D.transform_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.flatten.To2D.transform_spec" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stream_spec</strong> (<tt class="docutils literal"><span class="pre">StreamSpec</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.library.nuisances.flatten.To2D.transform_value">
+<tt class="descname">transform_value</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/flatten.html#To2D.transform_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.flatten.To2D.transform_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-bootstrapping_olympics.library.nuisances.identity">
 <span id="identity-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">identity</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.identity" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.identity.Identity">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.identity.</tt><tt class="descname">Identity</tt><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/identity.html#Identity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.identity.Identity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>The dummy identity nuisance.</p>
 <p>There are some other checks useful for checking the protocl.</p>
 <dl class="method">
@@ -1350,7 +1194,7 @@ an integer representation.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.linear.GLNuisance">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.linear.</tt><tt class="descname">GLNuisance</tt><big>(</big><em>A</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/linear.html#GLNuisance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.linear.GLNuisance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>A general linear transformation.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.linear.GLNuisance.inverse">
@@ -1386,7 +1230,7 @@ an integer representation.</p>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.normalize_minmax.NormalizeMinMax">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.normalize_minmax.</tt><tt class="descname">NormalizeMinMax</tt><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/normalize_minmax.html#NormalizeMinMax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.normalize_minmax.NormalizeMinMax" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>Transforms: ..</p>
 <blockquote>
 <div>z[:n] = (y-mean(y)) /  max(y) - min(y)  in -1,1
@@ -1447,7 +1291,7 @@ z[n+1]= max(y) - min(y)</div></blockquote>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.random_permutation.RandomPermutation">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.random_permutation.</tt><tt class="descname">RandomPermutation</tt><big>(</big><em>seed</em>, <em>inverted=False</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/random_permutation.html#RandomPermutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.random_permutation.RandomPermutation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>A fixed random permutation of the signal.</p>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.random_permutation.RandomPermutation.inverse">
@@ -1480,7 +1324,7 @@ z[n+1]= max(y) - min(y)</div></blockquote>
 <dl class="class">
 <dt id="bootstrapping_olympics.library.nuisances.select.Select">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.select.</tt><tt class="descname">Select</tt><big>(</big><em>which</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/select.html#Select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.select.Select" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../api_reference.html#bootstrapping_olympics.library.nuisances.RepresentationNuisance" title="bootstrapping_olympics.library.nuisances.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.library.nuisances.RepresentationNuisance</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
 <p>A non-invertible nuisance that selects some of the sensels. 
 Works only for 1D streams.</p>
 <dl class="method">

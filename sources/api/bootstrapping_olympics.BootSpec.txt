@@ -1,6 +1,0 @@
-bootstrapping_olympics.BootSpec
-===============================
-
-.. currentmodule:: bootstrapping_olympics
-
-.. autodata:: BootSpec
