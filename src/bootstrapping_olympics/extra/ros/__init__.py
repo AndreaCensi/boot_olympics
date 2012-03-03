@@ -1,3 +1,4 @@
+""" Functions for reading/writing ROS logs. """
 from .. import np, contract, getLogger
 
 
@@ -22,7 +23,7 @@ try:
                               MultiArrayLayout)
 
     boot_has_ros = True
-    ros_error = 'everything is fine'
+    ros_error = None
 
 except ImportError as e:
     boot_has_ros = False
@@ -30,7 +31,6 @@ except ImportError as e:
     logger.error('ROS support not available (%s).' % ros_error)
 
 else:
-
     from .ros_logs import *
     from .ros_script_utils import *
     from .launch_xml import *

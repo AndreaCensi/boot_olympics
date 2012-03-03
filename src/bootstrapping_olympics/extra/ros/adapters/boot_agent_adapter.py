@@ -1,11 +1,12 @@
 from .. import BootstrappingCommands, BootstrappingObservations, rospy
-from ... import AgentInterface
-from ...configuration import check_valid_agent_config
-from ...programs.manager.meat import DataCentral, load_agent_state_core
-from ...utils import check_parameters
 from ..publisher import ROSPublisher
 from ..ros_logs import ROS2Python, boot_spec_from_ros_message
 from ..ros_script_utils import RospyLogger
+from bootstrapping_olympics import AgentInterface
+from bootstrapping_olympics.configuration import check_valid_agent_config
+from bootstrapping_olympics.programs.manager.meat import (DataCentral,
+    load_agent_state_core)
+from bootstrapping_olympics.utils import check_parameters
 from contracts import contract
 from pprint import pformat
 

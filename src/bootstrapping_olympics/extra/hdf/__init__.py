@@ -7,12 +7,13 @@ logger = getLogger(__name__)
 
 try:
     import tables
-
-except ImportError:
-    logger.info('Could not load PyTables library; '
-                'HDF log support not available.')
-
+except ImportError as e:
+    boot_has_hdf = False
+    hdf_error = e
+    logger.warning('PyTables/HDF support not available (%s).' % e)
 else:
+    boot_has_hdf = True
+    hdf_error = None
     from .utils import *
     from .index import *
     from .read import *

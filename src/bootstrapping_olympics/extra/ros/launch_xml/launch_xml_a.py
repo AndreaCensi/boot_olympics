@@ -1,6 +1,7 @@
 from . import create_ros_node_xml
-from ...configuration import check_valid_ros_node_spec
-from ...utils import indent
+#TODO: move here
+from bootstrapping_olympics.configuration import check_valid_ros_node_spec
+from bootstrapping_olympics.utils import indent
 from string import Template
 
 

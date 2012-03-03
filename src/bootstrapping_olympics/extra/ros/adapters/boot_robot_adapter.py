@@ -1,11 +1,11 @@
 from .. import (BootstrappingCommandsResponse, BootstrappingObservations,
     BootstrappingCommands, rospy, np)
-from ...configuration import check_valid_robot_config
-from ...interfaces import ObsKeeper
-from ...programs.manager.meat import DataCentral
-from ...utils import check_parameters
 from ..ros_logs import observations2ros
 from ..ros_script_utils import RospyLogger
+from bootstrapping_olympics import ObsKeeper
+from bootstrapping_olympics.configuration import check_valid_robot_config
+from bootstrapping_olympics.programs.manager.meat import DataCentral
+from bootstrapping_olympics.utils import check_parameters
 import time
 
 

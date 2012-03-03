@@ -1,5 +1,5 @@
-from ...configuration import parse_yaml_ros_node_spec
-from ...utils import indent, yaml_dump_inline
+from bootstrapping_olympics.configuration import parse_yaml_ros_node_spec
+from bootstrapping_olympics.utils import indent, yaml_dump_inline
 from string import Template
 
 

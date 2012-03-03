@@ -55,8 +55,8 @@ def check_publish(id_agent, agent, id_robot, robot):
         return
 
     # Check first without observations
-    from bootstrapping_olympics.display import ReprepPublisher
-    
+    from bootstrapping_olympics.extra.reprep import ReprepPublisher
+
     publisher = ReprepPublisher()
     agent.publish(publisher)
 

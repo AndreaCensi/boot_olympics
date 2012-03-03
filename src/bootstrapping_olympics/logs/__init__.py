@@ -7,8 +7,5 @@ logger = getLogger(__name__)
 
 from .boot_stream import *
 from .logs_format import *
-
-from . import hdf
-
 from .log_index import *
 

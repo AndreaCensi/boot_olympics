@@ -10,7 +10,15 @@ def task_predict(data_central, id_agent, id_robot,
     # Instance agent object    
     # TODO FIXME: remove dependency on boot_agents
     from boot_agents.utils import PredictionStats
-    from bootstrapping_olympics.display import ReprepPublisher
+    from bootstrapping_olympics.extra.reprep import (boot_has_reprep,
+                                                     reprep_error)
+
+    if not boot_has_reprep:
+        msg = 'Cannot do this task because Reprep not installed: %s'
+        msg = msg % reprep_error
+        raise Exception(msg)
+
+    from bootstrapping_olympics.extra.reprep import ReprepPublisher
 
     agent, state = load_agent_state(data_central, id_agent, id_robot,
                              reset_state=False,

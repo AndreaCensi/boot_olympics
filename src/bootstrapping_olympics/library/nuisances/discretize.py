@@ -1,5 +1,5 @@
 from . import check_streamels_continuous, contract, np
-from ... import (RepresentationNuisance, ValueFormats,
+from bootstrapping_olympics import (RepresentationNuisance, ValueFormats,
     NuisanceNotInvertible)
 
 __all__ = ['Discretize']

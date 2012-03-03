@@ -1,5 +1,5 @@
-from . import contract
-from ..interfaces import Publisher
+from contracts import contract
+from bootstrapping_olympics import Publisher
 from contextlib import contextmanager
 from reprep import MIME_PYTHON, Report
 

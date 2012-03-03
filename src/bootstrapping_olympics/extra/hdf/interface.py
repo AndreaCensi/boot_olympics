@@ -1,5 +1,5 @@
 from . import HDFLogWriter, hdf_list_streams, hdf_read
-from .. import LogsFormat
+from bootstrapping_olympics import LogsFormat
 from contextlib import contextmanager
 
 __all__ = ['HDFLogsFormat']

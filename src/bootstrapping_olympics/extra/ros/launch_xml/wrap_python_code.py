@@ -1,4 +1,4 @@
-from ...configuration import (check_valid_robot_config,
+from bootstrapping_olympics.configuration import (check_valid_robot_config,
     check_valid_ros_node_spec, check_valid_agent_config)
 
 

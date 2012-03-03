@@ -29,7 +29,15 @@ def publish_once(data_central, id_agent, id_robot,
 
 def publish_agent_output(state, agent, progress, filename, rd=None):
     rid = ('%s-%s-%s' % (state.id_agent, state.id_robot, progress))
-    from ....display import ReprepPublisher
+    from bootstrapping_olympics.extra.reprep import (boot_has_reprep,
+                                                     reprep_error)
+
+    if not boot_has_reprep:
+        msg = 'Cannot do this task because Reprep not installed: %s'
+        msg = msg % reprep_error
+        raise Exception(msg)
+
+    from bootstrapping_olympics.extra.reprep import ReprepPublisher
 
     publisher = ReprepPublisher(rid)
     report = publisher.r

@@ -1,8 +1,9 @@
-from ...programs.manager.command_line import (logger, OptionParser,
-    check_no_spurious, declare_command)
-from ...utils import check_contained, isodate, make_sure_dir_exists
 from ..launch_xml import (wrap_python_robot, wrap_python_agent,
     create_launch_xml)
+from bootstrapping_olympics.programs.manager.command_line import (logger,
+    OptionParser, check_no_spurious, declare_command)
+from bootstrapping_olympics.utils import (check_contained, isodate,
+    make_sure_dir_exists)
 import itertools
 import os
 

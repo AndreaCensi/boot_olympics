@@ -67,6 +67,12 @@
   code:
     - bootstrapping_olympics.library.nuisances.Select
     - which: [0, 1]
+
+- id: sel0
+  desc: Selects the first element of the array (not invertible)
+  code:
+    - bootstrapping_olympics.library.nuisances.Select
+    - which: [0]
     
 
 - id: d32
@@ -82,6 +88,14 @@
     - bootstrapping_olympics.library.nuisances.Discretize
     - levels: 16
     
+
+- id: d256
+  desc: Discretizes the float stream to 256 levels
+  code:
+    - bootstrapping_olympics.library.nuisances.Discretize
+    - levels: 256
+    
+
 
  
 - id: bits2int

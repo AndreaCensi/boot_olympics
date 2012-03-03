@@ -1,9 +1,7 @@
-from . import logger, np, tables
-from .. import EpisodeSummary, BootStream
-from ... import BootSpec
-from ...utils import yaml_load
+from . import load_extra, logger, np, tables
+from bootstrapping_olympics import BootSpec, EpisodeSummary, BootStream
+from bootstrapping_olympics.utils import yaml_load
 import os
-from . import load_extra
 
 __all__ = ['hdf_list_streams', 'spec_from_group']
 

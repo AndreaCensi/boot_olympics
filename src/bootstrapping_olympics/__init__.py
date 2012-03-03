@@ -1,4 +1,4 @@
-__version__ = '1.2'
+__version__ = '1.3'
 
 import numpy as np
 from contracts import contract
@@ -26,12 +26,12 @@ from . import utils
 
 from .constants import *
 
-if False: # XXX
-    # This is just for documentation purposes
-    # assigns all symbols to bootstrapping_olympics
-    from .utils import assign_all_to_module
-    from . import interfaces
-    assign_all_to_module(interfaces)
+#if False: # XXX
+#    # This is just for documentation purposes
+#    # assigns all symbols to bootstrapping_olympics
+#    from .utils import assign_all_to_module
+#    from . import interfaces
+#    assign_all_to_module(interfaces)
 
 from .interfaces import *
 from .agent_states import *
@@ -39,8 +39,8 @@ from .logs import *
 from .configuration import BootOlympicsConfig
 
 
-# Try to load ROS components
-from . import ros
+# Try to load extra components (ROS, HDF, etc.)
+from . import extra
 
 from .programs.manager.batch.batch_learn import batch_jobs1
 
