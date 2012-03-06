@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hdf Package &mdash; BootOlympics 1.3 documentation</title>
+    
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.3 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="hdf-package">
+<h1>hdf Package<a class="headerlink" href="#hdf-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">hdf</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-bootstrapping_olympics.extra.hdf"></span><p>Functions for dealing with HDF logs.</p>
+</div>
+<div class="section" id="module-bootstrapping_olympics.extra.hdf.index">
+<span id="index-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">index</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.extra.hdf.index" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.extra.hdf.index.hdf_list_streams">
+<tt class="descclassname">bootstrapping_olympics.extra.hdf.index.</tt><tt class="descname">hdf_list_streams</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/index.html#hdf_list_streams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.index.hdf_list_streams" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.extra.hdf.index.spec_from_group">
+<tt class="descclassname">bootstrapping_olympics.extra.hdf.index.</tt><tt class="descname">spec_from_group</tt><big>(</big><em>group</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/index.html#spec_from_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.index.spec_from_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.extra.hdf.interface">
+<span id="interface-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">interface</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.extra.hdf.interface" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.extra.hdf.interface.HDFLogsFormat">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.extra.hdf.interface.</tt><tt class="descname">HDFLogsFormat</tt><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/interface.html#HDFLogsFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.interface.HDFLogsFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.logs.html#bootstrapping_olympics.logs.logs_format.LogsFormat" title="bootstrapping_olympics.logs.logs_format.LogsFormat"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.logs.logs_format.LogsFormat</span></tt></a></p>
+<dl class="method">
+<dt id="bootstrapping_olympics.extra.hdf.interface.HDFLogsFormat.index_file">
+<tt class="descname">index_file</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/interface.html#HDFLogsFormat.index_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.interface.HDFLogsFormat.index_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of BootStream objects.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.extra.hdf.interface.HDFLogsFormat.read_from_stream">
+<tt class="descname">read_from_stream</tt><big>(</big><em>filename</em>, <em>id_stream</em>, <em>read_extra=False</em>, <em>only_episodes=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/interface.html#HDFLogsFormat.read_from_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.interface.HDFLogsFormat.read_from_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields observations from the stream.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.extra.hdf.interface.HDFLogsFormat.read_stream">
+<tt class="descname">read_stream</tt><big>(</big><em>stream</em>, <em>read_extra=False</em>, <em>only_episodes=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/interface.html#HDFLogsFormat.read_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.interface.HDFLogsFormat.read_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields observations from the stream.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.extra.hdf.interface.HDFLogsFormat.write_stream">
+<tt class="descname">write_stream</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/interface.html#HDFLogsFormat.write_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.interface.HDFLogsFormat.write_stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.extra.hdf.read">
+<span id="read-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">read</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.extra.hdf.read" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.extra.hdf.read.hdf_read">
+<tt class="descclassname">bootstrapping_olympics.extra.hdf.read.</tt><tt class="descname">hdf_read</tt><big>(</big><em>filename</em>, <em>id_stream</em>, <em>boot_spec=None</em>, <em>read_extra=False</em>, <em>only_episodes=None</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/read.html#hdf_read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.read.hdf_read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.extra.hdf.utils">
+<span id="utils-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">utils</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.extra.hdf.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bootstrapping_olympics.extra.hdf.utils.load_extra">
+<tt class="descclassname">bootstrapping_olympics.extra.hdf.utils.</tt><tt class="descname">load_extra</tt><big>(</big><em>extra_table</em>, <em>index</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/utils.html#load_extra"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.utils.load_extra" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-bootstrapping_olympics.extra.hdf.write">
+<span id="write-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">write</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.extra.hdf.write" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="bootstrapping_olympics.extra.hdf.write.HDFLogWriter">
+<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.extra.hdf.write.</tt><tt class="descname">HDFLogWriter</tt><big>(</big><em>filename</em>, <em>id_stream</em>, <em>boot_spec</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/write.html#HDFLogWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.write.HDFLogWriter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="bootstrapping_olympics.extra.hdf.write.HDFLogWriter.cleanup">
+<tt class="descname">cleanup</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/write.html#HDFLogWriter.cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.write.HDFLogWriter.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>There was an error; this is not a valid log file; delete.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.extra.hdf.write.HDFLogWriter.close">
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/write.html#HDFLogWriter.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.write.HDFLogWriter.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.extra.hdf.write.HDFLogWriter.create_table">
+<tt class="descname">create_table</tt><big>(</big><em>dtype</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/write.html#HDFLogWriter.create_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.write.HDFLogWriter.create_table" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="bootstrapping_olympics.extra.hdf.write.HDFLogWriter.push_observations">
+<tt class="descname">push_observations</tt><big>(</big><em>observations</em>, <em>extra={}</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/write.html#HDFLogWriter.push_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.write.HDFLogWriter.push_observations" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>observations</strong> (<tt class="docutils literal"><span class="pre">array</span></tt>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.extra.hdf.write.compress">
+<tt class="descclassname">bootstrapping_olympics.extra.hdf.write.</tt><tt class="descname">compress</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/write.html#compress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.write.compress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compresses using only one thread.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.extra.hdf.write.compress_multi">
+<tt class="descclassname">bootstrapping_olympics.extra.hdf.write.</tt><tt class="descname">compress_multi</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/write.html#compress_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.write.compress_multi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compresses using possibly multiple threads.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bootstrapping_olympics.extra.hdf.write.remove_fields">
+<tt class="descclassname">bootstrapping_olympics.extra.hdf.write.</tt><tt class="descname">remove_fields</tt><big>(</big><em>dt</em>, <em>fields_to_remove</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/extra/hdf/write.html#remove_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.extra.hdf.write.remove_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hdf Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">hdf</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.extra.hdf.index"><tt class="docutils literal"><span class="pre">index</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.extra.hdf.interface"><tt class="docutils literal"><span class="pre">interface</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.extra.hdf.read"><tt class="docutils literal"><span class="pre">read</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.extra.hdf.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.extra.hdf.write"><tt class="docutils literal"><span class="pre">write</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/api/bootstrapping_olympics.extra.hdf.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

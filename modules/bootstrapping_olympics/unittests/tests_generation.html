@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>bootstrapping_olympics.unittests.tests_generation &mdash; BootOlympics 1.2 documentation</title>
+    <title>bootstrapping_olympics.unittests.tests_generation &mdash; BootOlympics 1.3 documentation</title>
     
     <link rel="stylesheet" href="../../../static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '1.2',
+        VERSION:     '1.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../../static/jquery.js"></script>
     <script type="text/javascript" src="../../../static/underscore.js"></script>
     <script type="text/javascript" src="../../../static/doctools.js"></script>
-    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../index.html" />
+    <link rel="top" title="BootOlympics 1.3 documentation" href="../../../index.html" />
     <link rel="up" title="bootstrapping_olympics" href="../../bootstrapping_olympics.html" /> 
   </head>
   <body>
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+        <li><a href="../../../index.html">BootOlympics 1.3 documentation</a> &raquo;</li>
           <li><a href="../../index.html" >Module code</a> &raquo;</li>
           <li><a href="../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
       </ul>
@@ -50,126 +50,41 @@
           <div class="body">
             
   <h1>Source code for bootstrapping_olympics.unittests.tests_generation</h1><div class="highlight"><pre>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="p">(</span><span class="n">all_nuisances</span><span class="p">,</span> <span class="n">get_nuisance</span><span class="p">,</span> <span class="n">all_robots</span><span class="p">,</span> <span class="n">get_robot</span><span class="p">,</span>
-               <span class="n">all_agents</span><span class="p">,</span> <span class="n">get_agent</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">bootstrapping_olympics</span> <span class="kn">import</span> <span class="n">UnsupportedSpec</span>
-<span class="kn">from</span> <span class="nn">nose.tools</span> <span class="kn">import</span> <span class="n">istest</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="p">(</span><span class="n">all_nuisances</span><span class="p">,</span> <span class="n">get_nuisance</span><span class="p">,</span> <span class="n">all_robots</span><span class="p">,</span> <span class="n">get_robot</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">,</span>
+    <span class="n">get_agent</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">fancy_test_decorator</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
 
 
-<div class="viewcode-block" id="add_to_module"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.unittests.html#bootstrapping_olympics.unittests.tests_generation.add_to_module">[docs]</a><span class="k">def</span> <span class="nf">add_to_module</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">module_name</span><span class="p">):</span>
-    <span class="n">module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">__name__</span>
+<span class="n">for_all_robots</span> <span class="o">=</span> <span class="n">fancy_test_decorator</span><span class="p">(</span><span class="n">lister</span><span class="o">=</span><span class="n">all_robots</span><span class="p">,</span>
+            <span class="n">arguments</span><span class="o">=</span><span class="k">lambda</span> <span class="n">id_robot</span><span class="p">:</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">get_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">)),</span>
+            <span class="n">attributes</span><span class="o">=</span><span class="k">lambda</span> <span class="n">id_robot</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">))</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;test&#39;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;No &quot;test&quot; in function name </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+<span class="n">for_all_agents</span> <span class="o">=</span> <span class="n">fancy_test_decorator</span><span class="p">(</span><span class="n">lister</span><span class="o">=</span><span class="n">all_agents</span><span class="p">,</span>
+            <span class="n">arguments</span><span class="o">=</span><span class="k">lambda</span> <span class="n">id_agent</span><span class="p">:</span> <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">get_agent</span><span class="p">(</span><span class="n">id_agent</span><span class="p">)),</span>
+            <span class="n">attributes</span><span class="o">=</span><span class="k">lambda</span> <span class="n">id_agent</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">))</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;test&#39;</span> <span class="ow">in</span> <span class="n">module_name</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;While adding </span><span class="si">%r</span><span class="s"> in </span><span class="si">%r</span><span class="s">: module does not have &quot;test&quot;&#39;</span>
-                        <span class="s">&#39; in it, so nose will not find the test.&#39;</span> <span class="o">%</span>
-                        <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">module_name</span><span class="p">))</span>
+<span class="c"># from bootstrapping_olympics import UnsupportedSpec</span>
+<span class="c"># TODO: make sure this is fine</span>
+<span class="n">for_all_pairs</span> <span class="o">=</span> <span class="n">fancy_test_decorator</span><span class="p">(</span>
+            <span class="n">lister</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">all_agents</span><span class="p">(),</span> <span class="n">all_robots</span><span class="p">()),</span>
+            <span class="n">arguments</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">):</span>
+                 <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">get_agent</span><span class="p">(</span><span class="n">id_agent</span><span class="p">),</span>
+                  <span class="n">id_robot</span><span class="p">,</span> <span class="n">get_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">)),</span>
+            <span class="n">attributes</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">):</span>
+                <span class="nb">dict</span><span class="p">(</span><span class="n">robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">agent</span><span class="o">=</span><span class="n">id_agent</span><span class="p">),</span>
+                <span class="n">naming</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
 
-    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Already created test </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+<span class="n">for_all_robot_nuisance_pairs</span> <span class="o">=</span> <span class="n">fancy_test_decorator</span><span class="p">(</span>
+            <span class="n">lister</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">all_nuisances</span><span class="p">(),</span> <span class="n">all_robots</span><span class="p">()),</span>
+            <span class="n">arguments</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">id_nuisance</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">):</span>
+                 <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">get_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">),</span>
+                  <span class="n">id_nuisance</span><span class="p">,</span> <span class="n">get_nuisance</span><span class="p">(</span><span class="n">id_nuisance</span><span class="p">)),</span>
+            <span class="n">attributes</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">id_nuisance</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">):</span>
+                <span class="nb">dict</span><span class="p">(</span><span class="n">robot</span><span class="o">=</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">nuisance</span><span class="o">=</span><span class="n">id_nuisance</span><span class="p">),</span>
+                <span class="n">naming</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
 
-    <span class="n">module</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">function</span>
 
-</div>
-<div class="viewcode-block" id="add_robot_f"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.unittests.html#bootstrapping_olympics.unittests.tests_generation.add_robot_f">[docs]</a><span class="k">def</span> <span class="nf">add_robot_f</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">):</span>
-    <span class="nd">@istest</span>
-    <span class="k">def</span> <span class="nf">test_caller</span><span class="p">():</span>
-        <span class="n">robot</span> <span class="o">=</span> <span class="n">get_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">)</span>
-        <span class="n">wrap_with_desc</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">robot</span><span class="p">),</span> <span class="n">agent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">robot</span><span class="o">=</span><span class="n">robot</span><span class="p">)</span>
-
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;test_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">)</span>
-    <span class="n">test_caller</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">name</span>
-    <span class="n">test_caller</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">id_robot</span>
-
-    <span class="n">add_to_module</span><span class="p">(</span><span class="n">test_caller</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="for_all_robots"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.unittests.html#bootstrapping_olympics.unittests.tests_generation.for_all_robots">[docs]</a><span class="k">def</span> <span class="nf">for_all_robots</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">id_robot</span> <span class="ow">in</span> <span class="n">all_robots</span><span class="p">():</span>
-        <span class="n">add_robot_f</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="add_agent_f"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.unittests.html#bootstrapping_olympics.unittests.tests_generation.add_agent_f">[docs]</a><span class="k">def</span> <span class="nf">add_agent_f</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">):</span>
-    <span class="nd">@istest</span>
-    <span class="k">def</span> <span class="nf">test_caller</span><span class="p">():</span>
-        <span class="n">agent</span> <span class="o">=</span> <span class="n">get_agent</span><span class="p">(</span><span class="n">id_agent</span><span class="p">)</span>
-        <span class="n">wrap_with_desc</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">agent</span><span class="p">),</span> <span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span> <span class="n">robot</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;test_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">)</span>
-    <span class="n">test_caller</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">name</span>
-    <span class="n">test_caller</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="n">id_agent</span>
-
-    <span class="n">add_to_module</span><span class="p">(</span><span class="n">test_caller</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="for_all_agents"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.unittests.html#bootstrapping_olympics.unittests.tests_generation.for_all_agents">[docs]</a><span class="k">def</span> <span class="nf">for_all_agents</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">id_agent</span> <span class="ow">in</span> <span class="n">all_agents</span><span class="p">():</span>
-        <span class="n">add_agent_f</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="add_pair_f"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.unittests.html#bootstrapping_olympics.unittests.tests_generation.add_pair_f">[docs]</a><span class="k">def</span> <span class="nf">add_pair_f</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">):</span>
-    <span class="nd">@istest</span>
-    <span class="k">def</span> <span class="nf">test_caller</span><span class="p">():</span>
-        <span class="n">agent</span> <span class="o">=</span> <span class="n">get_agent</span><span class="p">(</span><span class="n">id_agent</span><span class="p">)</span>
-        <span class="n">robot</span> <span class="o">=</span> <span class="n">get_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">agent1</span> <span class="o">=</span> <span class="n">get_agent</span><span class="p">(</span><span class="n">id_agent</span><span class="p">)</span>
-            <span class="n">agent1</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">robot</span><span class="o">.</span><span class="n">get_spec</span><span class="p">())</span>
-        <span class="k">except</span> <span class="n">UnsupportedSpec</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Unsupported combination (</span><span class="si">%s</span><span class="s">,</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">))</span>
-            <span class="k">return</span>
-
-        <span class="n">wrap_with_desc</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">id_agent</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">robot</span><span class="p">),</span>
-                       <span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span> <span class="n">robot</span><span class="o">=</span><span class="n">robot</span><span class="p">)</span>
-
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;test_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">)</span>
-    <span class="n">test_caller</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">name</span>
-    <span class="n">test_caller</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="n">id_agent</span>
-    <span class="n">test_caller</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">id_robot</span>
-
-    <span class="n">add_to_module</span><span class="p">(</span><span class="n">test_caller</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="add_robot_nuisance_pair_f"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.unittests.html#bootstrapping_olympics.unittests.tests_generation.add_robot_nuisance_pair_f">[docs]</a><span class="k">def</span> <span class="nf">add_robot_nuisance_pair_f</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_nuisance</span><span class="p">):</span>
-    <span class="nd">@istest</span>
-    <span class="k">def</span> <span class="nf">test_caller</span><span class="p">():</span>
-        <span class="n">nuisance</span> <span class="o">=</span> <span class="n">get_nuisance</span><span class="p">(</span><span class="n">id_nuisance</span><span class="p">)</span>
-        <span class="n">robot</span> <span class="o">=</span> <span class="n">get_robot</span><span class="p">(</span><span class="n">id_robot</span><span class="p">)</span>
-<span class="c">#</span>
-<span class="c">#        try:</span>
-<span class="c">#            agent1.init(robot.get_spec())</span>
-<span class="c">#        except UnsupportedSpec:</span>
-<span class="c">#            print(&#39;Unsupported combination (%s,%s)&#39; % (id_robot, id_agent))</span>
-<span class="c">#            return</span>
-
-        <span class="n">wrap_with_desc</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">id_robot</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">id_nuisance</span><span class="p">,</span> <span class="n">nuisance</span><span class="p">),</span>
-                       <span class="n">nuisance</span><span class="o">=</span><span class="n">nuisance</span><span class="p">,</span> <span class="n">robot</span><span class="o">=</span><span class="n">robot</span><span class="p">)</span>
-
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;test_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">id_nuisance</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">)</span>
-    <span class="n">test_caller</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">name</span>
-    <span class="n">test_caller</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="n">id_nuisance</span>
-    <span class="n">test_caller</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">id_robot</span>
-
-    <span class="n">add_to_module</span><span class="p">(</span><span class="n">test_caller</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="for_all_pairs"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.unittests.html#bootstrapping_olympics.unittests.tests_generation.for_all_pairs">[docs]</a><span class="k">def</span> <span class="nf">for_all_pairs</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">id_agent</span> <span class="ow">in</span> <span class="n">all_agents</span><span class="p">():</span>
-        <span class="k">for</span> <span class="n">id_robot</span> <span class="ow">in</span> <span class="n">all_robots</span><span class="p">():</span>
-            <span class="n">add_pair_f</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_agent</span><span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="for_all_robot_nuisance_pairs"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.unittests.html#bootstrapping_olympics.unittests.tests_generation.for_all_robot_nuisance_pairs">[docs]</a><span class="k">def</span> <span class="nf">for_all_robot_nuisance_pairs</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">id_nuisance</span> <span class="ow">in</span> <span class="n">all_nuisances</span><span class="p">():</span>
-        <span class="k">for</span> <span class="n">id_robot</span> <span class="ow">in</span> <span class="n">all_robots</span><span class="p">():</span>
-            <span class="n">add_robot_nuisance_pair_f</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">id_robot</span><span class="p">,</span> <span class="n">id_nuisance</span><span class="p">)</span>
-
-</div>
+<span class="c"># XXX: this is not used yet</span>
 <div class="viewcode-block" id="wrap_with_desc"><a class="viewcode-back" href="../../../api/bootstrapping_olympics.unittests.html#bootstrapping_olympics.unittests.tests_generation.wrap_with_desc">[docs]</a><span class="k">def</span> <span class="nf">wrap_with_desc</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">arguments</span><span class="p">,</span>
                    <span class="n">agent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">robot</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">nuisance</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Calls function with arguments, and writes debug information</span>
@@ -225,7 +140,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+        <li><a href="../../../index.html">BootOlympics 1.3 documentation</a> &raquo;</li>
           <li><a href="../../index.html" >Module code</a> &raquo;</li>
           <li><a href="../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
       </ul>

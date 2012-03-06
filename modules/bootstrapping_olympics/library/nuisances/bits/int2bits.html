@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>bootstrapping_olympics.library.nuisances.bits.int2bits &mdash; BootOlympics 1.2 documentation</title>
+    <title>bootstrapping_olympics.library.nuisances.bits.int2bits &mdash; BootOlympics 1.3 documentation</title>
     
     <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '1.2',
+        VERSION:     '1.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../../../../static/jquery.js"></script>
     <script type="text/javascript" src="../../../../../static/underscore.js"></script>
     <script type="text/javascript" src="../../../../../static/doctools.js"></script>
-    <link rel="top" title="BootOlympics 1.2 documentation" href="../../../../../index.html" />
+    <link rel="top" title="BootOlympics 1.3 documentation" href="../../../../../index.html" />
     <link rel="up" title="bootstrapping_olympics.library.nuisances" href="../../nuisances.html" /> 
   </head>
   <body>
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="../../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.3 documentation</a> &raquo;</li>
           <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
           <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
           <li><a href="../../nuisances.html" accesskey="U">bootstrapping_olympics.library.nuisances</a> &raquo;</li> 
@@ -50,197 +50,176 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <h1>Source code for bootstrapping_olympics.library.nuisances.bits.int2bits</h1><pre>
-from . import contract, np, value2bits, gray
-from .... import (StreamSpec, UnsupportedSpec, RepresentationNuisance,
-    streamels_all_of_kind, ValueFormats, streamel_dtype)
+  <h1>Source code for bootstrapping_olympics.library.nuisances.bits.int2bits</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">contract</span><span class="p">,</span> <span class="n">np</span><span class="p">,</span> <span class="n">value2bits</span><span class="p">,</span> <span class="n">gray</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">check_streamels_2D</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics</span> <span class="kn">import</span> <span class="p">(</span><span class="n">UnsupportedSpec</span><span class="p">,</span> <span class="n">RepresentationNuisance</span><span class="p">,</span>
+    <span class="n">streamels_all_of_kind</span><span class="p">,</span> <span class="n">ValueFormats</span><span class="p">,</span> <span class="n">streamel_dtype</span><span class="p">)</span>
 
-__all__ = ['Int2bits', 'Bits2int']
-
-
-def format_word(word):
-    return tuple(int(b) for b in word)
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Int2bits&#39;</span><span class="p">,</span> <span class="s">&#39;Bits2int&#39;</span><span class="p">]</span>
 
 
-def format_code(code):
-    return [format_word(x) for x in code]
+<span class="k">def</span> <span class="nf">format_word</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">word</span><span class="p">)</span>
 
 
-@contract(max_value='int,&gt;0', returns='list(seq[N](0|1))')
-def base2code(max_value):
-    nbits = int(np.ceil(np.log2(max_value)))
-    nbits = max(1, nbits) # max_value=1
-#    print('computing %d bits base2 code for max_value = %s' %
-#          (nbits, max_value))
-    max_value = 2 ** nbits
-    code = [value2bits(i, nbits) for i in range(max_value)]
-    return format_code(code)
+<span class="k">def</span> <span class="nf">format_code</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">format_word</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">code</span><span class="p">]</span>
 
 
-@contract(max_value='int,&gt;0', returns='list(seq[N](0|1))')
-def graycode(max_value):
-    nbits = int(np.ceil(np.log2(max_value)))
-    nbits = max(1, nbits) # max_value=1
-#    print('computing %d bits gray code for max_value = %s' %
-#          (nbits, max_value))
-    code = gray(nbits)
-    return format_code(code)
+<span class="nd">@contract</span><span class="p">(</span><span class="n">max_value</span><span class="o">=</span><span class="s">&#39;int,&gt;0&#39;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;list(seq[N](0|1))&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">base2code</span><span class="p">(</span><span class="n">max_value</span><span class="p">):</span>
+    <span class="n">nbits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">max_value</span><span class="p">)))</span>
+    <span class="n">nbits</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nbits</span><span class="p">)</span> <span class="c"># max_value=1</span>
+<span class="c">#    print(&#39;computing %d bits base2 code for max_value = %s&#39; %</span>
+<span class="c">#          (nbits, max_value))</span>
+    <span class="n">max_value</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">nbits</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="p">[</span><span class="n">value2bits</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nbits</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_value</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">format_code</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
 
-allowed_codes = {'base2': base2code, 'gray': graycode}
+
+<span class="nd">@contract</span><span class="p">(</span><span class="n">max_value</span><span class="o">=</span><span class="s">&#39;int,&gt;0&#39;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;list(seq[N](0|1))&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">graycode</span><span class="p">(</span><span class="n">max_value</span><span class="p">):</span>
+    <span class="n">nbits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">max_value</span><span class="p">)))</span>
+    <span class="n">nbits</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nbits</span><span class="p">)</span> <span class="c"># max_value=1</span>
+<span class="c">#    print(&#39;computing %d bits gray code for max_value = %s&#39; %</span>
+<span class="c">#          (nbits, max_value))</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">gray</span><span class="p">(</span><span class="n">nbits</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">format_code</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+<span class="n">allowed_codes</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;base2&#39;</span><span class="p">:</span> <span class="n">base2code</span><span class="p">,</span> <span class="s">&#39;gray&#39;</span><span class="p">:</span> <span class="n">graycode</span><span class="p">}</span>
 
 
-<div class="viewcode-block" id="Int2bits"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits">[docs]</a>class Int2bits(RepresentationNuisance):
-    ''' 
-        This nuisance represents integer values with
-        their bit representation (0-1).   
-        
-        Converts a M array into an MxN array, 
-        using N bits, where N is the minimum necessary to
-        represent all the numbers in the array.
-    '''
+<div class="viewcode-block" id="Int2bits"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits">[docs]</a><span class="k">class</span> <span class="nc">Int2bits</span><span class="p">(</span><span class="n">RepresentationNuisance</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        This nuisance represents integer values with</span>
+<span class="sd">        their bit representation (0-1).   </span>
+<span class="sd">        </span>
+<span class="sd">        Converts a M array into an MxN array, </span>
+<span class="sd">        using N bits, where N is the minimum necessary to</span>
+<span class="sd">        represent all the numbers in the array.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
-    def __init__(self, code):
-        self.nbits = None
-        if not code in allowed_codes:
-            msg = ('Unknown code %r, choose in %s' %
-                   (code, allowed_codes.keys()))
-            raise ValueError(msg)
-        self.codefunc = allowed_codes[code]
-        self.code = code
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nbits</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">allowed_codes</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Unknown code </span><span class="si">%r</span><span class="s">, choose in </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                   <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">allowed_codes</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codefunc</span> <span class="o">=</span> <span class="n">allowed_codes</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
 
-    @contract(stream_spec=StreamSpec)
-<div class="viewcode-block" id="Int2bits.transform_spec"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_spec">[docs]</a>    def transform_spec(self, stream_spec):
-        streamels = stream_spec.get_streamels()
+<div class="viewcode-block" id="Int2bits.transform_streamels"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_streamels">[docs]</a>    <span class="k">def</span> <span class="nf">transform_streamels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">streamels</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">streamels_all_of_kind</span><span class="p">(</span><span class="n">streamels</span><span class="p">,</span> <span class="n">ValueFormats</span><span class="o">.</span><span class="n">Discrete</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Int2bits only supports discrete streams.&#39;</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-        if not streamels_all_of_kind(streamels, ValueFormats.Discrete):
-            msg = 'Int2bits only supports discrete streams.'
-            raise UnsupportedSpec(msg)
+        <span class="k">if</span> <span class="n">streamels</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Int2bits only works with 1D streams.&#39;</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-        if streamels.ndim != 1:
-            msg = 'Int2bits only works with 1D streams.'
-            raise UnsupportedSpec(msg)
+        <span class="c"># Save these so we can use them later</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lower</span> <span class="o">=</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upper</span> <span class="o">=</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-        # Save these so we can use them later
-        self.lower = streamels['lower'].copy()
-        self.upper = streamels['upper'].copy()
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lower</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;I assume that numbers are positive.&#39;</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-        if not np.all(self.lower &gt;= 0):
-            msg = 'I assume that numbers are positive.'
-            raise UnsupportedSpec(msg)
+        <span class="c">#print(&#39;upper: %s&#39; % self.upper)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">upper</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codewords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codefunc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_value</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">codewords</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nbits</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">codewords</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-        #print('upper: %s' % self.upper)
-        self.max_value = int(np.max(self.upper))
-        self.codewords = self.codefunc(self.max_value)
-        assert len(self.codewords) &gt;= self.max_value
-        self.nbits = len(self.codewords[0])
-
-        self.old_shape = streamels.shape
-        self.new_shape = (streamels.size, self.nbits)
-        streamels2 = np.zeros(self.new_shape, streamel_dtype)
-        streamels2['kind'] = ValueFormats.Discrete
-        streamels2['lower'] = 0
-        streamels2['upper'] = 1
-        streamels2['default'] = self.transform_value(streamels['default'])
-
-        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered={},
-                                  desc=None)
-
-        return stream_spec2
+        <span class="bp">self</span><span class="o">.</span><span class="n">old_shape</span> <span class="o">=</span> <span class="n">streamels</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">streamels</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbits</span><span class="p">)</span>
+        <span class="n">streamels2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">streamel_dtype</span><span class="p">)</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ValueFormats</span><span class="o">.</span><span class="n">Discrete</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_value</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">streamels2</span>
 </div>
-    @contract(value='array[N]', # TODO: add generic int
-              returns='array[NxM](=0|=1)')
-<div class="viewcode-block" id="Int2bits.transform_value"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_value">[docs]</a>    def transform_value(self, value):
-        assert value.shape == self.old_shape
-        value2 = np.zeros(self.new_shape, 'int')
-        for i, v in enumerate(value):
-            # TODO: check value
-            value2[i, :] = self.codewords[int(v)]
-        return value2
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&#39;array[N]&#39;</span><span class="p">,</span> <span class="c"># TODO: add generic int</span>
+              <span class="n">returns</span><span class="o">=</span><span class="s">&#39;array[NxM](=0|=1)&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="Int2bits.transform_value"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.transform_value">[docs]</a>    <span class="k">def</span> <span class="nf">transform_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_shape</span>
+        <span class="n">value2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_shape</span><span class="p">,</span> <span class="s">&#39;int&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="c"># TODO: check value</span>
+            <span class="n">value2</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codewords</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">value2</span>
 </div>
-<div class="viewcode-block" id="Int2bits.inverse"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.inverse">[docs]</a>    def inverse(self):
-        # XXX: we cannot really recover lower and upper
-        # if lower !=0 or upper is not a power of 2 (and all the same)
-        return Bits2int(self.code)
+<div class="viewcode-block" id="Int2bits.inverse"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Int2bits.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># XXX: we cannot really recover lower and upper</span>
+        <span class="c"># if lower !=0 or upper is not a power of 2 (and all the same)</span>
+        <span class="k">return</span> <span class="n">Bits2int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
 </div>
-    def __repr__(self):
-        return 'Int2bits(%r)' % self.code
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;Int2bits(</span><span class="si">%r</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span>
 
 </div>
-<div class="viewcode-block" id="Bits2int"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int">[docs]</a>class Bits2int(RepresentationNuisance):
-    ''' 
-        This nuisance represents transforms back 
-        a bit representation into integer values.
-        
-        Converts an MxN array (N: number of bits), to
-        an M array.
-    '''
+<div class="viewcode-block" id="Bits2int"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int">[docs]</a><span class="k">class</span> <span class="nc">Bits2int</span><span class="p">(</span><span class="n">RepresentationNuisance</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        This nuisance represents transforms back </span>
+<span class="sd">        a bit representation into integer values.</span>
+<span class="sd">        </span>
+<span class="sd">        Converts an MxN array (N: number of bits), to</span>
+<span class="sd">        an M array.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
-    def __init__(self, code):
-        if not code in allowed_codes:
-            msg = ('Unknown code %r, choose in %s' %
-                   (code, allowed_codes.keys()))
-            raise ValueError(msg)
-        self.code = code
-        self.codefunc = allowed_codes[code]
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">allowed_codes</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Unknown code </span><span class="si">%r</span><span class="s">, choose in </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                   <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">allowed_codes</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codefunc</span> <span class="o">=</span> <span class="n">allowed_codes</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
 
-    @contract(stream_spec=StreamSpec)
-<div class="viewcode-block" id="Bits2int.transform_spec"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_spec">[docs]</a>    def transform_spec(self, stream_spec):
-        streamels = stream_spec.get_streamels()
-        shape = streamels.shape
-        # TODO: use normal function
-        if not streamels_all_of_kind(streamels, ValueFormats.Discrete):
-            msg = 'Bits2int only supports discrete streams.'
-            raise UnsupportedSpec(msg)
+<div class="viewcode-block" id="Bits2int.transform_streamels"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_streamels">[docs]</a>    <span class="k">def</span> <span class="nf">transform_streamels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">streamels</span><span class="p">):</span>
+        <span class="n">check_streamels_2D</span><span class="p">(</span><span class="n">streamels</span><span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">streamels</span><span class="o">.</span><span class="n">shape</span>
+        <span class="c"># TODO: use normal function</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">streamels_all_of_kind</span><span class="p">(</span><span class="n">streamels</span><span class="p">,</span> <span class="n">ValueFormats</span><span class="o">.</span><span class="n">Discrete</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Bits2int only supports discrete streams.&#39;</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-        if streamels.ndim != 2:
-            msg = 'Bits2int only works with 2D streams.'
-            raise UnsupportedSpec(msg)
+        <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span>
+             <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;I expect only bits as input.&#39;</span>
+            <span class="k">raise</span> <span class="n">UnsupportedSpec</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-        if (np.any(streamels['lower'] != 0) or
-             np.any(streamels['upper'] != 1)):
-            msg = 'I expect only bits as input.'
-            raise UnsupportedSpec(msg)
+        <span class="n">nvalues</span><span class="p">,</span> <span class="n">nbits</span> <span class="o">=</span> <span class="n">shape</span>
 
-        nvalues, nbits = shape
+        <span class="n">max_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">nbits</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codewords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codefunc</span><span class="p">(</span><span class="n">max_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codewords_inv</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">codewords</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">codewords_inv</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="c">#print(&#39;codewords: %s&#39; % self.codewords)</span>
 
-        max_value = int(2 ** nbits - 1)
-        self.codewords = self.codefunc(max_value)
-        self.codewords_inv = {}
-        for i, x in enumerate(self.codewords):
-            self.codewords_inv[x] = i
-        print('codewords: %s' % self.codewords)
-
-        streamels2 = np.zeros(nvalues, streamel_dtype)
-        streamels2['kind'] = ValueFormats.Discrete
-        streamels2['lower'] = 0
-        streamels2['upper'] = 2 ** nbits - 1
-        streamels2['default'] = self.transform_value(streamels['default'])
-
-        stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},
-                                  filtered={},
-                                  desc=None)
-
-        return stream_spec2
+        <span class="n">streamels2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nvalues</span><span class="p">,</span> <span class="n">streamel_dtype</span><span class="p">)</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ValueFormats</span><span class="o">.</span><span class="n">Discrete</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">nbits</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_value</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">streamels2</span>
 </div>
-    @contract(value='array[NxM](=0|=1)', returns='array[N]') # XXX
-<div class="viewcode-block" id="Bits2int.transform_value"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_value">[docs]</a>    def transform_value(self, value):
-        value2 = np.zeros(value.shape[0], 'int')
-        for i, bits in enumerate(value):
-            word = format_word(bits)
-            value2[i] = self.codewords_inv[word]
-        return value2
+    <span class="nd">@contract</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&#39;array[NxM](=0|=1)&#39;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;array[N]&#39;</span><span class="p">)</span> <span class="c"># XXX</span>
+<div class="viewcode-block" id="Bits2int.transform_value"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.transform_value">[docs]</a>    <span class="k">def</span> <span class="nf">transform_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">value2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#39;int&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bits</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">format_word</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+            <span class="n">value2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codewords_inv</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">value2</span>
 </div>
-<div class="viewcode-block" id="Bits2int.inverse"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.inverse">[docs]</a>    def inverse(self):
-        return Int2bits(self.code)
+<div class="viewcode-block" id="Bits2int.inverse"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.library.nuisances.bits.html#bootstrapping_olympics.library.nuisances.bits.int2bits.Bits2int.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Int2bits</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
 </div>
-    def __repr__(self):
-        return 'Bits2int(%r)' % self.code</div>
-</pre>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;Bits2int(</span><span class="si">%r</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span></div>
+</pre></div>
 
           </div>
         </div>
@@ -273,7 +252,7 @@ allowed_codes = {'base2': base2code, 'gray': graycode}
         <li class="right" >
           <a href="../../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../../../index.html">BootOlympics 1.2 documentation</a> &raquo;</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.3 documentation</a> &raquo;</li>
           <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
           <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li>
           <li><a href="../../nuisances.html" >bootstrapping_olympics.library.nuisances</a> &raquo;</li> 

@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.unittests.utils.generation &mdash; BootOlympics 1.3 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.3 documentation" href="../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.3 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.unittests.utils.generation</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    These are very &quot;meta&quot; utils for creating nose tests on the fly. </span>
+
+<span class="sd">    Here is an example use: ::</span>
+
+<span class="sd">        thinghies = {&#39;banana&#39;: &#39;yellow&#39;, &#39;apple&#39;: &#39;red&#39;, &#39;sky&#39;: &#39;blue&#39;}</span>
+
+<span class="sd">        def thinghies_list():</span>
+<span class="sd">            return thinghies.keys()</span>
+<span class="sd">        </span>
+<span class="sd">        def thinghies_args(x):</span>
+<span class="sd">            return (x, thinghies[x])</span>
+<span class="sd">        </span>
+<span class="sd">        def thinghies_attrs(x):</span>
+<span class="sd">            return dict(thinghy_name=&#39;%s&#39; % x, flavor=thinghies[x])</span>
+<span class="sd">        </span>
+<span class="sd">        for_all_thinghies = fancy_test_decorator(lister=thinghies_list,</span>
+<span class="sd">                                                 arguments=thinghies_args,</span>
+<span class="sd">                                                 attributes=thinghies_attrs)</span>
+<span class="sd">                                                 </span>
+<span class="sd">                                           </span>
+<span class="sd">    And this is the proper test: ::</span>
+
+<span class="sd">        @for_all_thinghies</span>
+<span class="sd">        def check_good_flavor(id_thinghy, flavor):</span>
+<span class="sd">            print(&#39;test for %s %s&#39; % (id_thinghy, flavor))</span>
+
+<span class="sd">        </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;fancy_test_decorator&#39;</span><span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">nose.tools</span> <span class="kn">import</span> <span class="n">istest</span><span class="p">,</span> <span class="n">nottest</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">logger</span>
+
+
+<span class="k">def</span> <span class="nf">add_to_module</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">module_name</span><span class="p">):</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">__name__</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;test&#39;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;No &quot;test&quot; in function name </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;test&#39;</span> <span class="ow">in</span> <span class="n">module_name</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;While adding </span><span class="si">%r</span><span class="s"> in </span><span class="si">%r</span><span class="s">: module does not have &quot;test&quot;&#39;</span>
+                        <span class="s">&#39; in it, so nose will not find the test.&#39;</span> <span class="o">%</span>
+                        <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">module_name</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Already created test </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="n">module</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">function</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Added test </span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">add_checker_f</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">arguments</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">naming</span><span class="p">):</span>
+    <span class="nd">@istest</span>
+    <span class="k">def</span> <span class="nf">caller</span><span class="p">():</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">arguments</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;test_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">naming</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">caller</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">if</span> <span class="bp">True</span><span class="p">:</span> <span class="c"># TODO TMP</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">caller</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="n">add_to_module</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
+
+
+<span class="c"># TODO: add debug info function</span>
+<span class="nd">@nottest</span>
+<div class="viewcode-block" id="fancy_test_decorator"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.unittests.utils.html#bootstrapping_olympics.unittests.utils.generation.fancy_test_decorator">[docs]</a><span class="k">def</span> <span class="nf">fancy_test_decorator</span><span class="p">(</span><span class="n">lister</span><span class="p">,</span>
+                       <span class="n">arguments</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
+                       <span class="n">attributes</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)},</span>
+                       <span class="n">naming</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Creates a fancy decorator for adding checks.</span>
+<span class="sd">        </span>
+<span class="sd">        :param lister: a function that should give a list of objects</span>
+<span class="sd">        :param arguments: from object to arguments</span>
+<span class="sd">        :param attributes: (optional) set of attributes for the test</span>
+<span class="sd">        </span>
+<span class="sd">        Returns a function that can be used as a decorator.</span>
+<span class="sd">        </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">for_all_stuff</span><span class="p">(</span><span class="n">check</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lister</span><span class="p">():</span>
+            <span class="n">add_checker_f</span><span class="p">(</span><span class="n">check</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">arguments</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">naming</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">for_all_stuff</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">BootOlympics 1.3 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

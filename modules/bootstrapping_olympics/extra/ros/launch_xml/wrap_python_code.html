@@ -1,0 +1,144 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bootstrapping_olympics.extra.ros.launch_xml.wrap_python_code &mdash; BootOlympics 1.3 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '1.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.3 documentation" href="../../../../../index.html" />
+    <link rel="up" title="bootstrapping_olympics" href="../../../../bootstrapping_olympics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.3 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" accesskey="U">bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bootstrapping_olympics.extra.ros.launch_xml.wrap_python_code</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics.configuration</span> <span class="kn">import</span> <span class="p">(</span><span class="n">check_valid_robot_config</span><span class="p">,</span>
+    <span class="n">check_valid_ros_node_spec</span><span class="p">,</span> <span class="n">check_valid_agent_config</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="wrap_python_robot"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.extra.ros.launch_xml.html#bootstrapping_olympics.extra.ros.launch_xml.wrap_python_code.wrap_python_robot">[docs]</a><span class="k">def</span> <span class="nf">wrap_python_robot</span><span class="p">(</span><span class="n">robot_spec</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
+    <span class="n">check_valid_robot_config</span><span class="p">(</span><span class="n">robot_spec</span><span class="p">)</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;bootstrapping_adapter/boot_robot_adapter.py&#39;</span><span class="p">,</span>
+                <span class="p">{</span><span class="s">&#39;robot_spec&#39;</span><span class="p">:</span> <span class="n">robot_spec</span><span class="p">,</span>
+                 <span class="s">&#39;root&#39;</span><span class="p">:</span> <span class="n">root</span><span class="p">}]</span>
+    <span class="n">check_valid_ros_node_spec</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">node</span>
+
+</div>
+<div class="viewcode-block" id="wrap_python_agent"><a class="viewcode-back" href="../../../../../api/bootstrapping_olympics.extra.ros.launch_xml.html#bootstrapping_olympics.extra.ros.launch_xml.wrap_python_code.wrap_python_agent">[docs]</a><span class="k">def</span> <span class="nf">wrap_python_agent</span><span class="p">(</span><span class="n">agent_spec</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">publish_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">check_valid_agent_config</span><span class="p">(</span><span class="n">agent_spec</span><span class="p">)</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;bootstrapping_adapter/boot_agent_adapter.py&#39;</span><span class="p">,</span>
+                <span class="p">{</span><span class="s">&#39;agent_spec&#39;</span><span class="p">:</span> <span class="n">agent_spec</span><span class="p">,</span>
+                 <span class="s">&#39;root&#39;</span><span class="p">:</span> <span class="n">root</span><span class="p">,</span>
+                 <span class="s">&#39;publish_interval&#39;</span><span class="p">:</span> <span class="n">publish_interval</span><span class="p">}</span>
+         <span class="p">]</span>
+    <span class="n">check_valid_ros_node_spec</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">node</span>
+
+
+<span class="c">#def create_vehicles_launch(id_agent, id_vehicle, id_world, output_dir,</span>
+<span class="c">#                           log_level=0, viz_level=0, publish_interval=0):</span>
+<span class="c">#    logger.info(&#39;Creating launch for %s %s %s.&#39; % (id_agent,</span>
+<span class="c">#  id_vehicle, id_world))</span>
+<span class="c">#</span>
+<span class="c">#    # We have to create a new &#39;robot&#39;</span>
+<span class="c">#    id_robot = &#39;sim-%s-%s&#39; % (id_agent, id_vehicle)</span>
+<span class="c">#    </span>
+<span class="c">#    vehicle = dict(**VehiclesConfig.vehicles[id_vehicle])</span>
+<span class="c">#    dereference_vehicle_spec(vehicle)</span>
+<span class="c">#    world = VehiclesConfig.worlds[id_world]</span>
+<span class="c">#    </span>
+<span class="c">#    simulation_code = [&#39;vehicles_ros.ROSVehicleSimulation&#39;,</span>
+<span class="c">#                       {&#39;vehicle&#39;: vehicle,</span>
+<span class="c">#                        &#39;world&#39;: world,</span>
+<span class="c">#                        &#39;viz_level&#39;: viz_level}]</span>
+<span class="c">#    </span>
+<span class="c">#    </span>
+<span class="c">#    agent = BootOlympicsConfig.agents[id_agent]</span>
+<span class="c">#    check_valid_agent_config(agent)</span>
+<span class="c">#    agent_node = [&#39;bootstrapping_adapter/agent_adapter.py&#39;,</span>
+<span class="c">#                          {&#39;code&#39;: agent[&#39;code&#39;],</span>
+<span class="c">#                           &#39;id_agent&#39;: id_agent,</span>
+<span class="c">#                           &#39;publish_interval&#39;: publish_interval } ]</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">BootOlympics 1.3 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../bootstrapping_olympics.html" >bootstrapping_olympics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

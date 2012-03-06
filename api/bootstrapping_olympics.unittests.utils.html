@@ -1,0 +1,157 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>utils Package &mdash; BootOlympics 1.3 documentation</title>
+    
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="BootOlympics 1.3 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="utils-package">
+<h1>utils Package<a class="headerlink" href="#utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">utils</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-bootstrapping_olympics.unittests.utils"></span></div>
+<div class="section" id="module-bootstrapping_olympics.unittests.utils.generation">
+<span id="generation-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">generation</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.unittests.utils.generation" title="Permalink to this headline">¶</a></h2>
+<p>These are very &#8220;meta&#8221; utils for creating nose tests on the fly.</p>
+<p>Here is an example use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">thinghies</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;banana&#39;</span><span class="p">:</span> <span class="s">&#39;yellow&#39;</span><span class="p">,</span> <span class="s">&#39;apple&#39;</span><span class="p">:</span> <span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="s">&#39;sky&#39;</span><span class="p">:</span> <span class="s">&#39;blue&#39;</span><span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">thinghies_list</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">thinghies</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">thinghies_args</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">thinghies</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">thinghies_attrs</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">thinghy_name</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="p">,</span> <span class="n">flavor</span><span class="o">=</span><span class="n">thinghies</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+
+<span class="n">for_all_thinghies</span> <span class="o">=</span> <span class="n">fancy_test_decorator</span><span class="p">(</span><span class="n">lister</span><span class="o">=</span><span class="n">thinghies_list</span><span class="p">,</span>
+                                         <span class="n">arguments</span><span class="o">=</span><span class="n">thinghies_args</span><span class="p">,</span>
+                                         <span class="n">attributes</span><span class="o">=</span><span class="n">thinghies_attrs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And this is the proper test:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@for_all_thinghies</span>
+<span class="k">def</span> <span class="nf">check_good_flavor</span><span class="p">(</span><span class="n">id_thinghy</span><span class="p">,</span> <span class="n">flavor</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;test for </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_thinghy</span><span class="p">,</span> <span class="n">flavor</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="bootstrapping_olympics.unittests.utils.generation.fancy_test_decorator">
+<tt class="descclassname">bootstrapping_olympics.unittests.utils.generation.</tt><tt class="descname">fancy_test_decorator</tt><big>(</big><em>lister</em>, <em>arguments=&lt;function &lt;lambda&gt; at 0x8154de8&gt;</em>, <em>attributes=&lt;function &lt;lambda&gt; at 0x8154e60&gt;</em>, <em>naming=&lt;function &lt;lambda&gt; at 0x8154ed8&gt;</em><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/unittests/utils/generation.html#fancy_test_decorator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.unittests.utils.generation.fancy_test_decorator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a fancy decorator for adding checks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lister</strong> &#8211; a function that should give a list of objects</li>
+<li><strong>arguments</strong> &#8211; from object to arguments</li>
+<li><strong>attributes</strong> &#8211; (optional) set of attributes for the test</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns a function that can be used as a decorator.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">utils Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">utils</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.unittests.utils.generation"><tt class="docutils literal"><span class="pre">generation</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/api/bootstrapping_olympics.unittests.utils.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">BootOlympics 1.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

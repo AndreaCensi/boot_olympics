@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>BootOlympics public API reference &mdash; BootOlympics 1.2 documentation</title>
+    <title>BootOlympics public API reference &mdash; BootOlympics 1.3 documentation</title>
     
     <link rel="stylesheet" href="static/default.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.2',
+        VERSION:     '1.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="static/jquery.js"></script>
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
-    <link rel="top" title="BootOlympics 1.2 documentation" href="index.html" /> 
+    <link rel="top" title="BootOlympics 1.3 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">BootOlympics 1.3 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -159,14 +159,110 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="library-agents">
-<h2>Library: agents<a class="headerlink" href="#library-agents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-bootstrapping_olympics.library.agents">
+<span id="library-agents"></span><h2>Library: agents<a class="headerlink" href="#module-bootstrapping_olympics.library.agents" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.RandomAgent" title="bootstrapping_olympics.library.agents.RandomAgent"><tt class="xref py py-obj docutils literal"><span class="pre">RandomAgent</span></tt></a>()</td>
+<td>A dummy agent that gives random commands.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.library.agents.html#bootstrapping_olympics.library.agents.TestAgent" title="bootstrapping_olympics.library.agents.TestAgent"><tt class="xref py py-obj docutils literal"><span class="pre">TestAgent</span></tt></a>(cmd)</td>
+<td>A simple agent useful for testing.</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="section" id="library-robots">
-<h2>Library: robots<a class="headerlink" href="#library-robots" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-bootstrapping_olympics.library.robots">
+<span id="library-robots"></span><h2>Library: robots<a class="headerlink" href="#module-bootstrapping_olympics.library.robots" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.EquivRobot" title="bootstrapping_olympics.library.robots.EquivRobot"><tt class="xref py py-obj docutils literal"><span class="pre">EquivRobot</span></tt></a>(robot[,&nbsp;obs_nuisance,&nbsp;cmd_nuisance])</td>
+<td>This is used to create the perturbed version of a robot.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.RandomRobot" title="bootstrapping_olympics.library.robots.RandomRobot"><tt class="xref py py-obj docutils literal"><span class="pre">RandomRobot</span></tt></a>(boot_spec[,&nbsp;dt])</td>
+<td>This is a sensorimotor cascade generating uniform noise,</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="section" id="library-representation-nuisances">
-<h2>Library: representation nuisances<a class="headerlink" href="#library-representation-nuisances" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-bootstrapping_olympics.library.nuisances">
+<span id="library-representation-nuisances"></span><h2>Library: representation nuisances<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.Bits2int" title="bootstrapping_olympics.library.nuisances.Bits2int"><tt class="xref py py-obj docutils literal"><span class="pre">Bits2int</span></tt></a>(code)</td>
+<td>This nuisance represents transforms back  a bit representation into integer values.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.Decrypt" title="bootstrapping_olympics.library.nuisances.Decrypt"><tt class="xref py py-obj docutils literal"><span class="pre">Decrypt</span></tt></a>(password,&nbsp;ngoodbits)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.Discretize" title="bootstrapping_olympics.library.nuisances.Discretize"><tt class="xref py py-obj docutils literal"><span class="pre">Discretize</span></tt></a>(levels)</td>
+<td>This nuisance discretizes a float stream into  an integer representation.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.Encrypt" title="bootstrapping_olympics.library.nuisances.Encrypt"><tt class="xref py py-obj docutils literal"><span class="pre">Encrypt</span></tt></a>(password)</td>
+<td>This nuisance encrypts the bits.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.Flatten" title="bootstrapping_olympics.library.nuisances.Flatten"><tt class="xref py py-obj docutils literal"><span class="pre">Flatten</span></tt></a>()</td>
+<td>A nuisance that flattens the streamels.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.GLNuisance" title="bootstrapping_olympics.library.nuisances.GLNuisance"><tt class="xref py py-obj docutils literal"><span class="pre">GLNuisance</span></tt></a>(A)</td>
+<td>A general linear transformation.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.GenericLinear" title="bootstrapping_olympics.library.nuisances.GenericLinear"><tt class="xref py py-obj docutils literal"><span class="pre">GenericLinear</span></tt></a>([A])</td>
+<td>This represents a generic linear transformation</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.Identity" title="bootstrapping_olympics.library.nuisances.Identity"><tt class="xref py py-obj docutils literal"><span class="pre">Identity</span></tt></a>()</td>
+<td>The dummy identity nuisance.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.Int2bits" title="bootstrapping_olympics.library.nuisances.Int2bits"><tt class="xref py py-obj docutils literal"><span class="pre">Int2bits</span></tt></a>(code)</td>
+<td>This nuisance represents integer values with their bit representation (0-1).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.NormalizeMean" title="bootstrapping_olympics.library.nuisances.NormalizeMean"><tt class="xref py py-obj docutils literal"><span class="pre">NormalizeMean</span></tt></a>([A])</td>
+<td>This instantaneous transformation takes a vector of N values</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.NormalizeMin" title="bootstrapping_olympics.library.nuisances.NormalizeMin"><tt class="xref py py-obj docutils literal"><span class="pre">NormalizeMin</span></tt></a></td>
+<td>Normalizes the streamels into a <tt class="docutils literal"><span class="pre">[0,1]</span></tt> range by removing the  minimum and linearly scaling.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.NormalizeMinInverse" title="bootstrapping_olympics.library.nuisances.NormalizeMinInverse"><tt class="xref py py-obj docutils literal"><span class="pre">NormalizeMinInverse</span></tt></a>()</td>
+<td>This is the inverse of NormalizeMin.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.NormalizeMinMax" title="bootstrapping_olympics.library.nuisances.NormalizeMinMax"><tt class="xref py py-obj docutils literal"><span class="pre">NormalizeMinMax</span></tt></a></td>
+<td>Transforms: ..</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.PopCode" title="bootstrapping_olympics.library.nuisances.PopCode"><tt class="xref py py-obj docutils literal"><span class="pre">PopCode</span></tt></a>([resolution])</td>
+<td>This nuisance transforms a 1D representation of the signal</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.PopCodeInv" title="bootstrapping_olympics.library.nuisances.PopCodeInv"><tt class="xref py py-obj docutils literal"><span class="pre">PopCodeInv</span></tt></a></td>
+<td>Inverse of PopCode</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.RandomPermutation" title="bootstrapping_olympics.library.nuisances.RandomPermutation"><tt class="xref py py-obj docutils literal"><span class="pre">RandomPermutation</span></tt></a>(seed[,&nbsp;inverted])</td>
+<td>A fixed random permutation of the signal.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.RandomScaling" title="bootstrapping_olympics.library.nuisances.RandomScaling"><tt class="xref py py-obj docutils literal"><span class="pre">RandomScaling</span></tt></a>(seed)</td>
+<td>A fixed random scaling of the signal.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.Reshape" title="bootstrapping_olympics.library.nuisances.Reshape"><tt class="xref py py-obj docutils literal"><span class="pre">Reshape</span></tt></a>(shape_from,&nbsp;shape_to)</td>
+<td>Reshape the values to a given shape.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.Select" title="bootstrapping_olympics.library.nuisances.Select"><tt class="xref py py-obj docutils literal"><span class="pre">Select</span></tt></a>(which)</td>
+<td>A non-invertible nuisance that selects some of the sensels.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/bootstrapping_olympics.library.nuisances.html#bootstrapping_olympics.library.nuisances.To2D" title="bootstrapping_olympics.library.nuisances.To2D"><tt class="xref py py-obj docutils literal"><span class="pre">To2D</span></tt></a></td>
+<td>Transforms a stream of shape <tt class="docutils literal"><span class="pre">(n)</span></tt> into one of shape <tt class="docutils literal"><span class="pre">(1,n)</span></tt>.</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 
@@ -188,9 +284,15 @@
 <li><a class="reference internal" href="#streamels-functions">Streamels functions</a><ul>
 </ul>
 </li>
-<li><a class="reference internal" href="#library-agents">Library: agents</a></li>
-<li><a class="reference internal" href="#library-robots">Library: robots</a></li>
-<li><a class="reference internal" href="#library-representation-nuisances">Library: representation nuisances</a></li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.agents">Library: agents</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.robots">Library: robots</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances">Library: representation nuisances</a><ul>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -226,7 +328,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">BootOlympics 1.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">BootOlympics 1.3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
