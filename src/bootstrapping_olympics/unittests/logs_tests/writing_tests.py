@@ -1,9 +1,9 @@
 from . import np
 from .. import for_all_pairs
-from ...interfaces import UnsupportedSpec
-from ...logs import BootStream, LogIndex, LogsFormat
 from ...programs.manager import run_simulation, DirectoryStructure # XXX
-from ...utils import isodate_with_secs
+from bootstrapping_olympics import (UnsupportedSpec, BootStream, LogIndex,
+    LogsFormat)
+from bootstrapping_olympics.utils import unique_timestamp_string
 from numpy.testing.utils import assert_equal
 import shutil
 import tempfile
@@ -18,7 +18,7 @@ def check_writing_logs(id_agent, agent, id_robot, robot):
 
     root = tempfile.mkdtemp()
     ds = DirectoryStructure(root)
-    id_stream = isodate_with_secs()
+    id_stream = unique_timestamp_string()
     filename = ds.get_simlog_filename(id_agent, id_robot, id_stream)
 
     written = []

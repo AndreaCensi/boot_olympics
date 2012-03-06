@@ -22,13 +22,15 @@ from .. import np, getLogger
 
 logger = getLogger(__name__)
 
+from .utils import *
+
+# Import everything (to help nose)
 from .instantiation import *
 from .tests_generation import *
 from .test_agent import *
 from .test_robot import *
 from .test_joint import *
-
-
+from .manager_tests  import *
 from .logs_tests  import *
 from .rep_nuisances_tests  import *
 from .boot_spec_tests  import *

@@ -1,4 +1,4 @@
-from . import logger, np
+from . import np
 from bootstrapping_olympics import ObsKeeper, BootInvalidValue
 
 
@@ -24,10 +24,17 @@ class ROS2Python():
         self.observations_spec = self.spec.get_observations()
 
     def debug(self, s):
-        logger.debug('ros2python:%s' % s)
+        # The last time the problem was that bag_read reads
+        # in timestamp order, not episode order
+        # logger.debug('ros2python:%s' % s)
+        pass
 
     def convert(self, ros_obs, filter_doubles=True):
         ''' Returns None if the same message is repeated. '''
+        current_data_description = ('[%s#%s at %s]' %
+                    (ros_obs.id_episode, ros_obs.counter, ros_obs.timestamp))
+
+        self.debug('Considering %s' % current_data_description)
 
         if self.keeper is None:
             self.keeper = ObsKeeper(self.spec, ros_obs.id_robot)
@@ -35,11 +42,8 @@ class ROS2Python():
         if filter_doubles:
             if (self.last is not None and
                 self.last['counter'] == ros_obs.counter):
-                self.debug('Removing double (counter=%s)' % ros_obs.counter)
+                self.debug('Removing double for %s' % current_data_description)
                 return None
-
-        current_data_description = ('[%s#%s at %s]' %
-                    (ros_obs.id_episode, ros_obs.counter, ros_obs.timestamp))
 
         # FIXME: this assumes we use floats 
         y = np.array(ros_obs.sensel_values, dtype='float32')
