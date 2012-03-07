@@ -1,6 +1,5 @@
+from . import StreamSpec, contract
 from abc import abstractmethod, ABCMeta
-from . import contract
-from bootstrapping_olympics.interfaces.stream_spec import StreamSpec
 
 __all__ = ['RepresentationNuisance', 'NuisanceNotInvertible']
 

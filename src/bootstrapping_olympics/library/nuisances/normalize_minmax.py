@@ -7,7 +7,7 @@ __all__ = ['NormalizeMinMax']
 
 class NormalizeMinMax(RepresentationNuisance):
     ''' 
-        Transforms: ..
+        Transforms: ::
         
             z[:n] = (y-mean(y)) /  max(y) - min(y)  \in -1,1
             z[n]  = mean(y)

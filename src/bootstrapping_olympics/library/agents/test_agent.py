@@ -1,7 +1,7 @@
 '''A simple agent useful for testing.'''
 
-from ... import AgentInterface
-import numpy as np
+from bootstrapping_olympics import AgentInterface
+from . import np
 
 __all__ = ['TestAgent']
 

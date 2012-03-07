@@ -1,14 +1,14 @@
 from . import logger
-from ...programs.manager.meat import DataCentral, simulate
-from ..manager_tests.test_basic_operations import create_tmp_dir
+from ..manager_tests import create_tmp_dir
 from ..tests_generation import for_all_pairs
 from bootstrapping_olympics import LogsFormat
+from bootstrapping_olympics.programs.manager.meat import DataCentral, simulate
 from bootstrapping_olympics.utils import assert_allclose, safe_makedirs
 import os
 
 
 @for_all_pairs
-def check_basic_operations(id_agent, agent, id_robot, robot):
+def check_logs_formats(id_agent, agent, id_robot, robot):
 
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config'))
@@ -30,7 +30,12 @@ def check_basic_operations(id_agent, agent, id_robot, robot):
         log_index = data_central.get_log_index()
         log_index.reindex()
 
-        stream_orig = log_index.get_streams_for(id_robot, id_agent)[0]
+        streams = log_index.get_streams_for(id_robot, id_agent)
+        if len(streams) != 1:
+            msg = 'Expected to find 1 stream, not %d' % len(streams)
+            raise Exception(msg)
+
+        stream_orig = streams[0]
 
         for logs_format, interface in LogsFormat.formats.items():
             try:

@@ -10,7 +10,7 @@ __all__ = ['GLNuisance']
 class GLNuisance(RepresentationNuisance):
     ''' A general linear transformation. '''
 
-    @contract(A='seq[N](seq[N])')
+    @contract(A='array[NxN]|seq[N](seq[N])')
     def __init__(self, A):
         self.A = np.array(A)
 
@@ -31,13 +31,14 @@ class GLNuisance(RepresentationNuisance):
         streamels2['kind'][:] = ValueFormats.Continuous
         streamels2['lower'] *= norm
         streamels2['upper'] *= norm
-        streamels2['default'] = self.transform_value(streamels['default'])
 
         # Save this so we can enforce it later
         self.lower_old = streamels['lower'].copy()
         self.upper_old = streamels['upper'].copy()
         self.lower = streamels2['lower'].copy()
         self.upper = streamels2['upper'].copy()
+
+        streamels2['default'] = self.transform_value(streamels['default'])
 
         return streamels2
 

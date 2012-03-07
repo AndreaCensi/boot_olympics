@@ -1,16 +1,17 @@
+from . import create_tmp_dir
 from .. import for_all_pairs
-from ...programs.manager.command_line.main import boot_olympics_manager
-from ...programs.manager.meat import DataCentral
 from bootstrapping_olympics import LogsFormat
+from bootstrapping_olympics.programs.manager.command_line.main import (
+    boot_olympics_manager)
+from bootstrapping_olympics.programs.manager.meat import DataCentral
 from bootstrapping_olympics.utils import assert_allclose
-from contextlib import contextmanager
-from shutil import rmtree
-from tempfile import mkdtemp
 import os
+
+# TODO: check that the robot generates different episodes strings
 
 
 @for_all_pairs
-def check_basic_operations_cmdline(id_agent, agent, id_robot, robot):
+def check_cmdline(id_agent, agent, id_robot, robot):
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config')) # XXX make it automatic
         data_central = DataCentral(root)
@@ -68,12 +69,3 @@ def check_basic_operations_cmdline(id_agent, agent, id_robot, robot):
         execute_command('list-robots', '-v')
         execute_command('list-states')
         execute_command('list-states', '-v')
-
-
-@contextmanager
-def create_tmp_dir():
-    root = mkdtemp()
-    try:
-        yield root
-    finally:
-        rmtree(root)

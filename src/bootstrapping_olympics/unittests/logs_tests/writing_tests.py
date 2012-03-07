@@ -10,7 +10,7 @@ import tempfile
 
 
 @for_all_pairs
-def check_writing_logs(id_agent, agent, id_robot, robot):
+def check_logs_writing(id_agent, agent, id_robot, robot):
     try:
         agent.init(robot.get_spec())
     except UnsupportedSpec:

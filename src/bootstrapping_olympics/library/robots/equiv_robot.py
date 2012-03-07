@@ -1,6 +1,7 @@
-from .. import contract, logger
-from ... import BootSpec, RobotInterface, BootOlympicsConfig, StreamSpec
-from bootstrapping_olympics.utils.strings import indent
+from . import contract, logger
+from bootstrapping_olympics import (BootSpec, RobotInterface,
+                                    BootOlympicsConfig, StreamSpec)
+from bootstrapping_olympics.utils import indent
 
 __all__ = ['EquivRobot']
 

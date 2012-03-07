@@ -13,6 +13,23 @@
         range: [-1,+1]
         default: [0]
 
+- id: sinsystem2
+  desc: A system which produces two sine signals.
+  code:
+  - bootstrapping_olympics.library.robots.TestRobot
+  - boot_spec:
+      observations:
+        shape: [2]
+        format: C
+        range: [0,1]
+      commands: # not used
+        shape: [1]
+        format: C
+        range: [-1,+1]
+        default: [0]
+    value: '[ 0.5+0.5*np.sin(t), 0.5+0.5* np.sin(np.pi*t) ]'
+
+
 - id: random_1_6x5
   desc: 'Random robot (2D observations)'
   code:

@@ -55,7 +55,7 @@ def simulate(data_central, id_agent, id_robot,
     filename = ds.get_simlog_filename(id_robot=id_robot,
                                       id_agent=id_agent,
                                       id_stream=id_stream)
-    #logger.info('Creating stream %r\n in file %r' % (id_stream, filename))
+    #print('Creating stream %r\n in file %r' % (id_stream, filename))
 
     logs_format = LogsFormat.get_reader_for(filename)
 

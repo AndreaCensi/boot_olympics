@@ -1,14 +1,15 @@
-from ...logs import LogsFormat
-from ...programs.manager.meat import (DataCentral, learn_log, simulate,
-    task_predict, task_servo)
-from ...utils import assert_allclose
-from contextlib import contextmanager
-from shutil import rmtree
-from tempfile import mkdtemp
+from . import create_tmp_dir
+from .. import for_all_pairs
+from bootstrapping_olympics.logs import LogsFormat
+from bootstrapping_olympics.programs.manager.meat import (DataCentral,
+                                                          learn_log,
+    simulate, task_predict, task_servo)
+from bootstrapping_olympics.utils import assert_allclose
 import os
 
 
-def check_basic_operations(id_agent, id_robot):
+@for_all_pairs
+def check_basic_ops(id_agent, id_robot):
 
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config'))
@@ -67,15 +68,3 @@ def check_basic_operations(id_agent, id_robot):
              id_robot=id_robot,
              interval_print=None)
 
-
-def test_basic_operations_1():
-    check_basic_operations(id_agent='random_agent', id_robot='random_1_6')
-
-
-@contextmanager
-def create_tmp_dir():
-    root = mkdtemp()
-    try:
-        yield root
-    finally:
-        rmtree(root)

@@ -1,6 +1,6 @@
-from ...interfaces import StreamSpec
 from .stream_specs import valid_stream_spec, invalid_stream_spec
 from StringIO import StringIO
+from bootstrapping_olympics import StreamSpec
 from contracts import ContractNotRespected
 from numpy.testing.utils import assert_raises, assert_allclose
 import pickle

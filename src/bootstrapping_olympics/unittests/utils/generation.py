@@ -63,9 +63,10 @@ def add_checker_f(f, x, arguments, attributes, naming):
     name = 'test_%s_%s' % (f.__name__, naming(x))
     caller.__name__ = name
 
-    if True: # TODO TMP
-        for k, v in attributes(x).items():
-            caller.__dict__[k] = v
+    for k, v in attributes(x).items():
+        caller.__dict__[k] = v
+
+    caller.__dict__['test'] = f.__name__
 
     add_to_module(caller, f.__module__)
 

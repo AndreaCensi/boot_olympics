@@ -1,4 +1,4 @@
-from ... import BootSpec
+from bootstrapping_olympics import BootSpec
 from .boot_specs import valid_boot_specs, invalid_boot_specs
 from contracts import ContractNotRespected
 from numpy.testing.utils import assert_raises
