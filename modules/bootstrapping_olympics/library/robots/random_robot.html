@@ -51,10 +51,10 @@
           <div class="body">
             
   <h1>Source code for bootstrapping_olympics.library.robots.random_robot</h1><div class="highlight"><pre>
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">contract</span>
-<span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Constants</span><span class="p">,</span> <span class="n">RobotObservations</span><span class="p">,</span> <span class="n">BootSpec</span><span class="p">,</span> <span class="n">RobotInterface</span><span class="p">,</span>
-    <span class="n">EpisodeDesc</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">unique_timestamp_string</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">contract</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Constants</span><span class="p">,</span> <span class="n">RobotObservations</span><span class="p">,</span> <span class="n">BootSpec</span><span class="p">,</span>
+    <span class="n">RobotInterface</span><span class="p">,</span> <span class="n">EpisodeDesc</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bootstrapping_olympics.utils</span> <span class="kn">import</span> <span class="n">unique_timestamp_string</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;RandomRobot&#39;</span><span class="p">]</span>
@@ -63,17 +63,17 @@
 <div class="viewcode-block" id="RandomRobot"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.random_robot.RandomRobot">[docs]</a><span class="k">class</span> <span class="nc">RandomRobot</span><span class="p">(</span><span class="n">RobotInterface</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; This is a sensorimotor cascade generating uniform noise,</span>
 <span class="sd">        and ignores any command given. &#39;&#39;&#39;</span>
-    
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boot_spec</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">Constants</span><span class="o">.</span><span class="n">DEFAULT_SIMULATION_DT</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spec</span> <span class="o">=</span> <span class="n">BootSpec</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">boot_spec</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">commands</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">get_commands</span><span class="p">()</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">commands_source</span> <span class="o">=</span> <span class="n">Constants</span><span class="o">.</span><span class="n">CMD_SOURCE_REST</span>
-        
+
 <div class="viewcode-block" id="RandomRobot.get_spec"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.random_robot.RandomRobot.get_spec">[docs]</a>    <span class="k">def</span> <span class="nf">get_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span> 
-        </div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span>
+</div>
 <div class="viewcode-block" id="RandomRobot.get_observations"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.random_robot.RandomRobot.get_observations">[docs]</a>    <span class="k">def</span> <span class="nf">get_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">get_observations</span><span class="p">()</span><span class="o">.</span><span class="n">get_random_value</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">RobotObservations</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span>
@@ -81,24 +81,23 @@
                                  <span class="n">commands</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">,</span>
                                  <span class="n">commands_source</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">commands_source</span><span class="p">,</span>
                                  <span class="n">episode_end</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                                 <span class="n">robot_pose</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>    
+                                 <span class="n">robot_pose</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">&#39;RandomRobot(</span><span class="si">%s</span><span class="s">;</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">get_observations</span><span class="p">(),</span>
                                        <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">get_commands</span><span class="p">())</span>
-        
+
     <span class="nd">@contract</span><span class="p">(</span><span class="n">commands</span><span class="o">=</span><span class="s">&#39;array&#39;</span><span class="p">)</span>
 <div class="viewcode-block" id="RandomRobot.set_commands"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.random_robot.RandomRobot.set_commands">[docs]</a>    <span class="k">def</span> <span class="nf">set_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span> <span class="n">commands_source</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">commands</span> <span class="o">=</span> <span class="n">commands</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">commands_source</span> <span class="o">=</span> <span class="n">commands_source</span>
-    </div>
+</div>
 <div class="viewcode-block" id="RandomRobot.new_episode"><a class="viewcode-back" href="../../../../api/bootstrapping_olympics.library.robots.html#bootstrapping_olympics.library.robots.random_robot.RandomRobot.new_episode">[docs]</a>    <span class="k">def</span> <span class="nf">new_episode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">EpisodeDesc</span><span class="p">(</span><span class="n">unique_timestamp_string</span><span class="p">(),</span>
                            <span class="s">&#39;n/a&#39;</span><span class="p">)</span>  <span class="c"># XXX: add constant</span>
-        </div></div>
-</pre></div>
+</pre></div></div></div>
 
           </div>
         </div>
