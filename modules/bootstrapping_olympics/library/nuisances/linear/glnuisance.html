@@ -84,13 +84,14 @@
         <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">ValueFormats</span><span class="o">.</span><span class="n">Continuous</span>
         <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span> <span class="o">*=</span> <span class="n">norm</span>
         <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span> <span class="o">*=</span> <span class="n">norm</span>
-        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_value</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">])</span>
 
         <span class="c"># Save this so we can enforce it later</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lower_old</span> <span class="o">=</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upper_old</span> <span class="o">=</span> <span class="n">streamels</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lower</span> <span class="o">=</span> <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;lower&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upper</span> <span class="o">=</span> <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;upper&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">streamels2</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_value</span><span class="p">(</span><span class="n">streamels</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="n">streamels2</span>
 </div>

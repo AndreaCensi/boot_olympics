@@ -401,11 +401,11 @@ minimum and linearly scaling.</p>
 <dt id="bootstrapping_olympics.library.nuisances.NormalizeMinMax">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.</tt><tt class="descname">NormalizeMinMax</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.NormalizeMinMax" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
-<p>Transforms: ..</p>
-<blockquote>
-<div>z[:n] = (y-mean(y)) /  max(y) - min(y)  in -1,1
+<p>Transforms:</p>
+<div class="highlight-python"><pre>z[:n] = (y-mean(y)) /  max(y) - min(y)  \in -1,1
 z[n]  = mean(y)
-z[n+1]= max(y) - min(y)</div></blockquote>
+z[n+1]= max(y) - min(y)</pre>
+</div>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.NormalizeMinMax.inverse">
 <tt class="descname">inverse</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.NormalizeMinMax.inverse" title="Permalink to this definition">¶</a></dt>
@@ -1076,11 +1076,11 @@ an integer representation.</p>
 <dt id="bootstrapping_olympics.library.nuisances.normalize_minmax.NormalizeMinMax">
 <em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.normalize_minmax.</tt><tt class="descname">NormalizeMinMax</tt><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/normalize_minmax.html#NormalizeMinMax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.normalize_minmax.NormalizeMinMax" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
-<p>Transforms: ..</p>
-<blockquote>
-<div>z[:n] = (y-mean(y)) /  max(y) - min(y)  in -1,1
+<p>Transforms:</p>
+<div class="highlight-python"><pre>z[:n] = (y-mean(y)) /  max(y) - min(y)  \in -1,1
 z[n]  = mean(y)
-z[n+1]= max(y) - min(y)</div></blockquote>
+z[n+1]= max(y) - min(y)</pre>
+</div>
 <dl class="method">
 <dt id="bootstrapping_olympics.library.nuisances.normalize_minmax.NormalizeMinMax.inverse">
 <tt class="descname">inverse</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/bootstrapping_olympics/library/nuisances/normalize_minmax.html#NormalizeMinMax.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.normalize_minmax.NormalizeMinMax.inverse" title="Permalink to this definition">¶</a></dt>
@@ -1099,109 +1099,14 @@ z[n+1]= max(y) - min(y)</div></blockquote>
 </dd></dl>
 
 </div>
-<div class="section" id="module-bootstrapping_olympics.library.nuisances.popcode_functions">
-<span id="popcode-functions-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">popcode_functions</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.popcode_functions" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_functions.popcode">
-<tt class="descclassname">bootstrapping_olympics.library.nuisances.popcode_functions.</tt><tt class="descname">popcode</tt><big>(</big><em>y</em>, <em>resolution</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_functions.popcode" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> (<tt class="docutils literal"><span class="pre">array[N](&gt;=0,&lt;=1)</span></tt>) &#8211; </li>
-<li><strong>resolution</strong> (<tt class="docutils literal"><span class="pre">int,&gt;1,M</span></tt>) &#8211; </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">array[NxM](float32)</span></tt></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_functions.popcode_inv">
-<tt class="descclassname">bootstrapping_olympics.library.nuisances.popcode_functions.</tt><tt class="descname">popcode_inv</tt><big>(</big><em>z</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_functions.popcode_inv" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>z</strong> (<tt class="docutils literal"><span class="pre">array[NxM]</span></tt>) &#8211; </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">array[N](&gt;=0,&lt;=1,float32)</span></tt></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+<div class="section" id="popcode-functions-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">popcode_functions</span></tt> Module<a class="headerlink" href="#popcode-functions-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-bootstrapping_olympics.library.nuisances.popcode_functions_test">
-<span id="popcode-functions-test-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">popcode_functions_test</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.popcode_functions_test" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_functions_test.test_popcode">
-<tt class="descclassname">bootstrapping_olympics.library.nuisances.popcode_functions_test.</tt><tt class="descname">test_popcode</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_functions_test.test_popcode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_functions_test.test_popcode1">
-<tt class="descclassname">bootstrapping_olympics.library.nuisances.popcode_functions_test.</tt><tt class="descname">test_popcode1</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_functions_test.test_popcode1" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_functions_test.test_popcode_inv">
-<tt class="descclassname">bootstrapping_olympics.library.nuisances.popcode_functions_test.</tt><tt class="descname">test_popcode_inv</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_functions_test.test_popcode_inv" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<div class="section" id="popcode-functions-test-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">popcode_functions_test</span></tt> Module<a class="headerlink" href="#popcode-functions-test-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-bootstrapping_olympics.library.nuisances.popcode_nuisance">
-<span id="popcode-nuisance-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">popcode_nuisance</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.popcode_nuisance" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode">
-<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.popcode_nuisance.</tt><tt class="descname">PopCode</tt><big>(</big><em>resolution=128</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
-<p>This nuisance transforms a 1D representation of the signal
-into a 2D representation.</p>
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode.inverse">
-<tt class="descname">inverse</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode.inverse" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode.transform_spec">
-<tt class="descname">transform_spec</tt><big>(</big><em>stream_spec</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode.transform_spec" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode.transform_value">
-<tt class="descname">transform_value</tt><big>(</big><em>values</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCode.transform_value" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv">
-<em class="property">class </em><tt class="descclassname">bootstrapping_olympics.library.nuisances.popcode_nuisance.</tt><tt class="descname">PopCodeInv</tt><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="bootstrapping_olympics.interfaces.html#bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance" title="bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance"><tt class="xref py py-class docutils literal"><span class="pre">bootstrapping_olympics.interfaces.rep_nuisance.RepresentationNuisance</span></tt></a></p>
-<p>Inverse of PopCode</p>
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv.inverse">
-<tt class="descname">inverse</tt><big>(</big><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv.inverse" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv.transform_spec">
-<tt class="descname">transform_spec</tt><big>(</big><em>stream_spec</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv.transform_spec" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv.transform_value">
-<tt class="descname">transform_value</tt><big>(</big><em>values</em><big>)</big><a class="headerlink" href="#bootstrapping_olympics.library.nuisances.popcode_nuisance.PopCodeInv.transform_value" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="popcode-nuisance-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">popcode_nuisance</span></tt> Module<a class="headerlink" href="#popcode-nuisance-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-bootstrapping_olympics.library.nuisances.random_permutation">
 <span id="random-permutation-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">random_permutation</span></tt> Module<a class="headerlink" href="#module-bootstrapping_olympics.library.nuisances.random_permutation" title="Permalink to this headline">¶</a></h2>
@@ -1299,9 +1204,9 @@ Works only for 1D streams.</p>
 <li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.linear"><tt class="docutils literal"><span class="pre">linear</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.normalize_min"><tt class="docutils literal"><span class="pre">normalize_min</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.normalize_minmax"><tt class="docutils literal"><span class="pre">normalize_minmax</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.popcode_functions"><tt class="docutils literal"><span class="pre">popcode_functions</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.popcode_functions_test"><tt class="docutils literal"><span class="pre">popcode_functions_test</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.popcode_nuisance"><tt class="docutils literal"><span class="pre">popcode_nuisance</span></tt> Module</a></li>
+<li><a class="reference internal" href="#popcode-functions-module"><tt class="docutils literal"><span class="pre">popcode_functions</span></tt> Module</a></li>
+<li><a class="reference internal" href="#popcode-functions-test-module"><tt class="docutils literal"><span class="pre">popcode_functions_test</span></tt> Module</a></li>
+<li><a class="reference internal" href="#popcode-nuisance-module"><tt class="docutils literal"><span class="pre">popcode_nuisance</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.random_permutation"><tt class="docutils literal"><span class="pre">random_permutation</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-bootstrapping_olympics.library.nuisances.select"><tt class="docutils literal"><span class="pre">select</span></tt> Module</a></li>
 <li><a class="reference internal" href="#subpackages">Subpackages</a><ul>
