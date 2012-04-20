@@ -9,7 +9,7 @@ import os
 
 
 @for_all_pairs
-def check_basic_ops(id_agent, id_robot):
+def check_basic_ops(id_agent, agent, id_robot, robot):
 
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config'))
@@ -39,16 +39,25 @@ def check_basic_ops(id_agent, id_robot):
         assert not log_index.has_streams_for_robot(id_robot)
         log_index.reindex()
         assert log_index.has_streams_for_robot(id_robot)
-        assert_allclose(len(log_index.get_streams_for_robot(id_robot)),
+
+        def expect_num(found, num, msg=""):
+            if num == found:
+                return
+            msg += '-- Expected %d logs/streams, found %d. ' % (num, found)
+            msg += '\n' + log_index.debug_summary(ignore_cache=False)
+            raise Exception(msg)
+
+        expect_num(len(log_index.get_streams_for_robot(id_robot)),
                         2 * len(formats))
-        assert_allclose(len(log_index.get_streams_for(id_robot, id_agent)),
-                        2 * len(formats))
+        expect_num(len(log_index.get_streams_for(id_robot, id_agent)),
+                        2 * len(formats),
+                    "Looking for %r/%r" % (id_robot, id_agent))
 
         log_index.get_robot_spec(id_robot)
 
-        assert_allclose(len(log_index.get_episodes_for_robot(id_robot)),
+        expect_num(len(log_index.get_episodes_for_robot(id_robot)),
                         4 * len(formats))
-        assert_allclose(len(log_index.get_episodes_for_robot(id_robot,
+        expect_num(len(log_index.get_episodes_for_robot(id_robot,
                                                               id_agent)),
                         4 * len(formats))
 

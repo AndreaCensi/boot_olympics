@@ -12,20 +12,24 @@ __all__ = ['GenericLinear']
 class GenericLinear(RepresentationNuisance):
     ''' 
         This represents a generic linear transformation
-        between 1D continuous signals. The subclasses 
+        between 1D continuous signals, not necessarily of the same
+        size. The subclasses 
         only need to provide the matrix by either passing
         it in the constructor or implementing get_matrix().
     '''
-    @contract(A='None|array[MxN]')
+    @contract(A='None|array[MxN]|seq[M](seq[N])')
     def __init__(self, A=None):
         ''' A can be passed at construction time if it is known. '''
         # TODO: add kernel
+        if A is not None:
+            A = np.array(A)
         self.A0 = A
         self.A = None
 
     @contract(streamels='array', returns='array[MxN]')
     def get_matrix(self, streamels):
         ''' Returns the matrix representing the transformation. '''
+        # TODO: warn not implemented
         return None
 
     def _get_A(self, streamels):
@@ -52,7 +56,9 @@ class GenericLinear(RepresentationNuisance):
                    (streamels.size, self.A.shape))
             raise ValueError(msg)
 
-        # TODO: use constr.
+        # Save original constraints that we can pass to inverse()
+        self.old_streamels = streamels.copy()
+
         streamels2 = np.zeros(self.A.shape[0], streamel_dtype)
         streamels2['kind'][:] = ValueFormats.Continuous
         find_polytope_bounds_after_linear(streamels, self.A, streamels2)
@@ -74,13 +80,15 @@ class GenericLinear(RepresentationNuisance):
         # TODO: left_inverse()
         M, N = self.A.shape
         if M != N:
+            # TODO: do the case M > N
             msg = 'Cannot invert %s matrix.' % str(self.A.shape)
             raise NuisanceNotInvertible(msg)
 
         # TODO: check for numerical errors
         Ainv = np.linalg.inv(self.A)
 
-        return GenericLinear(Ainv)
+        #return GenericLinear(Ainv)
+        return GenericLinearInverse(Ainv, self.old_streamels)
 
     def __str__(self):
         if self.A is None:
@@ -88,4 +96,24 @@ class GenericLinear(RepresentationNuisance):
         else:
             s = '(%dx%d)' % self.A.shape
         return 'GenericLinear(%s)' % s
+
+
+class GenericLinearInverse(GenericLinear):
+    '''    
+        The inverse, that remembers the specs.
+        Do not call directly.
+    '''
+    def __init__(self, A, old_streamels):
+        GenericLinear.__init__(self, A)
+        self.A = A
+        self.old_streamels = old_streamels
+
+    def transform_streamels(self, streamels):
+        # redefined
+        streamels2 = self.old_streamels
+        self.lower = streamels2['lower'].copy()
+        self.upper = streamels2['upper'].copy()
+        return streamels2
+
+
 

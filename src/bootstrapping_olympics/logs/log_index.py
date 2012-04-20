@@ -104,9 +104,27 @@ class LogIndex:
                 msg += ' %s: %s\n' % (stream, stream.get_id_episodes())
             raise Exception('No episode %r found: %s' % (id_episode, msg))
 
+    @contract(returns='str')
+    def debug_summary(self, ignore_cache=False):
+        ''' Returns a summary of the log files found in the directories. '''
+        msg = 'debug_summary output (ignore_Cache=%s): \n' % ignore_cache
+        for dirname in self.directories_indexed:
+            msg += 'Dir %r: \n' % dirname
+            for filename in get_all_log_files(dirname):
+                reader = LogsFormat.get_reader_for(filename)
+                streams = reader.index_file_cached(filename,
+                                                   ignore_cache=ignore_cache)
+                msg += '*  %5d streams in %s\n' % (len(streams), filename)
+                for stream in streams:
+                    msg += '  - stream %s \n' % stream
+                    msg += '    id_robot: %r\n' % stream.get_id_robot()
+                    msg += '    agents: %r\n' % stream.get_id_agents()
+        return msg
 
-def index_directory(directory, ignore_cache=False):
-    ''' Returns a hash filename -> list of streams. '''
+
+def get_all_log_files(directory):
+    ''' Returns all log files in the directory, for all registered
+        extensions. '''
     extensions = LogsFormat.formats.keys()
 
     files = []
@@ -117,10 +135,15 @@ def index_directory(directory, ignore_cache=False):
     if not files:
         msg = ('No log files found in %r (extensions: %s).' %
                (directory, extensions))
-        logger.error(msg)
+        logger.warning(msg)
 
+    return files
+
+
+def index_directory(directory, ignore_cache=False):
+    ''' Returns a hash filename -> list of streams. '''
     file2streams = {}
-    for   filename in files:
+    for filename in get_all_log_files(directory):
         reader = LogsFormat.get_reader_for(filename)
         try:
             file2streams[filename] = \

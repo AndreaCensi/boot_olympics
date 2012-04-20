@@ -62,6 +62,7 @@ class TestRobot(RobotInterface):
     def set_commands(self, commands, commands_source):
         self.timestamp += self.dt
         self.commands = commands
+        self.commands_source = commands_source
 
     def new_episode(self):
         self.timestamp = time.time()
