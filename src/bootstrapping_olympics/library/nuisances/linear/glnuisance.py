@@ -1,7 +1,5 @@
 from . import GenericLinear
-from .. import check_streamels_1D, check_streamels_continuous, contract, np
-from bootstrapping_olympics import (UnsupportedSpec, RepresentationNuisance,
-    ValueFormats)
+from .. import contract, np
 
 __all__ = ['GLNuisance']
 

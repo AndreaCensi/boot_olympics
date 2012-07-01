@@ -4,6 +4,8 @@ from .. import Constants
 from ..interfaces import AgentInterface, RobotInterface, RepresentationNuisance
 from conf_tools import ConfigMaster, GenericInstance, check_generic_code_desc
 import os
+from bootstrapping_olympics.interfaces.live_plugin import LivePlugin
+from bootstrapping_olympics.configuration.agents import check_valid_plugin_config
 
 
 def check_valid_videos_config(spec):
@@ -14,23 +16,25 @@ class BootConfigMaster(ConfigMaster):
     def __init__(self):
         ConfigMaster.__init__(self, 'BootOlympics')
 
-        self.add_class('robots', '*.robots.yaml', check_valid_robot_config,
+        self.robots = self.add_class('robots', '*.robots.yaml',
+                                     check_valid_robot_config,
                        GenericInstance(RobotInterface))
 
-        self.add_class('agents', '*.agents.yaml', check_valid_agent_config,
+        self.agents = self.add_class('agents', '*.agents.yaml',
+                                     check_valid_agent_config,
                        GenericInstance(AgentInterface))
 
-        self.add_class('nuisances', '*.nuisances.yaml',
+        self.nuisances = self.add_class('nuisances', '*.nuisances.yaml',
                        check_valid_nuisance_config,
                        GenericInstance(RepresentationNuisance))
 
-        self.add_class('videos', '*.videos.yaml',
+        self.videos = self.add_class('videos', '*.videos.yaml',
                        check_valid_videos_config)
 
-        self.videos = self.specs['videos']
-        self.robots = self.specs['robots']
-        self.agents = self.specs['agents']
-        self.nuisances = self.specs['nuisances']
+        self.live_plugins = self.add_class('live_plugins',
+                                           '*.live_plugins.yaml',
+                                           check_valid_plugin_config,
+                                           GenericInstance(LivePlugin))
 
         v = Constants.TEST_ADDITIONAL_CONFIG_DIR_ENV
         if v in os.environ:

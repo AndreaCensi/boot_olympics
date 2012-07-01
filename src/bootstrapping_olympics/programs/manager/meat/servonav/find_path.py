@@ -187,7 +187,8 @@ def interpolate_sequence(poses, max_theta_diff_deg):
     inter = []
     inter.append(poses.pop(0))
     while True:
-        if not poses: break
+        if not poses:
+            break
         current_pose = inter[-1]
         next_pose = poses[0]
         if step_too_big(current_pose, next_pose, max_theta_diff_deg):
@@ -196,6 +197,7 @@ def interpolate_sequence(poses, max_theta_diff_deg):
         else:
             inter.append(poses.pop(0))
     return inter
+
 
 def mean_observations(robot, n):
     """ Averages the robot's observations at the given place. """
@@ -209,14 +211,14 @@ def mean_observations(robot, n):
     return mean
 
 
-
 @contract(poses='list[>=3](array[KxK])')
 def elastic(manifold, poses, alpha=0.1, num_iterations=20):
     poses2 = [x.copy() for x in poses]
 
     for _ in range(num_iterations):
         for i, cur in enumerate(list(poses2)):
-            if i == 0 or i == len(poses2) - 1: continue
+            if i == 0 or i == len(poses2) - 1:
+                continue
 
             pA = poses2[i - 1]
             pB = poses2[i + 1]

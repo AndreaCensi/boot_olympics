@@ -7,8 +7,10 @@ __all__ = ['agents', 'robots', 'nuisances']
 from . import agents
 from . import robots
 from . import nuisances
+from . import live_plugins
 
 # Useful for documentation purposes (but not used so far)
 assign_all_to_module(agents)
 assign_all_to_module(nuisances)
 assign_all_to_module(robots)
+assign_all_to_module(live_plugins)

@@ -1,6 +1,5 @@
-from . import logger, np, tables, spec_from_group
+from . import load_extra, logger, np, tables, spec_from_group
 from ... import get_observations_dtype
-from . import load_extra
 
 
 __all__ = ['hdf_read']
@@ -34,7 +33,8 @@ def hdf_read(filename, id_stream, boot_spec=None, read_extra=False,
 
             observations = np.zeros((), dtype)
             for x in dtype.names:
-                if x == 'extra': continue
+                if x == 'extra':
+                    continue
                 observations[x].flat = row[x].flat # FIXME Strange strange
 
             if read_extra:

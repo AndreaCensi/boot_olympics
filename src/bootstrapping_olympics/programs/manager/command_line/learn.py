@@ -6,7 +6,15 @@ from ..meat import learn_log
 @declare_command('learn-log', 'learn-log -a <AGENT> -r <ROBOT>'
                               '  [--reset] [--publish interval] [--once]')
 def cmd_learn_log(data_central, argv):
-    '''Runs the learning for a given agent and log. '''
+    '''
+        Runs the learning for a given agent and log. 
+       
+       
+        Running a live plugin:
+        
+            bom  [agent/robot options] --reset --dontsave --plugin dummy
+        
+    '''
     parser = OptionParser(prog='learn-log', usage=cmd_learn_log.short_usage)
     parser.disable_interspersed_args()
     parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
@@ -22,6 +30,13 @@ def cmd_learn_log(data_central, argv):
                       help="Interval for saving state (seconds) [%default]")
     parser.add_option("--interval_print", type='int', default=5,
                       help="Interval for printing stats (seconds) [%default]")
+    parser.add_option("--dontsave", default=False, action='store_true',
+                      help="Do not save the state of the agent.")
+
+    parser.add_option("--plugin", default=[],
+                      action="append", type="string",
+                      help="Run the specified plugin model during "
+                           "learning. (eg, visualization)")
 
     (options, args) = parser.parse_args(argv)
 
@@ -39,5 +54,7 @@ def cmd_learn_log(data_central, argv):
               publish_interval=options.publish_interval,
               publish_once=options.once,
               interval_save=options.interval_save,
-              interval_print=options.interval_print)
+              interval_print=options.interval_print,
+              save_state=not(options.dontsave),
+              live_plugins=options.plugin)
 

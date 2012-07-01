@@ -1,6 +1,6 @@
 import logging
 
-logging.basicConfig();
+logging.basicConfig()
 logger = logging.getLogger("boot_gui")
 logger.setLevel(logging.DEBUG)
 

@@ -2,6 +2,7 @@ from . import load_agent_state, publish_agent_output, logger
 from bootstrapping_olympics import AgentInterface
 from bootstrapping_olympics.utils import InAWhile, UserError
 import logging
+from bootstrapping_olympics.interfaces.live_plugin import LivePlugin
 
 
 def learn_log(data_central, id_agent, id_robot,
@@ -10,7 +11,9 @@ def learn_log(data_central, id_agent, id_robot,
               publish_once=False,
               interval_save=None,
               interval_print=None,
-              episodes=None):
+              episodes=None,
+              save_state=True,
+              live_plugins=[]):
     ''' If episodes is not None, it is a list of episodes id to learn. '''
 
     logger.info('Learning episodes %r' % episodes)
@@ -26,6 +29,9 @@ def learn_log(data_central, id_agent, id_robot,
         msg = ('Agent %r not found in configuration. I know: %s.'
                % (id_agent, ", ".join(bo_config.agents.keys())))
         raise UserError(msg)
+
+    live_plugins = [bo_config.live_plugins.instance(x)
+                    for x in live_plugins]
 
     agent_logger = logging.getLogger("BO.learn:%s(%s)" % (id_agent, id_robot))
     agent_logger.setLevel(logging.DEBUG)
@@ -83,6 +89,12 @@ def learn_log(data_central, id_agent, id_robot,
 
     tracker = InAWhile(interval_print)
 
+    # Initialize plugins
+    init_data = LivePlugin.InitData(data_central=data_central,
+                                   id_agent=id_agent, id_robot=id_robot)
+    for plugin in live_plugins:
+        plugin.init(init_data)
+
     for stream in streams:
         # Check if all learned
         to_learn = stream.get_id_episodes().difference(state.id_episodes)
@@ -117,7 +129,7 @@ def learn_log(data_central, id_agent, id_robot,
                         tracker.fps()))
                 logger.info(msg)
 
-            if tracker_save.its_time():
+            if save_state and tracker_save.its_time():
                 logger.debug('Saving state (periodic)')
                 # note: episodes not updated
                 state.agent_state = agent.get_state()
@@ -130,12 +142,20 @@ def learn_log(data_central, id_agent, id_robot,
                     publish_agent_output(state, agent, report_dir,
                                     basename='%05d' % state.num_observations)
 
+            # Update plugins
+            update_data = LivePlugin.UpdateData(agent=agent,
+                                                robot=None,
+                                                obs=obs)
+            for plugin in live_plugins:
+                plugin.update(update_data)
+
         state.id_episodes.update(to_learn)
 
     # Saving agent state
-    logger.debug('Saving state (end of streams)')
-    state.agent_state = agent.get_state()
-    db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
+    if save_state:
+        logger.debug('Saving state (end of streams)')
+        state.agent_state = agent.get_state()
+        db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
 
     if publish_interval is not None:
         ds = data_central.get_dir_structure()

@@ -36,7 +36,7 @@ class Raw2Boot(Block):
     Block.input('u')
     Block.input('y')
     Block.output('msg')
-    
+
     Block.config('id_robot')
     Block.config('id_episode')
     Block.config('id_actuators')
@@ -46,21 +46,22 @@ class Raw2Boot(Block):
 
     def init(self):
         self.counter = 0
-    
+
     def update(self):
         if not self.all_input_signals_ready():
             return
-        
+
         u = self.input.u
         y = self.input.y
-        
+
         if (np.abs(u) > 1e6).any(): # XXX: threshold
             raise BadInput('Values too big: %s' % u, self, 'u')
-        
+
         timestamp = self.get_input_timestamp(0)
-        
-        from bootstrapping_adapter.msg import BootstrappingObservations #@UnresolvedImport
-    
+
+        from bootstrapping_adapter.msg \
+            import BootstrappingObservations #@UnresolvedImport
+
         data = {
                 'timestamp': timestamp,
                 'counter': self.counter,
@@ -74,9 +75,9 @@ class Raw2Boot(Block):
                 'id_sensors': self.config.id_sensors,
                 'id_environment': self.config.id_environment,
         }
-        
+
         self.counter += 1
-        
+
         msg = BootstrappingObservations(**data)
 
         self.set_output(0, msg, timestamp)

@@ -71,7 +71,11 @@ class Reshape(RepresentationNuisance):
 
 
 class To2D(RepresentationNuisance):
-    ''' Transforms a stream of shape ``(n)`` into one of shape ``(1,n)``. '''
+    ''' 
+        Transforms a stream of shape ``(n)`` 
+        into one of shape ``(1,n)``. 
+        
+    '''
 
     def inverse(self):
         ''' The inverse is the :py:class:`Flatten` nuisance. '''
