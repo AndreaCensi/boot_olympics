@@ -20,7 +20,7 @@ class RandomAgent(AgentInterface):
             raise Exception('Already init()ed once.')
         self.inited = True
 
-    def process_observations(self, observations):
+    def process_observations(self, observations): #@UnusedVariable
         if not self.inited:
             raise Exception('process_observations() called before init().')
         self.process_called = True

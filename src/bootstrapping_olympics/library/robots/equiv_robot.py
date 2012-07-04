@@ -37,14 +37,15 @@ class EquivRobot(RobotInterface):
         for n in self.cmd_nuisances:
             cmd_spec = n.transform_spec(cmd_spec)
 
-        self.cmd_nuisances_inv = [x.inverse() for x in self.cmd_nuisances]
-
-        # now initialize in reverse
-        cmd_spec_i = cmd_spec
-        for n in reversed(self.cmd_nuisances_inv):
-            cmd_spec_i = n.transform_spec(cmd_spec_i)
-
+        # We don't really need to compute this...
         try:
+            self.cmd_nuisances_inv = [x.inverse() for x in self.cmd_nuisances]
+    
+            # now initialize in reverse
+            cmd_spec_i = cmd_spec
+            for n in reversed(self.cmd_nuisances_inv):
+                cmd_spec_i = n.transform_spec(cmd_spec_i)
+    
             StreamSpec.check_same_spec(cmd_spec_i,
                                    self.robot.get_spec().get_commands())
             # TODO: why do we do this for commands, not for osbservations?
@@ -72,12 +73,16 @@ class EquivRobot(RobotInterface):
             values = n.transform_value(values)
         obs.observations = values
 
-        # Note we use the inverted order
-        values = obs.commands
-        for n in reversed(self.cmd_nuisances_inv):
-            values = n.transform_value(values)
-        obs.commands = values
-
+        try:
+            # Note we use the inverted order
+            values = obs.commands
+            for n in reversed(self.cmd_nuisances_inv):
+                values = n.transform_value(values)
+            obs.commands = values
+        except:
+            # FIXME: warn for this
+            pass
+        
         return obs
 
     @contract(commands='array')

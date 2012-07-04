@@ -142,7 +142,7 @@ class TaskRegister:
         # FIXME: here we are using *all* streams 
         comp(task_predict, data_central=self.data_central,
              id_agent=id_agent, id_robot=id_robot,
-             interval_print=5,
+             #interval_print=5,
              job_id='predict-%s-%s' % (id_robot, id_agent),
              extra_dep=extra_dep)
 

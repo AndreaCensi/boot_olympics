@@ -16,7 +16,7 @@ def make_sure_loaded():
 
 def all_nuisances():
     make_sure_loaded()
-    nuisances = list(BootOlympicsConfig.nuisances.keys())
+    nuisances = list(BootOlympicsConfig.nuisances.keys()) #@UndefinedVariable
     if not nuisances:
         raise Exception('No nuisances defined in this configuration.')
     return nuisances
@@ -25,7 +25,7 @@ def all_nuisances():
 def all_robots():
     ''' Returns a list of all robots IDs. '''
     make_sure_loaded()
-    robots = list(BootOlympicsConfig.robots.keys())
+    robots = list(BootOlympicsConfig.robots.keys()) #@UndefinedVariable
     if not robots:
         raise Exception('No robots defined in this configuration.')
     return robots
@@ -34,7 +34,7 @@ def all_robots():
 def all_agents():
     ''' Returns a list of all agents IDs. '''
     make_sure_loaded()
-    agents = list(BootOlympicsConfig.agents.keys())
+    agents = list(BootOlympicsConfig.agents.keys()) #@UndefinedVariable
     if not agents:
         raise Exception('No agents defined in this configuration.')
     return agents

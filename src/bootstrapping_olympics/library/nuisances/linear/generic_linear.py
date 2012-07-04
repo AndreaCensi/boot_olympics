@@ -27,7 +27,7 @@ class GenericLinear(RepresentationNuisance):
         self.A = None
 
     @contract(streamels='array', returns='array[MxN]')
-    def get_matrix(self, streamels):
+    def get_matrix(self, streamels): #@UnusedVariable
         ''' Returns the matrix representing the transformation. '''
         # TODO: warn not implemented
         return None
@@ -108,7 +108,7 @@ class GenericLinearInverse(GenericLinear):
         self.A = A
         self.old_streamels = old_streamels
 
-    def transform_streamels(self, streamels):
+    def transform_streamels(self, streamels): #@UnusedVariable
         # redefined
         streamels2 = self.old_streamels
         self.lower = streamels2['lower'].copy()

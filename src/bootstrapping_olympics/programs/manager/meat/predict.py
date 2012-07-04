@@ -4,8 +4,7 @@ from contracts import describe_type
 __all__ = ['task_predict']
 
 
-def task_predict(data_central, id_agent, id_robot,
-                 interval_print=None):
+def task_predict(data_central, id_agent, id_robot):
     ''' Returns the list of the episodes IDs simulated. '''
     # Instance agent object    
     # TODO FIXME: remove dependency on boot_agents
@@ -28,14 +27,13 @@ def task_predict(data_central, id_agent, id_robot,
 
     log_index = data_central.get_log_index()
     streams = log_index.get_streams_for_robot(id_robot)
-    y_dot_stats = PredictionStats()
-    y_dot_sign_stats = PredictionStats()
+    y_dot_stats = PredictionStats('y_dot', 'y_dot_pred')
+    y_dot_sign_stats = PredictionStats('y_dot_sign', 'y_dot_pred_sign')
 
     for sample in predict_all_streams(streams=streams, predictor=predictor):
         compute_errors(sample)
         y_dot_stats.update(sample['y_dot'], sample['y_dot_pred'])
-        y_dot_sign_stats.update(sample['y_dot_sign'],
-                                sample['y_dot_pred_sign'])
+        y_dot_sign_stats.update(sample['y_dot_sign'], sample['y_dot_pred_sign'])
         #print('sample: %s' % (sample['errors']))
 
     basename = 'pred-%s-%s' % (id_agent, id_robot)
@@ -70,7 +68,7 @@ def compute_errors(s):
 
     s['y_pred'] = s['predict_y']
     s['y_dot_pred'] = (s['y_pred'] - s['y_prev']) / dt
-    s['y_dot_pred_sign'] = np.sign(s['y_dot_sign'])
+    s['y_dot_pred_sign'] = np.sign(s['y_dot_pred'])
 
     errors = {}
 

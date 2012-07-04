@@ -61,7 +61,7 @@ class Publisher:
         '''
 
     # TODO: make this abstract   
-    def section(self, section_name, cols=None):
+    def section(self, section_name, cols=None): #@UnusedVariable
         return Section(self, section_name)
 
 

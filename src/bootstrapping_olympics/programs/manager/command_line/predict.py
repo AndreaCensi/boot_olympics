@@ -22,5 +22,4 @@ def cmd_task_predict(data_central, argv):
     id_robot = options.robot
     task_predict(data_central,
              id_agent=id_agent,
-             id_robot=id_robot,
-             interval_print=options.interval_print)
+             id_robot=id_robot)
