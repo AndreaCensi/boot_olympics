@@ -5,6 +5,7 @@ import os
 
 class BagLogWriter():
     # TODO: compress the bag
+    # TODO XXX extra not written
 
     def __init__(self, filename, id_stream, boot_spec):
         from ros import rosbag #@UnresolvedImport
@@ -21,9 +22,9 @@ class BagLogWriter():
 
     @contract(observations='array')
     def push_observations(self, observations, extra={}):
+        # TODO FIXME extra not written
         from rospy import rostime #@UnresolvedImport
         msg = observations2ros(self.boot_spec, observations)
-
         t = rostime.Time.from_sec(observations['timestamp'])
         self.bag.write(self.topic, msg, t)
         self.num += 1

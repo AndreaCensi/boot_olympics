@@ -12,7 +12,7 @@ try:
     from compmake import comp
 except ImportError:
     pass
-    # TODO: add message
+    # TODO: add messages
 
 
 def batch_jobs1(data_central, **kwargs):
@@ -114,7 +114,8 @@ class TaskRegister:
             num_ep_expl = explore['num_episodes']
             self.add_learning(id_robot, id_agent, num_ep_expl,
                               explorer=explore['explorer'], # XXX
-                              publish_progress=False)
+                              publish_progress=False,
+                              save_pickle=True) # TODO: make param
 
             if servo is not None:
                 self.add_tasks_servo(id_agent=id_agent, id_robot=id_robot,
@@ -147,7 +148,7 @@ class TaskRegister:
              extra_dep=extra_dep)
 
     def add_learning(self, id_robot, id_agent, num_ep_expl, explorer, # XXX
-                     publish_progress=False):
+                     publish_progress=False, save_pickle=False):
         all_id_episodes = [self.episode_id_exploration(explorer, i)
                            for i in range(num_ep_expl)]
 
@@ -193,7 +194,7 @@ class TaskRegister:
                                        job=all_learned)
 
         comp(publish_once, self.data_central, id_agent, id_robot,
-             phase='learn', progress='all',
+             phase='learn', progress='all', save_pickle=save_pickle,
              job_id='report-learn-%s-%s' % (id_robot, id_agent),
              extra_dep=all_learned)
 

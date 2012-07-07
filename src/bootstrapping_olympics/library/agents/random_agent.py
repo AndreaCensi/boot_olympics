@@ -52,7 +52,7 @@ class RandomAgentServo():
         self.boot_spec = boot_spec
         self.goal_called = False
 
-    def set_goal_observations(self, goal):
+    def set_goal_observations(self, goal): #@UnusedVariable
         self.goal_called = True
 
     def process_observations(self, obs):

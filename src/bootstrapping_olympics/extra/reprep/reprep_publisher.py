@@ -28,7 +28,7 @@ class ReprepPublisher(Publisher):
 
     @contract(name='str', caption='None|str')
     def array(self, name, value, caption=None): # XXX to change
-        self.fig().data(name, value, caption=caption)
+        self.r.data(name, value, mime=MIME_PYTHON, caption=caption)
 
     @contract(name='str', value='array', filter='str', caption='None|str')
     def array_as_image(self, name, value,
@@ -55,7 +55,9 @@ class ReprepPublisher(Publisher):
     @contextmanager
     @contract(name='str', caption='None|str')
     def plot(self, name, caption=None, **args):
-        with self.fig().plot(name, caption=caption, **args) as pylab:
+        f = self.fig()
+        # TODO: make a child of myself
+        with f.plot(name, caption=caption, **args) as pylab:
             yield pylab
 
     def section(self, section_name, cols=default_max_cols):

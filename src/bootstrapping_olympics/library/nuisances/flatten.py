@@ -56,7 +56,7 @@ class Reshape(RepresentationNuisance):
     def transform_streamels(self, streamels):
         cur_shape = streamels.shape
         if cur_shape != self.shape_from:
-            msg = ('Cannot apply %s to array of size %s.' %
+            msg = ('Cannot apply %s to array of size %s.' % 
                    (self, cur_shape))
             raise UnsupportedSpec(msg)
 
@@ -74,8 +74,34 @@ class To2D(RepresentationNuisance):
     ''' 
         Transforms a stream of shape ``(n)`` 
         into one of shape ``(1,n)``. 
+    ''' 
+
+    def inverse(self):
+        ''' The inverse is the :py:class:`Flatten` nuisance. '''
+        return Flatten()
+
+    def transform_streamels(self, streamels):
+        check_streamels_1D(streamels)
+        streamels2 = streamels.reshape((1, streamels.size))
+        return streamels2
+
+    def transform_value(self, value):
+        return value.reshape((1, value.size))
+
+    def __repr__(self):
+        return 'To2D()'
+
+    
+class To2Dm(RepresentationNuisance):
+    ''' 
+        Transforms a stream of shape ``(n)`` 
+        into one of shape ``(M,n)``, with default M=1. 
         
     '''
+    
+    @contract(M='int,>=1')
+    def __init__(self, M):
+        self.M = M
 
     def inverse(self):
         ''' The inverse is the :py:class:`Flatten` nuisance. '''

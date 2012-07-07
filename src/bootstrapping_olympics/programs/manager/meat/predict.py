@@ -1,5 +1,7 @@
 from . import load_agent_state, logger, np
 from contracts import describe_type
+import os
+import cPickle as pickle
 
 __all__ = ['task_predict']
 
@@ -56,6 +58,11 @@ def task_predict(data_central, id_agent, id_robot):
     logger.info('Writing output to %r.' % filename)
     r.to_html(filename, resources_dir=report_dir)
 
+    pickle_name = os.path.splitext(filename)[0] + '.pickle'
+    logger.info('Saving to pickle %s.' % pickle_name)
+    with open(pickle_name, 'w') as f:
+        pickle.dump(r, f) 
+    
 
 def compute_errors(s):
     data = s['data']

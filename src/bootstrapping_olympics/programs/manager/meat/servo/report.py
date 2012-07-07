@@ -91,7 +91,8 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries):
                 ) as pl:
         style_ieee_fullcol_xy(pylab)
         for s in summaries:
-            if  s['converged']: continue
+            if s['converged']: 
+                continue
 
             pl.plot([s['dist_xy'][0], s['dist_xy'][-1]],
                      [s['dist_th_deg'][0], s['dist_th_deg'][-1]], 'r-')
@@ -102,7 +103,6 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries):
 
         pl.xlabel('dist x-y')
         pl.ylabel('dist th (deg)')
-
 
     with f.plot('initial_rotation') as pylab:
         style_ieee_halfcol_xy(pylab)

@@ -73,7 +73,7 @@ def batch_process_manager(data_central, which_sets, command=None):
             spec = batch_config.sets[x]
             batch_set(data_central_set, id_set, spec)
         except ConfToolsException:
-            msg = ('Bad configuration for the set %r with spec\n %s' %
+            msg = ('Bad configuration for the set %r with spec\n %s' % 
                    (id_set, pformat(spec)))
             logger.error(msg)
             raise
@@ -85,7 +85,7 @@ def batch_process_manager(data_central, which_sets, command=None):
         return 0
 
 
-def batch_set(data_central, id_set, spec):
+def batch_set(data_central, id_set, spec): #@UnusedVariable
     function_name = spec['code'][0]
     args = spec['code'][1]
     function = import_name(function_name)
