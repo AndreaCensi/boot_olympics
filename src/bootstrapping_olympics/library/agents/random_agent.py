@@ -74,6 +74,6 @@ class RandomAgentPredictor():
     def process_observations(self, obs):
         pass
 
-    def predict_y(self, dt):
+    def predict_y(self, dt): #@UnusedVariable
         return self.boot_spec.get_observations().get_random_value()
 

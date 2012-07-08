@@ -1,5 +1,6 @@
 from . import declare_command, OptionParser, check_mandatory, check_no_spurious
 from ..meat import task_predict
+from bootstrapping_olympics.programs.manager.meat.predict import predict_report
 
 
 @declare_command('predict',
@@ -20,6 +21,8 @@ def cmd_task_predict(data_central, argv):
 
     id_agent = options.agent
     id_robot = options.robot
-    task_predict(data_central,
+    stats = task_predict(data_central,
              id_agent=id_agent,
              id_robot=id_robot)
+
+    predict_report(data_central, id_agent, id_robot, stats)

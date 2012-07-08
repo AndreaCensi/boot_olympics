@@ -7,14 +7,14 @@ import os
 from pprint import pformat
 
 
-try:
-    import compmake #@UnusedImport
-except:
-    logger.error('Compmake not installed; multiprocessor '
-                 'processes not available.')
-
-
 def batch_process_manager(data_central, which_sets, command=None):
+    try:
+        import compmake #@UnusedImport
+    except:
+        logger.error('Compmake not installed; multiprocessor '
+                     'processes not available.')
+        raise
+
     from compmake import (comp_prefix, use_filesystem,
                           compmake_console, batch_command)
 

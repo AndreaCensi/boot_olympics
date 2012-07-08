@@ -6,7 +6,8 @@
 
 from .. import np, contract, getLogger
 
-from . import procgraph
+# Do not load these automatically 
+from . import procgraph # some video scripts assume already loaded 
 from . import ros
 from . import hdf
 

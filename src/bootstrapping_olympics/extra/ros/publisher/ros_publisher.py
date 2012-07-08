@@ -62,12 +62,9 @@ class ROSPublisher(Publisher):
         self.ros_publishers[name].publish(ros_image)
 
     @contract(name='str|seq[>0](str)', text='str')
-    def text(self, name, text):
+    def text(self, name, text): # XXX: TODO:
         name = normalize(name)
-
         rospy.loginfo('Function text() not implemented')
-        # XXX: TODO:
-        pass
 
     @contextmanager
     def plot(self, name, **args):

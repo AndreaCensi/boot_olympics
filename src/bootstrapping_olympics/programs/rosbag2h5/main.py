@@ -21,7 +21,7 @@ def rosbag2h5(pargs):
                       default="~/.ros/log", # XXX: log
                       help="Log directory [%default].")
 
-    (options, args) = parser.parse_args()
+    (options, args) = parser.parse_args(pargs)
 
     if args:
         msg = 'Spurious arguments.'

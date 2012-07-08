@@ -15,7 +15,7 @@ logging.basicConfig()
 everybody_uses_same_logger = True
 if everybody_uses_same_logger:
     logger = logging.getLogger('BO')
-    getLogger = lambda name: logger
+    getLogger = lambda _: logger
 else:
     logger = logging.getLogger(__name__)
 

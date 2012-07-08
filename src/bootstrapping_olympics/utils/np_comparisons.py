@@ -4,7 +4,7 @@ from contracts import contract
 from . import assert_allclose
 
 
-def assert_allequal_verbose(a, b, **kwargs):
+def assert_allequal_verbose(a, b, **kwargs): # XXX @UnusedVariable
     failures = a != b
     if np.any(failures):
         error = show_differences(a, b, failures, "a==b")

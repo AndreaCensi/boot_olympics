@@ -6,7 +6,7 @@ import cPickle as pickle
 
 
 @for_all_pairs
-def check_agent_init(id_agent, agent, id_robot, robot):
+def check_agent_init(id_agent, agent, id_robot, robot): #@UnusedVariable
     spec = robot.get_spec()
     try:
         agent.init(spec)

@@ -9,11 +9,13 @@ types = ['layout',
          'dynamics',
          'param']
 
+
 def add(name, op, types, result):
     pass
 
-def addprim(name, op, type):
-    pass
+
+#def addprim(name, op, type):
+#    pass
 
 add('semi-circle', 'c', 'layout')
 add('fullcircle', 'o', 'layout')

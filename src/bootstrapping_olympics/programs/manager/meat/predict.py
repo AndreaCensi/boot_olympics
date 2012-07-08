@@ -1,7 +1,6 @@
-from . import load_agent_state, logger, np
+from . import load_agent_state, np
 from contracts import describe_type
-import os
-import cPickle as pickle
+from . import save_report
 
 __all__ = ['task_predict']
 
@@ -19,8 +18,6 @@ def task_predict(data_central, id_agent, id_robot):
         msg = msg % reprep_error
         raise Exception(msg)
 
-    from bootstrapping_olympics.extra.reprep import ReprepPublisher
-
     agent, state = load_agent_state(data_central, id_agent, id_robot,
                              reset_state=False,
                              raise_if_no_state=True)
@@ -36,8 +33,20 @@ def task_predict(data_central, id_agent, id_robot):
         compute_errors(sample)
         y_dot_stats.update(sample['y_dot'], sample['y_dot_pred'])
         y_dot_sign_stats.update(sample['y_dot_sign'], sample['y_dot_pred_sign'])
-        #print('sample: %s' % (sample['errors']))
+    
+    statistics = dict(y_dot_stats=y_dot_stats,
+                      y_dot_sign_stats=y_dot_sign_stats,
+                      id_state=state.id_state)
+    return statistics
 
+
+def predict_report(data_central, id_agent, id_robot, statistics, save_pickle=False):
+    from bootstrapping_olympics.extra.reprep import ReprepPublisher
+
+    y_dot_stats = statistics['y_dot_stats'] 
+    y_dot_sign_stats = statistics['y_dot_sign_stats']
+    id_state = statistics['id_state']
+    
     basename = 'pred-%s-%s' % (id_agent, id_robot)
     from reprep import Report
     r = Report(basename)
@@ -49,19 +58,15 @@ def task_predict(data_central, id_agent, id_robot):
     ds = data_central.get_dir_structure()
     report_dir = ds.get_report_res_dir(id_agent=id_agent,
                                        id_robot=id_robot,
-                                       id_state=state.id_state,
+                                       id_state=id_state,
                                        phase='predict')
     filename = ds.get_report_filename(id_agent=id_agent,
                                        id_robot=id_robot,
-                                       id_state=state.id_state,
+                                       id_state=id_state,
                                        phase='predict')
-    logger.info('Writing output to %r.' % filename)
-    r.to_html(filename, resources_dir=report_dir)
-
-    pickle_name = os.path.splitext(filename)[0] + '.pickle'
-    logger.info('Saving to pickle %s.' % pickle_name)
-    with open(pickle_name, 'w') as f:
-        pickle.dump(r, f) 
+    
+    save_report(data_central, r, filename, resources_dir=report_dir,
+                save_pickle=save_pickle) 
     
 
 def compute_errors(s):

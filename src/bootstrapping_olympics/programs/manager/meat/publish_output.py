@@ -1,9 +1,5 @@
-from . import load_agent_state, logger
-from bootstrapping_olympics.utils import isodate
+from . import load_agent_state, save_report
 import os
-import cPickle as pickle
-from bootstrapping_olympics.programs.manager.meat.servo.utils import get_vsim_from_robot
-from reprep.constants import MIME_PDF
 
 
 def publish_once(data_central, id_agent, id_robot,
@@ -28,9 +24,7 @@ def publish_once(data_central, id_agent, id_robot,
 
     publish_agent_output(data_central, state, agent, progress,
                          save_pickle=save_pickle,
-                         filename=filename, rd=res_dir)
-    ds.file_is_done(filename, desc="publish_once(%s,%s,%s,%s)" % 
-                    (id_agent, id_robot, phase, progress))
+                         filename=filename, rd=res_dir) 
 
 
 def publish_agent_output(data_central, state, agent, progress, filename, rd=None,
@@ -48,66 +42,73 @@ def publish_agent_output(data_central, state, agent, progress, filename, rd=None
 
     publisher = ReprepPublisher(rid)
     report = publisher.r
-    add_vehicle_info(data_central, report, state.id_robot)
 
     stats = ("Num episodes: %s\nNum observations: %s" % 
              (len(state.id_episodes), state.num_observations))
     report.text('learning_statistics', stats)
 
-    report.text('report_date', isodate())
-
     agent.publish(publisher)
-
-    logger.info('Writing to %r.' % filename)
 
     if rd is None:
         rd = os.path.join(os.path.dirname(filename), 'images')
-    report.to_html(filename, resources_dir=rd)
-
-    if save_pickle:
-        pickle_name = os.path.splitext(filename)[0] + '.pickle'
-        logger.info('Saving to pickle %s.' % pickle_name)
-        with open(pickle_name, 'w') as f:
-            pickle.dump(report, f) 
+        
+    save_report(data_central, report, filename, resources_dir=rd,
+                save_pickle=save_pickle) 
     
-    
-def add_vehicle_info(data_central, report, id_robot):
-    robot = data_central.get_bo_config().robots.instance(id_robot)
-    try: 
-        vsim = get_vsim_from_robot(robot)
-    except:
-        # not a Vehicle
-        return
-    
-    vsim.new_episode()
-    vsim.compute_observations()
-    sim_state = vsim.to_yaml()
-
-    plot_params = dict(grid=0,
-                       zoom=1.5,
-                       zoom_scale_radius=True,
-                       width=500, height=500,
-                       show_sensor_data=False,
-                       show_sensor_data_compact=True,
-                       bgcolor=None,
-                       show_world=False)
-
-    from vehicles_cairo.write_to_file import vehicles_cairo_display_pdf
-
-    sec = report.section('vehicle')
-    
-    shots = {
-         'body': {},
-         'body_data': dict(show_sensor_data=True,
-                           show_sensor_data_compact=False),
-         'body_data_compact': dict(show_sensor_data=True,
-                           show_sensor_data_compact=True),
-    }
-    
-    for name, options in shots.items():
-        with sec.data_file(name, MIME_PDF) as filename:
-            p = dict(**plot_params)
-            p.update(options)
-            vehicles_cairo_display_pdf(filename, sim_state=sim_state, **p)
-
+#    
+#    
+#def add_robot_info(data_central, report, id_robot):
+#    robot = data_central.get_bo_config().robots.instance(id_robot)
+#    
+#    if isinstance(robot, EquivRobot):
+#        add_nuisances_info(robot, report)
+#    
+#    try: 
+#        vsim = get_vsim_from_robot(robot)
+#    except:
+#        # not a Vehicle
+#        return
+#    else:
+#        add_vehicle_info(vsim, report)
+#    
+#    
+#def add_nuisances_info(robot, report):
+#    sec = report.section('nuisances')
+#    obs, cmd = robot.get_nuisances()
+#
+#    sec.data('observations', obs)
+#    sec.data('commands', cmd)
+#     
+#     
+#def add_vehicle_info(vsim, report):
+#    vsim.new_episode()
+#    vsim.compute_observations()
+#    sim_state = vsim.to_yaml()
+#
+#    plot_params = dict(grid=0,
+#                       zoom=1.5,
+#                       zoom_scale_radius=True,
+#                       width=500, height=500,
+#                       show_sensor_data=False,
+#                       show_sensor_data_compact=True,
+#                       bgcolor=None,
+#                       show_world=False)
+#
+#    from vehicles_cairo.write_to_file import vehicles_cairo_display_pdf
+#
+#    sec = report.section('vehicle')
+#    
+#    shots = {
+#         'body': {},
+#         'body_data': dict(show_sensor_data=True,
+#                           show_sensor_data_compact=False),
+#         'body_data_compact': dict(show_sensor_data=True,
+#                           show_sensor_data_compact=True),
+#    }
+#    
+#    for name, options in shots.items():
+#        with sec.data_file(name, MIME_PDF) as filename:
+#            p = dict(**plot_params)
+#            p.update(options)
+#            vehicles_cairo_display_pdf(filename, sim_state=sim_state, **p)
 

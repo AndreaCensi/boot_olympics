@@ -55,7 +55,7 @@ def check_robot_observations(id_robot, robot): #@UnusedVariable
 
 
 @for_all_robots
-def check_robot_observations_compliance(id_robot, robot):
+def check_robot_observations_compliance(id_robot, robot): #@UnusedVariable
     robot.new_episode() # always start an episode before getting observations
     obs = robot.get_observations()
     obs_spec = robot.get_spec().get_observations()

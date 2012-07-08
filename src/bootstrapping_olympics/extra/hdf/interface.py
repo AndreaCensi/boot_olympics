@@ -25,7 +25,7 @@ class HDFLogsFormat(LogsFormat):
         for x in hdf_read(filename=filename,
                           id_stream=id_stream,
                           boot_spec=None,
-                           only_episodes=None,
+                          only_episodes=only_episodes,
                           read_extra=read_extra):
             yield x
 

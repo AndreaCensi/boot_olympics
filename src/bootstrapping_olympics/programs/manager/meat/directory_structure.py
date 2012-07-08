@@ -25,6 +25,7 @@ class DirectoryStructure:
     pattern_simulation = 'simulations/${id_robot}/${id_agent}/'
     pattern_report = '${id_robot}-${id_agent}-${phase}.html'
     pattern_report_rd = 'resources'
+    pattern_report_robot = '${id_robot}.html'
     pattern_video = ('${id_robot}-${id_agent}-${id_episode}')
 
     def __init__(self, root=None):
@@ -127,6 +128,15 @@ class DirectoryStructure:
                                           id_state=id_state))
         mkdirs_thread_safe(os.path.dirname(filename))
         return filename
+
+    def get_report_robot_filename_rd(self, id_robot):
+        pattern = DirectoryStructure.pattern_report_robot
+        filename = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
+                               substitute(pattern, id_robot=id_robot))
+        mkdirs_thread_safe(os.path.dirname(filename))
+        rd = os.path.join(self.root, DirectoryStructure.DIR_REPORTS,
+                            DirectoryStructure.pattern_report_rd)
+        return filename, rd
 
     def get_video_basename(self, id_robot, id_agent, id_episode):
         pattern = DirectoryStructure.pattern_video

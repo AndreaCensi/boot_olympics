@@ -56,7 +56,9 @@ class EquivRobot(RobotInterface):
                            (cmd_nuisance, indent(str(e).strip(), '> ')))
 
         self.spec = BootSpec(obs_spec=obs_spec, cmd_spec=cmd_spec)
-
+        self.obs_nuisances_id = obs_nuisance
+        self.cmd_nuisances_id = cmd_nuisance
+        
     def __str__(self):
         return self.desc
 
@@ -96,5 +98,22 @@ class EquivRobot(RobotInterface):
 
     def get_original_robot(self):
         """ Returns the robot that we are wrapping with this nuisance. """
-        return self.robot
+        if isinstance(self.robot, EquivRobot):
+            return self.robot.get_original_robot()
+        else:
+            return self.robot
+    
+    @contract(returns='tuple(list(str),list(str))')
+    def get_nuisances(self):
+        """ Returns two lists of ID representing the nuisances 
+            applied to observations and commands. """
+        obs = list(self.obs_nuisances_id)
+        cmd = list(self.cmd_nuisances_id)
+        if isinstance(self.robot, EquivRobot):
+            obsr, cmdr = self.robot.get_nuisances()
+            obs = obsr + obs # XXX: check order is correct
+            cmd = cmd + cmdr
+        return obs, cmd
+            
+            
 

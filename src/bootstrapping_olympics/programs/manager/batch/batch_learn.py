@@ -1,23 +1,18 @@
 '''Some functions to help in writing experiments scripts'''
-from . import (default_expl_videos, default_servo_videos,
-    default_servonav_videos, contract)
-from .. import (create_video, servo_stats_report, servo_stats_summaries,
-    simulate, task_predict, logger, learn_log, publish_once, np, task_servo,
-    task_servonav)
+from . import (default_expl_videos, default_servo_videos, default_servonav_videos,
+    contract)
+from .. import (create_video, servo_stats_report, servo_stats_summaries, simulate,
+    task_predict, logger, learn_log, publish_once, np, task_servo, task_servonav)
 from bootstrapping_olympics import UnsupportedSpec
+from bootstrapping_olympics.programs.manager.meat.predict import predict_report
+from bootstrapping_olympics.programs.manager.meat.report_robot import (
+    publish_report_robot)
 from conf_tools import SemanticMistake
 import itertools
-
-try:
-    from compmake import comp
-except ImportError:
-    pass
-    # TODO: add messages
 
 
 def batch_jobs1(data_central, **kwargs):
     tr = TaskRegister(data_central)
-
     tr.main(**kwargs)
 
 
@@ -98,6 +93,9 @@ class TaskRegister:
         if not agents:
             raise SemanticMistake('Please specify at least one agent.')
 
+        for id_robot in robots:
+            self.add_task_robot_report(id_robot=id_robot)
+            
         if explore is not None:
             for id_robot in robots:
                 self.add_tasks_explore(id_robot=id_robot, **explore)
@@ -130,6 +128,19 @@ class TaskRegister:
             self.add_tasks_predict(id_agent=id_agent, id_robot=id_robot,
                                        **predict)
 
+    def compmake_job(self, *args, **kwargs):
+        """ Calls compmake's self.compmake_job() function. """    
+        try:
+            from compmake import comp
+        except ImportError:
+            logger.error('Compmake not installed')
+        return comp(*args, **kwargs)
+    
+    def add_task_robot_report(self, id_robot):
+        self.compmake_job(publish_report_robot, data_central=self.data_central,
+              id_robot=id_robot, save_pickle=True,
+             job_id='report-robot-%s' % (id_robot))
+        
     def add_tasks_predict(self, id_agent, id_robot):
         has_predictor = self.agent_has_predictor(id_agent)
         if not has_predictor:
@@ -141,11 +152,15 @@ class TaskRegister:
                                                id_agent=id_agent)
 
         # FIXME: here we are using *all* streams 
-        comp(task_predict, data_central=self.data_central,
+        statistics = self.compmake_job(task_predict, data_central=self.data_central,
              id_agent=id_agent, id_robot=id_robot,
-             #interval_print=5,
              job_id='predict-%s-%s' % (id_robot, id_agent),
              extra_dep=extra_dep)
+        
+        self.compmake_job(predict_report, data_central=self.data_central,
+                             id_agent=id_agent, id_robot=id_robot,
+                             statistics=statistics,
+             job_id='report-predict-%s-%s' % (id_robot, id_agent))
 
     def add_learning(self, id_robot, id_agent, num_ep_expl, explorer, # XXX
                      publish_progress=False, save_pickle=False):
@@ -167,7 +182,7 @@ class TaskRegister:
             if previous_state is not None:
                 extra_dep.append(previous_state)
 
-            previous_state = comp(learn_log, data_central=self.data_central,
+            previous_state = self.compmake_job(learn_log, data_central=self.data_central,
                                   id_agent=id_agent,
                                   id_robot=id_robot,
                                   reset=reset,
@@ -181,19 +196,19 @@ class TaskRegister:
                                     (id_robot, id_agent, t + 1, len(tranches)))
 
             if publish_progress:
-                comp(publish_once, self.data_central, id_agent, id_robot,
+                self.compmake_job(publish_once, self.data_central, id_agent, id_robot,
                      phase='learn', progress='t%03d' % t,
                      job_id='report-learn-%s-%s-%s' % (id_robot, id_agent, t),
                      extra_dep=previous_state)
 
-        all_learned = comp(checkpoint, 'all learned',
+        all_learned = self.compmake_job(checkpoint, 'all learned',
                             job_id='learn-%s-%s' % (id_robot, id_agent),
                             extra_dep=[previous_state])
 
         self.set_dep_agent_has_learned(id_robot=id_robot, id_agent=id_agent,
                                        job=all_learned)
 
-        comp(publish_once, self.data_central, id_agent, id_robot,
+        self.compmake_job(publish_once, self.data_central, id_agent, id_robot,
              phase='learn', progress='all', save_pickle=save_pickle,
              job_id='report-learn-%s-%s' % (id_robot, id_agent),
              extra_dep=all_learned)
@@ -226,7 +241,7 @@ class TaskRegister:
             write_extra = len(set(id_episodes) &
                               set(id_episodes_with_extra)) > 0
 
-            tranche = comp(simulate,
+            tranche = self.compmake_job(simulate,
                             data_central=self.data_central,
                              id_agent=explorer,
                              id_robot=id_robot,
@@ -247,7 +262,7 @@ class TaskRegister:
                 self.set_dep_episode_done(id_robot=id_robot,
                                           id_episode=id_episode, job=tranche)
 
-        comp(checkpoint, 'all simulations',
+        self.compmake_job(checkpoint, 'all simulations',
                          job_id='simulate-%s' % (id_robot),
                          extra_dep=tranches)
 
@@ -264,7 +279,7 @@ class TaskRegister:
 
             extra_dep = self.dep_episode_done(id_robot, id_episode)
 
-            comp(create_video,
+            self.compmake_job(create_video,
                  data_central=self.data_central,
                  id_episode=id_episode,
                  id_agent=id_agent,
@@ -313,7 +328,7 @@ class TaskRegister:
             num_episodes_with_robot_state = len(set(id_episodes) &
                                                 set(id_episodes_with_extra))
 
-            tranche = comp(task_servonav, data_central=self.data_central,
+            tranche = self.compmake_job(task_servonav, data_central=self.data_central,
              id_agent=id_agent, id_robot=id_robot,
              max_episode_len=max_episode_len,
              num_episodes=len(id_episodes),
@@ -334,17 +349,17 @@ class TaskRegister:
 
 #        logger.info('Tranches: %s' % all_tranches)
 
-        comp(checkpoint, 'all servonav',
+        self.compmake_job(checkpoint, 'all servonav',
                         job_id='servonav-%s-%s' % (id_robot, id_agent),
                         extra_dep=all_tranches)
 
-#        summaries = comp(servo_stats_summaries, self.data_central,
+#        summaries = self.compmake_job(servo_stats_summaries, self.data_central,
 #                         id_agent, id_robot,
 #                         job_id=('servo-%s-%s-summary' %
 #                                  (id_robot, id_agent)),
 #                         extra_dep=all_servonav)
 #
-#        comp(servo_stats_report, self.data_central, id_agent,
+#        self.compmake_job(servo_stats_report, self.data_central, id_agent,
 #             id_robot, summaries,
 #             job_id='servo-%s-%s-report' % (id_robot, id_agent))
 
@@ -391,7 +406,7 @@ class TaskRegister:
             num_episodes_with_robot_state = len(set(id_episodes) &
                                                 set(id_episodes_with_extra))
 
-            tranche = comp(task_servo, data_central=self.data_central,
+            tranche = self.compmake_job(task_servo, data_central=self.data_central,
              id_agent=id_agent, id_robot=id_robot,
              max_episode_len=max_episode_len,
              num_episodes=len(id_episodes),
@@ -409,18 +424,18 @@ class TaskRegister:
             for id_episode in id_episodes:
                 self.set_dep_episode_done(id_robot, id_episode, tranche)
 
-        all_servo = comp(checkpoint, 'all servo',
+        all_servo = self.compmake_job(checkpoint, 'all servo',
                         job_id='servo-%s-%s' % (id_robot, id_agent),
                         extra_dep=all_tranches)
 
-        summaries = comp(servo_stats_summaries, self.data_central,
+        summaries = self.compmake_job(servo_stats_summaries, self.data_central,
                          id_agent=id_agent, id_robot=id_robot,
                          id_episodes=all_id_episodes,
                          job_id=('servo-%s-%s-summary' %
                                   (id_robot, id_agent)),
                          extra_dep=all_servo)
 
-        comp(servo_stats_report, self.data_central, id_agent,
+        self.compmake_job(servo_stats_report, self.data_central, id_agent,
              id_robot, summaries,
              job_id='report-servo-%s-%s' % (id_robot, id_agent))
 

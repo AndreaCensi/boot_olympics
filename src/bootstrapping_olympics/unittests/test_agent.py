@@ -3,5 +3,5 @@ from bootstrapping_olympics import AgentInterface
 
 
 @for_all_agents
-def check_agent_type(id_agent, agent):
+def check_agent_type(id_agent, agent): #@UnusedVariable
     assert isinstance(agent, AgentInterface)
