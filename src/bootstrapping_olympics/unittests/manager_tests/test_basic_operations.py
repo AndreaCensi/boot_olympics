@@ -73,6 +73,5 @@ def check_basic_ops(id_agent, agent, id_robot, robot):
 
         task_predict(data_central,
              id_agent=id_agent,
-             id_robot=id_robot,
-             interval_print=None)
+             id_robot=id_robot)
 

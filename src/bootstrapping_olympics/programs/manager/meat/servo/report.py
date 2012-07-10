@@ -1,6 +1,7 @@
 from . import np, logger
 from reprep.plot_utils.styles import (style_ieee_fullcol_xy,
     style_ieee_halfcol_xy)
+from geometry.poses import translation_from_SE2
 
 
 def servo_stats_report(data_central, id_agent, id_robot, summaries,
@@ -31,6 +32,12 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries,
         s['dist_th_deg'] = np.rad2deg(s['dist_th'])
         s['color'] = 'b' if converged else 'r'
 
+        trans = [translation_from_SE2(x) for x in s['poses']]
+        s['x'] = np.abs([t[0] for t in trans])
+        s['y'] = np.abs([t[1] for t in trans])
+        s['dist_x'] = np.abs(s['x'])
+        s['dist_y'] = np.abs(s['y'])
+
     basename = 'servo_analysis-%s-%s-%s' % (id_agent, id_robot, phase)
     r = Report(basename)
 
@@ -47,10 +54,22 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries,
         for s in summaries:
             pylab.plot(s['dist_xy'], s['color'] + '-')
 
+    with f.plot('xy') as pylab:
+        style_ieee_fullcol_xy(pylab)
+        for s in summaries:
+            pylab.plot(s['x'], s['y'], s['color'] + '-')
+        pylab.xlabel('x')
+        pylab.ylabel('y')
+
     with f.plot('dist_th') as pylab:
         style_ieee_fullcol_xy(pylab)
         for s in summaries:
             pylab.plot(s['dist_th'], s['color'] + '-')
+
+    with f.plot('dist_th_deg') as pylab:
+        style_ieee_fullcol_xy(pylab)
+        for s in summaries:
+            pylab.plot(np.rad2deg(s['dist_th']), s['color'] + '-')
 
     with f.plot('dist_xy_th') as pl:
         style_ieee_fullcol_xy(pylab)
@@ -66,6 +85,15 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries,
                         s['dist_th_deg'], s['color'] + '.')
         pl.xlabel('dist x-y')
         pl.ylabel('dist th (deg)')
+    
+    with f.plot('dist_y') as pylab:
+        style_ieee_fullcol_xy(pylab)
+        for s in summaries:
+            pylab.plot(s['dist_y'], s['color'] + '-')
+    with f.plot('dist_x') as pylab:
+        style_ieee_fullcol_xy(pylab)
+        for s in summaries:
+            pylab.plot(s['dist_x'], s['color'] + '-')
 
     mark_start = 's'
     mark_end = 'o'

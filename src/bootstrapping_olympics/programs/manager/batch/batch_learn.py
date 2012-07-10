@@ -1,15 +1,16 @@
 '''Some functions to help in writing experiments scripts'''
 from . import (default_expl_videos, default_servo_videos, default_servonav_videos,
     contract)
-from .. import (create_video, servo_stats_report, servo_stats_summaries, simulate,
-    task_predict, logger, learn_log, publish_once, np, task_servo, task_servonav)
+from .. import (create_video, servo_stats_report, simulate, task_predict, logger,
+    learn_log, publish_once, np, task_servo, task_servonav)
 from bootstrapping_olympics import UnsupportedSpec
 from bootstrapping_olympics.programs.manager.meat.predict import predict_report
 from bootstrapping_olympics.programs.manager.meat.report_robot import (
     publish_report_robot)
+from bootstrapping_olympics.programs.manager.meat.servo.summaries import (
+    servo_stats_summary)
 from conf_tools import SemanticMistake
 import itertools
-from bootstrapping_olympics.programs.manager.meat.servo.summaries import servo_stats_summary
 
 
 def batch_jobs1(data_central, **kwargs):
