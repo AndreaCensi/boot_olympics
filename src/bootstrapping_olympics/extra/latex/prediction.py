@@ -13,7 +13,7 @@ def read_reports(id_set, robots, agents, phase):
     return reports
 
 
-def prediction_report(id_set, robots, agents, draft=True, tsize='3cm'):
+def prediction_report(id_set, robots, agents, draft=False, tsize='3cm'):
     reports = read_reports(id_set, robots, agents, 'predict')
     
     def write_graphics_data(el, data_node, gid):

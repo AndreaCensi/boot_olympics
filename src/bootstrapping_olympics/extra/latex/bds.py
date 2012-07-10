@@ -8,7 +8,7 @@ import sys
 from . import create_robot_figure
 
 
-def bds_learn_reportA(id_set, agent, robot, draft=True):
+def bds_learn_reportA(id_set, agent, robot, draft=False):
 
     report = load_report_phase(id_set=id_set,
                          agent=agent, robot=robot, phase='learn')

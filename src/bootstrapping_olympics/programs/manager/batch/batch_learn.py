@@ -9,6 +9,7 @@ from bootstrapping_olympics.programs.manager.meat.report_robot import (
     publish_report_robot)
 from conf_tools import SemanticMistake
 import itertools
+from bootstrapping_olympics.programs.manager.meat.servo.summaries import servo_stats_summary
 
 
 def batch_jobs1(data_central, **kwargs):
@@ -104,7 +105,7 @@ class TaskRegister:
             compatible = are_compatible(data_central=self.data_central,
                                         id_robot=id_robot, id_agent=id_agent)
             if not compatible:
-                logger.info('Avoiding combination %s / %s' %
+                logger.info('Avoiding combination %s / %s' % 
                              (id_robot, id_agent))
                 continue
 
@@ -192,7 +193,7 @@ class TaskRegister:
                                   interval_save=300,
                                   interval_print=30,
                                   extra_dep=extra_dep,
-                                  job_id='learn-%s-%s-%sof%s' %
+                                  job_id='learn-%s-%s-%sof%s' % 
                                     (id_robot, id_agent, t + 1, len(tranches)))
 
             if publish_progress:
@@ -221,7 +222,7 @@ class TaskRegister:
                                    max_episode_len=10):
 
         if num_episodes_videos > num_episodes:
-            msg = ('Requested %d videos for only %d episodes' %
+            msg = ('Requested %d videos for only %d episodes' % 
                    (num_episodes_videos, num_episodes))
             raise SemanticMistake(msg)
 
@@ -238,7 +239,7 @@ class TaskRegister:
         episodes_tranches = self.get_tranches(all_id_episodes,
                                               episodes_per_tranche)
         for t, id_episodes in enumerate(episodes_tranches):
-            write_extra = len(set(id_episodes) &
+            write_extra = len(set(id_episodes) & 
                               set(id_episodes_with_extra)) > 0
 
             tranche = self.compmake_job(simulate,
@@ -252,7 +253,7 @@ class TaskRegister:
                              id_episodes=id_episodes,
                              cumulative=False,
                              write_extra=write_extra,
-                            job_id='explore-%s-%s-%sof%s' %
+                            job_id='explore-%s-%s-%sof%s' % 
                                     (id_robot, explorer, t + 1,
                                      len(episodes_tranches)))
 
@@ -287,7 +288,7 @@ class TaskRegister:
                  suffix=id_video,
                  model=model,
                  model_params=model_params,
-                 job_id='video-%s-%s-%s-%s' %
+                 job_id='video-%s-%s-%s-%s' % 
                     (id_robot, id_agent, id_episode, id_video),
                  extra_dep=extra_dep)
 
@@ -300,7 +301,7 @@ class TaskRegister:
                                  fail_if_not_working=False,
                                  videos=default_servonav_videos):
 
-        logger.info('Adding servonav for %s/%s %s %s' %
+        logger.info('Adding servonav for %s/%s %s %s' % 
                     (id_agent, id_robot, num_episodes,
                      num_episodes_videos))
 
@@ -325,7 +326,7 @@ class TaskRegister:
         episodes_tranches = self.get_tranches(all_id_episodes,
                                               episodes_per_tranche)
         for st, id_episodes in enumerate(episodes_tranches):
-            num_episodes_with_robot_state = len(set(id_episodes) &
+            num_episodes_with_robot_state = len(set(id_episodes) & 
                                                 set(id_episodes_with_extra))
 
             tranche = self.compmake_job(task_servonav, data_central=self.data_central,
@@ -338,7 +339,7 @@ class TaskRegister:
              interval_print=5,
              fail_if_not_working=fail_if_not_working,
              num_episodes_with_robot_state=num_episodes_with_robot_state,
-             job_id='servonav-%s-%s-%sof%s' %
+             job_id='servonav-%s-%s-%sof%s' % 
              (id_robot, id_agent, st + 1, len(episodes_tranches)),
              extra_dep=self.dep_agent_has_learned(id_robot, id_agent))
 
@@ -373,10 +374,11 @@ class TaskRegister:
                         num_episodes_videos=0,
                         max_episode_len=10,
                         displacement=3,
+                        episodes_per_tranche=1,
                         videos=default_servo_videos):
 
         logger.info('Adding servo for %s/%s; %s episodes of which '
-                    '%s with video.' %
+                    '%s with video.' % 
                     (id_agent, id_robot, num_episodes,
                      num_episodes_videos))
 
@@ -399,11 +401,11 @@ class TaskRegister:
                            for i in range(num_episodes)]
         id_episodes_with_extra = [self.episode_id_servoing(id_agent, i)
                            for i in range(num_episodes_videos)]
-
+        summaries = []
         all_tranches = []
-        episodes_tranches = self.get_tranches(all_id_episodes)
+        episodes_tranches = self.get_tranches(all_id_episodes, episodes_per_tranche)
         for st, id_episodes in enumerate(episodes_tranches):
-            num_episodes_with_robot_state = len(set(id_episodes) &
+            num_episodes_with_robot_state = len(set(id_episodes) & 
                                                 set(id_episodes_with_extra))
 
             tranche = self.compmake_job(task_servo, data_central=self.data_central,
@@ -423,22 +425,47 @@ class TaskRegister:
 
             for id_episode in id_episodes:
                 self.set_dep_episode_done(id_robot, id_episode, tranche)
+                
+            for id_episode in id_episodes:
+                job_id = ('servo-%s-%s-%s-summary' % 
+                          (id_robot, id_agent, id_episode))
+                summary = self.compmake_job(servo_stats_summary,
+                                            self.data_central, id_agent,
+                                            id_robot, id_episode,
+                                            job_id=job_id,
+                                            extra_dep=[tranche])
+                summaries.append(summary)
 
         all_servo = self.compmake_job(checkpoint, 'all servo',
                         job_id='servo-%s-%s' % (id_robot, id_agent),
                         extra_dep=all_tranches)
-
-        summaries = self.compmake_job(servo_stats_summaries, self.data_central,
-                         id_agent=id_agent, id_robot=id_robot,
-                         id_episodes=all_id_episodes,
-                         job_id=('servo-%s-%s-summary' %
-                                  (id_robot, id_agent)),
-                         extra_dep=all_servo)
-
+#        
+#        
+#        summaries = self.compmake_job(servo_stats_summaries, self.data_central,
+#                         id_agent=id_agent, id_robot=id_robot,
+#                         id_episodes=all_id_episodes,
+#                         job_id=('servo-%s-%s-summary' %
+#                                  (id_robot, id_agent)),
+#                         extra_dep=all_servo)
+         
         self.compmake_job(servo_stats_report, self.data_central, id_agent,
              id_robot, summaries,
              job_id='report-servo-%s-%s' % (id_robot, id_agent))
 
+        # TODO: create partial summaries
+        ntot = len(summaries)
+        num = ntot
+        for i in range(ntot):
+            num = num / 2
+            if num <= 2:
+                continue
+            psummaries = summaries[:num]
+            #logger.info('Creatint partial summaries with %d/%d using %s' % (num, ntot, psummaries))
+            self.compmake_job(servo_stats_report, self.data_central, id_agent,
+                               id_robot, psummaries,
+                               phase='servo_stats-partial%d' % i,
+                job_id='report-servo-%s-%s-partial%d' % (id_robot, id_agent, i))
+   
         self.add_videos(id_agent=id_agent,
                           id_robot=id_robot,
                           id_episodes=id_episodes_with_extra,

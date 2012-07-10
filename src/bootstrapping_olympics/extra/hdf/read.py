@@ -8,6 +8,7 @@ __all__ = ['hdf_read']
 def hdf_read(filename, id_stream, boot_spec=None, read_extra=False,
               only_episodes=None):
     f = tables.openFile(filename)
+    #logger.info("opening file %r" % filename)
     try:
         # TODO: check table exists
         stream_group = f.root.boot_olympics.streams._v_children[id_stream]
@@ -47,6 +48,7 @@ def hdf_read(filename, id_stream, boot_spec=None, read_extra=False,
                 observations['extra'] = {}
             yield observations
     finally:
+        #logger.info("finally: closing file %r" % filename)
         f.close()
 
 

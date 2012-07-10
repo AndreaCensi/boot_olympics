@@ -3,7 +3,8 @@ from reprep.plot_utils.styles import (style_ieee_fullcol_xy,
     style_ieee_halfcol_xy)
 
 
-def servo_stats_report(data_central, id_agent, id_robot, summaries):
+def servo_stats_report(data_central, id_agent, id_robot, summaries,
+                       phase='servo_stats'):
     from reprep import Report
     from reprep.plot_utils import x_axis_balanced
 
@@ -30,7 +31,7 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries):
         s['dist_th_deg'] = np.rad2deg(s['dist_th'])
         s['color'] = 'b' if converged else 'r'
 
-    basename = 'servo_analysis-%s-%s' % (id_agent, id_robot)
+    basename = 'servo_analysis-%s-%s-%s' % (id_agent, id_robot, phase)
     r = Report(basename)
 
     f = r.figure(cols=3)
@@ -119,11 +120,11 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries):
     filename = ds.get_report_filename(id_agent=id_agent,
                                        id_robot=id_robot,
                                        id_state='servo_stats',
-                                       phase='servo_stats')
+                                       phase=phase)
     res_rd = ds.get_report_res_dir(id_agent=id_agent,
                                        id_robot=id_robot,
                                        id_state='servo_stats',
-                                       phase='servo_stats')
+                                       phase=phase)
 #    filename = os.path.join(report_dir, 'servo_stats_report.html')
     logger.info('Writing output to %r.' % filename)
     r.to_html(filename, resources_dir=res_rd)
