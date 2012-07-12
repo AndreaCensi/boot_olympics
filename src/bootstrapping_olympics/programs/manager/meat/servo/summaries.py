@@ -18,7 +18,7 @@ def servo_stats_summaries(data_central, id_agent, id_robot, id_episodes=None):
     return summaries
 
 
-def servo_stats_summary(data_central, id_agent, id_robot, id_episode):
+def servo_stats_summary(data_central, id_agent, id_robot, id_episode): #@UnusedVariable
     from geometry import (SE2, SE2_from_SE3, translation_from_SE2,
                           angle_from_SE2, SE3)
 

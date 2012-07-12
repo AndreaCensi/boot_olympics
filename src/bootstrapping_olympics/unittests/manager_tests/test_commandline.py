@@ -11,7 +11,7 @@ import os
 
 
 @for_all_pairs
-def check_cmdline(id_agent, agent, id_robot, robot):
+def check_cmdline(id_agent, agent, id_robot, robot): #@UnusedVariable
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config')) # XXX make it automatic
         data_central = DataCentral(root)

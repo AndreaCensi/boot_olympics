@@ -28,6 +28,7 @@ try:
 except ImportError as e:
     boot_has_ros = False
     ros_error = e
+    # export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:`pwd`/ros-packages/
     logger.error('ROS support not available (%s).' % ros_error)
 
 else:

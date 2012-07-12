@@ -24,6 +24,21 @@ class TaskRegister:
         self.data_central = data_central
 
         self.deps = {}
+        # Instances we keep around to probe
+        self.agent_instances = {}
+        self.robot_instances = {}
+        
+    def _get_agent_instance(self, id_agent):
+        if not id_agent in self.agent_instances:
+            self.agent_instances[id_agent] = \
+                 self.data_central.get_bo_config().agents.instance(id_agent)
+        return  self.agent_instances[id_agent] 
+
+    def _get_robot_instance(self, id_robot):
+        if not id_robot in self.robot_instances:
+            self.robot_instances[id_robot] = \
+                 self.data_central.get_bo_config().robots.instance(id_robot)
+        return  self.robot_instances[id_robot] 
 
     @contract(id_agent='str', K='int')
     def episode_id_exploration(self, id_agent, K):
@@ -36,13 +51,13 @@ class TaskRegister:
     @contract(id_agent='str', K='int')
     def episode_id_servonav(self, id_agent, K):
         return 'ep_servonav_%s_%05d' % (id_agent, K)
-
+    
     def agent_has_predictor(self, id_agent):
-        agent = self.data_central.get_bo_config().agents.instance(id_agent)
+        agent = self._get_agent_instance(id_agent)
         return hasattr(agent, 'get_predictor')
 
     def agent_has_servo(self, id_agent):
-        agent = self.data_central.get_bo_config().agents.instance(id_agent)
+        agent = self._get_agent_instance(id_agent)
         return hasattr(agent, 'get_servo')
 
     def get_tranches(self, ids, episodes_per_tranche=10):
@@ -103,11 +118,10 @@ class TaskRegister:
                 self.add_tasks_explore(id_robot=id_robot, **explore)
 
         for id_robot, id_agent in  itertools.product(robots, agents):
-            compatible = are_compatible(data_central=self.data_central,
-                                        id_robot=id_robot, id_agent=id_agent)
+            compatible, reason = self.are_compatible(id_robot=id_robot, id_agent=id_agent)
             if not compatible:
-                logger.info('Avoiding combination %s / %s' % 
-                             (id_robot, id_agent))
+                logger.info('Avoiding combination %s / %s: %s' % 
+                             (id_robot, id_agent, reason))
                 continue
 
             # FIXME: num_ep_expl (should work also for logs)
@@ -302,20 +316,20 @@ class TaskRegister:
                                  fail_if_not_working=False,
                                  videos=default_servonav_videos):
 
-        logger.info('Adding servonav for %s/%s %s %s' % 
-                    (id_agent, id_robot, num_episodes,
-                     num_episodes_videos))
+#        logger.info('Adding servonav for %s/%s %s %s' % 
+#                    (id_agent, id_robot, num_episodes,
+#                     num_episodes_videos))
 
         has_servo = self.agent_has_servo(id_agent)
         if not has_servo:
-            logger.debug('Agent %s does not support servoing.' % id_agent)
+            #logger.debug('Agent %s does not support servoing.' % id_agent)
             return
 
         if num_episodes_videos > num_episodes:
             raise SemanticMistake('More videos than episodes requested.')
 
         if num_episodes == 0:
-            logger.debug('No servonav episodes')
+            #logger.debug('No servonav episodes')
             return
 
         all_id_episodes = [self.episode_id_servonav(id_agent, i)
@@ -378,10 +392,10 @@ class TaskRegister:
                         episodes_per_tranche=1,
                         videos=default_servo_videos):
 
-        logger.info('Adding servo for %s/%s; %s episodes of which '
-                    '%s with video.' % 
-                    (id_agent, id_robot, num_episodes,
-                     num_episodes_videos))
+#        logger.info('Adding servo for %s/%s; %s episodes of which '
+#                    '%s with video.' % 
+#                    (id_agent, id_robot, num_episodes,
+#                     num_episodes_videos))
 
         has_servo = self.agent_has_servo(id_agent)
 
@@ -389,14 +403,14 @@ class TaskRegister:
             raise SemanticMistake('More videos than episodes requested.')
 
         if not has_servo:
-            logger.debug('Agent %s does not support servoing.' % id_agent)
+            #logger.debug('Agent %s does not support servoing.' % id_agent)
             return
 
         if num_episodes == 0:
-            logger.debug('No servo episodes')
+            #logger.debug('No servo episodes')
             return
 
-        logger.debug('Creating servo episodes')
+        #logger.debug('Creating servo episodes')
 
         all_id_episodes = [self.episode_id_servoing(id_agent, i)
                            for i in range(num_episodes)]
@@ -437,7 +451,7 @@ class TaskRegister:
                                             extra_dep=[tranche])
                 summaries.append(summary)
 
-        all_servo = self.compmake_job(checkpoint, 'all servo',
+        self.compmake_job(checkpoint, 'all servo',
                         job_id='servo-%s-%s' % (id_robot, id_agent),
                         extra_dep=all_tranches)
 #        
@@ -472,18 +486,30 @@ class TaskRegister:
                           id_episodes=id_episodes_with_extra,
                           videos=videos)
 
-
-def are_compatible(data_central, id_robot, id_agent):
-    # XXX: this is wasteful
-    config = data_central.get_bo_config()
-    robot = config.robots.instance(id_robot)
-    agent = config.agents.instance(id_agent)
-    try:
-        agent.init(robot.get_spec())
-    except UnsupportedSpec as e:
-        logger.debug('%s/%s: %s' % (id_robot, id_agent, e))
-        return False
-    return True
+    @contract(returns='tuple(bool, str)')
+    def are_compatible(self, id_robot, id_agent):
+        agent = self._get_agent_instance(id_agent)
+        robot = self._get_robot_instance(id_robot)
+        
+        try:
+            agent.init(robot.get_spec())
+        except UnsupportedSpec as e:
+#            logger.debug('%s/%s: %s' % (id_robot, id_agent, e))
+            return False, str(e)
+        return True, None
+    
+#
+#def are_compatible(data_central, id_robot, id_agent):
+#    # XXX: this is wasteful
+#    config = data_central.get_bo_config()
+#    robot = config.robots.instance(id_robot)
+#    agent = config.agents.instance(id_agent)
+#    try:
+#        agent.init(robot.get_spec())
+#    except UnsupportedSpec as e:
+#        logger.debug('%s/%s: %s' % (id_robot, id_agent, e))
+#        return False
+#    return True
 
 
 def checkpoint(msg):

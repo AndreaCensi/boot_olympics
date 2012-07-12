@@ -1,5 +1,5 @@
 from . import load_report_robot
-from latex_gen.frags import latex_fragment
+from latex_gen import latex_fragment
 import sys
 
 

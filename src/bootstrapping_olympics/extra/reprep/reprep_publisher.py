@@ -32,10 +32,11 @@ class ReprepPublisher(Publisher):
 
     @contract(name='str', value='array', filter='str', caption='None|str')
     def array_as_image(self, name, value,
-                       filter='posneg', #@ReservedAssignment # XXX: config
+                       filter='posneg_zoom', #@ReservedAssignment # XXX: config
                        filter_params={},
                        caption=None): #@ReservedAssignment
         # try image XXX check uint8
+        # If this is RGB
         if len(value.shape) == 3 and value.shape[2] == 3:
             # zoom images smaller than 50
 #            if value.shape[0] < 50:

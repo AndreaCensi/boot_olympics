@@ -40,6 +40,7 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries,
 
     basename = 'servo_analysis-%s-%s-%s' % (id_agent, id_robot, phase)
     r = Report(basename)
+    r.data('summaries', s, caption='All raw statistics')
 
     f = r.figure(cols=3)
 

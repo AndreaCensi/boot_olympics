@@ -7,12 +7,12 @@ from bootstrapping_olympics.utils import assert_allclose, indent
 
 
 @for_all_robot_nuisance_pairs
-def check_nuisances_cmd(id_robot, robot, id_nuisance, nuisance):
+def check_nuisances_cmd(id_robot, robot, id_nuisance, nuisance): #@UnusedVariable
     check_conversions(robot.get_spec().get_commands(), nuisance)
 
 
 @for_all_robot_nuisance_pairs
-def check_nuisances_obs(id_robot, robot, id_nuisance, nuisance):
+def check_nuisances_obs(id_robot, robot, id_nuisance, nuisance): #@UnusedVariable
     check_conversions(robot.get_spec().get_observations(), nuisance)
 
 

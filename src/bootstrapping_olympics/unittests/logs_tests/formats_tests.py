@@ -8,7 +8,7 @@ import os
 
 
 @for_all_pairs
-def check_logs_formats(id_agent, agent, id_robot, robot):
+def check_logs_formats(id_agent, agent, id_robot, robot): #@UnusedVariable
 
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config'))
