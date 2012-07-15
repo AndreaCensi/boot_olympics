@@ -1,8 +1,9 @@
-from reprep import Report
-from . import save_report
-from bootstrapping_olympics.library.robots.equiv_robot import EquivRobot
-from bootstrapping_olympics.programs.manager.meat.servo.utils import get_vsim_from_robot
-from reprep.constants import MIME_PDF
+from . import save_report, logger
+from bootstrapping_olympics.library.robots import EquivRobot
+from bootstrapping_olympics.programs.manager.meat import get_vsim_from_robot
+from bootstrapping_olympics.utils.system_execution import system_cmd_show
+from reprep import MIME_PDF, MIME_SVG, Report
+import os
 
 
 def publish_report_robot(data_central, id_robot, save_pickle=False):
@@ -59,7 +60,8 @@ def add_vehicle_info(vsim, report):
                        bgcolor=None,
                        show_world=False)
 
-    from vehicles_cairo.write_to_file import vehicles_cairo_display_pdf
+    from vehicles_cairo.write_to_file \
+        import vehicles_cairo_display_pdf, vehicles_cairo_display_svg
     
     shots = {
          'body': {},
@@ -74,4 +76,12 @@ def add_vehicle_info(vsim, report):
             p = dict(**plot_params)
             p.update(options)
             vehicles_cairo_display_pdf(filename, sim_state=sim_state, **p)
-
+            try:
+                cmd = ['/usr/bin/pdfcrop', filename, filename]
+#                system_cmd_show(".", cmd, shell=True)
+                #os.system(" ".join(cmd))
+            except Exception as e:
+                logger.error(str(e))
+                raise
+        with sec_vehicle.data_file(name + '_svg', MIME_SVG) as filename:
+            vehicles_cairo_display_svg(filename, sim_state=sim_state, **p)

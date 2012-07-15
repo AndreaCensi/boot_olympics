@@ -61,7 +61,7 @@ class Publisher:
         '''
 
     # TODO: make this abstract   
-    def section(self, section_name, cols=None): #@UnusedVariable
+    def section(self, section_name, caption=None, cols=None): #@UnusedVariable
         return Section(self, section_name)
 
 
@@ -92,6 +92,6 @@ class Section():
         with self.other.plot(self.concat(name), **args) as pylab:
             yield pylab
 
-    def section(self, section_name):
-        return Section(self, section_name)
+    def section(self, section_name, caption=None):
+        return Section(self, section_name, caption=caption)
 

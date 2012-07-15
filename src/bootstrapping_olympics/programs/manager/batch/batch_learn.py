@@ -2,13 +2,9 @@
 from . import (default_expl_videos, default_servo_videos, default_servonav_videos,
     contract)
 from .. import (create_video, servo_stats_report, simulate, task_predict, logger,
-    learn_log, publish_once, np, task_servo, task_servonav)
+    learn_log, publish_once, np, task_servo, task_servonav, publish_report_robot,
+    servo_stats_summary, predict_report)
 from bootstrapping_olympics import UnsupportedSpec
-from bootstrapping_olympics.programs.manager.meat.predict import predict_report
-from bootstrapping_olympics.programs.manager.meat.report_robot import (
-    publish_report_robot)
-from bootstrapping_olympics.programs.manager.meat.servo.summaries import (
-    servo_stats_summary)
 from conf_tools import SemanticMistake
 import itertools
 
@@ -157,7 +153,7 @@ class TaskRegister:
               id_robot=id_robot, save_pickle=True,
              job_id='report-robot-%s' % (id_robot))
         
-    def add_tasks_predict(self, id_agent, id_robot):
+    def add_tasks_predict(self, id_agent, id_robot, save_pickle=True):
         has_predictor = self.agent_has_predictor(id_agent)
         if not has_predictor:
             #logger.debug('Agent %s does not support predicting.'
@@ -175,7 +171,7 @@ class TaskRegister:
         
         self.compmake_job(predict_report, data_central=self.data_central,
                              id_agent=id_agent, id_robot=id_robot,
-                             statistics=statistics,
+                             statistics=statistics, save_pickle=save_pickle,
              job_id='report-predict-%s-%s' % (id_robot, id_agent))
 
     def add_learning(self, id_robot, id_agent, num_ep_expl, explorer, # XXX

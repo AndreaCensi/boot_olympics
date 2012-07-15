@@ -32,7 +32,7 @@ class ReprepPublisher(Publisher):
 
     @contract(name='str', value='array', filter='str', caption='None|str')
     def array_as_image(self, name, value,
-                       filter='posneg_zoom', #@ReservedAssignment # XXX: config
+                       filter='posneg', #@ReservedAssignment # XXX: config
                        filter_params={},
                        caption=None): #@ReservedAssignment
         # try image XXX check uint8
@@ -61,7 +61,7 @@ class ReprepPublisher(Publisher):
         with f.plot(name, caption=caption, **args) as pylab:
             yield pylab
 
-    def section(self, section_name, cols=default_max_cols):
-        child = self.r.node(section_name)
+    def section(self, section_name, cols=default_max_cols, caption=None):
+        child = self.r.node(section_name, caption=caption)
         return ReprepPublisher(report=child, cols=cols)
 

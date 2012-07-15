@@ -22,3 +22,4 @@ from .publish_output import *
 from .log_learn import *
 from .predict import *
 from .report_robot import *
+from .predict import *

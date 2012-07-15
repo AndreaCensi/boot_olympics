@@ -2,7 +2,7 @@ from . import load_agent_state, np
 from contracts import describe_type
 from . import save_report
 
-__all__ = ['task_predict']
+__all__ = ['task_predict', 'predict_report']
 
 
 def task_predict(data_central, id_agent, id_robot):
@@ -51,7 +51,6 @@ def predict_report(data_central, id_agent, id_robot, statistics, save_pickle=Fal
     from reprep import Report
     r = Report(basename)
     publisher = ReprepPublisher(report=r)
-
     y_dot_stats.publish(publisher.section('y_dot'))
     y_dot_sign_stats.publish(publisher.section('y_dot_sign'))
 
