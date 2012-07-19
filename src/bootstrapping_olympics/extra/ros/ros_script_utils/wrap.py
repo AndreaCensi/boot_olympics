@@ -1,9 +1,10 @@
-from .. import rospy
+
 import sys
 import traceback
 
 
 def wrap_ros_script(function):
+    from .. import rospy
     try:
         function()
         sys.exit(0)

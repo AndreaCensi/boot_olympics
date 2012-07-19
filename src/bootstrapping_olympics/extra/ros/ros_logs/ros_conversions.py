@@ -1,5 +1,8 @@
 from . import contract
-from .. import BootstrappingObservations
+try:
+    from .. import BootstrappingObservations
+except:  # allow to run nose even if ros is not installed
+    pass
 from bootstrapping_olympics.utils import yaml_dump_inline
 
 

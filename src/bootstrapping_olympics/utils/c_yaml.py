@@ -95,7 +95,7 @@ def check_pure_structure_detailed(s, context=None):
             check_pure_structure_detailed(v, context)
             context.pop()
     else:
-        msg = ('Invalid type %s for YAML serialization.\n%s' %
+        msg = ('Invalid type %s for YAML serialization.\n%s' % 
                (describe_type(s), "\n".join(context)))
         raise ValueError(msg)
 

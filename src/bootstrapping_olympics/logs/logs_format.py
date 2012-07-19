@@ -1,7 +1,7 @@
 from . import BootStream, logger
 from abc import abstractmethod, ABCMeta
 import os
-import pickle
+import cPickle as pickle
 
 
 class LogsFormat:

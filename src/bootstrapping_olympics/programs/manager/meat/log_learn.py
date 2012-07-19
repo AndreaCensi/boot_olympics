@@ -2,7 +2,6 @@ from . import load_agent_state, publish_agent_output, logger
 from bootstrapping_olympics import AgentInterface
 from bootstrapping_olympics.utils import InAWhile, UserError
 import logging
-from bootstrapping_olympics.interfaces.live_plugin import LivePlugin
 
 
 def learn_log(data_central, id_agent, id_robot,
@@ -90,10 +89,9 @@ def learn_log(data_central, id_agent, id_robot,
     tracker = InAWhile(interval_print)
 
     # Initialize plugins
-    init_data = LivePlugin.InitData(data_central=data_central,
-                                   id_agent=id_agent, id_robot=id_robot)
     for plugin in live_plugins:
-        plugin.init(init_data)
+        plugin.init(dict(data_central=data_central,
+                         id_agent=id_agent, id_robot=id_robot))
 
     for stream in streams:
         # Check if all learned
@@ -143,11 +141,8 @@ def learn_log(data_central, id_agent, id_robot,
                                     basename='%05d' % state.num_observations)
 
             # Update plugins
-            update_data = LivePlugin.UpdateData(agent=agent,
-                                                robot=None,
-                                                obs=obs)
             for plugin in live_plugins:
-                plugin.update(update_data)
+                plugin.update(dict(agent=agent, robot=None, obs=obs))
 
         state.id_episodes.update(to_learn)
 

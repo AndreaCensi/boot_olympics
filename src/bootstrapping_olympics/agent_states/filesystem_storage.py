@@ -43,6 +43,7 @@ class StorageFilesystem:
             raise
 
     def set(self, key, value): #@ReservedAssignment
+        """ Return a dictionary with some statistics """
         if not StorageFilesystem.checked_existence:
             StorageFilesystem.checked_existence = True
             if not os.path.exists(self.basepath):
@@ -61,8 +62,9 @@ class StorageFilesystem:
             #print('Warning; tmp file %r exists (write not succeeded)' 
             # % filename_old)
             os.unlink(filename_old)
-
+            
         start = time.time()
+        start_clock = time.clock()
         try:
             with open(filename_new, 'wb') as f:
                 pickle.dump(value, f, pickle.HIGHEST_PROTOCOL)
@@ -84,11 +86,24 @@ class StorageFilesystem:
         assert os.path.exists(filename)
         assert not os.path.exists(filename_new)
         assert not os.path.exists(filename_old)
-
+        
         duration = time.time() - start
         if PRINT_STATS:
             length = 0
             print_stats('    set', key, length, duration)
+
+        stats = {}
+        stats['duration'] = time.time() - start 
+        stats['clock'] = time.clock() - start_clock
+        stats['size'] = os.stat(filename).st_size
+        return stats
+    
+    def stats_string(self, stats):
+        """ Formats the string returned by set() """
+        return ("Size %.2fMB written in %.2fs (clock: %.2f)" % 
+                (stats['size'] * 0.000001, stats['duration'], stats['clock']))
+         
+            
 
     def delete(self, key):
         filename = self.filename_for_key(key)

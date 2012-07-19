@@ -1,4 +1,5 @@
 from . import BagLogWriter, bag_get_bootstrapping_stream, bag_read
+from .. import boot_has_ros
 from bootstrapping_olympics import LogsFormat
 from contextlib import contextmanager
 import os
@@ -47,4 +48,5 @@ class ROSLogsFormat(LogsFormat):
         else:
             writer.close()
 
-LogsFormat.formats['bag'] = ROSLogsFormat()
+if boot_has_ros:
+    LogsFormat.formats['bag'] = ROSLogsFormat()

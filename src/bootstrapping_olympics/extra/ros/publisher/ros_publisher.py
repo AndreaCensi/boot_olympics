@@ -1,5 +1,8 @@
-from .. import (rospy, ROSImage, Float32MultiArray, MultiArrayLayout,
+try:
+    from .. import (rospy, ROSImage, Float32MultiArray, MultiArrayLayout,
     MultiArrayDimension)
+except: # allow to run nose even if ros is not installed
+    pass
 from bootstrapping_olympics import Publisher
 from contextlib import contextmanager
 from contracts import contract

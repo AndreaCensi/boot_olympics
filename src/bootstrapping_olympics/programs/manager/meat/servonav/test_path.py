@@ -1,15 +1,16 @@
 from bootstrapping_olympics.configuration.master import BootOlympicsConfig
 from bootstrapping_olympics.programs.manager.meat.servonav.find_path import (
     get_grid)
-from vehicles import VehiclesConfig
-from vehicles_cairo import (cairo_ref_frame, cairo_rototranslate,
-    vehicles_cairo_display_png)
 from geometry import SE2_from_SE3
 from pprint import pprint
 from bootstrapping_olympics.utils import yaml_dump
 
 
 def main():
+    from vehicles_cairo import (cairo_ref_frame, cairo_rototranslate,
+                                vehicles_cairo_display_png)
+    from vehicles import VehiclesConfig
+
     # Instance robot object
     id_robot = 'r_cam_A'
     filename = 'test.png'

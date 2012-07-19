@@ -9,13 +9,29 @@ def safe_makedirs(dirname):
 
 
 def safe_symlink(source, linkname):
-    source = os.path.relpath(source, os.path.dirname(linkname))
     if os.path.lexists(linkname):
         os.unlink(linkname)
     assert not os.path.lexists(linkname)
 
+    rel_link = os.path.relpath(os.path.realpath(source),
+                              os.path.dirname(os.path.realpath(linkname)))
+    abs_link = os.path.realpath(source)
+    
+    if len(rel_link) > len(abs_link):
+        link = abs_link
+    else:
+        link = rel_link
+        
     # TODo: check that it was a link
-    os.symlink(source, linkname)
+    os.symlink(link, linkname)
+
+#    print('destination: %r' % source)
+#    print('   filename: %r' % linkname)
+#    print('destination(R): %r' % os.path.realpath(source))
+#    print('   filename(R): %r' % os.path.realpath(linkname))
+#    print('    rel link: %r ' % rel_link)
+#    print('    abs link: %r ' % abs_link)
+#    print('      link: %r ' % link)
 
 
 def mkdirs_thread_safe(dst):

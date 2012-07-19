@@ -1,7 +1,10 @@
-from .. import BootstrappingCommands, BootstrappingObservations, rospy
-from ..publisher import ROSPublisher
-from ..ros_logs import ROS2Python, boot_spec_from_ros_message
-from ..ros_script_utils import RospyLogger
+try:
+    from .. import BootstrappingCommands, BootstrappingObservations, rospy
+    from ..publisher import ROSPublisher
+    from ..ros_logs import ROS2Python, boot_spec_from_ros_message
+    from ..ros_script_utils import RospyLogger
+except:  # allow to run nose even if ros is not installed
+    pass
 from bootstrapping_olympics import AgentInterface
 from bootstrapping_olympics.configuration import check_valid_agent_config
 from bootstrapping_olympics.programs.manager.meat import (DataCentral,

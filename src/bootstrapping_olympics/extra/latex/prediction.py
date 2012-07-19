@@ -1,6 +1,7 @@
 from . import create_robot_figure, fig_predict_corr, get_resources_dir
 from latex_gen import latex_fragment
 import sys
+from . import bvid
 
 
 def prediction_report(id_set, robots, agents, width='3cm'):
@@ -11,7 +12,7 @@ def prediction_report(id_set, robots, agents, width='3cm'):
             with tabular.row() as header:
                 header.cell_tex() 
                 for agent in agents:
-                    header.cell_tex(agent)
+                    header.cell_tex(bvid(agent))
     
             for robot in robots:
                 with tabular.row() as row:

@@ -1,5 +1,8 @@
 from . import logger, np
-from .. import BootstrappingObservations_datatype, rosbag
+try:
+    from .. import BootstrappingObservations_datatype, rosbag
+except: # allow to run nose even if ros is not installed
+    pass 
 from bootstrapping_olympics import (BootInvalidValue, BootSpec, EpisodeSummary,
     BootStream)
 from bootstrapping_olympics.utils import yaml_load

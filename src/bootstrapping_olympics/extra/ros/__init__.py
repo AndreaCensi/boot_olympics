@@ -1,16 +1,22 @@
 """ Functions for reading/writing ROS logs. """
 from .. import np, contract, getLogger
-
+import traceback
 
 logger = getLogger(__name__)
 
-BootstrappingObservations_datatype = \
-        'bootstrapping_adapter/BootstrappingObservations'
 
+BootstrappingObservations_datatype = 'bootstrapping_adapter/BootstrappingObservations' #@UnusedVariable
 
 try:
     import roslib #@UnresolvedImport
-    roslib.load_manifest('bootstrapping_adapter')
+    try:
+        roslib.load_manifest('bootstrapping_adapter')
+    except Exception as e:
+        logger.error('Cannot load our package bootstrapping_adapter (%s)' % e)
+        logger.error('Probably you need: \n'
+                     'export ROS_PACKAGE_PATH='
+                     '${B11_SRC}/bootstrapping_olympics/ros-packages:${ROS_PACKAGE_PATH}')
+        raise 
     from ros import rospy
     from ros import rosbag
     from bootstrapping_adapter.srv import BootstrappingCommands
@@ -25,11 +31,12 @@ try:
     boot_has_ros = True
     ros_error = None
 
-except ImportError as e:
+except (ImportError, Exception) as e:
     boot_has_ros = False
     ros_error = e
     # export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:`pwd`/ros-packages/
-    logger.error('ROS support not available (%s).' % ros_error)
+    logger.error('ROS support not available')
+    logger.error(traceback.format_exc())
 
 else:
     from .ros_logs import *

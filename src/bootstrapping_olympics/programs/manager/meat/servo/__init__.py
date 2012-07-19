@@ -4,7 +4,7 @@ logger = getLogger(__name__)
 
 from .utils import *
 from .bookkeeping import *
-from .run_simulation import *
+from .m_run_simulation import *
 from .summaries import *
 from .report import *
 

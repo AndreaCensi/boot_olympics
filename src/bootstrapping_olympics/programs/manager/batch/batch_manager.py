@@ -25,23 +25,23 @@ def batch_process_manager(data_central, which_sets, command=None):
 
     sets_available = batch_config.sets.keys()
 
-    logger.info('Available: %r' % sets_available)
-    logger.info('Sets:      %r' % which_sets)
-    which_sets = expand_string(which_sets, options=sets_available)
+    #logger.info('Available: %r' % sets_available)
+    #logger.info('Sets:      %r' % which_sets)
+    which_sets_int = expand_string(which_sets, options=sets_available)
 
-    if not which_sets:
-        msg = 'Specified sets not found.'
+    if not which_sets_int:
+        msg = 'Specified sets %r not found.' % which_sets
         msg += ' Available: %s' % sets_available
         raise UserError(msg)
 
-    logger.info('Expanded:  %r' % which_sets)
+    #logger.info('Expanded:  %r' % which_sets)
 
-    for x in which_sets:
+    for x in which_sets_int:
         if not x in sets_available:
             msg = 'Set %r not available.' % x
             raise UserError(msg)
 
-    if len(which_sets) == 1:
+    if len(which_sets_int) == 1:
         combid = which_sets[0]
     else:
         combid = '-'.join(which_sets)
@@ -53,8 +53,11 @@ def batch_process_manager(data_central, which_sets, command=None):
     data_central_set = DataCentral(root_set)
 
     # add symbolic links to logs and config
-    safe_symlink(os.path.join(root, 'config'),
-               os.path.join(root_set, 'config'))
+    main_config = os.path.realpath(os.path.join(root, 'config'))
+    set_config = os.path.join(root_set, 'config')
+    print('main_config: %r' % main_config)
+    print('set_Config:  %r' % set_config)
+    safe_symlink(main_config, set_config) 
 
     safe_makedirs(os.path.join(root_set, 'logs'))
     safe_symlink(os.path.join(root, 'logs'),

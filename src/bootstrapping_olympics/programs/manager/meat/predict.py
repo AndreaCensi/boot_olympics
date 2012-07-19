@@ -1,13 +1,10 @@
-from . import load_agent_state, np
+from . import load_agent_state, np, save_report
 from contracts import describe_type
-from . import save_report
 
 __all__ = ['task_predict', 'predict_report']
 
 
-def task_predict(data_central, id_agent, id_robot):
-    ''' Returns the list of the episodes IDs simulated. '''
-    # Instance agent object    
+def task_predict(data_central, id_agent, id_robot, live_plugins=[]):
     # TODO FIXME: remove dependency on boot_agents
     from boot_agents.utils import PredictionStats
     from bootstrapping_olympics.extra.reprep import (boot_has_reprep,
@@ -28,11 +25,23 @@ def task_predict(data_central, id_agent, id_robot):
     streams = log_index.get_streams_for_robot(id_robot)
     y_dot_stats = PredictionStats('y_dot', 'y_dot_pred')
     y_dot_sign_stats = PredictionStats('y_dot_sign', 'y_dot_pred_sign')
+    
+    # Initialize plugins
+    live_plugins = [data_central.get_bo_config().live_plugins.instance(x) 
+                    for x in live_plugins]
+    for plugin in live_plugins:
+        plugin.init(dict(data_central=data_central,
+                         id_agent=id_agent, id_robot=id_robot))
 
     for sample in predict_all_streams(streams=streams, predictor=predictor):
         compute_errors(sample)
         y_dot_stats.update(sample['y_dot'], sample['y_dot_pred'])
         y_dot_sign_stats.update(sample['y_dot_sign'], sample['y_dot_pred_sign'])
+        
+        # Update plugins
+        for plugin in live_plugins:
+            plugin.update(dict(agent=agent, robot=None, obs=sample['data'],
+                            predict=sample))
     
     statistics = dict(y_dot_stats=y_dot_stats,
                       y_dot_sign_stats=y_dot_sign_stats,

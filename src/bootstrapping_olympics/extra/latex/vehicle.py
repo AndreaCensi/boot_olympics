@@ -5,10 +5,6 @@ import os
 import sys
 
 
-def bvrob(id_robot):
-    print('Robot %s' % id_robot)
-
-
 def bvvehicleimage(id_set, id_robot, width_em=3.5):
     with latex_fragment(sys.stdout, graphics_path=get_resources_dir()) as frag:
         create_robot_figure(frag, id_set, id_robot, width_em)
@@ -18,14 +14,14 @@ def create_robot_figure(frag, id_set, id_robot, width_em=3.5):
     report = load_report_robot(id_set, id_robot)
     
     id_world = report['environment/id_world'].raw_data
-    id_vehicle = report['vehicle/id_vehicle'].raw_data
+    #id_vehicle = report['vehicle/id_vehicle'].raw_data
     
     has_nuisances = report.has_child('nuisances')
     
     if has_nuisances:
         obs_nuisances = report['nuisances/observations'].raw_data
         for obs_id in obs_nuisances:
-            frag.tex('$\\text{%s} \\cdot$' % obs_id)
+            frag.tex('$\\bvid{%s} \\cdot$' % obs_id)
     
     # TODO: check vehicle
     vehicle = report['vehicle/body_data_compact']
@@ -43,8 +39,8 @@ def create_robot_figure(frag, id_set, id_robot, width_em=3.5):
     if has_nuisances:
         cmd_nuisances = report['nuisances/commands'].raw_data
         for cmd_id in cmd_nuisances:
-            frag.tex('$ \\cdot \\text{%s}$' % cmd_id)
+            frag.tex('$ \\cdot \\bvid{%s}$' % cmd_id)
     
-    frag.tex('$ \\leftrightarrow \\text{%s} $' % id_world)
+    frag.tex('$ \\leftrightarrow \\bvid{%s} $' % id_world)
     
     

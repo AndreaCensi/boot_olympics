@@ -2,6 +2,7 @@ from bootstrapping_olympics.interfaces import LivePlugin
 from procgraph.core.registrar import default_library, Library
 from procgraph.core.model_loader import pg_look_for_models
 from contracts import contract
+from .. import logger
 
 __all__ = ['ProcgraphBridge']
 
@@ -27,9 +28,9 @@ class ProcgraphBridge(LivePlugin):
             __import__(module)
 
     def init(self, init_data):
-        data_central = init_data.data_central
-        id_agent = init_data.id_agent
-        id_robot = init_data.id_robot
+        data_central = init_data['data_central']
+        id_agent = init_data['id_agent']
+        id_robot = init_data['id_robot']
         ds = data_central.get_dir_structure()
         basename = ds.get_video_basename(id_robot=id_robot,
                                          id_agent=id_agent,
@@ -45,10 +46,10 @@ class ProcgraphBridge(LivePlugin):
 
         # Give config passed by user
         config = dict(**self.code[1])
+        
+        can_provide = dict(**init_data)
+        can_provide['basename'] = basename
 
-        # These we can provide
-        can_provide = dict(basename=basename,
-                           id_agent=id_agent, id_robot=id_robot)
         # Finding what configuration it wants
         block_type = self.code[0]
         # This is the config that it can accept
@@ -62,16 +63,22 @@ class ProcgraphBridge(LivePlugin):
         self.model = library.instance(block_type, name='bridge',
                                       config=config)
         self.model.init()
-
-    def update(self, update_data):
-        signals = dict(agent=update_data.agent,
-                     robot=update_data.robot,
-                     obs=update_data.obs)
-
-        timestamp = update_data.obs['timestamp']
-        for k, v in signals.items():
-            self.model.from_outside_set_input(k, v, timestamp)
-
+        
+        self.first_time = True
+        
+    @contract(update_data='dict')
+    def update(self, update_data): 
+        timestamp = update_data['obs']['timestamp']
+        for k, v in update_data.items():
+            if not self.model.is_valid_input_name(k):
+                if self.first_time:
+                    logger.info('%r: not sending' % k)
+            else:
+                if self.first_time:
+                    logger.info('%r: sending' % k)
+                self.model.from_outside_set_input(k, v, timestamp)
+        self.first_time = False
+        
         while self.model.has_more():
             self.model.update()
 

@@ -33,10 +33,15 @@ class LogIndex:
     def has_streams_for_robot(self, id_robot):
         return id_robot in self.robots2streams
 
+    @contract(returns='list(str)')
+    def list_robots(self):
+        """ Returns a list of the robots """
+        return list(self.robots2streams.keys())
+
     @contract(returns='list')
     def get_streams_for_robot(self, id_robot):
         if not id_robot in self.robots2streams:
-            raise ValueError('No streams for robot %r; available %s.' %
+            raise ValueError('No streams for robot %r; available %s.' % 
                              (id_robot, self.robots2streams.keys()))
         return self.robots2streams[id_robot]
 
@@ -133,7 +138,7 @@ def get_all_log_files(directory):
         files.extend(locate_files(directory, pattern))
 
     if not files:
-        msg = ('No log files found in %r (extensions: %s).' %
+        msg = ('No log files found in %r (extensions: %s).' % 
                (directory, extensions))
         logger.warning(msg)
 
@@ -143,7 +148,11 @@ def get_all_log_files(directory):
 def index_directory(directory, ignore_cache=False):
     ''' Returns a hash filename -> list of streams. '''
     file2streams = {}
-    for filename in get_all_log_files(directory):
+    logger.debug('Indexing directory %r (ignore cache: %s).' % 
+                 (directory, ignore_cache))
+    files = get_all_log_files(directory)
+    logger.debug('Found %d files. Indexing...' % len(files))
+    for filename in files:
         reader = LogsFormat.get_reader_for(filename)
         try:
             file2streams[filename] = \
@@ -155,6 +164,8 @@ def index_directory(directory, ignore_cache=False):
         except None: # XXX
             logger.error('Invalid data in file %r.' % filename)
             logger.error(traceback.format_exc())
+
+    logger.debug('... done indexing.')
 
     return file2streams
 
@@ -176,10 +187,10 @@ def index_robots(file2streams):
                 stream_spec = stream.get_spec()
                 if str(stream_spec) != str(robot2spec[id_robot]):
                     msg = 'Warning! You got your logs mixed up. \n'
-                    msg += ('Problem spec in:\n\t%s\nis\n\t%s\n' %
+                    msg += ('Problem spec in:\n\t%s\nis\n\t%s\n' % 
                            (stream, stream_spec))
                     msg += ('and this is different from:\n\t%s\n'
-                           'found in e.g.,:\n\t%s' %
+                           'found in e.g.,:\n\t%s' % 
                            (robot2spec[id_robot], robot2streams[id_robot][0]))
                     msg += '\nI will skip this stream.'
                     logger.error(msg)

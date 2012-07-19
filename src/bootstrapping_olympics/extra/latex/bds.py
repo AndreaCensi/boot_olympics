@@ -82,12 +82,10 @@ def fig_predict_corr(fig, id_set, agent, robot, width):
     display_correlation(fig, R, gid, width)
     
     
-def bds_learn_reportA(id_set, agent, robot, draft=False, width='3cm'):
+def bds_learn_reportA(id_set, agent, robot, width='3cm'):
     prefix = '%s-%s-%s' % (id_set, robot, agent)
     report = load_report_phase(id_set=id_set,
                          agent=agent, robot=robot, phase='learn')
-
-    #    sys.stderr.write(report.format_tree())
     
     assert isinstance(report, Node)
 

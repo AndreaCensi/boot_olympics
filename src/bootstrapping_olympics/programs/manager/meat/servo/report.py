@@ -1,7 +1,8 @@
-from . import np, logger
-from reprep.plot_utils.styles import (style_ieee_fullcol_xy,
+from . import np
+from reprep.plot_utils import (style_ieee_fullcol_xy,
     style_ieee_halfcol_xy)
 from geometry.poses import translation_from_SE2
+from bootstrapping_olympics.programs.manager.meat import save_report
 
 
 def servo_stats_report(data_central, id_agent, id_robot, summaries,
@@ -150,10 +151,9 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries,
                                        id_robot=id_robot,
                                        id_state='servo_stats',
                                        phase=phase)
-    res_rd = ds.get_report_res_dir(id_agent=id_agent,
+    resources_dir = ds.get_report_res_dir(id_agent=id_agent,
                                        id_robot=id_robot,
                                        id_state='servo_stats',
                                        phase=phase)
-#    filename = os.path.join(report_dir, 'servo_stats_report.html')
-    logger.info('Writing output to %r.' % filename)
-    r.to_html(filename, resources_dir=res_rd)
+    save_report(data_central, r, filename, resources_dir, save_pickle=True)
+

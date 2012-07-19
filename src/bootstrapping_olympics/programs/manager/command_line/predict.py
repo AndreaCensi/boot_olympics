@@ -14,6 +14,12 @@ def cmd_task_predict(data_central, argv):
 
     parser.add_option("--interval_print", type='float', default=5,
                       help='Frequency of debug messages.')
+
+    parser.add_option("--plugin", default=[],
+                      action="append", type="string",
+                      help="Run the specified plugin model during "
+                           "learning. (eg, visualization)")
+
     (options, args) = parser.parse_args(argv)
 
     check_no_spurious(args)
@@ -23,6 +29,7 @@ def cmd_task_predict(data_central, argv):
     id_robot = options.robot
     stats = task_predict(data_central,
              id_agent=id_agent,
-             id_robot=id_robot)
+             id_robot=id_robot,
+             live_plugins=options.plugin)
 
     predict_report(data_central, id_agent, id_robot, stats)

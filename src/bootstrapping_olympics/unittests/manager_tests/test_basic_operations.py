@@ -71,7 +71,12 @@ def check_basic_ops(id_agent, agent, id_robot, robot): #@UnusedVariable
                    interval_print=None,
                    num_episodes_with_robot_state=0)
 
-        task_predict(data_central,
+        try: 
+            import boot_agents #@UnusedImport
+            task_predict(data_central,
              id_agent=id_agent,
              id_robot=id_robot)
+        except:
+            pass
+
 
