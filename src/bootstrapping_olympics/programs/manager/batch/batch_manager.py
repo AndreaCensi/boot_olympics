@@ -55,8 +55,6 @@ def batch_process_manager(data_central, which_sets, command=None):
     # add symbolic links to logs and config
     main_config = os.path.realpath(os.path.join(root, 'config'))
     set_config = os.path.join(root_set, 'config')
-    print('main_config: %r' % main_config)
-    print('set_Config:  %r' % set_config)
     safe_symlink(main_config, set_config) 
 
     safe_makedirs(os.path.join(root_set, 'logs'))

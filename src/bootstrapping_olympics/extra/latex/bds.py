@@ -1,5 +1,5 @@
 from . import (create_robot_figure, load_report_phase, png_data, jpg_data,
-    get_sensel_pgftable, get_predict_corr, get_resources_dir)
+    get_sensel_pgftable, get_resources_dir)
 from contracts import contract
 from latex_gen import latex_fragment
 from reprep import posneg, rgb_zoom, MIME_PNG, MIME_JPG, Node, MIME_PLAIN
@@ -30,13 +30,6 @@ def display_tensor_with_zoom(fig, V, gid, label, width, xlabel, ylabel, zoom=16,
         fig.tex('\\tensorFigure{%s}{%s}{%s}{%s}{%s}{%s}{%s}' % 
                 (gid, width, xlabel, ylabel, label, '', ''))
 
-
-@contract(R='array[N]')
-def display_correlation(fig, R, gid, width):
-    table = get_sensel_pgftable(R, 'corr', 'Correlation for %s' % gid)
-    fig.save_graphics_data(table, MIME_PLAIN, gid)
-    fig.tex('\\corrFigure{%s}{%s}' % (gid, width))
-    
 
 @contract(V='array[NxNxK]')
 def display_3tensor(fig, V, gid_pattern, label_patterns, caption_patterns,
@@ -74,14 +67,48 @@ def display_k_tensor(fig, V, gid_pattern, label_patterns, caption_patterns,
 
             sub.hfill()
       
-      
-def fig_predict_corr(fig, id_set, agent, robot, width):
-    prefix = '%s-%s-%s' % (id_set, robot, agent)
-    gid = prefix + '-pred-corr'
-    R = get_predict_corr(id_set, agent, robot)
-    display_correlation(fig, R, gid, width)
+
+def template_bds_P(frag, id_set, id_robot, id_agent, width='3cm'):
+    report = load_report_phase(id_set=id_set, agent=id_agent,
+                               robot=id_robot, phase='learn')
+    gid = '%s-%s-%s-P' % (id_set, id_robot, id_agent)
+    node = report['estimator/tensors/P/png']
+    frag.save_graphics_data(node.raw_data, node.mime, gid)
+    tensor_figure(frag, gid=gid, xlabel='s', ylabel='v', width=width,
+                  label='\TPe^{sv}')
+
+
+def template_bds_T(frag, id_set, id_robot, id_agent, k, width='3cm'):
+    report = load_report_phase(id_set=id_set, agent=id_agent,
+                               robot=id_robot, phase='learn')
+    gid = '%s-%s-%s-T%d' % (id_set, id_robot, id_agent, k)
+    V = report['estimator/tensors/T/value'].raw_data
+    Vk = V[:, :, k]
+    label = '\TTe^{s\,v\,%d}' % k
+    xlabel = 's'
+    ylabel = 'v'
+    display_tensor_with_zoom(frag, Vk, gid, label, width, xlabel, ylabel,
+                             zoom=16, x=0.15, w=0.03)
+                             
+
+def template_bds_M(frag, id_set, id_robot, id_agent, k, width='3cm'):
+    report = load_report_phase(id_set=id_set, agent=id_agent,
+                               robot=id_robot, phase='learn')
+    gid = '%s-%s-%s-M%d' % (id_set, id_robot, id_agent, k)
+    V = report['estimator/model/M/value'].raw_data
+    Vk = V[:, :, k]
+    label = '\TMe^s_{v\,%d}' % k
+    xlabel = 's'
+    ylabel = 'v'
+    display_tensor_with_zoom(frag, Vk, gid, label, width, xlabel, ylabel,
+                             zoom=16, x=0.15, w=0.03)
+                             
+                             
+def tensor_figure(where, gid, xlabel, ylabel, width, label):
+    where.tex('\\tensorFigure{%s}{%s}{%s}{%s}{%s}{}{}' % 
+              (gid, width, xlabel, ylabel, label))
     
-    
+        
 def bds_learn_reportA(id_set, agent, robot, width='3cm'):
     prefix = '%s-%s-%s' % (id_set, robot, agent)
     report = load_report_phase(id_set=id_set,
@@ -89,10 +116,6 @@ def bds_learn_reportA(id_set, agent, robot, width='3cm'):
     
     assert isinstance(report, Node)
 
-    def tensor_figure(where, gid, xlabel, ylabel, width, label):
-        where.tex('\\tensorFigure{%s}{%s}{%s}{%s}{%s}{}{}' % 
-                  (gid, width, xlabel, ylabel, label))
-        
     def save_data(node, gid):
         fig.save_graphics_data(node.raw_data, node.mime, gid)
 
@@ -103,6 +126,7 @@ def bds_learn_reportA(id_set, agent, robot, width='3cm'):
         with frag.figure(caption=caption, label=label, placement="p") as fig:
             tsize = '3cm'
 
+            fig.hfill()
             with fig.subfigure(caption="\\texttt{%s}" % robot,
                                label='%s-%s' % (label, 'vehicle')) as sub:
         
@@ -117,6 +141,7 @@ def bds_learn_reportA(id_set, agent, robot, width='3cm'):
                              caption_patterns='$\TUe^{s}_{%d}$',
                              width=tsize, xlabel='s', ylabel='\TUe^{s}')
 
+            fig.hfill()
             fig.parbreak()
             
             fig.hfill()
@@ -150,6 +175,7 @@ def bds_learn_reportA(id_set, agent, robot, width='3cm'):
             fig.parbreak()
             
             fig.hfill()
+            from bootstrapping_olympics.extra.latex.prediction import fig_predict_corr
             with fig.subfigure(caption="correlation",
                                label='%s-%s' % (label, 'corr'))  as sub:
                 fig_predict_corr(sub, id_set, agent, robot, width)
@@ -161,6 +187,7 @@ def bds_learn_reportA(id_set, agent, robot, width='3cm'):
                             width=width,
                             label='\TMe^s_{v\,%d}',
                             xlabel='s', ylabel='v')
+            fig.hfill()
 
 
 def get_bds_summary(id_set, agent, robot):

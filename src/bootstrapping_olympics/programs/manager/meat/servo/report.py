@@ -1,15 +1,15 @@
 from . import np
-from reprep.plot_utils import (style_ieee_fullcol_xy,
-    style_ieee_halfcol_xy)
-from geometry.poses import translation_from_SE2
-from bootstrapping_olympics.programs.manager.meat import save_report
+from bootstrapping_olympics.programs.manager.meat.report_utils import save_report
 
 
 def servo_stats_report(data_central, id_agent, id_robot, summaries,
                        phase='servo_stats'):
     from reprep import Report
     from reprep.plot_utils import x_axis_balanced
-
+    from reprep.plot_utils import (style_ieee_fullcol_xy,
+        style_ieee_halfcol_xy)
+    from geometry import translation_from_SE2
+    
     if not summaries:
         raise Exception('Empty summaries')
 

@@ -37,3 +37,7 @@ from .vehicle import *
 
 from .bds import *
 from .prediction import *
+from .servo_stat import *
+from .templates import *
+from .templates_table import *
+

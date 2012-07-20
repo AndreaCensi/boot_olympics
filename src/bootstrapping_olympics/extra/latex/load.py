@@ -1,17 +1,7 @@
 """ Loads reports from disk """
-
 from . import get_sets_dir
 import cPickle
 import os
-
-
-def get_predict_corr(id_set, agent, robot):
-    report_predict = load_report_phase(id_set, agent, robot, 'predict')
-    #y_dot = report_predict['y_dot']
-    #sys.stderr.write(y_dot.format_tree())
-    R = report_predict['y_dot/R'].raw_data 
-    # R = np.cos(np.linspace(0, np.pi * 2, 240))
-    return R
 
 
 def load_report_phase(id_set, agent, robot, phase):

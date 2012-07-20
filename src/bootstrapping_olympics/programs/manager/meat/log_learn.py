@@ -15,7 +15,7 @@ def learn_log(data_central, id_agent, id_robot,
               live_plugins=[]):
     ''' If episodes is not None, it is a list of episodes id to learn. '''
 
-    logger.info('Learning episodes %r' % episodes)
+    #logger.info('Learning episodes %r' % episodes)
 
     log_index = data_central.get_log_index()
     if not log_index.has_streams_for_robot(id_robot):
