@@ -72,8 +72,18 @@ def template_bds_P(frag, id_set, id_robot, id_agent, width='3cm'):
     report = load_report_phase(id_set=id_set, agent=id_agent,
                                robot=id_robot, phase='learn')
     gid = '%s-%s-%s-P' % (id_set, id_robot, id_agent)
-    node = report['estimator/tensors/P/png']
-    frag.save_graphics_data(node.raw_data, node.mime, gid)
+    V = report['estimator/tensors/P/value'].raw_data
+    
+    n = V.shape[0]
+    rgb = posneg(V)
+    
+    if n > 50:
+        frag.save_graphics_data(jpg_data(rgb), MIME_JPG, gid)
+    else:
+        rgb = rgb_zoom(rgb, 16)
+        frag.save_graphics_data(png_data(rgb), MIME_PNG, gid)
+    
+#    frag.save_graphics_data(node.raw_data, node.mime, gid)
     tensor_figure(frag, gid=gid, xlabel='s', ylabel='v', width=width,
                   label='\TPe^{sv}')
 
@@ -102,6 +112,27 @@ def template_bds_M(frag, id_set, id_robot, id_agent, k, width='3cm'):
     ylabel = 'v'
     display_tensor_with_zoom(frag, Vk, gid, label, width, xlabel, ylabel,
                              zoom=16, x=0.15, w=0.03)
+
+
+def template_bds_N(frag, id_set, id_robot, id_agent, k, width='3cm'):
+    report = load_report_phase(id_set=id_set, agent=id_agent,
+                               robot=id_robot, phase='learn')
+    gid = '%s-%s-%s-N%d' % (id_set, id_robot, id_agent, k)
+    N = report['estimator/model/N/value'].raw_data
+    Nk = N[:, k]
+    xlabel = 's'
+    ylabel = '?'
+    # Nonnormalized
+    table = get_sensel_pgftable(Nk, 'value', gid) 
+    frag.save_graphics_data(table, MIME_PLAIN, gid)
+    # Normalized
+    gidn = gid + '-norm'
+    Nkn = Nk / np.max(np.abs(N))
+    table = get_sensel_pgftable(Nkn, 'valuen', gidn) 
+    frag.save_graphics_data(table, MIME_PLAIN, gidn)
+
+    frag.tex('\\tensorOnePlot{%s}{%s}{%s}{%s}{%s}' % 
+          (gid, width, xlabel, ylabel, ''))
                              
                              
 def tensor_figure(where, gid, xlabel, ylabel, width, label):

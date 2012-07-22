@@ -1,9 +1,8 @@
 from . import (bvid, logger, fig_predict_corr, create_robot_figure,
-               template_servo_stats_L2)
+    template_servo_stats_L2, template_bds_P, template_bds_T, template_bds_M,
+    template_bds_N)
 from bootstrapping_olympics.utils import x_not_found
 from collections import namedtuple
-from bootstrapping_olympics.extra.latex.bds import template_bds_P, \
-    template_bds_T, template_bds_M
 
 Template = namedtuple('Template', 'function necessary optional')
 
@@ -31,14 +30,17 @@ AllTemplates['bds_T'] = Template(template_bds_T,
 AllTemplates['bds_M'] = Template(template_bds_M,
                                  ['id_set', 'id_robot', 'id_agent', 'k'],
                                  ['width'])
+AllTemplates['bds_N'] = Template(template_bds_N,
+                                 ['id_set', 'id_robot', 'id_agent', 'k'],
+                                 ['width'])
 AllTemplates['string'] = Template(template_string, ['string'], [])
 AllTemplates['robot_figure'] = Template(create_robot_figure,
                                         ['id_set', 'id_robot'], ['width'])
 AllTemplates['predict_y_dot_corr'] = \
-    Template(fig_predict_corr, ['id_set', 'id_robot', 'id_agent'], [])
+    Template(fig_predict_corr, ['id_set', 'id_robot', 'id_agent'], ['width'])
 
 AllTemplates['servo_L2'] = \
-    Template(template_servo_stats_L2, ['id_set', 'id_robot', 'id_agent'], [])
+    Template(template_servo_stats_L2, ['id_set', 'id_robot', 'id_agent'], ['width'])
 
 
 def call_template(frag, params):

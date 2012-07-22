@@ -4,7 +4,7 @@ from .. import Constants
 from ..interfaces import AgentInterface, RobotInterface, RepresentationNuisance
 from conf_tools import ConfigMaster, GenericInstance, check_generic_code_desc
 import os
-from bootstrapping_olympics.interfaces.live_plugin import LivePlugin
+from bootstrapping_olympics import LivePlugin
 from bootstrapping_olympics.configuration.agents import check_valid_plugin_config
 
 
