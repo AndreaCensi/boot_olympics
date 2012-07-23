@@ -5,6 +5,7 @@ from bootstrapping_olympics.utils import (check_contained, expand_environment,
     substitute, mkdirs_thread_safe, warn_good_identifier, warn_good_filename)
 import os
 import tempfile
+from conf_tools.utils.friendly_paths import friendly_path
 
 
 class DirectoryStructure:
@@ -98,7 +99,7 @@ class DirectoryStructure:
         filename = tmp_filename.replace('.active', '')
 
         tmpfile.close()
-        logger.debug('Writing on file %r' % filename)
+        logger.debug('Writing on %r' % friendly_path(filename))
 
         warn_good_filename(filename)
         warn_good_filename(tmp_filename)

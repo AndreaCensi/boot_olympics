@@ -1,4 +1,4 @@
-from . import check_streamels_1D, np
+from . import check_streamels_1D, np, contract
 from bootstrapping_olympics import (UnsupportedSpec, RepresentationNuisance,
     NuisanceNotInvertible)
 
@@ -11,12 +11,12 @@ class Select(RepresentationNuisance):
         Works only for 1D streams.
     '''
 
-#    @contract(which='(int,>0)|seq[>0](int,>0)')
+    @contract(which='(int,>=0)|seq[>0](int,>=0)')
     def __init__(self, which):
         """
-            Initializes this sequence.
+            Initializes this nuisance.
             
-            :param which: either an integer or a sequence of integers
+            :param which: Either an integer or a sequence of integers.
         """
         self.which = which
 

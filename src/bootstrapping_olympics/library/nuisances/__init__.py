@@ -5,7 +5,6 @@ from .generic_scalar import *
 from .identity import *
 from .random_permutation import *
 from .linear import *
-from .flatten import *
 from .select import *
 from .discretize import *
 from .bits import *
@@ -16,3 +15,4 @@ from .normalize_minmax import *
 from .normalize_min import *
 from .nonlinear import *
 from .noise import *
+from .shape import *

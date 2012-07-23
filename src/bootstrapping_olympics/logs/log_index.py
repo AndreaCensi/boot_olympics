@@ -1,7 +1,9 @@
 from . import BootStream, logger, LogsFormat, contract
 from ..utils import natsorted
+from bootstrapping_olympics.utils import warn_long_time
 from collections import defaultdict
 from conf_tools import locate_files
+from conf_tools.utils import friendly_path
 import traceback
 
 __all__ = ['LogIndex']
@@ -139,7 +141,7 @@ def get_all_log_files(directory):
 
     if not files:
         msg = ('No log files found in %r (extensions: %s).' % 
-               (directory, extensions))
+               (friendly_path(directory), extensions))
         logger.warning(msg)
 
     return files
@@ -149,24 +151,29 @@ def index_directory(directory, ignore_cache=False):
     ''' Returns a hash filename -> list of streams. '''
     file2streams = {}
     logger.debug('Indexing directory %r (ignore cache: %s).' % 
-                 (directory, ignore_cache))
-    files = get_all_log_files(directory)
-    logger.debug('Found %d files. Indexing...' % len(files))
-    for filename in files:
-        reader = LogsFormat.get_reader_for(filename)
-        try:
-            file2streams[filename] = \
-                reader.index_file_cached(filename, ignore_cache=ignore_cache)
-            for stream in file2streams[filename]:
-                assert isinstance(stream, BootStream)
-            if not file2streams[filename]:
-                logger.warning('No streams found in file %r.' % filename)
-        except None: # XXX
-            logger.error('Invalid data in file %r.' % filename)
-            logger.error(traceback.format_exc())
+                 (friendly_path(directory), ignore_cache))
+    
+    with warn_long_time(3, 'indexing directory %r' % friendly_path(directory)):
+        files = get_all_log_files(directory)
+            
+    with warn_long_time(3, 'indexing %d files (use cache: %s)' % 
+                        (len(files), not ignore_cache)):
+        for filename in files:
+            reader = LogsFormat.get_reader_for(filename)
+            try:
+                file2streams[filename] = \
+                    reader.index_file_cached(filename, ignore_cache=ignore_cache)
+                for stream in file2streams[filename]:
+                    assert isinstance(stream, BootStream)
+                if not file2streams[filename]:
+                    logger.warning('No streams found in file %r.' % 
+                                   friendly_path(filename))
+            except None: # XXX
+                logger.error('Invalid data in file %r.' % friendly_path(filename))
+                logger.error(traceback.format_exc())
 
-    logger.debug('... done indexing.')
-
+    logger.debug('... found %d files.' % (len(file2streams)))
+    
     return file2streams
 
 

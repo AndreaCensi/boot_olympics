@@ -1,7 +1,8 @@
 """ Loads reports from disk """
 from . import get_sets_dir
-import cPickle
 import os
+from bootstrapping_olympics.utils.safe_pickle import safe_pickle_load
+from bootstrapping_olympics.utils.warn_long_time_exc import warn_long_time
 
 
 def load_report_phase(id_set, agent, robot, phase):
@@ -21,6 +22,7 @@ def load_report_file(basename):
         msg = 'Report %s not found' % filename
         raise Exception(msg)
 
-    with open(filename, 'rb') as f:
-        return cPickle.load(f)
-        
+    with warn_long_time(1, 'loading report %r' % basename) as moreinfo:
+        moreinfo['size'] = os.stat(filename).st_size
+        return safe_pickle_load(filename)
+    
