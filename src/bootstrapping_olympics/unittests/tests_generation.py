@@ -11,7 +11,6 @@ for_all_agents = fancy_test_decorator(lister=all_agents,
             arguments=lambda id_agent: (id_agent, get_agent(id_agent)),
             attributes=lambda id_agent: dict(agent=id_agent))
 
-# from bootstrapping_olympics import UnsupportedSpec
 # TODO: make sure this is fine
 for_all_pairs = fancy_test_decorator(
             lister=lambda: itertools.product(all_agents(), all_robots()),
