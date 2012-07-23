@@ -152,7 +152,12 @@ def index_directory(directory, ignore_cache=False):
                  (directory, ignore_cache))
     files = get_all_log_files(directory)
     logger.debug('Found %d files. Indexing...' % len(files))
-    for filename in files:
+    # Shuffle the list so that multiple threads will index different files
+    import random
+    random.seed()
+    random.shuffle(files)
+    for i, filename in enumerate(files):
+        #logger.debug('%4d/%4d: indexing %r' % (i, len(files), filename))
         reader = LogsFormat.get_reader_for(filename)
         try:
             file2streams[filename] = \
