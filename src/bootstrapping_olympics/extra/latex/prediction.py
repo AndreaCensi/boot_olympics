@@ -22,6 +22,12 @@ def fig_predict_corr(frag, id_set, id_agent, id_robot, width='3cm'):
     R = get_predict_corr(id_set, id_agent, id_robot)
     display_correlation(frag, R, gid, width)
 
+def fig_predict_u_corr(frag, id_set, id_agent, id_robot, width='3cm'):
+    #prefix = '%s-%s-%s' % (id_set, id_robot, id_agent)
+    #gid = prefix + '-pred-u-corr'
+    frag.rule(width, width, color='red')
+    # TODO
+
 #
 #def prediction_report(id_set, robots, agents, width='3cm'):
 #    with latex_fragment(sys.stdout, graphics_path=get_resources_dir()) as frag:

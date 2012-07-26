@@ -3,6 +3,7 @@ from . import (bvid, logger, fig_predict_corr, create_robot_figure,
     template_bds_N)
 from bootstrapping_olympics.utils import x_not_found
 from collections import namedtuple
+from bootstrapping_olympics.extra.latex.prediction import fig_predict_u_corr
 
 Template = namedtuple('Template', 'function necessary optional')
 
@@ -38,6 +39,8 @@ AllTemplates['robot_figure'] = Template(create_robot_figure,
                                         ['id_set', 'id_robot'], ['width'])
 AllTemplates['predict_y_dot_corr'] = \
     Template(fig_predict_corr, ['id_set', 'id_robot', 'id_agent'], ['width'])
+AllTemplates['predict_u_corr'] = \
+    Template(fig_predict_u_corr, ['id_set', 'id_robot', 'id_agent'], ['width'])
 
 AllTemplates['servo_L2'] = \
     Template(template_servo_stats_L2, ['id_set', 'id_robot', 'id_agent'], ['width'])

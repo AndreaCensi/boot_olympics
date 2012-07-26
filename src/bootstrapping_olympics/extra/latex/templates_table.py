@@ -1,8 +1,7 @@
-from . import (get_resources_dir, logger)
+from . import get_resources_dir, logger, call_template
 from contracts import contract
 from latex_gen import latex_fragment
 import sys
-from . import call_template
 
     
 @contract(nrows='R', ncols='C',
@@ -48,7 +47,7 @@ def write_table(nrows, ncols, allcells={},
     param_table = get_param_table(nrows, ncols, allcells, allcols, allrows,
                                   introws, intcols, firstrow, firstcol, intcells)
 
-    alignment = ['r'] + ['c'] * len(intcols)
+    alignment = ['r'] + ['c'] * ncols   
     with latex_fragment(sys.stdout, graphics_path=get_resources_dir()) as frag:
         with frag.tabular(alignment=alignment) as tabular:
             for r, param_row in enumerate(param_table):

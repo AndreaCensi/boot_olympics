@@ -44,7 +44,9 @@ def safe_write(filename, mode='wb', suffix_tmp='.tmp', suffix_old='.old'):
         # no previous file, just rename
         os.rename(filename_new, filename)
 
-    assert os.path.exists(filename)
-    assert not os.path.exists(filename_new)
-    assert not os.path.exists(filename_old)
-    
+    if False:
+        # TODO FIXME make sure this works in concurrent 
+        assert os.path.exists(filename)
+        assert not os.path.exists(filename_new)
+        assert not os.path.exists(filename_old)
+        

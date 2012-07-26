@@ -155,7 +155,12 @@ def index_directory(directory, ignore_cache=False):
     
     with warn_long_time(3, 'indexing directory %r' % friendly_path(directory)):
         files = get_all_log_files(directory)
-            
+    
+    # Shuffle the list so that multiple threads will index different files
+    import random
+    random.seed()
+    random.shuffle(files)
+
     with warn_long_time(3, 'indexing %d files (use cache: %s)' % 
                         (len(files), not ignore_cache)):
         for filename in files:
@@ -173,7 +178,7 @@ def index_directory(directory, ignore_cache=False):
                 logger.error(traceback.format_exc())
 
     logger.debug('... found %d files.' % (len(file2streams)))
-    
+  
     return file2streams
 
 

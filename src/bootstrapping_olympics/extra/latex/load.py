@@ -3,6 +3,7 @@ from . import get_sets_dir
 import os
 from bootstrapping_olympics.utils.safe_pickle import safe_pickle_load
 from bootstrapping_olympics.utils.warn_long_time_exc import warn_long_time
+from reprep.output.hdf.hdf_read import report_from_hdf
 
 
 def load_report_phase(id_set, agent, robot, phase):
@@ -16,7 +17,8 @@ def load_report_robot(id_set, robot):
     return load_report_file(basename)
 
         
-def load_report_file(basename):
+def load_report_file_pickle(basename):
+    """ unused now """    
     filename = basename + '.pickle' 
     if not os.path.exists(filename):
         msg = 'Report %s not found' % filename
@@ -25,4 +27,14 @@ def load_report_file(basename):
     with warn_long_time(1, 'loading report %r' % basename) as moreinfo:
         moreinfo['size'] = os.stat(filename).st_size
         return safe_pickle_load(filename)
+    
+def load_report_file(basename):    
+    filename = basename + '.rr1.h5' 
+    if not os.path.exists(filename):
+        msg = 'Report %s not found' % filename
+        raise Exception(msg)
+
+    with warn_long_time(1, 'loading report %r' % basename) as moreinfo:
+        moreinfo['size'] = os.stat(filename).st_size
+        return report_from_hdf(filename)
     
