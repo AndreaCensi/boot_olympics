@@ -2,10 +2,11 @@ from . import logger
 from bootstrapping_olympics import (BootOlympicsConfig, BootOlympicsConstants,
     LogsFormat)
 from bootstrapping_olympics.utils import (check_contained, expand_environment,
-    substitute, mkdirs_thread_safe, warn_good_identifier, warn_good_filename)
+    substitute, mkdirs_thread_safe, warn_good_identifier, warn_good_filename,
+    friendly_filesize)
+from conf_tools.utils import friendly_path
 import os
 import tempfile
-from conf_tools.utils.friendly_paths import friendly_path
 
 
 class DirectoryStructure:
@@ -160,8 +161,10 @@ class DirectoryStructure:
             Notifies that some file is done writing. 
             Used to create a list of recent files that are done.
         """
+        path = friendly_path(filename_or_basename)
+        size = friendly_filesize(filename_or_basename)
+        logger.info('Written %r (%r)' % (path, size))
         # TODO: add implementation of notification
-
 
 
 

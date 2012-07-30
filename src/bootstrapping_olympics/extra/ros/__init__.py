@@ -1,40 +1,56 @@
 """ Functions for reading/writing ROS logs. """
 from .. import np, contract, getLogger
 import traceback
+import os
 
 logger = getLogger(__name__)
 
+our_package = 'bootstrapping_adapter'
+BootstrappingObservations_datatype = '%s/BootstrappingObservations' % our_package#@UnusedVariable
 
-BootstrappingObservations_datatype = 'bootstrapping_adapter/BootstrappingObservations' #@UnusedVariable
+
+# Make sure we have our package in the path
+from pkg_resources import resource_filename #@UnresolvedImport
+root = resource_filename("bootstrapping_olympics", ".")
+package_path = os.path.realpath(os.path.join(root, '..', '..', 'ros-packages'))
+if not os.path.exists(package_path):
+    logger.warning('Cannot find package path %r' % package_path)
+else:
+    current = os.environ['ROS_PACKAGE_PATH']
+    if not package_path in current:
+        logger.debug('Adding %r to ROS_PACKAGE_PATH' % package_path)
+        os.environ['ROS_PACKAGE_PATH'] += ':' + package_path 
+
 
 try:
-    import roslib #@UnresolvedImport
-    try:
-        roslib.load_manifest('bootstrapping_adapter')
-    except Exception as e:
-        logger.error('Cannot load our package bootstrapping_adapter (%s)' % e)
-        logger.error('Probably you need: \n'
-                     'export ROS_PACKAGE_PATH='
-                     '${B11_SRC}/bootstrapping_olympics/ros-packages:${ROS_PACKAGE_PATH}')
-        raise 
-    from ros import rospy
-    from ros import rosbag
-    from bootstrapping_adapter.srv import BootstrappingCommands
-    from bootstrapping_adapter.srv import BootstrappingCommandsResponse
-    from bootstrapping_adapter.msg import BootstrappingObservations
+    import roslib 
 
-    from ros import sensor_msgs, std_msgs
+    try:    
+        roslib.load_manifest(our_package)
+    except Exception as e:
+        logger.error('Cannot load our package %s (%s)' % (our_package, e))
+        logger.error('ROS_PACKAGE_PATH = %s' % os.environ['ROS_PACKAGE_PATH'].split(":"))
+        raise 
+    
+    import ros
+    import rospy
+    import rosbag
+    from bootstrapping_adapter.srv import BootstrappingCommands #@UnresolvedImport
+    from bootstrapping_adapter.srv import BootstrappingCommandsResponse #@UnresolvedImport
+    from bootstrapping_adapter.msg import BootstrappingObservations #@UnresolvedImport
+
+    from ros import sensor_msgs, std_msgs #@UnresolvedImport
     from sensor_msgs.msg import Image as ROSImage
     from std_msgs.msg import (Float32MultiArray, MultiArrayDimension,
                               MultiArrayLayout)
 
-    boot_has_ros = True
+    boot_has_ros = True #@UnusedVariable
     ros_error = None
 
 except (ImportError, Exception) as e:
-    boot_has_ros = False
+    boot_has_ros = False #@UnusedVariable
     ros_error = e
-    # export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:`pwd`/ros-packages/
+
     logger.error('ROS support not available')
     logger.error(traceback.format_exc())
 

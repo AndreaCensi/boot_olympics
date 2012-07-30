@@ -1,17 +1,15 @@
 ''' Fast routines to yaml reading and writing. '''
-
 from . import contract, logger
-from yaml import load, dump
 from contracts import describe_type
-from types import NoneType
 from pprint import pprint
+from types import NoneType
+from yaml import load, dump
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
-except ImportError:
+except ImportError as e:
     logger.warn('Could not load C YAML reader. '
-                 'I can continue but everything will be slow.')
-    # TODO: write error
+                 'I can continue but everything will be slow. (%s)' % e)
     from yaml import Loader, Dumper
 
 
@@ -28,7 +26,7 @@ def yaml_load(yaml_string):
 
 
 def dump_emergency_string(s):
-    emergency = '/home/andrea/yaml_load.yaml' # XXX
+    emergency = '/home/andrea/yaml_load.yaml' # XXX FIXME
     with open(emergency, 'w') as f:
         f.write(s)
     logger.error('String written to %r.' % emergency)
@@ -98,7 +96,4 @@ def check_pure_structure_detailed(s, context=None):
         msg = ('Invalid type %s for YAML serialization.\n%s' % 
                (describe_type(s), "\n".join(context)))
         raise ValueError(msg)
-
-
-
 

@@ -38,11 +38,7 @@ def isakey(t):
 class LearningStateDB(object):
 
     def __init__(self, datadir):
-        datadir = expand_environment(datadir)
-
-        #dbdir = os.path.join(datadir, 'agent_states')
-        #dbdir = datadir
-        #logger.debug('Using dir %r as directory.' % dbdir)
+        datadir = expand_environment(datadir) 
 
         try: # concurrent
             if not os.path.exists(datadir):

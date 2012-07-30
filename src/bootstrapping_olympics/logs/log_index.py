@@ -1,6 +1,6 @@
 from . import BootStream, logger, LogsFormat, contract
 from ..utils import natsorted
-from bootstrapping_olympics.utils import warn_long_time
+from ..utils import warn_long_time
 from collections import defaultdict
 from conf_tools import locate_files
 from conf_tools.utils import friendly_path
@@ -147,13 +147,14 @@ def get_all_log_files(directory):
     return files
 
 
-def index_directory(directory, ignore_cache=False):
+def index_directory(directory, ignore_cache=False, warn_if_longer=3):
     ''' Returns a hash filename -> list of streams. '''
     file2streams = {}
     logger.debug('Indexing directory %r (ignore cache: %s).' % 
                  (friendly_path(directory), ignore_cache))
     
-    with warn_long_time(3, 'indexing directory %r' % friendly_path(directory)):
+    with warn_long_time(warn_if_longer, 'indexing directory %r' % 
+                                        friendly_path(directory)):
         files = get_all_log_files(directory)
     
     # Shuffle the list so that multiple threads will index different files
@@ -161,7 +162,7 @@ def index_directory(directory, ignore_cache=False):
     random.seed()
     random.shuffle(files)
 
-    with warn_long_time(3, 'indexing %d files (use cache: %s)' % 
+    with warn_long_time(warn_if_longer, 'indexing %d files (use cache: %s)' % 
                         (len(files), not ignore_cache)):
         for filename in files:
             reader = LogsFormat.get_reader_for(filename)
@@ -177,7 +178,6 @@ def index_directory(directory, ignore_cache=False):
                 logger.error('Invalid data in file %r.' % friendly_path(filename))
                 logger.error(traceback.format_exc())
 
-    logger.debug('... found %d files.' % (len(file2streams)))
   
     return file2streams
 

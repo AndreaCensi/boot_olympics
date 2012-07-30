@@ -1,11 +1,9 @@
 from . import (check_valid_agent_config, check_valid_robot_config,
-    check_valid_nuisance_config, logger)
-from .. import Constants
+    check_valid_nuisance_config, logger, check_valid_plugin_config)
+from .. import Constants, LivePlugin
 from ..interfaces import AgentInterface, RobotInterface, RepresentationNuisance
 from conf_tools import ConfigMaster, GenericInstance, check_generic_code_desc
 import os
-from bootstrapping_olympics import LivePlugin
-from bootstrapping_olympics.configuration.agents import check_valid_plugin_config
 
 
 def check_valid_videos_config(spec):
@@ -18,18 +16,18 @@ class BootConfigMaster(ConfigMaster):
 
         self.robots = self.add_class('robots', '*.robots.yaml',
                                      check_valid_robot_config,
-                       GenericInstance(RobotInterface))
+                                     GenericInstance(RobotInterface))
 
         self.agents = self.add_class('agents', '*.agents.yaml',
                                      check_valid_agent_config,
-                       GenericInstance(AgentInterface))
+                                     GenericInstance(AgentInterface))
 
         self.nuisances = self.add_class('nuisances', '*.nuisances.yaml',
-                       check_valid_nuisance_config,
-                       GenericInstance(RepresentationNuisance))
+                                        check_valid_nuisance_config,
+                                        GenericInstance(RepresentationNuisance))
 
         self.videos = self.add_class('videos', '*.videos.yaml',
-                       check_valid_videos_config)
+                                     check_valid_videos_config)
 
         self.live_plugins = self.add_class('live_plugins',
                                            '*.live_plugins.yaml',

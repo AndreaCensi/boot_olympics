@@ -195,7 +195,10 @@ def bds_learn_reportA(id_set, agent, robot, width='3cm'):
             fig.parbreak()
             
             fig.hfill()
-            fig.rule(tsize, '0pt')
+            from .prediction import fig_predict_u_corr
+            with fig.subfigure(caption="correlation",
+                               label='%s-%s' % (label, 'corr'))  as sub:
+                fig_predict_u_corr(sub, id_set, agent, robot, "1cm")
             
             display_k_tensor(fig, report['estimator/model/N/value'].raw_data,
                              gid_pattern=prefix + '-N%d',
@@ -206,7 +209,7 @@ def bds_learn_reportA(id_set, agent, robot, width='3cm'):
             fig.parbreak()
             
             fig.hfill()
-            from bootstrapping_olympics.extra.latex.prediction import fig_predict_corr
+            from .prediction import fig_predict_corr
             with fig.subfigure(caption="correlation",
                                label='%s-%s' % (label, 'corr'))  as sub:
                 fig_predict_corr(sub, id_set, agent, robot, width)

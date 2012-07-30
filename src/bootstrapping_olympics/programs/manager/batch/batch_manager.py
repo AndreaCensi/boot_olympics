@@ -1,10 +1,11 @@
 from . import BatchConfigMaster, logger
 from ..meat import DataCentral
-from bootstrapping_olympics.utils import (safe_makedirs, safe_symlink,
-                                          UserError, expand_string)
+from bootstrapping_olympics.utils import (safe_makedirs, safe_symlink, UserError,
+    expand_string)
 from conf_tools import import_name, ConfToolsException
-import os
+from conf_tools.utils import friendly_path
 from pprint import pformat
+import os
 
 
 def batch_process_manager(data_central, which_sets, command=None):
@@ -63,7 +64,7 @@ def batch_process_manager(data_central, which_sets, command=None):
 
     storage = data_central_set.get_dir_structure().get_storage_dir()
     compmake_storage = os.path.join(storage, 'compmake')
-    logger.debug('Using storage %r.' % compmake_storage)
+    logger.debug('Using storage directory %r.' % friendly_path(compmake_storage))
     use_filesystem(compmake_storage)
 
     for id_set in which_sets:

@@ -9,10 +9,10 @@ from .. import np, contract, getLogger, logger
 # Do not load these automatically 
 from . import procgraph # some video scripts assume already loaded 
     
-if False:
+if True:
     from . import ros
 else:
-    logger.warning('Temporarely removed procgraph and ROS')
+    logger.warning('Temporarely removed ROS')
 
 from . import hdf
 

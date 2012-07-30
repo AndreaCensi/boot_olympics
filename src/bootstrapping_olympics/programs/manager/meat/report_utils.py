@@ -1,47 +1,48 @@
 from . import logger
 from bootstrapping_olympics.utils import (isodate, safe_pickle_dump,
-    warn_long_time)
-from conf_tools.utils import friendly_path
+    warn_long_time_writing, warn_long_time_reading)
+from reprep.output import report_from_hdf
 import os
-from reprep.output.hdf.hdf_read import report_from_hdf
 
 
 def save_report(data_central, report, filename, resources_dir=None,
-                save_pickle=False, save_hdf=True):
+                save_pickle=False, save_hdf=True,
+                check_hdf_written_correctly=True):
     """ filename.html """
-    report.to_html(filename, resources_dir=resources_dir)
+    
     report.text('report_date', isodate()) # TODO: add other stuff
-
-    logger.info('Writing to %r.' % friendly_path(filename))
-
+    
+    ds = data_central.get_dir_structure()
+    
+    report.to_html(filename, resources_dir=resources_dir)
+    ds.file_is_done(filename)
+    
     if save_pickle:
         pickle_name = os.path.splitext(filename)[0] + '.pickle'
-        logger.info('Saving to pickle %s.' % friendly_path(pickle_name))
-        with warn_long_time(0, 'writing pickle', logger) as moreinfo:
+        
+        with warn_long_time_writing(pickle_name):
             safe_pickle_dump(report, pickle_name, protocol=2)
-            moreinfo['size'] = os.stat(pickle_name).st_size
+
+        ds.file_is_done(pickle_name)
+
 
     if save_hdf:
         hdf_name = os.path.splitext(filename)[0] + '.rr1.h5'
         
-        logger.info('Saving to hdf %s.' % friendly_path(hdf_name))
-        
-        with warn_long_time(0, 'writing hdf', logger) as moreinfo:
+        with warn_long_time_writing(hdf_name):
             report.to_hdf(hdf_name)
-            moreinfo['size'] = os.stat(pickle_name).st_size
+        
+        if check_hdf_written_correctly:
+            with warn_long_time_reading(hdf_name, logger=logger):
+                r2 = report_from_hdf(hdf_name)
 
-            
-        with warn_long_time(0, 'reading hdf', logger) as moreinfo:
-            r2 = report_from_hdf(hdf_name)
-            moreinfo['size'] = os.stat(hdf_name).st_size
-            
-        if report != r2:
-            logger.error("Dont match")
-            logger.error(report.format_tree())
-            logger.error(r2.format_tree())
-            raise Exception()
-        else:
-            logger.info("OK match")
-
-    ds = data_central.get_dir_structure()
-    ds.file_is_done(filename, desc="%s" % report.nid)
+            if report != r2:
+                logger.error("Dont match")
+                logger.error(report.format_tree())
+                logger.error(r2.format_tree())
+                raise Exception()
+        
+        ds.file_is_done(hdf_name)
+        
+    
+    
