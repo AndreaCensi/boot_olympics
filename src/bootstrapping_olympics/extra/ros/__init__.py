@@ -18,7 +18,7 @@ if not os.path.exists(package_path):
 else:
     current = os.environ['ROS_PACKAGE_PATH']
     if not package_path in current:
-        logger.debug('Adding %r to ROS_PACKAGE_PATH' % package_path)
+        #logger.debug('Adding %r to ROS_PACKAGE_PATH' % package_path)
         os.environ['ROS_PACKAGE_PATH'] += ':' + package_path 
 
 

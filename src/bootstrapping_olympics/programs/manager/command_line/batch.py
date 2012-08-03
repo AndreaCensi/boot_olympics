@@ -15,6 +15,6 @@ def cmd_batch(data_central, argv):
     which_sets = args
 
     return batch_process_manager(data_central=data_central,
-                          which_sets=which_sets,
-                          command=options.command)
+                                 which_sets=which_sets,
+                                 command=options.command)
 
