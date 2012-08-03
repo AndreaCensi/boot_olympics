@@ -38,11 +38,7 @@ def isakey(t):
 class LearningStateDB(object):
 
     def __init__(self, datadir):
-        datadir = expand_environment(datadir)
-
-        #dbdir = os.path.join(datadir, 'agent_states')
-        dbdir = datadir
-        logger.debug('Using dir %r as directory.' % dbdir)
+        datadir = expand_environment(datadir) 
 
         try: # concurrent
             if not os.path.exists(datadir):
@@ -68,7 +64,10 @@ class LearningStateDB(object):
     def set_state(self, id_agent, id_robot, state):
         ''' Sets the learning state for the given combination. '''
         key = tuple2key((id_agent, id_robot))
-        return self.storage.set(key, state)
+        stats = self.storage.set(key, state)
+        msg = self.storage.stats_string(stats)
+        logger.debug(msg)
+        return stats
 
     def reload_state_for_agent(self, id_agent, id_robot, agent):
         state = self.get_state(id_agent, id_robot)

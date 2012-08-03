@@ -11,7 +11,7 @@ import os
 
 
 @for_all_pairs
-def check_cmdline(id_agent, agent, id_robot, robot):
+def check_cmdline(id_agent, agent, id_robot, robot): #@UnusedVariable
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config')) # XXX make it automatic
         data_central = DataCentral(root)
@@ -50,8 +50,12 @@ def check_cmdline(id_agent, agent, id_robot, robot):
                                 '--num_episodes', '1',
                                 '--max_episode_len', '1')
 
-        if hasattr(agent, 'get_predictor'):
-            execute_command('predict', '-a', id_agent, '-r', id_robot)
+        try:
+            import boot_agents #@UnusedImport
+            if hasattr(agent, 'get_predictor'):
+                execute_command('predict', '-a', id_agent, '-r', id_robot)
+        except: # Don't do this if testing
+            pass
 
         execute_command('list-logs')
         execute_command('list-logs', '-e')

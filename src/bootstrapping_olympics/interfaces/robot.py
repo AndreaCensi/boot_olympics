@@ -88,7 +88,7 @@ class RobotInterface:
         ''' 
             Return the state so that it can be saved. 
             This should be either a dictionary with YAML-serializable entries,
-            or None.
+            or None (in which case the state will be extracted automatically).
         '''
         return None
 

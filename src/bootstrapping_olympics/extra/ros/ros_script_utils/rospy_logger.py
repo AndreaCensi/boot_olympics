@@ -1,4 +1,7 @@
-from .. import rospy
+try:
+    from .. import rospy
+except: # allow to run nose even if ros is not installed
+    pass
 
 
 class RospyLogger:

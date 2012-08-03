@@ -1,14 +1,15 @@
-from . import np, logger
-from reprep.plot_utils.styles import (style_ieee_fullcol_xy,
-    style_ieee_halfcol_xy)
-from geometry.poses import translation_from_SE2
+from . import np
+from bootstrapping_olympics.programs.manager.meat.report_utils import save_report
 
 
 def servo_stats_report(data_central, id_agent, id_robot, summaries,
                        phase='servo_stats'):
     from reprep import Report
     from reprep.plot_utils import x_axis_balanced
-
+    from reprep.plot_utils import (style_ieee_fullcol_xy,
+        style_ieee_halfcol_xy)
+    from geometry import translation_from_SE2
+    
     if not summaries:
         raise Exception('Empty summaries')
 
@@ -40,6 +41,7 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries,
 
     basename = 'servo_analysis-%s-%s-%s' % (id_agent, id_robot, phase)
     r = Report(basename)
+    r.data('summaries', s, caption='All raw statistics')
 
     f = r.figure(cols=3)
 
@@ -149,10 +151,9 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries,
                                        id_robot=id_robot,
                                        id_state='servo_stats',
                                        phase=phase)
-    res_rd = ds.get_report_res_dir(id_agent=id_agent,
+    resources_dir = ds.get_report_res_dir(id_agent=id_agent,
                                        id_robot=id_robot,
                                        id_state='servo_stats',
                                        phase=phase)
-#    filename = os.path.join(report_dir, 'servo_stats_report.html')
-    logger.info('Writing output to %r.' % filename)
-    r.to_html(filename, resources_dir=res_rd)
+    save_report(data_central, r, filename, resources_dir, save_pickle=True)
+

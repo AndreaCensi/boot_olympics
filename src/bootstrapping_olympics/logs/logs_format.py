@@ -1,7 +1,10 @@
 from . import BootStream, logger
 from abc import abstractmethod, ABCMeta
 import os
-import pickle
+from bootstrapping_olympics.utils.safe_pickle import safe_pickle_load, \
+    safe_pickle_dump
+from bootstrapping_olympics.utils.warn_long_time_exc import warn_long_time
+from conf_tools.utils.friendly_paths import friendly_path
 
 
 class LogsFormat:
@@ -20,21 +23,24 @@ class LogsFormat:
         cache = '%s.index_cache' % filename
         if os.path.exists(cache) and not ignore_cache: # TODO: mtime
             try:
-                return pickle.load(open(cache))
+                return safe_pickle_load(cache)
             except Exception as e:
-                msg = 'Could not unpickle cache %r, deleting.' % cache
+                msg = 'Could not unpickle cache %r, deleting.' % friendly_path(cache)
                 msg += '\n%s' % e
                 logger.warning(msg)
                 try:
                     os.unlink(cache)
                 except:
                     pass
-
+        logger.debug('Indexing file %r' % friendly_path(filename))
         res = self.index_file(filename)
         for stream in res:
             assert isinstance(stream, BootStream)
-        with open(cache, 'wb') as f:
-            pickle.dump(res, f, protocol=pickle.HIGHEST_PROTOCOL)
+            
+        logger.debug('Now dumping file %r' % friendly_path(cache))
+        with warn_long_time(1, 'dumping %r' % friendly_path(cache)):
+            safe_pickle_dump(res, cache, protocol=2)
+
         return res
 
     @abstractmethod

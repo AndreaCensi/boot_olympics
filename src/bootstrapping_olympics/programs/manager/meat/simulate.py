@@ -51,7 +51,9 @@ def simulate(data_central, id_agent, id_robot,
     ds = data_central.get_dir_structure()
     assert isinstance(ds, DirectoryStructure)
 
-    id_stream = '%s_%s_%s' % (id_robot, id_agent, unique_timestamp_string())
+    timestamp = unique_timestamp_string()
+    timestamp = timestamp.replace('_', '')
+    id_stream = '%s-%s-%s' % (id_robot, id_agent, timestamp)
     filename = ds.get_simlog_filename(id_robot=id_robot,
                                       id_agent=id_agent,
                                       id_stream=id_stream)

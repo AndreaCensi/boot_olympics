@@ -20,20 +20,28 @@ class LivePlugin:
     @abstractmethod
     def init(self, init_data):
         """
-            :param init_data: structure InitData 
+            :param init_data: dictionary with fields
+            
+            Fields:
+            - data_central
+            - id_agent
+            - id_robot 
         """
-
-    UpdateData = namedtuple('UpdateData',
-                            ['agent',
-                             'robot', # Might be none if it's a log 
-                             'obs'])
 
     @abstractmethod
     def update(self, update_data):
         """ 
             Called during interaction.
             
-            :param update_data: structure UpdateData 
+            :param update_data: dictionary with following fields:
+            
+            Fields:
+            - agent
+            - robot
+            - obs
+            
+            Optional:
+            - predict 
         """
         pass
 

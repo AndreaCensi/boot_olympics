@@ -1,7 +1,9 @@
 from . import BootStream, logger, LogsFormat, contract
 from ..utils import natsorted
+from ..utils import warn_long_time
 from collections import defaultdict
 from conf_tools import locate_files
+from conf_tools.utils import friendly_path
 import traceback
 
 __all__ = ['LogIndex']
@@ -33,10 +35,15 @@ class LogIndex:
     def has_streams_for_robot(self, id_robot):
         return id_robot in self.robots2streams
 
+    @contract(returns='list(str)')
+    def list_robots(self):
+        """ Returns a list of the robots """
+        return list(self.robots2streams.keys())
+
     @contract(returns='list')
     def get_streams_for_robot(self, id_robot):
         if not id_robot in self.robots2streams:
-            raise ValueError('No streams for robot %r; available %s.' %
+            raise ValueError('No streams for robot %r; available %s.' % 
                              (id_robot, self.robots2streams.keys()))
         return self.robots2streams[id_robot]
 
@@ -133,29 +140,45 @@ def get_all_log_files(directory):
         files.extend(locate_files(directory, pattern))
 
     if not files:
-        msg = ('No log files found in %r (extensions: %s).' %
-               (directory, extensions))
+        msg = ('No log files found in %r (extensions: %s).' % 
+               (friendly_path(directory), extensions))
         logger.warning(msg)
 
     return files
 
 
-def index_directory(directory, ignore_cache=False):
+def index_directory(directory, ignore_cache=False, warn_if_longer=3):
     ''' Returns a hash filename -> list of streams. '''
     file2streams = {}
-    for filename in get_all_log_files(directory):
-        reader = LogsFormat.get_reader_for(filename)
-        try:
-            file2streams[filename] = \
-                reader.index_file_cached(filename, ignore_cache=ignore_cache)
-            for stream in file2streams[filename]:
-                assert isinstance(stream, BootStream)
-            if not file2streams[filename]:
-                logger.warning('No streams found in file %r.' % filename)
-        except None: # XXX
-            logger.error('Invalid data in file %r.' % filename)
-            logger.error(traceback.format_exc())
+    logger.debug('Indexing directory %r (ignore cache: %s).' % 
+                 (friendly_path(directory), ignore_cache))
+    
+    with warn_long_time(warn_if_longer, 'indexing directory %r' % 
+                                        friendly_path(directory)):
+        files = get_all_log_files(directory)
+    
+    # Shuffle the list so that multiple threads will index different files
+    import random
+    random.seed()
+    random.shuffle(files)
 
+    with warn_long_time(warn_if_longer, 'indexing %d files (use cache: %s)' % 
+                        (len(files), not ignore_cache)):
+        for filename in files:
+            reader = LogsFormat.get_reader_for(filename)
+            try:
+                file2streams[filename] = \
+                    reader.index_file_cached(filename, ignore_cache=ignore_cache)
+                for stream in file2streams[filename]:
+                    assert isinstance(stream, BootStream)
+                if not file2streams[filename]:
+                    logger.warning('No streams found in file %r.' % 
+                                   friendly_path(filename))
+            except None: # XXX
+                logger.error('Invalid data in file %r.' % friendly_path(filename))
+                logger.error(traceback.format_exc())
+
+  
     return file2streams
 
 
@@ -176,10 +199,10 @@ def index_robots(file2streams):
                 stream_spec = stream.get_spec()
                 if str(stream_spec) != str(robot2spec[id_robot]):
                     msg = 'Warning! You got your logs mixed up. \n'
-                    msg += ('Problem spec in:\n\t%s\nis\n\t%s\n' %
+                    msg += ('Problem spec in:\n\t%s\nis\n\t%s\n' % 
                            (stream, stream_spec))
                     msg += ('and this is different from:\n\t%s\n'
-                           'found in e.g.,:\n\t%s' %
+                           'found in e.g.,:\n\t%s' % 
                            (robot2spec[id_robot], robot2streams[id_robot][0]))
                     msg += '\nI will skip this stream.'
                     logger.error(msg)

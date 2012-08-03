@@ -140,3 +140,13 @@
   code:
     - bootstrapping_olympics.library.nuisances.NormalizeMin 
     - {}
+
+
+
+
+- id: rep16
+  desc: 'Replicates the rows'
+  code:
+    - bootstrapping_olympics.library.nuisances.ReplicateRows 
+    - rows: 16
+    

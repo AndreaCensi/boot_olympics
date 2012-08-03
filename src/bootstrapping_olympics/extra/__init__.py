@@ -4,11 +4,16 @@
     will not work, but we should be fine.
 """
 
-from .. import np, contract, getLogger
+from .. import np, contract, getLogger, logger
 
 # Do not load these automatically 
 from . import procgraph # some video scripts assume already loaded 
-from . import ros
+    
+if True:
+    from . import ros
+else:
+    logger.warning('Temporarely removed ROS')
+
 from . import hdf
 
 

@@ -5,7 +5,7 @@ import os
 def publish_once(data_central, id_agent, id_robot,
                  phase='learn', progress='all',
                  save_pickle=False): # TODO: 'learn' in constants
-    # XXX: progres is not used so far
+    # XXX: progress is not used so far
     agent, state = load_agent_state(data_central,
                                     id_agent=id_agent,
                                     id_robot=id_robot,

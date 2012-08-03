@@ -2,13 +2,9 @@
 from . import (default_expl_videos, default_servo_videos, default_servonav_videos,
     contract)
 from .. import (create_video, servo_stats_report, simulate, task_predict, logger,
-    learn_log, publish_once, np, task_servo, task_servonav)
+    learn_log, publish_once, np, task_servo, task_servonav, publish_report_robot,
+    servo_stats_summary, predict_report)
 from bootstrapping_olympics import UnsupportedSpec
-from bootstrapping_olympics.programs.manager.meat.predict import predict_report
-from bootstrapping_olympics.programs.manager.meat.report_robot import (
-    publish_report_robot)
-from bootstrapping_olympics.programs.manager.meat.servo.summaries import (
-    servo_stats_summary)
 from conf_tools import SemanticMistake
 import itertools
 
@@ -24,6 +20,21 @@ class TaskRegister:
         self.data_central = data_central
 
         self.deps = {}
+        # Instances we keep around to probe
+        self.agent_instances = {}
+        self.robot_instances = {}
+        
+    def _get_agent_instance(self, id_agent):
+        if not id_agent in self.agent_instances:
+            self.agent_instances[id_agent] = \
+                 self.data_central.get_bo_config().agents.instance(id_agent)
+        return  self.agent_instances[id_agent] 
+
+    def _get_robot_instance(self, id_robot):
+        if not id_robot in self.robot_instances:
+            self.robot_instances[id_robot] = \
+                 self.data_central.get_bo_config().robots.instance(id_robot)
+        return  self.robot_instances[id_robot] 
 
     @contract(id_agent='str', K='int')
     def episode_id_exploration(self, id_agent, K):
@@ -36,13 +47,13 @@ class TaskRegister:
     @contract(id_agent='str', K='int')
     def episode_id_servonav(self, id_agent, K):
         return 'ep_servonav_%s_%05d' % (id_agent, K)
-
+    
     def agent_has_predictor(self, id_agent):
-        agent = self.data_central.get_bo_config().agents.instance(id_agent)
+        agent = self._get_agent_instance(id_agent)
         return hasattr(agent, 'get_predictor')
 
     def agent_has_servo(self, id_agent):
-        agent = self.data_central.get_bo_config().agents.instance(id_agent)
+        agent = self._get_agent_instance(id_agent)
         return hasattr(agent, 'get_servo')
 
     def get_tranches(self, ids, episodes_per_tranche=10):
@@ -87,8 +98,13 @@ class TaskRegister:
               predict='None|dict')
     def main(self, agents, robots,
                     explore=None,
-                    servo=None, servonav=None, predict=None):
+                    servo=None,
+                    servonav=None,
+                    predict=None):
 
+        if predict is None:
+            logger.info('No prediction specified.')
+            
         if not robots:
             raise SemanticMistake('Please specify at least one robot.')
 
@@ -103,11 +119,10 @@ class TaskRegister:
                 self.add_tasks_explore(id_robot=id_robot, **explore)
 
         for id_robot, id_agent in  itertools.product(robots, agents):
-            compatible = are_compatible(data_central=self.data_central,
-                                        id_robot=id_robot, id_agent=id_agent)
+            compatible, reason = self.are_compatible(id_robot=id_robot, id_agent=id_agent)
             if not compatible:
-                logger.info('Avoiding combination %s / %s' % 
-                             (id_robot, id_agent))
+                logger.info('Avoiding combination %s / %s: %s' % 
+                             (id_robot, id_agent, reason))
                 continue
 
             # FIXME: num_ep_expl (should work also for logs)
@@ -125,9 +140,8 @@ class TaskRegister:
                 self.add_tasks_servonav(id_agent=id_agent, id_robot=id_robot,
                                         **servonav)
 
-            if predict is None:
-                predict = {}
-            self.add_tasks_predict(id_agent=id_agent, id_robot=id_robot,
+            if predict is not None:
+                self.add_tasks_predict(id_agent=id_agent, id_robot=id_robot,
                                        **predict)
 
     def compmake_job(self, *args, **kwargs):
@@ -143,11 +157,9 @@ class TaskRegister:
               id_robot=id_robot, save_pickle=True,
              job_id='report-robot-%s' % (id_robot))
         
-    def add_tasks_predict(self, id_agent, id_robot):
-        has_predictor = self.agent_has_predictor(id_agent)
-        if not has_predictor:
-            #logger.debug('Agent %s does not support predicting.'
-            #             % id_agent)
+    def add_tasks_predict(self, id_agent, id_robot, live_plugins=[],
+                          save_pickle=True):
+        if not self.agent_has_predictor(id_agent):
             return
 
         extra_dep = self.dep_agent_has_learned(id_robot=id_robot,
@@ -155,17 +167,18 @@ class TaskRegister:
 
         # FIXME: here we are using *all* streams 
         statistics = self.compmake_job(task_predict, data_central=self.data_central,
-             id_agent=id_agent, id_robot=id_robot,
+             id_agent=id_agent, id_robot=id_robot, live_plugins=live_plugins,
              job_id='predict-%s-%s' % (id_robot, id_agent),
              extra_dep=extra_dep)
         
         self.compmake_job(predict_report, data_central=self.data_central,
                              id_agent=id_agent, id_robot=id_robot,
-                             statistics=statistics,
+                             statistics=statistics, save_pickle=save_pickle,
              job_id='report-predict-%s-%s' % (id_robot, id_agent))
 
     def add_learning(self, id_robot, id_agent, num_ep_expl, explorer, # XXX
-                     publish_progress=False, save_pickle=False):
+                     publish_progress=False, save_pickle=False,
+                     episodes_per_tranche=500):
         all_id_episodes = [self.episode_id_exploration(explorer, i)
                            for i in range(num_ep_expl)]
 
@@ -176,7 +189,7 @@ class TaskRegister:
                             for x in id_episodes))
 
         previous_state = None
-        tranches = self.get_tranches(all_id_episodes)
+        tranches = self.get_tranches(all_id_episodes, episodes_per_tranche)
         for t, id_episodes in enumerate(tranches):
             reset = (t == 0)
 
@@ -184,18 +197,20 @@ class TaskRegister:
             if previous_state is not None:
                 extra_dep.append(previous_state)
 
-            previous_state = self.compmake_job(learn_log, data_central=self.data_central,
-                                  id_agent=id_agent,
-                                  id_robot=id_robot,
-                                  reset=reset,
-                                  episodes=id_episodes,
-                                  publish_interval=None,
-                                  publish_once=False,
-                                  interval_save=300,
-                                  interval_print=30,
-                                  extra_dep=extra_dep,
-                                  job_id='learn-%s-%s-%sof%s' % 
-                                    (id_robot, id_agent, t + 1, len(tranches)))
+            job_id = ('learn-%s-%s-%sof%s' % 
+                      (id_robot, id_agent, t + 1, len(tranches)))
+            previous_state = self.compmake_job(learn_log,
+                                               data_central=self.data_central,
+                                              id_agent=id_agent,
+                                              id_robot=id_robot,
+                                              reset=reset,
+                                              episodes=id_episodes,
+                                              publish_interval=None,
+                                              publish_once=False,
+                                              interval_save=300,
+                                              interval_print=30,
+                                              extra_dep=extra_dep,
+                                              job_id=job_id)
 
             if publish_progress:
                 self.compmake_job(publish_once, self.data_central, id_agent, id_robot,
@@ -301,21 +316,15 @@ class TaskRegister:
                                  resolution=1,
                                  fail_if_not_working=False,
                                  videos=default_servonav_videos):
-
-        logger.info('Adding servonav for %s/%s %s %s' % 
-                    (id_agent, id_robot, num_episodes,
-                     num_episodes_videos))
-
+ 
         has_servo = self.agent_has_servo(id_agent)
         if not has_servo:
-            logger.debug('Agent %s does not support servoing.' % id_agent)
             return
 
         if num_episodes_videos > num_episodes:
             raise SemanticMistake('More videos than episodes requested.')
 
         if num_episodes == 0:
-            logger.debug('No servonav episodes')
             return
 
         all_id_episodes = [self.episode_id_servonav(id_agent, i)
@@ -354,17 +363,7 @@ class TaskRegister:
         self.compmake_job(checkpoint, 'all servonav',
                         job_id='servonav-%s-%s' % (id_robot, id_agent),
                         extra_dep=all_tranches)
-
-#        summaries = self.compmake_job(servo_stats_summaries, self.data_central,
-#                         id_agent, id_robot,
-#                         job_id=('servo-%s-%s-summary' %
-#                                  (id_robot, id_agent)),
-#                         extra_dep=all_servonav)
-#
-#        self.compmake_job(servo_stats_report, self.data_central, id_agent,
-#             id_robot, summaries,
-#             job_id='servo-%s-%s-report' % (id_robot, id_agent))
-
+ 
         self.add_videos(id_agent=id_agent,
                           id_robot=id_robot,
                           id_episodes=id_episodes_with_extra,
@@ -377,26 +376,15 @@ class TaskRegister:
                         displacement=3,
                         episodes_per_tranche=1,
                         videos=default_servo_videos):
-
-        logger.info('Adding servo for %s/%s; %s episodes of which '
-                    '%s with video.' % 
-                    (id_agent, id_robot, num_episodes,
-                     num_episodes_videos))
-
-        has_servo = self.agent_has_servo(id_agent)
-
+ 
         if num_episodes_videos > num_episodes:
             raise SemanticMistake('More videos than episodes requested.')
 
-        if not has_servo:
-            logger.debug('Agent %s does not support servoing.' % id_agent)
+        if not self.agent_has_servo(id_agent):
             return
 
         if num_episodes == 0:
-            logger.debug('No servo episodes')
-            return
-
-        logger.debug('Creating servo episodes')
+            return 
 
         all_id_episodes = [self.episode_id_servoing(id_agent, i)
                            for i in range(num_episodes)]
@@ -409,14 +397,15 @@ class TaskRegister:
             num_episodes_with_robot_state = len(set(id_episodes) & 
                                                 set(id_episodes_with_extra))
 
-            tranche = self.compmake_job(task_servo, data_central=self.data_central,
-             id_agent=id_agent, id_robot=id_robot,
-             max_episode_len=max_episode_len,
-             num_episodes=len(id_episodes),
-             id_episodes=id_episodes,
-             cumulative=False,
-             displacement=displacement,
-             interval_print=5,
+            tranche = self.compmake_job(task_servo,
+                                        data_central=self.data_central,
+                                         id_agent=id_agent, id_robot=id_robot,
+                                         max_episode_len=max_episode_len,
+                                         num_episodes=len(id_episodes),
+                                         id_episodes=id_episodes,
+                                         cumulative=False,
+                                         displacement=displacement,
+                                         interval_print=5,
              num_episodes_with_robot_state=num_episodes_with_robot_state,
              job_id='servo-%s-%s-%sof%s' % (id_robot, id_agent, st + 1,
                                              len(episodes_tranches)),
@@ -437,17 +426,9 @@ class TaskRegister:
                                             extra_dep=[tranche])
                 summaries.append(summary)
 
-        all_servo = self.compmake_job(checkpoint, 'all servo',
+        self.compmake_job(checkpoint, 'all servo',
                         job_id='servo-%s-%s' % (id_robot, id_agent),
-                        extra_dep=all_tranches)
-#        
-#        
-#        summaries = self.compmake_job(servo_stats_summaries, self.data_central,
-#                         id_agent=id_agent, id_robot=id_robot,
-#                         id_episodes=all_id_episodes,
-#                         job_id=('servo-%s-%s-summary' %
-#                                  (id_robot, id_agent)),
-#                         extra_dep=all_servo)
+                        extra_dep=all_tranches) 
          
         self.compmake_job(servo_stats_report, self.data_central, id_agent,
              id_robot, summaries,
@@ -472,18 +453,17 @@ class TaskRegister:
                           id_episodes=id_episodes_with_extra,
                           videos=videos)
 
-
-def are_compatible(data_central, id_robot, id_agent):
-    # XXX: this is wasteful
-    config = data_central.get_bo_config()
-    robot = config.robots.instance(id_robot)
-    agent = config.agents.instance(id_agent)
-    try:
-        agent.init(robot.get_spec())
-    except UnsupportedSpec as e:
-        logger.debug('%s/%s: %s' % (id_robot, id_agent, e))
-        return False
-    return True
+    @contract(returns='tuple(bool, str)')
+    def are_compatible(self, id_robot, id_agent):
+        agent = self._get_agent_instance(id_agent)
+        robot = self._get_robot_instance(id_robot)
+        
+        try:
+            agent.init(robot.get_spec())
+        except UnsupportedSpec as e:
+            # logger.debug('%s/%s: %s' % (id_robot, id_agent, e))
+            return False, str(e)
+        return True, None
 
 
 def checkpoint(msg):

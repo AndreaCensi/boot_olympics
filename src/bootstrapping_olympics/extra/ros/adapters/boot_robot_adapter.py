@@ -1,7 +1,11 @@
-from .. import (BootstrappingCommandsResponse, BootstrappingObservations,
-    BootstrappingCommands, rospy, np)
-from ..ros_logs import observations2ros
-from ..ros_script_utils import RospyLogger
+try:
+    from .. import (BootstrappingCommandsResponse, BootstrappingObservations,
+                    BootstrappingCommands, rospy)
+    from ..ros_logs import observations2ros
+    from ..ros_script_utils import RospyLogger
+except: # allow to run nose even if ros is not installed
+    pass
+from .. import np
 from bootstrapping_olympics import ObsKeeper
 from bootstrapping_olympics.configuration import check_valid_robot_config
 from bootstrapping_olympics.programs.manager.meat import DataCentral

@@ -21,8 +21,7 @@ class BagLogWriter():
         self.num = 0
 
     @contract(observations='array')
-    def push_observations(self, observations, extra={}):
-        # TODO FIXME extra not written
+    def push_observations(self, observations, extra={}): #@UnusedVariable TODO FIXME extra not written
         from rospy import rostime #@UnresolvedImport
         msg = observations2ros(self.boot_spec, observations)
         t = rostime.Time.from_sec(observations['timestamp'])

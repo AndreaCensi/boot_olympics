@@ -1,13 +1,10 @@
-from . import load_agent_state, np
+from . import load_agent_state, np, save_report
 from contracts import describe_type
-from . import save_report
 
-__all__ = ['task_predict']
+__all__ = ['task_predict', 'predict_report']
 
 
-def task_predict(data_central, id_agent, id_robot):
-    ''' Returns the list of the episodes IDs simulated. '''
-    # Instance agent object    
+def task_predict(data_central, id_agent, id_robot, live_plugins=[]):
     # TODO FIXME: remove dependency on boot_agents
     from boot_agents.utils import PredictionStats
     from bootstrapping_olympics.extra.reprep import (boot_has_reprep,
@@ -28,14 +25,29 @@ def task_predict(data_central, id_agent, id_robot):
     streams = log_index.get_streams_for_robot(id_robot)
     y_dot_stats = PredictionStats('y_dot', 'y_dot_pred')
     y_dot_sign_stats = PredictionStats('y_dot_sign', 'y_dot_pred_sign')
+    u_stats = PredictionStats('u', 'u_pred')
+    
+    # Initialize plugins
+    live_plugins = [data_central.get_bo_config().live_plugins.instance(x) 
+                    for x in live_plugins]
+    for plugin in live_plugins:
+        plugin.init(dict(data_central=data_central,
+                         id_agent=id_agent, id_robot=id_robot))
 
     for sample in predict_all_streams(streams=streams, predictor=predictor):
         compute_errors(sample)
         y_dot_stats.update(sample['y_dot'], sample['y_dot_pred'])
         y_dot_sign_stats.update(sample['y_dot_sign'], sample['y_dot_pred_sign'])
+        u_stats.update(sample['data']['commands'], sample['est_u'])
+        
+        # Update plugins
+        for plugin in live_plugins:
+            plugin.update(dict(agent=agent, robot=None, obs=sample['data'],
+                            predict=sample))
     
     statistics = dict(y_dot_stats=y_dot_stats,
                       y_dot_sign_stats=y_dot_sign_stats,
+                      u_stats=u_stats,
                       id_state=state.id_state)
     return statistics
 
@@ -43,6 +55,7 @@ def task_predict(data_central, id_agent, id_robot):
 def predict_report(data_central, id_agent, id_robot, statistics, save_pickle=False):
     from bootstrapping_olympics.extra.reprep import ReprepPublisher
 
+    u_stats = statistics['u_stats'] 
     y_dot_stats = statistics['y_dot_stats'] 
     y_dot_sign_stats = statistics['y_dot_sign_stats']
     id_state = statistics['id_state']
@@ -51,19 +64,15 @@ def predict_report(data_central, id_agent, id_robot, statistics, save_pickle=Fal
     from reprep import Report
     r = Report(basename)
     publisher = ReprepPublisher(report=r)
-
     y_dot_stats.publish(publisher.section('y_dot'))
     y_dot_sign_stats.publish(publisher.section('y_dot_sign'))
-
+    u_stats.publish(publisher.section('u'))
+    
     ds = data_central.get_dir_structure()
-    report_dir = ds.get_report_res_dir(id_agent=id_agent,
-                                       id_robot=id_robot,
-                                       id_state=id_state,
-                                       phase='predict')
-    filename = ds.get_report_filename(id_agent=id_agent,
-                                       id_robot=id_robot,
-                                       id_state=id_state,
-                                       phase='predict')
+    report_dir = ds.get_report_res_dir(id_agent=id_agent, id_robot=id_robot,
+                                       id_state=id_state, phase='predict')
+    filename = ds.get_report_filename(id_agent=id_agent, id_robot=id_robot,
+                                       id_state=id_state, phase='predict')
     
     save_report(data_central, r, filename, resources_dir=report_dir,
                 save_pickle=save_pickle) 
@@ -111,10 +120,13 @@ def predict_all_streams(streams, predictor, skip_initial=5):
                 if expected != found:
                     msg = 'Want shape %s, got %s.' % (expected, found)
                     raise Exception(msg)
+                
+                est_u = predictor.estimate_u()
 
                 yield dict(prev=last_observations,
                            data=observations,
-                           predict_y=predict_y)
+                           predict_y=predict_y,
+                           est_u=est_u)
 
             predictor.process_observations(observations)
             last_observations = observations

@@ -36,6 +36,7 @@ class ReprepPublisher(Publisher):
                        filter_params={},
                        caption=None): #@ReservedAssignment
         # try image XXX check uint8
+        # If this is RGB
         if len(value.shape) == 3 and value.shape[2] == 3:
             # zoom images smaller than 50
 #            if value.shape[0] < 50:
@@ -60,7 +61,7 @@ class ReprepPublisher(Publisher):
         with f.plot(name, caption=caption, **args) as pylab:
             yield pylab
 
-    def section(self, section_name, cols=default_max_cols):
-        child = self.r.node(section_name)
+    def section(self, section_name, cols=default_max_cols, caption=None):
+        child = self.r.node(section_name, caption=caption)
         return ReprepPublisher(report=child, cols=cols)
 
