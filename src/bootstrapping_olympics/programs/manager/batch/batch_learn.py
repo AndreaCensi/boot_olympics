@@ -5,6 +5,9 @@ from .. import (create_video, servo_stats_report, simulate, task_predict, logger
     learn_log, publish_once, np, task_servo, task_servonav, publish_report_robot,
     servo_stats_summary, predict_report)
 from bootstrapping_olympics import UnsupportedSpec
+from bootstrapping_olympics.library.robots.equiv_robot import EquivRobot
+from bootstrapping_olympics.programs.manager.meat.nuislog import (
+    nuislog_episodes)
 from conf_tools import SemanticMistake
 import itertools
 
@@ -93,11 +96,16 @@ class TaskRegister:
     def set_dep_episode_done(self, id_robot, id_episode, job):
         self.set_dep((id_robot, id_episode, 'episode'), job)
 
+    @contract(returns='list(str)')
+    def get_all_exploration_episodes(self, id_robot):
+        pass
+
     @contract(servo='None|dict',
               servonav='None|dict',
               predict='None|dict')
     def main(self, agents, robots,
                     explore=None,
+                    explore_modulus=None,
                     servo=None,
                     servonav=None,
                     predict=None):
@@ -114,21 +122,27 @@ class TaskRegister:
         for id_robot in robots:
             self.add_task_robot_report(id_robot=id_robot)
             
+        if explore_modulus is not None:
+            self.add_tasks_explore_modulus(robots, **explore_modulus)
+            num_ep_expl = explore_modulus['num_episodes']
+            explorer = explore_modulus['explorer']
+        # TODO: validate inputs
         if explore is not None:
             for id_robot in robots:
                 self.add_tasks_explore(id_robot=id_robot, **explore)
-
-        for id_robot, id_agent in  itertools.product(robots, agents):
-            compatible, reason = self.are_compatible(id_robot=id_robot, id_agent=id_agent)
+            num_ep_expl = explore['num_episodes']
+            explorer = explore['explorer']
+            
+        for id_robot, id_agent in itertools.product(robots, agents):
+            compatible, reason = self.are_compatible(id_robot, id_agent)
             if not compatible:
                 logger.info('Avoiding combination %s / %s: %s' % 
                              (id_robot, id_agent, reason))
                 continue
 
             # FIXME: num_ep_expl (should work also for logs)
-            num_ep_expl = explore['num_episodes']
-            self.add_learning(id_robot, id_agent, num_ep_expl,
-                              explorer=explore['explorer'], # XXX
+            self.add_learning(id_robot, id_agent, num_ep_expl=num_ep_expl,
+                              explorer=explorer, # XXX
                               publish_progress=False,
                               save_pickle=True) # TODO: make param
 
@@ -230,12 +244,108 @@ class TaskRegister:
              job_id='report-learn-%s-%s' % (id_robot, id_agent),
              extra_dep=all_learned)
 
+    def add_tasks_explore_modulus(self, robots, episodes_per_tranche=50, **explore_args):
+        """ 
+            Adds exploration tasks, making sure to use the same 
+            data for robots up to nuisances. 
+        """
+        # ID robot -> (obsn, original, cmdn)
+        robot2canonical = {}
+        
+        # (original, cmd) -> list(str)
+        from collections import defaultdict
+        core2robots = defaultdict(list)
+        
+        for id_robot in robots:
+            canform = self.get_robot_modulus(id_robot)
+            robot2canonical[id_robot] = canform
+            _, original, cmdn = canform
+            core2robots[(original, cmdn)].append(id_robot)
+            
+            logger.info('Canonical form of %r: %s' % 
+                        (id_robot, robot2canonical[id_robot]))
+            
+        config = self.data_central.get_bo_config()
+        
+        for original, cmd in core2robots:
+            derived = core2robots[(original, cmd)]
+            logger.info('Core robot (%s,%s) corresponds to %s' % 
+                        (original, cmd, derived))
+            
+            # XXX: not sure of order
+            new_robot_name = "".join(['U%s' % x for x in cmd]) + original
+            if not new_robot_name in config.robots:
+                msg = 'Bug found, or bad naming practices.'
+                msg += 'I want to instantiate a %r but not found.' % new_robot_name
+                raise Exception(msg)
+            
+            explore_args['episodes_per_tranche'] = episodes_per_tranche
+            id_episodes = self.add_tasks_explore(new_robot_name, **explore_args)
+            logger.info('Defined %d episodes for %r.' % (len(id_episodes), new_robot_name))
+            
+            # Now convert one episode into the other
+            for id_derived in derived:
+                logger.info('Considering derived %s ' % id_derived)
+                derived_obs, x, derived_cmd = robot2canonical[id_derived]
+                assert x == original
+                assert derived_cmd == cmd
+                if not derived_obs:
+                    logger.info(' ... skipping because pure.')
+                    # this is a pure robot
+                    continue
+                
+                episodes_tranches = self.get_tranches(id_episodes,
+                                                      episodes_per_tranche)
+                
+                for i, tranche in enumerate(episodes_tranches):
+                    job_id = 'derive-%s-%d' % (id_derived, i)
+                    
+                    extra_dep = []
+                    for id_episode in tranche:
+                        extra_dep.append(self.dep_episode_done(new_robot_name,
+                                                               id_episode))
+                        
+                    job = self.compmake_job(nuislog_episodes,
+                                            data_central=self.data_central,
+                                            id_robot_original=new_robot_name,
+                                            id_episodes=tranche,
+                                            id_equiv=id_derived,
+                                            obs_nuisances=derived_obs,
+                                            cmd_nuisances=[], # <- correct
+                                            with_extras=True,
+                                            job_id=job_id,
+                                            extra_dep=extra_dep)
+                    
+                    for id_episode in tranche:
+                        self.set_dep_episode_done(id_robot=id_derived,
+                                                  id_episode=id_episode, job=job)
+     
+    
+    @contract(returns='tuple(tuple, str, tuple)')
+    def get_robot_modulus(self, id_robot):
+        """ Returns the canonical description of a robot,
+            as a list of nuisances on observations,
+            robot name,
+            nuisances on commands. 
+        
+            obsn, original, cmdn = self.get_robot_modulus() 
+        """
+        
+        robot = self._get_robot_instance(id_robot)
+        if isinstance(robot, EquivRobot):
+            return robot.get_robot_modulus()
+        else:
+            return (tuple([]), id_robot, tuple([]))
+
+
+    @contract(returns='list(str)')
     def add_tasks_explore(self, id_robot, explorer,
                                 num_episodes,
                                 episodes_per_tranche=10,
-                                   num_episodes_videos=1,
-                                   videos=default_expl_videos,
-                                   max_episode_len=10):
+                                num_episodes_videos=1,
+                                videos=default_expl_videos,
+                                max_episode_len=10):
+        """ Returns the episodes id """
 
         if num_episodes_videos > num_episodes:
             msg = ('Requested %d videos for only %d episodes' % 
@@ -269,7 +379,7 @@ class TaskRegister:
                              id_episodes=id_episodes,
                              cumulative=False,
                              write_extra=write_extra,
-                            job_id='explore-%s-%s-%sof%s' % 
+                             job_id='explore-%s-%s-%sof%s' % 
                                     (id_robot, explorer, t + 1,
                                      len(episodes_tranches)))
 
@@ -285,6 +395,8 @@ class TaskRegister:
 
         self.add_videos(id_agent=explorer, id_robot=id_robot,
                         id_episodes=id_episodes_with_extra, videos=videos)
+
+        return all_id_episodes
 
     def add_videos(self, id_agent, id_robot, id_episodes, videos):
         # todo: temporary videos
@@ -453,7 +565,7 @@ class TaskRegister:
                           id_episodes=id_episodes_with_extra,
                           videos=videos)
 
-    @contract(returns='tuple(bool, str)')
+    @contract(returns='tuple(bool, None|str)')
     def are_compatible(self, id_robot, id_agent):
         agent = self._get_agent_instance(id_agent)
         robot = self._get_robot_instance(id_robot)
@@ -463,6 +575,7 @@ class TaskRegister:
         except UnsupportedSpec as e:
             # logger.debug('%s/%s: %s' % (id_robot, id_agent, e))
             return False, str(e)
+        
         return True, None
 
 

@@ -77,8 +77,6 @@ def episode_summary(boot_stream, extra_table, id_episode):
     # print len(sel)
 
     extra = load_extra(extra_table, first_moment)
-#    extra_string = str(extra_table[first_moment])
-#    extra = yaml_load(extra_string)
     extras = list(extra.keys())
     return EpisodeSummary(id_episode=id_episode,
                           id_agent=id_agent,

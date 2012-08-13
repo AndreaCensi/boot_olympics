@@ -49,8 +49,6 @@ def simulate(data_central, id_agent, id_robot,
         agent.init(boot_spec)
 
     ds = data_central.get_dir_structure()
-    assert isinstance(ds, DirectoryStructure)
-
     timestamp = unique_timestamp_string()
     timestamp = timestamp.replace('_', '')
     id_stream = '%s-%s-%s' % (id_robot, id_agent, timestamp)
@@ -113,14 +111,14 @@ class Bookkeeping():
             else:
                 self.done_before = set()
                 self.num_episodes_done_before = 0
-            self.num_episodes_todo = (num_episodes -
+            self.num_episodes_todo = (num_episodes - 
                                       self.num_episodes_done_before)
-            logger.info('Preparing to do %d episodes (already done %d).' %
+            logger.info('Preparing to do %d episodes (already done %d).' % 
                         (self.num_episodes_todo,
                          self.num_episodes_done_before))
         else:
             self.num_episodes_todo = num_episodes
-            logger.info('Preparing to do %d episodes.' %
+            logger.info('Preparing to do %d episodes.' % 
                         self.num_episodes_todo)
         self.num_episodes_done = 0
         self.num_observations = 0
@@ -143,12 +141,12 @@ class Bookkeeping():
         self.num_observations_episode += 1
         self.num_observations += 1
         if self.tracker.its_time():
-            msg = ('simulating %d/%d episodes obs %d (%5.1f fps)' %
+            msg = ('simulating %d/%d episodes obs %d (%5.1f fps)' % 
                    (self.num_episodes_done,
                     self.num_episodes_todo,
                     self.num_observations, self.tracker.fps()))
             if self.num_episodes_done > 0:
-                msg += (' (mean obs/ep: %.1f)' %
+                msg += (' (mean obs/ep: %.1f)' % 
                         (np.mean(self.observations_per_episode)))
             logger.info(msg)
 

@@ -18,9 +18,11 @@ def display_some_extended(x, streamels, select, max_to_display=4):
         by select (array of bool). '''
     how_many = np.sum(select)
     to_display = min(how_many, max_to_display)
-    values = x[select][:to_display]
-    s = 'First %s of %s/%s: %s' % (to_display, how_many,
-                                   x.size, values)
-    s += '\n lower: %s' % streamels['lower'][select][:to_display]
-    s += '\n upper: %s' % streamels['upper'][select][:to_display]
+    indices, = np.nonzero(select)
+    indices = indices[:to_display]
+    s = 'First %s of %s/%s:' % (to_display, how_many, x.size)
+    s += '\n value: %s' % x[indices]
+    s += '\n lower: %s' % streamels['lower'][indices]
+    s += '\n upper: %s' % streamels['upper'][indices]
+    s += '\n index: %s' % indices
     return s

@@ -16,8 +16,8 @@ def task_predict(data_central, id_agent, id_robot, live_plugins=[]):
         raise Exception(msg)
 
     agent, state = load_agent_state(data_central, id_agent, id_robot,
-                             reset_state=False,
-                             raise_if_no_state=True)
+                                    reset_state=False,
+                                    raise_if_no_state=True)
 
     predictor = agent.get_predictor()
 

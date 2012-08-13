@@ -3,8 +3,9 @@ from bootstrapping_olympics import (BootOlympicsConfig, BootOlympicsConstants,
     LogsFormat)
 from bootstrapping_olympics.utils import (check_contained, expand_environment,
     substitute, mkdirs_thread_safe, warn_good_identifier, warn_good_filename,
-    friendly_filesize)
+    friendly_filesize, unique_timestamp_string)
 from conf_tools.utils import friendly_path
+from contracts import contract
 import os
 import tempfile
 
@@ -71,6 +72,21 @@ class DirectoryStructure:
     def get_state_db_directory(self):
         return os.path.join(self.root, self.DIR_STATES)
 
+    @contract(returns='tuple(str,str)')
+    def get_simlog_filename_stream(self, id_robot, id_agent):
+        """ 
+            Also creates a suitable id_stream. 
+            Returns id_stream, filename.
+        """
+        timestamp = unique_timestamp_string()
+        timestamp = timestamp.replace('_', '')
+        # TODO: use phase?
+        id_stream = '%s-%s-%s' % (id_robot, id_agent, timestamp)
+        filename = self.get_simlog_filename(id_robot=id_robot,
+                                            id_agent=id_agent,
+                                            id_stream=id_stream)
+        return id_stream, filename
+        
     def get_simlog_filename(self, id_agent, id_robot, id_stream,
                                   logs_format=None):
 
@@ -162,8 +178,11 @@ class DirectoryStructure:
             Used to create a list of recent files that are done.
         """
         path = friendly_path(filename_or_basename)
-        size = friendly_filesize(filename_or_basename)
-        logger.info('Written %r (%r)' % (path, size))
+        if os.path.exists(filename_or_basename):
+            size = friendly_filesize(filename_or_basename)
+            logger.info('Written %r (%r)' % (path, size))
+        else:
+            logger.info('Written %r' % (path))
         # TODO: add implementation of notification
 
 

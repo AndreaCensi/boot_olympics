@@ -16,6 +16,29 @@ def check_nuisances_obs(id_robot, robot, id_nuisance, nuisance): #@UnusedVariabl
     check_conversions(robot.get_spec().get_observations(), nuisance)
 
 
+@for_all_robot_nuisance_pairs
+def check_nuisances_obs2(id_robot, robot, id_nuisance, nuisance): #@UnusedVariable
+    check_conversions_upper_lower(robot.get_spec().get_observations(), nuisance)
+
+def check_conversions_upper_lower(stream_spec1, nuisance):
+    try:
+        stream_spec2 = nuisance.transform_spec(stream_spec1)
+    except UnsupportedSpec as e:
+        logger.info('Skipping %s/%s because incompatible: %s' % 
+                    (stream_spec1, nuisance, e))
+        return
+    
+    streamels = stream_spec1.get_streamels() 
+    upper = streamels['upper']
+    lower = streamels['lower']
+    stream_spec1.check_valid_value(lower)
+    stream_spec1.check_valid_value(upper)
+
+    upper2 = nuisance.transform_value(upper)
+    lower2 = nuisance.transform_value(lower)
+    stream_spec2.check_valid_value(upper2)
+    stream_spec2.check_valid_value(lower2)
+    
 def check_conversions(stream_spec1, nuisance):
     #print('Checking %s / %s ' % (stream_spec1, nuisance))
     nuisance_inv = None
@@ -23,12 +46,13 @@ def check_conversions(stream_spec1, nuisance):
         try:
             stream_spec2 = nuisance.transform_spec(stream_spec1)
         except UnsupportedSpec as e:
-            logger.info('Skipping %s/%s because incompatible: %s' %
+            logger.info('Skipping %s/%s because incompatible: %s' % 
                         (stream_spec1, nuisance, e))
             return
 
         value1 = stream_spec1.get_random_value()
         stream_spec1.check_valid_value(value1)
+
 
         value2 = nuisance.transform_value(value1)
         stream_spec2.check_valid_value(value2)
@@ -48,7 +72,7 @@ def check_conversions(stream_spec1, nuisance):
                    '  stream_spec1: %s\n'
                    '      nuisance: %s\n'
                    '  stream_spec2: %s\n'
-                   '  nuisance_inv: %s\n' %
+                   '  nuisance_inv: %s\n' % 
                    (indent(str(e), '>'),
                     stream_spec1.to_yaml(), nuisance,
                     stream_spec2.to_yaml(), nuisance_inv))
@@ -63,7 +87,7 @@ def check_conversions(stream_spec1, nuisance):
                    '      nuisance: %s\n'
                    '  stream_spec2: %s\n'
                    '  nuisance_inv: %s\n'
-                   ' stream_spec1b: %s\n' %
+                   ' stream_spec1b: %s\n' % 
                    (indent(str(e), '>'),
                     stream_spec1.to_yaml(), nuisance,
                     stream_spec2.to_yaml(), nuisance_inv,

@@ -106,10 +106,11 @@ class LogIndex:
 
                 break
         else:
-            msg = 'found:\n'
+            msg = 'Streams found:\n'
             for stream in self.get_streams_for_robot(id_robot):
                 msg += ' %s: %s\n' % (stream, stream.get_id_episodes())
-            raise Exception('No episode %r found: %s' % (id_episode, msg))
+            raise Exception('No episode %r found for %r. %s' % 
+                            (id_episode, id_robot, msg))
 
     @contract(returns='str')
     def debug_summary(self, ignore_cache=False):

@@ -16,6 +16,7 @@ from . import contract, np
      episode_start: True if the episode changed, meaning that the observations
                       are not logically in sequence with previous ones.
 '''
+from bootstrapping_olympics.interfaces import BOOT_OLYMPICS_SENSEL_RESOLUTION
 
 boot_observations_version = [1, 0]
 
@@ -48,9 +49,10 @@ boot_observations_dtype = [
 
 def get_observations_dtype(boot_spec):
     dtype = list(boot_observations_dtype)
-    dtype.append(('observations', 'float32',
+    # ok, here we go. 
+    dtype.append(('observations', BOOT_OLYMPICS_SENSEL_RESOLUTION,
                   boot_spec.get_observations().shape()))
-    dtype.append(('commands', 'float32',
+    dtype.append(('commands', BOOT_OLYMPICS_SENSEL_RESOLUTION,
                   boot_spec.get_commands().shape()))
     return np.dtype(dtype)
 

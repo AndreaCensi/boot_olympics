@@ -40,6 +40,9 @@ def boot_olympics_manager(arguments):
                       help="Sets np.seterr. "
                       "Possible values: ignore, warn, raise, print, log")
 
+    parser.add_option("--profile", default=False, action='store_true',
+                      help="Use Python profiler")
+
     available = LogsFormat.formats.keys()
     parser.add_option("--logformat", dest='log_format',
                       default=BootOlympicsConstants.DEFAULT_LOG_FORMAT,
@@ -85,7 +88,20 @@ def boot_olympics_manager(arguments):
     data_central = DataCentral(options.boot_root)
     data_central.get_dir_structure().set_log_format(options.log_format)
 
-    return Storage.commands[cmd](data_central, cmd_options)
+    def go():
+        return Storage.commands[cmd](data_central, cmd_options)
+
+    if not options.profile:
+        go()
+    else:
+        logger.warning('Note: the profiler does not work when using '
+                       'parallel execution. (use "make" instead of "parmake").')
+        import cProfile
+        cProfile.runctx('go()', globals(), locals(), 'bom_prof')
+        import pstats
+        p = pstats.Stats('bom_prof')
+        p.sort_stats('cumulative').print_stats(30)
+        p.sort_stats('time').print_stats(30)
 
 
 def manager_main():

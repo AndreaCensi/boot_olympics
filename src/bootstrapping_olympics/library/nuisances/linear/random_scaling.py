@@ -20,6 +20,7 @@ class RandomScaling(GenericLinear):
         # TODO: use our random generator
         np.random.seed(self.seed)
         S = np.random.exponential(scale=1.0, size=n)
+        #print('Found matrix: %s %s %s' % (self.seed, S.sum(), 0))
         return np.diag(S)
 
     def __str__(self):

@@ -4,6 +4,7 @@ from ..utils import (assert_allequal_verbose, assert_allclose_verbose,
     display_some, display_some_extended)
 from contracts import check, describe_type, describe_value
 from numbers import Number
+from bootstrapping_olympics.interfaces import BOOT_OLYMPICS_SENSEL_RESOLUTION
 
 
 #__all__ = ['BootInvalidValue', 'StreamSpec']
@@ -159,9 +160,9 @@ class StreamSpec:
         uv = self.upper[valid]
         out_of_range = np.logical_or(xv < lv, xv > uv)
         if np.any(out_of_range):
-            msg = ('Found elements out of range. %s' % 
-                   display_some_extended(xv,
-                                         self.streamels[valid], out_of_range))
+            print 'bounds dtype', lv.dtype, uv.dtype
+            msg = ('Found elements out of range:\n %s' % 
+                   display_some_extended(xv, self.streamels[valid], out_of_range))
             bail(msg)
 
     @contract(returns='int,>0')
@@ -435,7 +436,7 @@ def streamels_from_spec(shape, format, range, default): #@ReservedAssignment
         # 
         streamels['default'].flat[:] = default
     elif isinstance(default, list): # explicit list
-        defaults = np.array(default)
+        defaults = np.array(default, dtype=BOOT_OLYMPICS_SENSEL_RESOLUTION)
         if defaults.shape != streamels.shape:
             msg = ('Expected defaults shape to be %s instead of %s.' % 
                    (defaults.shape, streamels.shape))

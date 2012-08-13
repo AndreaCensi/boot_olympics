@@ -41,14 +41,10 @@ def hdf_read(filename, id_stream, boot_spec=None, read_extra=False,
             if read_extra:
                 observations['extra'] = load_extra(extra, i)
 
-#                if False:
-#                    logger.debug('read string of len %s in %s' %
-#                                 (len(extra_string), time.clock() - t0))
             else:
                 observations['extra'] = {}
             yield observations
     finally:
-        #logger.info("finally: closing file %r" % filename)
         f.close()
 
 

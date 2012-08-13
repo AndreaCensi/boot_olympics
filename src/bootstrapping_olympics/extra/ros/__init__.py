@@ -16,10 +16,10 @@ package_path = os.path.realpath(os.path.join(root, '..', '..', 'ros-packages'))
 if not os.path.exists(package_path):
     logger.warning('Cannot find package path %r' % package_path)
 else:
-    current = os.environ['ROS_PACKAGE_PATH']
+    current = os.environ.get('ROS_PACKAGE_PATH', '')
     if not package_path in current:
         #logger.debug('Adding %r to ROS_PACKAGE_PATH' % package_path)
-        os.environ['ROS_PACKAGE_PATH'] += ':' + package_path 
+        os.environ['ROS_PACKAGE_PATH'] = current + ':' + package_path 
 
 
 try:
@@ -29,7 +29,8 @@ try:
         roslib.load_manifest(our_package)
     except Exception as e:
         logger.error('Cannot load our package %s (%s)' % (our_package, e))
-        logger.error('ROS_PACKAGE_PATH = %s' % os.environ['ROS_PACKAGE_PATH'].split(":"))
+        current = os.environ.get('ROS_PACKAGE_PATH', '(unset)').split(":")
+        logger.error('ROS_PACKAGE_PATH = %s' % current)
         raise 
     
     import ros
@@ -52,7 +53,9 @@ except (ImportError, Exception) as e:
     ros_error = e
 
     logger.error('ROS support not available')
-    logger.error(traceback.format_exc())
+    logger.exception(e)
+    logger.info('Continuing without ROS.') 
+    #(traceback.format_exc())
 
 else:
     from .ros_logs import *

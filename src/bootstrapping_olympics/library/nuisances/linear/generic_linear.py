@@ -2,6 +2,7 @@ from .. import (check_streamels_1D, check_streamels_continuous, contract, np,
     find_polytope_bounds_after_linear, check_streamels_1D_size)
 from bootstrapping_olympics import (RepresentationNuisance,
     ValueFormats, streamel_dtype, NuisanceNotInvertible)
+from bootstrapping_olympics.interfaces import BOOT_OLYMPICS_SENSEL_RESOLUTION
 
 __all__ = ['GenericLinear']
 
@@ -52,7 +53,7 @@ class GenericLinear(RepresentationNuisance):
 
         self.A = self._get_A(streamels)
         if self.A.shape[1] != streamels.size:
-            msg = ('I expect a matrix with rows %d, got %s' %
+            msg = ('I expect a matrix with rows %d, got %s' % 
                    (streamels.size, self.A.shape))
             raise ValueError(msg)
 
@@ -72,8 +73,23 @@ class GenericLinear(RepresentationNuisance):
     def transform_value(self, value):
         value2 = np.dot(self.A, value)
         # enforce upper/lower bounds, to account for numerical errors
-        value2 = value2.astype('float32')
+        value2 = value2.astype(BOOT_OLYMPICS_SENSEL_RESOLUTION)
+#        n = 5
+#        print('---') 
+#        which = [30, 130, 131, 132]
+#        print 'showing indices %s' % which
+#        print 'value', value[which]
+#        print 'scale', self.A.diagonal()[which]
+#        print 'value2', value2[which]
         value2 = np.clip(value2, self.lower, self.upper)
+#        
+#        print 'value2clipped', value2[which]
+#        print 'lower', self.lower[which]
+#        print 'upper', self.upper[which]
+#        
+#        print value2.dtype, self.lower.dtype
+#        print ('value2< upper', (value2 < self.upper)[which])
+#        print ('value2<=upper', (value2 <= self.upper)[which])
         return value2
 
     def inverse(self):

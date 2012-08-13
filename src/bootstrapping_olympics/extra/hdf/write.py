@@ -26,7 +26,7 @@ class HDFLogWriter():
         self.table = None
         self.boot_spec = boot_spec
 
-    @contract(observations='array')
+    @contract(observations='array', extra='dict')
     def push_observations(self, observations, extra={}):
         if self.table is None:
             self.table_dtype = remove_fields(observations.dtype, ['extra'])
@@ -39,6 +39,7 @@ class HDFLogWriter():
         row = row.copy().reshape((1,))
         self.table.append(row)
 
+        assert isinstance(extra, dict)
         extras = yaml_dump(extra)
         extras_gz = compress(extras)
         #ratio = 100.0 * len(extras_gz) / len(extras)

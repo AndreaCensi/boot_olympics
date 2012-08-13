@@ -48,6 +48,7 @@ from . import batch
 from . import servo_stats
 from . import clean_states
 from . import clean_simulations
+from . import nuislog
 
 
 from .main import *

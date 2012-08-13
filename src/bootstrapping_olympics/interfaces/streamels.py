@@ -7,6 +7,7 @@
 from . import contract, np
 from ..utils import indent, show_differences
 from contracts import  new_contract
+from bootstrapping_olympics.interfaces import BOOT_OLYMPICS_SENSEL_RESOLUTION
 
 __all__ = ['ValueFormats', 'streamel_dtype', 'new_streamels',
            'streamel_array', 'check_valid_streamels']
@@ -20,9 +21,9 @@ class ValueFormats:
 
 streamel_dtype = [
       ('kind', 'S1'), # 'I','D','C'
-      ('lower', 'float'), # This must be a finite value.
-      ('upper', 'float'), # This must be a finite value.
-      ('default', 'float')  # This must respect the bounds.
+      ('lower', BOOT_OLYMPICS_SENSEL_RESOLUTION), # This must be a finite value.
+      ('upper', BOOT_OLYMPICS_SENSEL_RESOLUTION), # This must be a finite value.
+      ('default', BOOT_OLYMPICS_SENSEL_RESOLUTION)  # This must respect the bounds.
 ]
 
 

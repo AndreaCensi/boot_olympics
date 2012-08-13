@@ -1,6 +1,8 @@
 ''' The software interface to the various objects. '''
 from .. import logger, np, contract
 
+BOOT_OLYMPICS_SENSEL_RESOLUTION = 'float32'
+
 from .streamels import *
 from .stream_spec import *
 from .boot_spec import *
