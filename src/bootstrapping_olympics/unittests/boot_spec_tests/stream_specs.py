@@ -127,4 +127,9 @@ shape: [3]
 format: D
 range: [0,1]
 default: [0.5, 0.5, ciao]
+---  # invalid default value, because they are not int
+shape: [3]
+format: D
+range: [0,2]
+default: [0,0.5,0]
 """)

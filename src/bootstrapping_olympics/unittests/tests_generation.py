@@ -19,7 +19,7 @@ for_all_pairs = fancy_test_decorator(
                   id_robot, get_robot(id_robot)),
             attributes=lambda (id_agent, id_robot):
                 dict(robot=id_robot, agent=id_agent),
-                naming=lambda (a, b): '%s-%s' % (a, b))
+                naming=lambda (a, b): '%s_%s' % (a, b))
 
 for_all_robot_nuisance_pairs = fancy_test_decorator(
             lister=lambda: itertools.product(all_nuisances(), all_robots()),
@@ -28,7 +28,7 @@ for_all_robot_nuisance_pairs = fancy_test_decorator(
                   id_nuisance, get_nuisance(id_nuisance)),
             attributes=lambda (id_nuisance, id_robot):
                 dict(robot=id_robot, nuisance=id_nuisance),
-                naming=lambda (a, b): '%s-%s' % (a, b))
+                naming=lambda (a, b): '%s_%s' % (a, b))
 
 
 # XXX: this is not used yet
