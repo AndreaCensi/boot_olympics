@@ -6,12 +6,16 @@ class InAWhile:
 
     @contract(interval='None|>0')
     def __init__(self, interval=5):
+        self.interval = interval
+        self.reset()
+        
+    def reset(self):
         self.count = 0
         self.start = time.time()
-        self.interval = interval
         self.last = self.start
         self.now = self.start
-
+        pass
+    
     def its_time(self):
         self.count += 1
         self.now = time.time()
