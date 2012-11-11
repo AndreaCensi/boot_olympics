@@ -9,9 +9,9 @@ class RandomLinear(GenericLinear):
     ''' A random linear transformation of the signal. '''
 
     @contract(seed='int')
-    def __init__(self, seed):
+    def __init__(self, seed, scale=1):
         self.seed = seed
-
+        self.scale = scale
         GenericLinear.__init__(self)
 
     @contract(streamels='array[N]', returns='array[NxN]')
@@ -19,7 +19,7 @@ class RandomLinear(GenericLinear):
         n = streamels.size
         # TODO: use our random generator
         np.random.seed(self.seed)
-        A = np.random.randn(n, n)
+        A = np.random.randn(n, n) * self.scale
         return A
 
     def __str__(self):
