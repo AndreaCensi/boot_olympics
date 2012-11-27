@@ -31,7 +31,7 @@ setup(name='BootOlympics',
         'PyContracts>=1.2,<2',
         'ConfTools>=1.0,<2',
         'RepRep>=1.0,<3',
-#        'compmake>=1.0,<2',
+        'compmake>=1.0,<2',
       ],
       extras_require={},
 
@@ -56,6 +56,8 @@ setup(name='BootOlympics',
                 'bootstrapping_olympics.programs.hdf2bag.main:main',
             'boot_olympics_rosbag2h5 = '
                 'bootstrapping_olympics.programs.rosbag2h5.main:main',
+            'boot_olympics_hdf2matlab = '
+                'bootstrapping_olympics.programs.hdf2matlab:hdf2matlab_main'
 
         ]
       },
