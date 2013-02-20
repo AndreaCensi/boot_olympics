@@ -150,3 +150,9 @@
     - bootstrapping_olympics.library.nuisances.ReplicateRows 
     - rows: 16
     
+
+- id: rsa1
+  desc: Resamples a 2D signal to 128x128
+  code:
+  - bootstrapping_olympics.library.nuisances.Resample
+  - shape: [128, 128]

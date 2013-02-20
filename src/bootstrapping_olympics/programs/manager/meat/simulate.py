@@ -1,4 +1,4 @@
-from . import DirectoryStructure, logger, np, run_simulation
+from . import logger, np, run_simulation
 from bootstrapping_olympics import AgentInterface, LogsFormat
 from bootstrapping_olympics.utils import (InAWhile, natsorted,
     unique_timestamp_string)

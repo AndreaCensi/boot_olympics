@@ -9,8 +9,7 @@ __all__ = ['BootSpec']
 
 class BootSpec:
     ''' 
-        This class represents the interface of a sensorimotor
-        interface. 
+        This class represents a sensorimotor interface.
     '''
 
     def __init__(self, obs_spec, cmd_spec, id_robot=None,

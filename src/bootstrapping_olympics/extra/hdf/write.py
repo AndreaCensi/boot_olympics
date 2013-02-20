@@ -31,6 +31,7 @@ class HDFLogWriter():
         if self.table is None:
             self.table_dtype = remove_fields(observations.dtype, ['extra'])
             self.create_table(self.table_dtype)
+            # TODO: check that the boot_spec is satisfied
 
         # TODO: what about extra?
         row = np.zeros((), self.table_dtype)
@@ -42,8 +43,8 @@ class HDFLogWriter():
         assert isinstance(extra, dict)
         extras = yaml_dump(extra)
         extras_gz = compress(extras)
-        #ratio = 100.0 * len(extras_gz) / len(extras)
-        #print('Compressed %.1f%%' % (ratio))
+        # ratio = 100.0 * len(extras_gz) / len(extras)
+        # print('Compressed %.1f%%' % (ratio))
         self.extra.append(extras_gz)
 
     def create_table(self, dtype):

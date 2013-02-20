@@ -160,7 +160,7 @@ class StreamSpec:
         uv = self.upper[valid]
         out_of_range = np.logical_or(xv < lv, xv > uv)
         if np.any(out_of_range):
-            print 'bounds dtype', lv.dtype, uv.dtype
+            # print 'bounds dtype', lv.dtype, uv.dtype
             msg = ('Found elements out of range:\n %s' % 
                    display_some_extended(xv, self.streamels[valid], out_of_range))
             bail(msg)

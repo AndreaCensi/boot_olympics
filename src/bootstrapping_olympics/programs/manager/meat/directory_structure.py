@@ -41,7 +41,8 @@ class DirectoryStructure:
             raise Exception(msg)
 
         self.log_format = BootOlympicsConstants.DEFAULT_LOG_FORMAT
-
+        self.extra_log_dirs = []
+        
     def set_log_format(self, log_format):
         ''' Sets the log format to write logs with. '''
         check_contained(log_format, LogsFormat.formats, 'format')
@@ -62,10 +63,16 @@ class DirectoryStructure:
         ''' Returns a directory where intermediate results can be placed. '''
         return os.path.join(self.root, DirectoryStructure.DIR_STORAGE)
 
+
+    def add_log_directory(self, dirname):
+        """ Adds a log directory in addition to ROOT/logs """
+        self.extra_log_dirs.append(dirname)
+        
     def get_log_directories(self):
         ''' Returns a list of the directories where to look for logs. '''
         dirs = []
         dirs.append(os.path.join(self.root, DirectoryStructure.DIR_LOGS))
+        dirs.extend(self.extra_log_dirs)
         # TODO: additional
         return dirs
 

@@ -2,7 +2,7 @@ from . import contract, logger
 from bootstrapping_olympics import (BootSpec, RobotInterface,
                                     BootOlympicsConfig, StreamSpec)
 from bootstrapping_olympics.utils import indent
-from bootstrapping_olympics.interfaces.observations import get_observations_dtype
+from bootstrapping_olympics.interfaces import get_observations_dtype
 import numpy as np
 
 __all__ = ['EquivRobot']
@@ -17,6 +17,7 @@ class EquivRobot(RobotInterface):
     def __init__(self, robot, obs_nuisance=[], cmd_nuisance=[]):
         self.inner_robot_name = robot 
         # todo: use get_current_bo_config()
+        
         self.robot = BootOlympicsConfig.specs['robots'].instance(robot)
 
         self.desc = ('EquivRobot(%s,obs:%s,cmd:%s)'
@@ -107,7 +108,7 @@ class EquivRobot(RobotInterface):
             obsr, his, cmdr = self.robot.get_robot_modulus()
             
             obs = obsr + tuple(self.obs_nuisances_id)
-            cmd = tuple(self.cmd_nuisances_id) + cmdr # XXX: check order 
+            cmd = tuple(self.cmd_nuisances_id) + cmdr  # XXX: check order 
             
             return (obs, his, cmd)
         else:
@@ -123,7 +124,7 @@ class EquivRobot(RobotInterface):
         cmd = list(self.cmd_nuisances_id)
         if isinstance(self.robot, EquivRobot):
             obsr, cmdr = self.robot.get_nuisances()
-            obs = obsr + obs # XXX: check order is correct
+            obs = obsr + obs  # XXX: check order is correct
             cmd = cmd + cmdr
         return obs, cmd
             

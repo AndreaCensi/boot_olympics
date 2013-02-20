@@ -2,6 +2,7 @@ from . import load_agent_state, publish_agent_output, logger
 from bootstrapping_olympics import AgentInterface
 from bootstrapping_olympics.utils import InAWhile, UserError
 import logging
+from .publish_output import publish_once as do_publish_once
 
 
 def learn_log(data_central, id_agent, id_robot,
@@ -15,7 +16,7 @@ def learn_log(data_central, id_agent, id_robot,
               live_plugins=[]):
     ''' If episodes is not None, it is a list of episodes id to learn. '''
 
-    #logger.info('Learning episodes %r' % episodes)
+    # logger.info('Learning episodes %r' % episodes)
 
     log_index = data_central.get_log_index()
     if not log_index.has_streams_for_robot(id_robot):
@@ -44,12 +45,9 @@ def learn_log(data_central, id_agent, id_robot,
     db = data_central.get_agent_state_db()
 
     if publish_interval is not None or publish_once:
-        ds = data_central.get_dir_structure()
-        report_dir = ds.get_report_dir(id_agent=id_agent,
-                                       id_robot=id_robot,
-                                       id_state=state.id_state)
-        logger.info('Writing output to directory %r.' % report_dir)
-        publish_agent_output(state, agent, report_dir, basename='once')
+        do_publish_once(data_central, id_agent=id_agent, id_robot=id_robot,
+                 phase='learn', progress='all',
+                 save_pickle=False)
 
     if publish_once:
         logger.info('As requested, exiting after publishing information.')
@@ -99,7 +97,7 @@ def learn_log(data_central, id_agent, id_robot,
         if episodes is not None:
             to_learn = to_learn.intersection(episodes)
         if not to_learn:
-            #logger.info('Stream %s already completely learned.' % stream)
+            # logger.info('Stream %s already completely learned.' % stream)
             continue
 
         try:
@@ -115,12 +113,12 @@ def learn_log(data_central, id_agent, id_robot,
             cur_stream_observations += 1
 
             if tracker.its_time():
-                progress = 100 * (float(state.num_observations) /
+                progress = 100 * (float(state.num_observations) / 
                                   num_observations_total)
-                progress_log = 100 * (float(cur_stream_observations) /
+                progress_log = 100 * (float(cur_stream_observations) / 
                                       stream.get_num_observations())
                 msg = ('overall %.2f%% (log %3d%%) (eps: %4d/%d, obs: %4d/%d);'
-                       ' %5.1f fps' %
+                       ' %5.1f fps' % 
                        (progress, progress_log, len(state.id_episodes),
                          num_episodes_total,
                         state.num_observations, num_observations_total,
@@ -137,8 +135,12 @@ def learn_log(data_central, id_agent, id_robot,
 
             if publish_interval is not None:
                 if 0 == state.num_observations % publish_interval:
-                    publish_agent_output(state, agent, report_dir,
-                                    basename='%05d' % state.num_observations)
+                    publish_once(data_central, id_agent, id_robot,
+                                 phase='learn', progress='%05d' % state.num_observations,
+                                 save_pickle=False)
+#                    
+#                    publish_agent_output(state, agent, report_dir,
+#                                    basename='%05d' % state.num_observations)
 
             # Update plugins
             for plugin in live_plugins:

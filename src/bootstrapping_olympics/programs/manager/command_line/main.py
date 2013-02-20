@@ -29,9 +29,11 @@ def boot_olympics_manager(arguments):
 
     parser = OptionParser(prog='boot_olympics_manager', usage=usage)
     parser.disable_interspersed_args()
-    parser.add_option("-d", dest='boot_root',
-                      default=None,
+    parser.add_option("-d", dest='boot_root', default=None,
                       help='Root directory with logs, config, etc. [%default]')
+
+    parser.add_option("-l", dest='extra_log_dirs', action="append", default=[],
+                      help='Adds an extra directory storing logs.')
 
     parser.add_option("--contracts", default=False, action='store_true',
                       help="Activate PyContracts (disabled by default)")
@@ -86,7 +88,10 @@ def boot_olympics_manager(arguments):
         pass
 
     data_central = DataCentral(options.boot_root)
-    data_central.get_dir_structure().set_log_format(options.log_format)
+    dir_structure = data_central.get_dir_structure() 
+    dir_structure.set_log_format(options.log_format)
+    for dirname in options.extra_log_dirs:
+        dir_structure.add_log_directory(dirname)
 
     def go():
         return Storage.commands[cmd](data_central, cmd_options)

@@ -10,19 +10,19 @@ from contracts import  new_contract
 from bootstrapping_olympics.interfaces import BOOT_OLYMPICS_SENSEL_RESOLUTION
 
 __all__ = ['ValueFormats', 'streamel_dtype', 'new_streamels',
-           'streamel_array', 'check_valid_streamels']
+           'streamel_array', 'check_valid_streamels', 'make_streamels_2D_float']
 
 
 class ValueFormats:
-    Continuous = 'C' # range is [lower, upper]
-    Discrete = 'D' # finite number of elements 
-    Invalid = 'I' # invalid/not used # TODO: tests for invalid values
+    Continuous = 'C'  # range is [lower, upper]
+    Discrete = 'D'  # finite number of elements 
+    Invalid = 'I'  # invalid/not used # TODO: tests for invalid values
     valid = [Continuous, Discrete, Invalid]
 
 streamel_dtype = [
-      ('kind', 'S1'), # 'I','D','C'
-      ('lower', BOOT_OLYMPICS_SENSEL_RESOLUTION), # This must be a finite value.
-      ('upper', BOOT_OLYMPICS_SENSEL_RESOLUTION), # This must be a finite value.
+      ('kind', 'S1'),  # 'I','D','C'
+      ('lower', BOOT_OLYMPICS_SENSEL_RESOLUTION),  # This must be a finite value.
+      ('upper', BOOT_OLYMPICS_SENSEL_RESOLUTION),  # This must be a finite value.
       ('default', BOOT_OLYMPICS_SENSEL_RESOLUTION)  # This must respect the bounds.
 ]
 
@@ -40,6 +40,20 @@ def new_streamels(shape):
     x['upper'] = np.nan
     x['default'] = np.nan
     return x
+
+@contract(shape='seq[2](int,>=1)', lower='scalar_number,finite,x',
+          upper='scalar_number,finite,y,>x', vdef='None|(scalar_number,finite,>x,<y)')
+def make_streamels_2D_float(shape, lower, upper, vdef=None):
+    """ Creates a stremeals spec with the given shape, min and max. """
+    x = np.zeros(shape, streamel_dtype)
+    x['kind'] = ValueFormats.Continuous
+    x['lower'] = lower
+    x['upper'] = upper
+    if vdef is None: 
+        vdef = lower * 0.5 + upper * 0.5
+    x['default'] = vdef
+    return x
+    
 
 
 @new_contract
@@ -92,7 +106,7 @@ def check_valid_streamels(streamels):
     except Exception as e:
         msg = ('This streamel specification is not coherent:\n'
                 '%s\n'
-                'streamels: %s' %
+                'streamels: %s' % 
                 (indent(str(e), '>'), streamels))
         raise ValueError(msg)
 
