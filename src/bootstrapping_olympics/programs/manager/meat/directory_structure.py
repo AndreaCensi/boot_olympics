@@ -9,7 +9,6 @@ from contracts import contract
 import os
 import tempfile
 
-
 class DirectoryStructure:
     ''' 
         This class knows how to organize the output of the various programs
@@ -193,6 +192,4 @@ class DirectoryStructure:
         # TODO: add implementation of notification
 
 
-
-
-
+ 
