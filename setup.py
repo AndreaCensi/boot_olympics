@@ -31,7 +31,7 @@ setup(name='BootOlympics',
         'PyContracts>=1.2,<2',
         'ConfTools>=1.0,<2',
         'RepRep>=1.0,<3',
-        'compmake>=1.0,<2',
+        'compmake>=2,<3',
       ],
       extras_require={},
 

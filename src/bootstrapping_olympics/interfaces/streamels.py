@@ -54,6 +54,20 @@ def make_streamels_2D_float(shape, lower, upper, vdef=None):
     x['default'] = vdef
     return x
     
+@contract(nstreamels='int,>=1',
+          lower='scalar_number,finite,x',
+          upper='scalar_number,finite,y,>x',
+          vdef='None|(scalar_number,finite,>x,<y)')
+def make_streamels_1D_float(nstreamels, lower, upper, vdef=None):
+    x = np.zeros(nstreamels, streamel_dtype)
+    x['kind'] = ValueFormats.Continuous
+    x['lower'] = lower
+    x['upper'] = upper
+    if vdef is None: 
+        vdef = lower * 0.5 + upper * 0.5
+    x['default'] = vdef
+    return x
+    
 
 
 @new_contract

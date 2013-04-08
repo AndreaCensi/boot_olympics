@@ -23,10 +23,6 @@
             <remap from="track_input" to="track_input" />
         </node>
 
-
-    
-        
-
     </group>
 
     <!-- <rosparam command="dump" file="after.yaml"/> -->

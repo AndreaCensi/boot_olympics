@@ -10,7 +10,7 @@ class EpisodeDesc:
     def __init__(self, id_episode, id_environment, extra=None):
         self.id_episode = id_episode
         self.id_environment = id_environment
-        self.extra = extra # TODO: is this stored on file?
+        self.extra = extra  # TODO: is this stored on file?
 
     def __str__(self):
         return "EpisodeDesc(%s,%s)" % (self.id_episode, self.id_environment)
@@ -32,10 +32,8 @@ class RobotObservations:
               due to, e.g., user intervention or collision
               (commands not accepted anymore).
             - ``robot_pose`` should be either None or a 4x4 Numpy matrix 
-                representing
-              an element of SE(3). This is used for tasks such as servoing,
-              where we need to know the pose of the robot for assessing
-              performance.
+              representing an element of SE(3). This is used for tasks such as servoing,
+              where we need to know the pose of the robot for assessing performance.
         '''
         self.timestamp = timestamp
         self.observations = observations
