@@ -4,6 +4,7 @@ from .. import Constants, LivePlugin
 from ..interfaces import AgentInterface, RobotInterface, RepresentationNuisance
 from conf_tools import ConfigMaster, GenericInstance, check_generic_code_desc
 import os
+from contracts import contract
 
 
 def check_valid_videos_config(spec):
@@ -46,14 +47,32 @@ class BootConfigMaster(ConfigMaster):
                     logger.info('Using additional dir %r' % dirname)
                     self.load(dirname)
         else:
-            #logger.debug('You can use the environment variable %r to preload '
+            # logger.debug('You can use the environment variable %r to preload '
             #             'the configuration in that directory.' % v)
             pass
 
     def get_default_dir(self):
-        from pkg_resources import resource_filename #@UnresolvedImport
+        from pkg_resources import resource_filename  # @UnresolvedImport
         return resource_filename("bootstrapping_olympics", "configs")
 
 
-BootOlympicsConfig = BootConfigMaster()
+    singleton = None
+
+@contract(returns=BootConfigMaster)
+def get_boot_config():
+    if BootConfigMaster.singleton is None:
+        BootConfigMaster.singleton = BootConfigMaster()
+    return BootConfigMaster.singleton 
+
+
+@contract(c=BootConfigMaster)
+def set_boot_config(c):
+    BootConfigMaster.singleton = c  
+
+
+BootOlympicsConfig = get_boot_config()
+
+
+
+
 

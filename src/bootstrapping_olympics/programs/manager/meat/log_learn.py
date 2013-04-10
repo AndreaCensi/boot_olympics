@@ -1,8 +1,8 @@
 from . import load_agent_state, publish_agent_output, logger
+from .publish_output import publish_once as do_publish_once
 from bootstrapping_olympics import AgentInterface
 from bootstrapping_olympics.utils import InAWhile, UserError
 import logging
-from .publish_output import publish_once as do_publish_once
 
 
 def learn_log(data_central, id_agent, id_robot,
@@ -42,6 +42,7 @@ def learn_log(data_central, id_agent, id_robot,
                                     id_robot=id_robot,
                                     reset_state=reset)
 
+    ds = data_central.get_dir_structure()
     db = data_central.get_agent_state_db()
 
     if publish_interval is not None or publish_once:
@@ -135,12 +136,18 @@ def learn_log(data_central, id_agent, id_robot,
 
             if publish_interval is not None:
                 if 0 == state.num_observations % publish_interval:
-                    publish_once(data_central, id_agent, id_robot,
-                                 phase='learn', progress='%05d' % state.num_observations,
-                                 save_pickle=False)
-#                    
-#                    publish_agent_output(state, agent, report_dir,
-#                                    basename='%05d' % state.num_observations)
+                    # note: of course, don't use do_publish_once because we have not saved it
+                    # do_publish_once(data_central, id_agent, id_robot,
+                    #             phase='learn', progress='%05d' % state.num_observations,
+                    #             save_pickle=False)
+                    filename = ds.get_report_filename(id_agent=id_agent, id_robot=id_robot,
+                                                      id_state=state.id_state,
+                                                      phase='learn-%05d' % state.num_observations)
+#                     res_dir = ds.get_report_res_dir(id_agent=id_agent, id_robot=id_robot,
+#                                                     id_state=state.id_state, phase='learn')
+
+                    publish_agent_output(data_central, state, agent, '%05d' % state.num_observations,
+                                         filename)
 
             # Update plugins
             for plugin in live_plugins:
@@ -155,7 +162,8 @@ def learn_log(data_central, id_agent, id_robot,
         db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
 
     if publish_interval is not None:
-        ds = data_central.get_dir_structure()
+#         ds = data_central.get_dir_structure()
+        xxx
         report_dir = ds.get_report_dir(id_agent=id_agent,
                                        id_robot=id_robot,
                                        id_state=state.id_state)

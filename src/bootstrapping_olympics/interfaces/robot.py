@@ -1,5 +1,6 @@
 from . import contract, BootSpec
 from abc import abstractmethod, ABCMeta
+from contracts import new_contract
 
 __all__ = ['EpisodeDesc', 'RobotObservations', 'RobotInterface']
 
@@ -41,6 +42,8 @@ class RobotObservations:
         self.commands_source = commands_source
         self.episode_end = episode_end
         self.robot_pose = robot_pose
+
+new_contract('RobotObservations', RobotObservations)
 
 
 class RobotInterface:

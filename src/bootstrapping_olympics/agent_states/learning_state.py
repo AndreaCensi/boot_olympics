@@ -40,7 +40,7 @@ class LearningStateDB(object):
     def __init__(self, datadir):
         datadir = expand_environment(datadir) 
 
-        try: # concurrent
+        try:  # concurrent
             if not os.path.exists(datadir):
                 os.makedirs(datadir)
         except:
@@ -61,6 +61,13 @@ class LearningStateDB(object):
         key = tuple2key((id_agent, id_robot))
         return self.storage.get(key)
 
+    def delete_state(self, id_agent, id_robot):
+        ''' Returns the learning state for the given combination. '''
+        assert self.has_state(id_agent, id_robot)
+        key = tuple2key((id_agent, id_robot))
+        self.storage.delete(key)
+
+
     def set_state(self, id_agent, id_robot, state):
         ''' Sets the learning state for the given combination. '''
         key = tuple2key((id_agent, id_robot))
@@ -72,7 +79,7 @@ class LearningStateDB(object):
     def reload_state_for_agent(self, id_agent, id_robot, agent):
         state = self.get_state(id_agent, id_robot)
 
-        logger.debug('State after learning %d episodes.' %
+        logger.debug('State after learning %d episodes.' % 
                      len(state.id_episodes))
         try:
             agent.set_state(state.agent_state)

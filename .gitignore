@@ -9,3 +9,4 @@ dist
 coverage_information
 .nose-stopwatch-times
 test.png
+out-*

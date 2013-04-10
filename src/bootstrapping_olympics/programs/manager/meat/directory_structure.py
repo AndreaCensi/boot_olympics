@@ -24,7 +24,7 @@ class DirectoryStructure:
     DIR_STATES = 'states'
 
     # XXX: use generic separator
-    pattern_simulation = 'simulations/${id_robot}/${id_agent}/'
+    pattern_logdir = '${id_robot}/${id_agent}/'
     pattern_report = '${id_robot}-${id_agent}-${phase}.html'
     pattern_report_rd = 'resources'
     pattern_report_robot = '${id_robot}.html'
@@ -55,8 +55,10 @@ class DirectoryStructure:
 
     def get_simulated_logs_dir(self):
         ''' Returns the main directory where simulated logs are placed. '''
-        return os.path.join(self.root, DirectoryStructure.DIR_LOGS,
-                            'simulations')
+        return os.path.join(self.root, DirectoryStructure.DIR_LOGS, 'simulations')
+
+    def get_experiments_logs_dir(self):
+        return os.path.join(self.root, DirectoryStructure.DIR_LOGS, 'experiments')
 
     def get_storage_dir(self):
         ''' Returns a directory where intermediate results can be placed. '''
@@ -92,8 +94,20 @@ class DirectoryStructure:
                                             id_agent=id_agent,
                                             id_stream=id_stream)
         return id_stream, filename
-        
+    
+    def get_explog_filename(self, id_agent, id_robot, id_stream,
+                                  logs_format=None):
+        """ Returns a filename for an experimental log. """
+        base_dir = self.get_experiments_logs_dir()
+        return self.get_log_filename(base_dir, id_agent, id_robot, id_stream, logs_format)
+    
     def get_simlog_filename(self, id_agent, id_robot, id_stream,
+                                  logs_format=None):
+        """ Returns a filename for a simulated log. """
+        base_dir = self.get_simulated_logs_dir()
+        return self.get_log_filename(base_dir, id_agent, id_robot, id_stream, logs_format)
+        
+    def get_log_filename(self, base_dir, id_agent, id_robot, id_stream,
                                   logs_format=None):
 
         warn_good_identifier(id_stream)
@@ -102,8 +116,8 @@ class DirectoryStructure:
             logs_format = self.log_format
         check_contained(logs_format, LogsFormat.formats, 'format')
 
-        pattern = DirectoryStructure.pattern_simulation
-        dirname = os.path.join(self.root, DirectoryStructure.DIR_LOGS,
+        pattern = DirectoryStructure.pattern_logdir
+        dirname = os.path.join(base_dir,
                                substitute(pattern,
                                           id_agent=id_agent,
                                           id_robot=id_robot,

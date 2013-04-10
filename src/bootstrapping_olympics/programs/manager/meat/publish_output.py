@@ -1,10 +1,11 @@
 from . import load_agent_state, save_report
 import os
 
+__all__ = ['publish_once', 'publish_agent_output']
 
 def publish_once(data_central, id_agent, id_robot,
                  phase='learn', progress='all',
-                 save_pickle=False): # TODO: 'learn' in constants
+                 save_pickle=False):  # TODO: 'learn' in constants
     # XXX: progress is not used so far
     agent, state = load_agent_state(data_central,
                                     id_agent=id_agent,
@@ -12,15 +13,10 @@ def publish_once(data_central, id_agent, id_robot,
                                     reset_state=False)
 
     ds = data_central.get_dir_structure()
-    filename = ds.get_report_filename(id_agent=id_agent,
-                                       id_robot=id_robot,
-                                       id_state=state.id_state,
-                                       phase=phase)
-
-    res_dir = ds.get_report_res_dir(id_agent=id_agent,
-                                       id_robot=id_robot,
-                                       id_state=state.id_state,
-                                       phase=phase)
+    filename = ds.get_report_filename(id_agent=id_agent, id_robot=id_robot,
+                                       id_state=state.id_state, phase=phase)
+    res_dir = ds.get_report_res_dir(id_agent=id_agent, id_robot=id_robot,
+                                    id_state=state.id_state, phase=phase)
 
     publish_agent_output(data_central, state, agent, progress,
                          save_pickle=save_pickle,
@@ -57,7 +53,7 @@ def publish_agent_output(data_central, state, agent, progress, filename, rd=None
     
 #    
 #    
-#def add_robot_info(data_central, report, id_robot):
+# def add_robot_info(data_central, report, id_robot):
 #    robot = data_central.get_bo_config().robots.instance(id_robot)
 #    
 #    if isinstance(robot, EquivRobot):
@@ -72,7 +68,7 @@ def publish_agent_output(data_central, state, agent, progress, filename, rd=None
 #        add_vehicle_info(vsim, report)
 #    
 #    
-#def add_nuisances_info(robot, report):
+# def add_nuisances_info(robot, report):
 #    sec = report.section('nuisances')
 #    obs, cmd = robot.get_nuisances()
 #
@@ -80,7 +76,7 @@ def publish_agent_output(data_central, state, agent, progress, filename, rd=None
 #    sec.data('commands', cmd)
 #     
 #     
-#def add_vehicle_info(vsim, report):
+# def add_vehicle_info(vsim, report):
 #    vsim.new_episode()
 #    vsim.compute_observations()
 #    sim_state = vsim.to_yaml()

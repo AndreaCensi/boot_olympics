@@ -1,12 +1,11 @@
 from . import logger
+from bootstrapping_olympics.utils import warn_long_time
+from bootstrapping_olympics.utils.safe_pickle import (safe_pickle_dump,
+    safe_pickle_load)
 from glob import glob
 from os.path import splitext, basename
-import os
-from bootstrapping_olympics.utils import warn_long_time
-from bootstrapping_olympics.utils.safe_pickle import safe_pickle_dump, \
-    safe_pickle_load
-
 from pickle import HIGHEST_PROTOCOL
+import os
 
 
 
@@ -34,7 +33,7 @@ class StorageFilesystem:
             logger.error(msg)
             raise
 
-    def set(self, key, value): #@ReservedAssignment
+    def set(self, key, value):  # @ReservedAssignment
         """ Return a dictionary with some statistics """
         if not StorageFilesystem.checked_existence:
             StorageFilesystem.checked_existence = True
@@ -51,8 +50,8 @@ class StorageFilesystem:
             
         # TODO: remove this
         stats = {}
-        stats['duration'] = 0 # XXX
-        stats['clock'] = 0 # XXX
+        stats['duration'] = 0  # XXX
+        stats['clock'] = 0  # XXX
         stats['size'] = os.stat(filename).st_size
         return stats
     

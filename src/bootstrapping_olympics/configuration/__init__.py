@@ -9,7 +9,7 @@ logger = getLogger(__name__)
 
 from .agents import *
 from .robots import *
-from .master import BootOlympicsConfig
+from .master import BootOlympicsConfig, get_boot_config
 
 from .yaml_ros_node_spec import *
 
