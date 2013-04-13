@@ -99,7 +99,9 @@ class DirectoryStructure:
                                   logs_format=None):
         """ Returns a filename for an experimental log. """
         base_dir = self.get_experiments_logs_dir()
-        return self.get_log_filename(base_dir, id_agent, id_robot, id_stream, logs_format)
+        return self.get_log_filename(base_dir, id_agent, id_robot, id_stream, logs_format,
+                                     # Do not add unique salt for experiments
+                                     add_unique=False)
     
     def get_simlog_filename(self, id_agent, id_robot, id_stream,
                                   logs_format=None):
@@ -108,7 +110,7 @@ class DirectoryStructure:
         return self.get_log_filename(base_dir, id_agent, id_robot, id_stream, logs_format)
         
     def get_log_filename(self, base_dir, id_agent, id_robot, id_stream,
-                                  logs_format=None):
+                                  logs_format=None, add_unique=True):
 
         warn_good_identifier(id_stream)
 
@@ -126,20 +128,26 @@ class DirectoryStructure:
         assert os.path.exists(dirname)
 
         # Add a unique string to the file
-        tmpfile = tempfile.NamedTemporaryFile(
+        if add_unique:
+            tmpfile = tempfile.NamedTemporaryFile(
                                           suffix='.%s.active' % logs_format,
                                           prefix='%s-' % id_stream,
                                           dir=dirname, delete=False)
-        tmpfile.write('To be used')
+            tmpfile.write('To be used')
 
-        tmp_filename = tmpfile.name
-        filename = tmp_filename.replace('.active', '')
-
-        tmpfile.close()
+            tmp_filename = tmpfile.name
+            warn_good_filename(tmp_filename)
+            
+            filename = tmp_filename.replace('.active', '')
+            tmpfile.close()
+        else:
+            filename = os.path.join(dirname, '%s.%s' % (id_stream, logs_format)) 
+            
+            
         logger.debug('Writing on %r' % friendly_path(filename))
 
         warn_good_filename(filename)
-        warn_good_filename(tmp_filename)
+        
 
         return filename
 

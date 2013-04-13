@@ -10,6 +10,8 @@ class LearningState(object):
     ''' 
         A learning state is the agent state + the IDs 
         of the episodes used to learn
+        
+        # TODO: add BootSpec here
     '''
 
     @contract(id_agent='str', id_robot='str')
@@ -21,6 +23,11 @@ class LearningState(object):
         self.agent_state = None
 
         self.id_state = isodate()
+        
+    def __str__(self):
+        return ("LearningState(%s/%s;eps:%s;obs:%s;id:%s)" % 
+                (self.id_agent, self.id_robot, len(self.id_episodes), self.num_observations,
+                 self.id_state))
 
 
 def key2tuple(key):
@@ -58,6 +65,7 @@ class LearningStateDB(object):
 
     def get_state(self, id_agent, id_robot):
         ''' Returns the learning state for the given combination. '''
+        self.check_state_exists(id_agent, id_robot)
         key = tuple2key((id_agent, id_robot))
         return self.storage.get(key)
 
@@ -67,6 +75,10 @@ class LearningStateDB(object):
         key = tuple2key((id_agent, id_robot))
         self.storage.delete(key)
 
+    def check_state_exists(self, id_agent, id_robot):
+        if not self.has_state(id_agent, id_robot):
+            msg = 'Could not find state for combination %r/%r.' % (id_agent, id_robot)
+            raise ValueError(msg)
 
     def set_state(self, id_agent, id_robot, state):
         ''' Sets the learning state for the given combination. '''

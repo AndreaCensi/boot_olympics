@@ -15,11 +15,13 @@ def load_agent_state(data_central, id_agent, id_robot,
     logger.info('Loading state %s/%s reset=%s ' % (id_agent,
                                                    id_robot, reset_state))
     config = data_central.get_bo_config()
-    agent = config.agents.instance(id_agent) #@UndefinedVariable
+    agent = config.agents.instance(id_agent)  # @UndefinedVariable
 
     index = data_central.get_log_index()
     if not index.has_streams_for_robot(id_robot):
-        msg = 'Cannot load agent state for %r. ' % id_agent
+        msg = 'Cannot load agent state for %r ' % id_agent
+        msg += 'because I cannot find any streams for robot %r ' % id_robot
+        msg += 'and I need them to find the BootSpec.'
         msg += x_not_found('robot', id_robot, index.list_robots())
         raise UserError(msg)
     
@@ -27,8 +29,8 @@ def load_agent_state(data_central, id_agent, id_robot,
     agent.init(boot_spec)
 
     return load_agent_state_core(data_central, id_agent, agent, id_robot,
-                          reset_state=reset_state,
-                          raise_if_no_state=raise_if_no_state)
+                                 reset_state=reset_state,
+                                 raise_if_no_state=raise_if_no_state)
 
 
 def load_agent_state_core(data_central, id_agent, agent, id_robot,
@@ -39,22 +41,25 @@ def load_agent_state_core(data_central, id_agent, agent, id_robot,
     key = dict(id_robot=id_robot, id_agent=id_agent)
 
     if reset_state:
+        
         state = LearningState(id_robot=id_robot, id_agent=id_agent)
         return agent, state
     else:
         if db.has_state(**key):
             logger.info('Using previous learned state.')
-            state = db.reload_state_for_agent(id_agent=id_agent,
-                                              id_robot=id_robot,
+            state = db.reload_state_for_agent(id_agent=id_agent, id_robot=id_robot,
                                               agent=agent)
             return agent, state
         else:
-            logger.info('No previous learned state found.')
+            msg = 'No previous learned state found for %r/%r.' % (id_agent, id_robot)
+            
             if raise_if_no_state:
-                raise Exception('No previous learned state found.')
-            else:
-                state = LearningState(id_robot=id_robot, id_agent=id_agent)
-                return agent, state
+                raise Exception(msg)
+            
+            logger.info(msg)
+                
+            state = LearningState(id_robot=id_robot, id_agent=id_agent)
+            return agent, state
 
     assert False
 

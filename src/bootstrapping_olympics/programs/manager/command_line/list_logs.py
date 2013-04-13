@@ -24,8 +24,14 @@ def cmd_list_logs(data_central, argv):
     check_no_spurious(args)
 
     index = data_central.get_log_index(ignore_cache=options.refresh)
+    display_logs = options.display_logs 
+    display_streams = options.display_streams
+    display_episodes = options.display_episodes 
+    
+    do_list_logs(index, display_logs, display_streams, display_episodes)
 
-    print('Index contains %d bag files with boot data.' %
+def do_list_logs(index, display_logs=False, display_streams=False, display_episodes=False):
+    print('Index contains %d bag files with boot data.' % 
                 len(index.file2streams))
     print('In total, there are %d robots:' % len(index.robots2streams))
 
@@ -42,31 +48,33 @@ def cmd_list_logs(data_central, argv):
                 total_episodes += len(stream.get_id_episodes())
                 agents.update(stream.get_id_agents())
             print('            spec: %s' % streams[0].get_spec())
-            print('    total length: %.1f minutes' %
+            print('    total length: %.1f minutes' % 
                         (total_length / 60.0))
             print('  total episodes: %d' % (total_episodes))
             print('   total samples: %d' % (total_obs))
             print('          agents: %s' % list(agents))
 
-        if options.display_logs:
+        if display_logs:
             for stream in streams:
-                print('   * %5ds %s' % (stream.get_length(),
-                                     friendly_path(stream.get_filename())))
+                print('   * length %5ds' % stream.get_length())
+                print('     %s' % friendly_path(stream.get_filename()))
 
-    if options.display_streams:
+    if display_streams:
         for filename, streams in index.file2streams.items():
             if streams:
-                print('%s' % friendly_path(filename))
+                print('In file %s:' % friendly_path(filename))
 
                 for stream in streams:
-                    logger.info(' %s' % (stream))
+                    print(' - there is stream: %s' % (stream))
             else:
                 print('  No bootstrapping data found. ')
 
-    if options.display_episodes:
+    if display_episodes:
         for robot, streams in index.robots2streams.items():
+            print()
+            print('Episodes for robot %r:' % robot)
             for stream in streams:
-                print('%s: %s' % (robot, stream))
+                print('- %s: stream %s' % (robot, stream))
                 for episode in stream.get_episodes():
-                    print('- %s' % episode)
+                    print('  contains episode: %s' % episode)
 

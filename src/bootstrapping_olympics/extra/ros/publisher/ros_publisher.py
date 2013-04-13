@@ -1,7 +1,8 @@
+from reprep.constants import MIME_PNG
 try:
     from .. import (rospy, ROSImage, Float32MultiArray, MultiArrayLayout,
     MultiArrayDimension)
-except: # allow to run nose even if ros is not installed
+except:  # allow to run nose even if ros is not installed
     pass
 from bootstrapping_olympics import Publisher
 from contextlib import contextmanager
@@ -24,15 +25,17 @@ class ROSPublisher(Publisher):
 
         self.ros_publishers = {}
 
+    def get_publisher(self, name, data_class):
+        """ Returns a publisher """        
+        if not name in self.ros_publishers:
+            topic = '~%s' % name
+            rospy.loginfo('Creating new topic %r.' % topic)
+            self.ros_publishers[name] = rospy.Publisher(topic, data_class)
+        return self.ros_publishers[name]
+        
     @contract(name='str|seq[>0](str)', value='array')
     def array(self, name, value):
         name = normalize(name)
-
-        if not name in self.ros_publishers:
-            rospy.loginfo('Creating new topic ~%r.' % name)
-            self.ros_publishers[name] = rospy.Publisher('~%s' % name,
-                                                        Float32MultiArray)
-        rospy.loginfo('published %s' % name)
 
         # TODO: generic dimensions
         v = np.array(value.flat, dtype='float32')
@@ -41,11 +44,13 @@ class ROSPublisher(Publisher):
         msg.layout = MultiArrayLayout()
         msg.layout.dim = [MultiArrayDimension(label='no-label', size=v.size,
                                               stride=0)]
-        self.ros_publishers[name].publish(msg)
+
+        pub = self.get_publisher(name, Float32MultiArray)
+        pub.publish(msg)
 
     @contract(name='str|seq[>0](str)', value='array')
     def array_as_image(self, name, value,
-                       filter=Publisher.FILTER_POSNEG, #@ReservedAssignment 
+                       filter=Publisher.FILTER_POSNEG,  # @ReservedAssignment 
                        filter_params={}):
         name = normalize(name)
 
@@ -53,19 +58,19 @@ class ROSPublisher(Publisher):
             msg = 'Unknown filter %r; I know %s' % (filter,
                                                     self.filters.keys())
             raise Exception(msg)
+        
         rgb = self.filters[filter](value, **filter_params)
-        ros_image = numpy_to_imgmsg(rgb, stamp=None) # XXX: stamp?
+        
+        self.bitmap(name, rgb)
 
-        #commands = np.kron(commands, np.ones((z, z)))
-        if not name in self.ros_publishers:
-            rospy.loginfo('Creating new topic ~%r.' % name)
-            self.ros_publishers[name] = rospy.Publisher('~%s_image' % name,
-                                                        ROSImage)
-
-        self.ros_publishers[name].publish(ros_image)
-
+    def bitmap(self, name, rgb):
+        ros_image = numpy_to_imgmsg(rgb, stamp=None)  # XXX: stamp?
+        pub = self.get_publisher(name, ROSImage)
+        pub.publish(ros_image)
+        
+        
     @contract(name='str|seq[>0](str)', text='str')
-    def text(self, name, text): # XXX: TODO:
+    def text(self, name, text):  # XXX: TODO:
         name = normalize(name)
         rospy.loginfo('Function text() not implemented')
 
@@ -74,18 +79,25 @@ class ROSPublisher(Publisher):
         name = normalize(name)
 
         r = Report()
-        a = r.data_pylab('plot', **args)
+        a = r.plot('plot', mime=MIME_PNG, **args)
         # XXX: better way?
         yield a.__enter__()
         a.__exit__(None, None, None)
-#        print r.children
-        # XXX: TODO
-        rospy.loginfo('Function plot() not implemented')
+        
+        data_node = r.children[0]
+        rgb = data_node.get_rgb()
+        self.bitmap(name, rgb)
+
+
+
+def rgb_from_pil(im):
+    return np.asarray(im).astype(np.uint8)
 
 
 def normalize(name):
     if isinstance(name, tuple):
         return '/'.join(name)
+    name = name.replace('-', '_')
     return name
 
 

@@ -67,7 +67,7 @@ class LogIndex:
     # TODO: implement has_extra
     def get_episodes_for_robot(self, id_robot, id_agent=None):
         ''' Returns a list of all episodes for the given robot (and
-            agent if it is given). ''' # TODO: implement this
+            agent if it is given). '''  # TODO: implement this
         episodes = []
         for stream in self.get_streams_for_robot(id_robot):
             if not id_agent:
@@ -97,7 +97,8 @@ class LogIndex:
     def read_robot_episode(self, id_robot, id_episode, read_extra=False):
         ''' Reads only one episode. '''
         for stream in self.get_streams_for_robot(id_robot):
-            if id_episode in stream.get_id_episodes():
+            eps = stream.get_id_episodes()
+            if id_episode in eps:
 
                 for obs in stream.read(read_extra=read_extra,
                                        only_episodes=[id_episode]):
@@ -105,11 +106,13 @@ class LogIndex:
                     yield obs
 
                 break
+#             else:
+#                 logger.info('%r not found in %s' % (id_episode, eps))
         else:
             msg = 'Streams found:\n'
             for stream in self.get_streams_for_robot(id_robot):
                 msg += ' %s: %s\n' % (stream, stream.get_id_episodes())
-            raise Exception('No episode %r found for %r. %s' % 
+            raise Exception('No episode %r found for %r.\n%s' % 
                             (id_episode, id_robot, msg))
 
     @contract(returns='str')
@@ -175,7 +178,7 @@ def index_directory(directory, ignore_cache=False, warn_if_longer=3):
                 if not file2streams[filename]:
                     logger.warning('No streams found in file %r.' % 
                                    friendly_path(filename))
-            except None: # XXX
+            except None:  # XXX
                 logger.error('Invalid data in file %r.' % friendly_path(filename))
                 logger.error(traceback.format_exc())
 
@@ -217,5 +220,5 @@ def index_robots(file2streams):
     return dict(**robot2streams)
 
 
-index_directory_cached = index_directory # TODO: remove
+index_directory_cached = index_directory  # TODO: remove
 

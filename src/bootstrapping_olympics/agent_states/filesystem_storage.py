@@ -8,7 +8,6 @@ from pickle import HIGHEST_PROTOCOL
 import os
 
 
-
 __all__ = ['StorageFilesystem']
 
 
