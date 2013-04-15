@@ -7,7 +7,7 @@ from conf_tools import ConfToolsException
 import contracts
 
 
-commands_list = "\n".join(['  %-15s  %s\n  %-15s  Usage: %s' %
+commands_list = "\n".join(['  %-15s  %s\n  %-15s  Usage: %s' % 
                            (cmd, f.__doc__, '', f.short_usage)
                            for cmd, f in Storage.commands.items()])
 
@@ -31,6 +31,9 @@ def boot_olympics_manager(arguments):
     parser.disable_interspersed_args()
     parser.add_option("-d", dest='boot_root', default=None,
                       help='Root directory with logs, config, etc. [%default]')
+
+    parser.add_option("-c", dest='extra_conf_dirs', action="append", default=[],
+                      help='Adds an extra config dir.')
 
     parser.add_option("-l", dest='extra_log_dirs', action="append", default=[],
                       help='Adds an extra directory storing logs.')
@@ -62,7 +65,7 @@ def boot_olympics_manager(arguments):
     cmd_options = args[1:]
 
     if not cmd in Storage.commands:
-        msg = ('Unknown command %r. Available: %s.' %
+        msg = ('Unknown command %r. Available: %s.' % 
                (cmd, ", ".join(Storage.commands.keys())))
         raise UserError(msg)
 
@@ -88,6 +91,11 @@ def boot_olympics_manager(arguments):
         pass
 
     data_central = DataCentral(options.boot_root)
+    
+    boot_config = data_central.get_bo_config()
+    for dirname in options.extra_conf_dirs:
+        boot_config.load(dirname)
+    
     dir_structure = data_central.get_dir_structure() 
     dir_structure.set_log_format(options.log_format)
     for dirname in options.extra_log_dirs:

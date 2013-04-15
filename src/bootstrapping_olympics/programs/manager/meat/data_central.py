@@ -2,7 +2,8 @@ from . import DirectoryStructure
 from bootstrapping_olympics import (BootOlympicsConfig, LearningStateDB,
     LogIndex)
 import os
-
+from conf_tools.utils.friendly_paths import friendly_path
+from . import logger
 
 class DataCentral:
     def __init__(self, boot_root=None):
@@ -20,7 +21,12 @@ class DataCentral:
         if self.bo_config is None:
             dirs = self.dir_structure.get_config_directories()
             for dirname in dirs:
-                BootOlympicsConfig.load(dirname)
+                if not os.path.exists(dirname):
+                    msg = ('Warning, the config dir %r does not exist ' % 
+                           friendly_path(dirname))
+                    logger.info(msg)  
+                else:
+                    BootOlympicsConfig.load(dirname)
             self.bo_config = BootOlympicsConfig
         return self.bo_config
 

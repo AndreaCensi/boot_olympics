@@ -3,6 +3,7 @@ from .publish_output import publish_once as do_publish_once
 from bootstrapping_olympics import AgentInterface
 from bootstrapping_olympics.utils import InAWhile, UserError
 import logging
+import warnings
 
 
 def learn_log(data_central, id_agent, id_robot,
@@ -22,7 +23,7 @@ def learn_log(data_central, id_agent, id_robot,
     if not log_index.has_streams_for_robot(id_robot):
         msg = ('No log for robot %r found. I know: %s.'
                % (id_robot, ", ".join(log_index.robots2streams.keys())))
-        raise Exception(msg)
+        raise ValueError(msg)
 
     bo_config = data_central.get_bo_config()
     if not id_agent in bo_config.agents:
@@ -37,10 +38,7 @@ def learn_log(data_central, id_agent, id_robot,
     agent_logger.setLevel(logging.DEBUG)
     AgentInterface.logger = agent_logger
 
-    agent, state = load_agent_state(data_central,
-                                    id_agent=id_agent,
-                                    id_robot=id_robot,
-                                    reset_state=reset)
+    agent, state = load_agent_state(data_central, id_agent=id_agent, id_robot=id_robot, reset_state=reset)
 
     ds = data_central.get_dir_structure()
     db = data_central.get_agent_state_db()
@@ -98,8 +96,10 @@ def learn_log(data_central, id_agent, id_robot,
         if episodes is not None:
             to_learn = to_learn.intersection(episodes)
         if not to_learn:
-            # logger.info('Stream %s already completely learned.' % stream)
+            logger.info('Stream %s already completely learned.' % stream)
             continue
+        else:
+            logger.info('%d episodes to learn from this stream.' % len(to_learn))
 
         try:
             from compmake import progress
@@ -140,9 +140,10 @@ def learn_log(data_central, id_agent, id_robot,
                     # do_publish_once(data_central, id_agent, id_robot,
                     #             phase='learn', progress='%05d' % state.num_observations,
                     #             save_pickle=False)
+                    phase = 'learn-%05d' % state.num_observations
+                    phase = 'learn-active'
                     filename = ds.get_report_filename(id_agent=id_agent, id_robot=id_robot,
-                                                      id_state=state.id_state,
-                                                      phase='learn-%05d' % state.num_observations)
+                                                      id_state=state.id_state, phase=phase)
 #                     res_dir = ds.get_report_res_dir(id_agent=id_agent, id_robot=id_robot,
 #                                                     id_state=state.id_state, phase='learn')
 
@@ -162,11 +163,13 @@ def learn_log(data_central, id_agent, id_robot,
         db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
 
     if publish_interval is not None:
+        pass
+        warnings.warn('to fix')
 #         ds = data_central.get_dir_structure()
-        xxx
-        report_dir = ds.get_report_dir(id_agent=id_agent,
-                                       id_robot=id_robot,
-                                       id_state=state.id_state)
-        logger.info('Writing output to directory %r.' % report_dir)
-        publish_agent_output(state, agent, report_dir, basename='all')
+#         xxx
+#         report_dir = ds.get_report_dir(id_agent=id_agent,
+#                                        id_robot=id_robot,
+#                                        id_state=state.id_state)
+#         logger.info('Writing output to directory %r.' % report_dir)
+#         publish_agent_output(state, agent, report_dir, basename='all')
 
