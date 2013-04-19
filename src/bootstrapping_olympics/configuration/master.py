@@ -1,39 +1,25 @@
-from . import (check_valid_agent_config, check_valid_robot_config,
-    check_valid_nuisance_config, logger, check_valid_plugin_config)
+from . import logger
 from .. import Constants, LivePlugin
 from ..interfaces import AgentInterface, RobotInterface, RepresentationNuisance
-from conf_tools import ConfigMaster, GenericInstance, check_generic_code_desc
-import os
+from conf_tools import ConfigMaster, check_generic_code_desc
 from contracts import contract
-
-
-def check_valid_videos_config(spec):
-    check_generic_code_desc(spec, 'video')
+import os
 
 
 class BootConfigMaster(ConfigMaster):
     def __init__(self):
         ConfigMaster.__init__(self, 'BootOlympics')
 
-        self.robots = self.add_class('robots', '*.robots.yaml',
-                                     check_valid_robot_config,
-                                     GenericInstance(RobotInterface))
+ 
+        self.robots = self.add_class_generic('robots', '*.robots.yaml', RobotInterface)
+        self.agents = self.add_class_generic('agents', '*.agents.yaml', AgentInterface)
 
-        self.agents = self.add_class('agents', '*.agents.yaml',
-                                     check_valid_agent_config,
-                                     GenericInstance(AgentInterface))
+        self.nuisances = self.add_class_generic('nuisances', '*.nuisances.yaml', RepresentationNuisance)
 
-        self.nuisances = self.add_class('nuisances', '*.nuisances.yaml',
-                                        check_valid_nuisance_config,
-                                        GenericInstance(RepresentationNuisance))
+        self.videos = self.add_class('videos', '*.videos.yaml', check_valid_videos_config)
 
-        self.videos = self.add_class('videos', '*.videos.yaml',
-                                     check_valid_videos_config)
-
-        self.live_plugins = self.add_class('live_plugins',
-                                           '*.live_plugins.yaml',
-                                           check_valid_plugin_config,
-                                           GenericInstance(LivePlugin))
+        self.live_plugins = self.add_class_generic('live_plugins',
+                                                   '*.live_plugins.yaml', LivePlugin)
 
         v = Constants.TEST_ADDITIONAL_CONFIG_DIR_ENV
         if v in os.environ:
@@ -58,6 +44,15 @@ class BootConfigMaster(ConfigMaster):
 
     singleton = None
 
+
+
+def check_valid_videos_config(spec):
+    check_generic_code_desc(spec, 'video')
+
+
+
+
+
 @contract(returns=BootConfigMaster)
 def get_boot_config():
     if BootConfigMaster.singleton is None:
@@ -71,7 +66,6 @@ def set_boot_config(c):
 
 
 BootOlympicsConfig = get_boot_config()
-
 
 
 

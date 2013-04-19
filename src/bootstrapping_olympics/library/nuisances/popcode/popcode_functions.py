@@ -12,21 +12,22 @@ def popcode(y, resolution):
     pc = np.zeros((N, resolution), 'float32')
 
     for i in range(N):
-        assert 0 <= y[i] <= 1
+        # assert 0 <= y[i] <= 1
 
         # y in [0, 1]
         x = y[i] * (resolution - 1)
         # x in [0, res-1]
-        l = np.floor(x) # l in [0, res-1]
-        u = np.ceil(x) # u in [0, res-1]
+        l = np.floor(x)  # l in [0, res-1]
+        u = np.ceil(x)  # u in [0, res-1]
 
         if l == u:
             pc[i, l] = 1
             continue
 
         lr = x - l
-        ur = u - x
-        assert_allclose(lr + ur, 1)
+        if False:
+            ur = u - x
+            assert_allclose(lr + ur, 1)
 
         pc[i, l] = 1 - lr
         pc[i, u] = lr

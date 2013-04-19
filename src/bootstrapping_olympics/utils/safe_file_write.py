@@ -12,7 +12,8 @@ def safe_write(filename, mode='wb', suffix_tmp='.tmp', suffix_old='.old'):
     
     dirname = os.path.dirname(filename)
     if not os.path.exists(dirname):
-        os.makedirs(dirname)
+        if dirname != '':
+            os.makedirs(dirname)
 
     # TODO: use tmpfile 
     filename_new = filename + suffix_tmp
@@ -23,7 +24,7 @@ def safe_write(filename, mode='wb', suffix_tmp='.tmp', suffix_old='.old'):
         os.unlink(filename_new)
 
     if os.path.exists(filename_old):
-        #print('Warning; tmp file %r exists (write not succeeded)' 
+        # print('Warning; tmp file %r exists (write not succeeded)' 
         # % filename_old)
         os.unlink(filename_old)
 
