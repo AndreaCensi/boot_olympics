@@ -7,6 +7,10 @@ import os
 
 
 class BootConfigMaster(ConfigMaster):
+    """
+    
+        *@DynamicAttrs*
+    """
     def __init__(self):
         ConfigMaster.__init__(self, 'BootOlympics')
 
@@ -21,6 +25,7 @@ class BootConfigMaster(ConfigMaster):
         self.live_plugins = self.add_class_generic('live_plugins',
                                                    '*.live_plugins.yaml', LivePlugin)
 
+        
         v = Constants.TEST_ADDITIONAL_CONFIG_DIR_ENV
         if v in os.environ:
             logger.info('Loading configuration according to env var %s:' % v)

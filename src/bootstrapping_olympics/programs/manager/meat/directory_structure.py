@@ -1,6 +1,6 @@
 from . import logger
-from bootstrapping_olympics import (BootOlympicsConfig, BootOlympicsConstants,
-    LogsFormat)
+from bootstrapping_olympics import BootOlympicsConstants, LogsFormat
+from bootstrapping_olympics.configuration.master import get_boot_config
 from bootstrapping_olympics.utils import (check_contained, expand_environment,
     substitute, mkdirs_thread_safe, warn_good_identifier, warn_good_filename,
     friendly_filesize, unique_timestamp_string)
@@ -48,8 +48,9 @@ class DirectoryStructure:
         self.log_format = log_format
 
     def get_config_directories(self):
+        bo_config = get_boot_config()
         dirs = []
-        dirs.append(BootOlympicsConfig.get_default_dir())
+        dirs.append(bo_config.get_default_dir())
         dirs.append(os.path.join(self.root, DirectoryStructure.DIR_CONFIG))
         return dirs
 

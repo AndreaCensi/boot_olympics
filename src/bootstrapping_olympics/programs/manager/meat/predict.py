@@ -1,12 +1,11 @@
 from . import load_agent_state, np, save_report
 from contracts import describe_type
+from bootstrapping_olympics.utils.prediction_stats import PredictionStats
 
 __all__ = ['task_predict', 'predict_report']
 
 
 def task_predict(data_central, id_agent, id_robot, live_plugins=[]):
-    # TODO FIXME: remove dependency on boot_agents
-    from boot_agents.utils import PredictionStats
     from bootstrapping_olympics.extra.reprep import (boot_has_reprep,
                                                      reprep_error)
 

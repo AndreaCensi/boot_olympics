@@ -3,11 +3,11 @@ try:
                     BootstrappingCommands, rospy)
     from ..ros_logs import observations2ros
     from ..ros_script_utils import RospyLogger
-except: # allow to run nose even if ros is not installed
+except:  # allow to run nose even if ros is not installed
     pass
 from .. import np
 from bootstrapping_olympics import ObsKeeper
-from bootstrapping_olympics.configuration import check_valid_robot_config
+# from bootstrapping_olympics.configuration import check_valid_robot_config
 from bootstrapping_olympics.programs.manager.meat import DataCentral
 from bootstrapping_olympics.utils import check_parameters
 import time
@@ -30,7 +30,7 @@ class BootRobotAdapter:
 
         self.episode = self.robot.new_episode()
 
-        self.publish = True # XXX
+        self.publish = True  # XXX
 
         self.keeper = ObsKeeper(boot_spec=robot.get_spec(),
                                 id_robot=id_robot)
@@ -87,7 +87,7 @@ class BootRobotAdapter:
 
             self.logger.info('Sleeping...')
 
-            #self.sleep = 1
+            # self.sleep = 1
             rospy.sleep(self.sleep)
 
 
@@ -101,8 +101,8 @@ def boot_robot_adapter_main(params):
     sleep = params.get('sleep', 0.0)
     maximum_interval = params.get('maximum_interval', 2)
     robot_spec = params['robot_spec']
-    check_valid_robot_config(robot_spec)
-    robot = bo_config.robots.instance_spec(robot_spec) #@UndefinedVariable 
+#     check_valid_robot_config(robot_spec)
+    robot = bo_config.robots.instance_spec(robot_spec)  # @UndefinedVariable 
 
     adapter = BootRobotAdapter(id_robot=robot_spec['id'],
                                robot=robot,

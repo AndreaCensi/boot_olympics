@@ -19,6 +19,8 @@ class DataCentral:
 
     def get_bo_config(self):
         if self.bo_config is None:
+            self.bo_config = BootOlympicsConfig
+            
             dirs = self.dir_structure.get_config_directories()
             for dirname in dirs:
                 if not os.path.exists(dirname):
@@ -26,8 +28,7 @@ class DataCentral:
                            friendly_path(dirname))
                     logger.info(msg)  
                 else:
-                    BootOlympicsConfig.load(dirname)
-            self.bo_config = BootOlympicsConfig
+                    self.bo_config.load(dirname)
         return self.bo_config
 
     def get_log_index(self, ignore_cache=False):

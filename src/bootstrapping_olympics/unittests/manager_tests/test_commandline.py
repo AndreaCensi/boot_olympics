@@ -50,13 +50,9 @@ def check_cmdline(id_agent, agent, id_robot, robot): #@UnusedVariable
                                 '--num_episodes', '1',
                                 '--max_episode_len', '1')
 
-        try:
-            import boot_agents #@UnusedImport
-            if hasattr(agent, 'get_predictor'):
-                execute_command('predict', '-a', id_agent, '-r', id_robot)
-        except: # Don't do this if testing
-            pass
-
+        if hasattr(agent, 'get_predictor'):
+            execute_command('predict', '-a', id_agent, '-r', id_robot)
+    
         execute_command('list-logs')
         execute_command('list-logs', '-e')
         execute_command('list-logs', '-l')

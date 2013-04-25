@@ -6,7 +6,6 @@ try:
 except:  # allow to run nose even if ros is not installed
     pass
 from bootstrapping_olympics import AgentInterface
-from bootstrapping_olympics.configuration import check_valid_agent_config
 from bootstrapping_olympics.programs.manager.meat import (DataCentral,
     load_agent_state_core)
 from bootstrapping_olympics.utils import check_parameters
@@ -33,7 +32,7 @@ class BootAgentAdapter():
 
         # Wait until the robot is connected
         self.logger.info('Waiting for robot...')
-        rospy.wait_for_service('commands') #@UndefinedVariable
+        rospy.wait_for_service('commands')  # @UndefinedVariable
         self.logger.info('...connected to robot.')
         self.set_commands = rospy.ServiceProxy('commands',
                                                BootstrappingCommands)
@@ -55,18 +54,18 @@ class BootAgentAdapter():
         self.ros2python = ROS2Python(spec)
 
         # Subscribe to the observations
-        self.subscriber = rospy.Subscriber('observations', #@UndefinedVariable
+        self.subscriber = rospy.Subscriber('observations',  # @UndefinedVariable
                                            BootstrappingObservations,
                                            self.event_loop)
 
     def go(self):
-        rospy.spin() #@UndefinedVariable
+        rospy.spin()  # @UndefinedVariable
 
     def event_loop(self, observations):
         obs = self.ros2python.convert(observations, filter_doubles=True)
-        if obs is not None: # possibly repeated
+        if obs is not None:  # possibly repeated
             self.agent.process_observations(obs)
-        #else:
+        # else:
             # return # XXXX 
 
         commands = self.agent.choose_commands()
@@ -94,8 +93,8 @@ def boot_agent_adapter_main(params):
 
     publish_interval = params.get('publish_interval', 0)
     agent_spec = params['agent_spec']
-    check_valid_agent_config(agent_spec)
-    agent = bo_config.agents.instance_spec(agent_spec) #@UndefinedVariable
+#     check_valid_agent_config(agent_spec)
+    agent = bo_config.agents.instance_spec(agent_spec)  # @UndefinedVariable
     id_agent = agent_spec['id']
 
     AgentInterface.logger = RospyLogger(id_agent)
@@ -119,10 +118,10 @@ def read_one_observation(sleep=0.1):
                      handle_observations)
     # Read one observation
     logger.info('Waiting for one observation...')
-    while not rospy.is_shutdown(): #@UndefinedVariable
+    while not rospy.is_shutdown():  # @UndefinedVariable
         if Global.observations is not None:
             break
-        rospy.sleep(sleep) #@UndefinedVariable
+        rospy.sleep(sleep)  # @UndefinedVariable
     # Close this subscriber
     subscriber.unregister()
     return Global.observations

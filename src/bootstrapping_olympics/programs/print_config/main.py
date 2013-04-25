@@ -3,6 +3,7 @@ from ... import BootOlympicsConfig
 from ...utils import wrap_script_entry_point, natsorted
 from optparse import OptionParser
 import os
+from bootstrapping_olympics.configuration.master import get_boot_config
 
 usage = """
 
@@ -30,8 +31,10 @@ def boot_olympics_print_config():
 
 def print_configuration(directory, outdir):
     from reprep import Report
+    bo_config = get_boot_config()
 
-    BootOlympicsConfig.load(directory)
+
+    bo_config.load(directory)
 
     def write_report(r):
         out = os.path.join(outdir, '%s.html' % r.id)
@@ -44,17 +47,17 @@ def print_configuration(directory, outdir):
 #    create_generic_table(r, 'configuration', tasks, ['desc', 'code'])
 #    write_report(r)
 
-    agents = BootOlympicsConfig.agents
+    agents = bo_config.agents
     r = Report('agents')
     create_generic_table(r, 'configuration', agents, ['desc', 'code'])
     write_report(r)
 
-    robots = BootOlympicsConfig.robots
+    robots = bo_config.robots
     r = Report('robots')
     create_generic_table(r, 'configuration', robots, ['desc', 'ros-node'])
     write_report(r)
 
-    nuisances = BootOlympicsConfig.nuisances
+    nuisances = bo_config.nuisances
     r = Report('nuisances')
     create_generic_table(r, 'configuration', nuisances, ['desc', 'code'])
     write_report(r)
