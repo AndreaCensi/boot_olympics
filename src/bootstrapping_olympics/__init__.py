@@ -5,9 +5,9 @@ from contracts import contract
 
 __docformat__ = 'restructuredtext'
 
-### Setup logging
+# ## Setup logging
 from logging import getLogger
-from conf_tools.utils import col_logging # colored logging
+from conf_tools.utils import col_logging  # colored logging
 
 import logging
 logging.basicConfig()
@@ -26,7 +26,7 @@ from . import utils
 
 from .constants import *
 
-#if False: # XXX
+# if False: # XXX
 #    # This is just for documentation purposes
 #    # assigns all symbols to bootstrapping_olympics
 #    from .utils import assign_all_to_module
@@ -36,7 +36,7 @@ from .constants import *
 from .interfaces import *
 from .agent_states import *
 from .logs import *
-from .configuration import BootOlympicsConfig
+from .configuration import BootOlympicsConfig, get_boot_config, set_boot_config
 
 
 # Try to load extra components (ROS, HDF, etc.)

@@ -129,6 +129,19 @@ class AgentInterface:
         # self.info('State loaded: %s' % state_vars)
 
 
+class PredictorAgentInterface():
+    __metaclass__ = ABCMeta
+    
+    @abstractmethod
+    def predict_y(self, dt):
+        pass
+
+    @abstractmethod
+    def estimate_u(self):
+        """ Estimate current u """
+        
+
+
 class UnsupportedSpec(Exception):
     ''' Thrown by agents if they do not support the spec. '''
 
