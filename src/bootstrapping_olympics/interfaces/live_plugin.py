@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from collections import namedtuple
+# from collections import namedtuple
 
 
 class LivePlugin:
@@ -11,11 +11,11 @@ class LivePlugin:
         informal statistics.
     """
 
-    InitData = namedtuple('InitData',
-                          ['data_central',
-                           'id_agent',
-                           'id_robot'
-                           ])
+#     InitData = namedtuple('InitData',
+#                           ['data_central',
+#                            'id_agent',
+#                            'id_robot'
+#                            ])
 
     @abstractmethod
     def init(self, init_data):
@@ -28,6 +28,10 @@ class LivePlugin:
             - id_robot 
         """
 
+    def starting_stream(self, stream):
+        """ A new stream is being read """
+        pass
+
     @abstractmethod
     def update(self, update_data):
         """ 
@@ -39,12 +43,14 @@ class LivePlugin:
             - agent
             - robot
             - obs
+            - progress
+            - state
+            - stream
             
             Optional:
             - predict 
         """
         pass
 
-    @abstractmethod
     def finish(self):
         pass

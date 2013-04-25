@@ -11,7 +11,6 @@ def check_streamels_1D(streamels):
                 % str(streamels.shape))
         raise UnsupportedSpec(msg)
 
-
 @contract(streamels='streamel_array')
 def check_streamels_2D(streamels):
     if len(streamels.shape) != 2:
@@ -88,8 +87,8 @@ def find_polytope_bounds_after_linear(streamels, A, streamels2):
         streamels2['lower'] = np.dot(A, streamels['lower'])
         streamels2['upper'] = np.dot(A, streamels['upper'])
 
-    else:# TODO: do something smarter here
-        norm = np.abs(A).sum() # XXX
+    else:  # TODO: do something smarter here
+        norm = np.abs(A).sum()  # XXX
         lb = np.max(np.abs(streamels['lower']))
         ub = np.max(np.abs(streamels['upper']))
         B = max(lb, ub)

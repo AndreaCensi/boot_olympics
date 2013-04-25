@@ -48,9 +48,7 @@ class BootConfigMaster(ConfigMaster):
 
 def check_valid_videos_config(spec):
     check_generic_code_desc(spec, 'video')
-
-
-
+ 
 
 
 @contract(returns=BootConfigMaster)

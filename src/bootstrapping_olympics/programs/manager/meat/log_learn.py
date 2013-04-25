@@ -1,11 +1,12 @@
 from . import load_agent_state, publish_agent_output, logger
 from .publish_output import publish_once as do_publish_once
 from bootstrapping_olympics import AgentInterface
-from bootstrapping_olympics.utils import InAWhile, UserError
+from bootstrapping_olympics.programs.manager.meat.log_learn_plugins import (
+    CompmakeProgress, PrintStatus)
+from bootstrapping_olympics.utils import InAWhile
+from contracts import contract
 import logging
 import warnings
-from contracts import contract
-from compmake import progress as compmake_progress
 
 
 @contract(episodes='None|list(str)')
@@ -26,19 +27,12 @@ def learn_log(data_central, id_agent, id_robot,
     ds = data_central.get_dir_structure()
     db = data_central.get_agent_state_db()
     bo_config = data_central.get_bo_config()
-    
-    if not log_index.has_streams_for_robot(id_robot):
-        msg = ('No log for robot %r found. I know: %s.'
-               % (id_robot, ", ".join(log_index.robots2streams.keys())))
-        raise ValueError(msg)
-
-    if not id_agent in bo_config.agents:
-        msg = ('Agent %r not found in configuration. I know: %s.'
-               % (id_agent, ", ".join(bo_config.agents.keys())))
-        raise UserError(msg)
 
     live_plugins = [bo_config.live_plugins.instance(x)
                     for x in live_plugins]
+    
+    live_plugins.append(CompmakeProgress())
+    live_plugins.append(PrintStatus(interval_print))
 
     agent_logger = logging.getLogger("BO.learn:%s(%s)" % (id_agent, id_robot))
     agent_logger.setLevel(logging.DEBUG)
@@ -46,8 +40,6 @@ def learn_log(data_central, id_agent, id_robot,
 
     agent, state = load_agent_state(data_central, id_agent=id_agent,
                                     id_robot=id_robot, reset_state=reset)
-
-    print 'state', state.id_episodes
     
     if publish_interval is not None or publish_once:
         do_publish_once(data_central, id_agent=id_agent, id_robot=id_robot,
@@ -66,41 +58,19 @@ def learn_log(data_central, id_agent, id_robot,
  
     tracker_save = InAWhile(interval_save)
 
-    tracker = InAWhile(interval_print)
-    cur_stream_observations = 0
-    
-    def print_status():
-        perc_obs = 100 * (float(progress.obs.done) / progress.obs.target)
-        perc_obs_log = 100 * (float(cur_stream_observations) / stream.get_num_observations())
-        msg = ('overall %.2f%% (log %3d%%) (eps: %4d/%d, obs: %4d/%d);'
-               ' %5.1f fps' % 
-               (perc_obs, perc_obs_log, len(state.id_episodes),
-                 progress.eps.target, state.num_observations, progress.obs.target,
-                tracker.fps()))
-        logger.info(msg)
-
-
     # Initialize plugins
+    init = dict(data_central=data_central, id_agent=id_agent, id_robot=id_robot)
     for plugin in live_plugins:
-        plugin.init(dict(data_central=data_central,
-                         id_agent=id_agent, id_robot=id_robot))
+        plugin.init(init)
 
     for stream, to_learn in remain:
-
-        try:
-            compmake_progress('Learning', (progress.eps.done, progress.eps.target))
-        except Exception as e:
-            logger.error(e)
-
-        cur_stream_observations = 0
+        
+        for plugin in live_plugins:
+            plugin.starting_stream(stream)
+        
         for obs in stream.read(only_episodes=to_learn):
-            # assert obs['id_episode'] in to_learn
             state.num_observations += 1
-            cur_stream_observations += 1
             progress.obs.done += 1
-  
-            if tracker.its_time():
-                print_status()
 
             if save_state and tracker_save.its_time():
                 logger.debug('Saving state (periodic)')
@@ -120,8 +90,10 @@ def learn_log(data_central, id_agent, id_robot,
                                          filename)
 
             # Update plugins
+            up = dict(agent=agent, robot=None, obs=obs, progress=progress, state=state,
+                      stream=stream)
             for plugin in live_plugins:
-                plugin.update(dict(agent=agent, robot=None, obs=obs))
+                plugin.update(up)
 
         state.id_episodes.update(to_learn)
         progress.eps.done += len(to_learn)
@@ -133,7 +105,9 @@ def learn_log(data_central, id_agent, id_robot,
         db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
 
     if publish_interval is not None:
-        warnings.warn('to fix') 
+        warnings.warn('to fix')
+        
+    return agent 
 
 
 class ProgressSingle:
@@ -178,6 +152,13 @@ def find_episodes_to_learn(log_index, id_robot, episodes_to_learn=None, episodes
     logger.info('Finding episodes for %s' % id_robot)
     logger.info('To learn: %s' % episodes_to_learn)
     logger.info('Learned:  %s' % episodes_learned)
+    
+    if not log_index.has_streams_for_robot(id_robot):
+        msg = ('No log for robot %r found. I know: %s.'
+               % (id_robot, ", ".join(log_index.robots2streams.keys())))
+        raise ValueError(msg)
+
+
     if episodes_learned is None:
         episodes_learned = set()
         

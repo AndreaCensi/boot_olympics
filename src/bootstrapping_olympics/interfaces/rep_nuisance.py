@@ -7,22 +7,17 @@ __all__ = ['RepresentationNuisance', 'NuisanceNotInvertible']
 class RepresentationNuisance():
     ''' Encapsulates the idea of a representation nuisance,
         either on the observations or the commands. '''
+    
     # TODO: add "is_exact" to interface.
     __metaclass__ = ABCMeta
 
 
     @abstractmethod
     def inverse(self):
-        ''' Returns the inverse representation nuisance, or 
-            NuisanceNotInvertible '''
-
-    @contract(streamels='streamel_array', returns='streamel_array')
-    def transform_streamels(self, streamels):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def transform_value(self, values):
-        ''' Returns the transformed value. '''
+        ''' 
+            Returns the inverse representation nuisance,
+            or raises NuisanceNotInvertible 
+        '''
 
     @contract(stream_spec=StreamSpec, returns=StreamSpec)
     def transform_spec(self, stream_spec):
@@ -43,6 +38,14 @@ class RepresentationNuisance():
                                   filtered={},
                                   desc=stream_spec.desc)
         return stream_spec2
+
+    @contract(streamels='streamel_array', returns='streamel_array')
+    def transform_streamels(self, streamels):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def transform_value(self, values):
+        ''' Returns the transformed value. '''
 
 
 class NuisanceNotInvertible(ValueError):

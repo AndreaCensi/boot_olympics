@@ -122,8 +122,11 @@ class AgentInterface:
                           ' setting none.' % v)
                 self.__dict__[v] = None
             else:
-                self.__dict__[v] = state[v]
-        #self.info('State loaded: %s' % state_vars)
+                if ((state[v] is None) and (v in self.__dict__) and (self.__dict__[v] is not None)):
+                    print('Warning, null state %s but has value in instance' % v)
+                else:
+                    self.__dict__[v] = state[v]
+        # self.info('State loaded: %s' % state_vars)
 
 
 class UnsupportedSpec(Exception):
