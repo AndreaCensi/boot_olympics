@@ -1,4 +1,6 @@
 from abc import ABCMeta, abstractmethod
+from contracts import contract
+from bootstrapping_olympics.interfaces.publisher import Publisher
 
 __all__ = ['AgentInterface', 'UnsupportedSpec']
 
@@ -79,12 +81,14 @@ class AgentInterface:
         '''
 
     @abstractmethod
+    @contract(returns='array')
     def choose_commands(self):
         ''' 
             Chooses commands to be generated; must return a sequence 
             of numbers or array. 
         '''
 
+    @contract(publisher=Publisher)
     def publish(self, publisher):
         ''' 
             Publish debug information. ``publisher`` is an instance 
@@ -129,7 +133,14 @@ class AgentInterface:
         # self.info('State loaded: %s' % state_vars)
 
 
-class PredictorAgentInterface():
+class ServoAgentInterface(AgentInterface):
+    
+    @abstractmethod
+    @contract(goal='array')
+    def set_goal_observations(self, goal):
+        pass
+
+class PredictorAgentInterface(AgentInterface):
     __metaclass__ = ABCMeta
     
     @abstractmethod
@@ -139,7 +150,6 @@ class PredictorAgentInterface():
     @abstractmethod
     def estimate_u(self):
         """ Estimate current u """
-        
 
 
 class UnsupportedSpec(Exception):
