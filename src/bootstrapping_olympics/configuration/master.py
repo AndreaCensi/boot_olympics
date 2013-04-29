@@ -4,6 +4,7 @@ from ..interfaces import AgentInterface, RobotInterface, RepresentationNuisance
 from conf_tools import ConfigMaster, check_generic_code_desc
 from contracts import contract
 import os
+from bootstrapping_olympics.interfaces.robot import PassiveRobotInterface
 
 
 class BootConfigMaster(ConfigMaster):
@@ -15,7 +16,7 @@ class BootConfigMaster(ConfigMaster):
         ConfigMaster.__init__(self, 'BootOlympics')
 
  
-        self.robots = self.add_class_generic('robots', '*.robots.yaml', RobotInterface)
+        self.robots = self.add_class_generic('robots', '*.robots.yaml', PassiveRobotInterface)
         self.agents = self.add_class_generic('agents', '*.agents.yaml', AgentInterface)
 
         self.nuisances = self.add_class_generic('nuisances', '*.nuisances.yaml', RepresentationNuisance)

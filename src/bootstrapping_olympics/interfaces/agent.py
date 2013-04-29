@@ -96,6 +96,7 @@ class AgentInterface:
         '''
 
     def state_vars(self):
+        print('default state vars for %s' % type(self))
         return self.__dict__.keys()
 
     def get_state(self):
@@ -120,6 +121,7 @@ class AgentInterface:
         return dict((x, self.__dict__[x]) for x in state_vars)
 
     def set_state_vars(self, state, state_vars):
+        print('Setting state vars: %s' % state_vars)
         for v in state_vars:
             if v not in state:
                 self.info('Warning, no variable %r found in state vars,'

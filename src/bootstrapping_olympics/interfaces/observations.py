@@ -34,11 +34,11 @@ boot_observations_dtype = [
     ('id_robot', strings_format),
     ('id_episode', strings_format),
     ('id_world', strings_format),
-    ('counter', 'int'), # steps from id_episodes
-    ('episode_start', 'bool'), # True if episode started
+    ('counter', 'int'),  # steps from id_episodes
+    ('episode_start', 'bool'),  # True if episode started
 
     # redundant data
-    ('dt', 'float64'), # time from last observations. This is 0 if counter = 0
+    ('dt', 'float64'),  # time from last observations. This is 0 if counter = 0
     ('time_from_episode_start', 'float64'),
 
 
@@ -57,7 +57,7 @@ def get_observations_dtype(boot_spec):
     return np.dtype(dtype)
 
 
-class ObsKeeper: # TODO: move away from here
+class ObsKeeper:  # TODO: move away from here
     ''' This is a simple utility class to fill in the redundant 
         fields in the Observations class. '''
 
@@ -84,10 +84,11 @@ class ObsKeeper: # TODO: move away from here
               commands='array',
               commands_source='str',
               id_episode='str',
-              id_world='str'
+              id_world='str',
+              extra='dict'
               )
     def push(self, timestamp, observations, commands, commands_source,
-                   id_episode, id_world):
+                   id_episode, id_world, extra={}):
         ''' Returns the observations structure. '''
 
         if len(id_episode) > max_identifiers_size:
@@ -133,7 +134,7 @@ class ObsKeeper: # TODO: move away from here
             x['dt'] = x['timestamp'] - self.last_observations['timestamp']
             x['episode_start'] = False
 
-        x['extra'] = None
+        x['extra'] = extra
 
         self.last_observations = x
         self.counter += 1

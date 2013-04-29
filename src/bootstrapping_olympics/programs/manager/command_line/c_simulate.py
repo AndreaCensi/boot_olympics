@@ -15,6 +15,8 @@ def cmd_simulate(data_central, argv):
                       help="Number of episodes to simulate [%default]")
     parser.add_option("--cumulative", default=False, action='store_true',
                       help="Count already simulated episodes")
+    parser.add_option("--extra", default=False, action='store_true',
+                      help="Writes extra information")
     parser.add_option("--episode_len", type='float', default=30,
                       help="Maximum len of episode (seconds) [%default]")
     parser.add_option("--interval_print", type='float', default=5,
@@ -34,6 +36,7 @@ def cmd_simulate(data_central, argv):
              stateful=options.stateful,
              interval_print=options.interval_print,
              cumulative=options.cumulative,
+             write_extra=options.extra,
              id_episodes=None)
 
 

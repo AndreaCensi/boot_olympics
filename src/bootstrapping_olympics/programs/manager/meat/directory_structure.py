@@ -145,7 +145,7 @@ class DirectoryStructure:
             filename = os.path.join(dirname, '%s.%s' % (id_stream, logs_format)) 
             
             
-        logger.debug('Writing on %r' % friendly_path(filename))
+        # logger.debug('Writing on %r' % friendly_path(filename))
 
         warn_good_filename(filename)
         

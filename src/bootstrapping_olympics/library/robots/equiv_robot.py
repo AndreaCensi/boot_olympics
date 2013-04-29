@@ -4,6 +4,9 @@ from bootstrapping_olympics import (BootSpec, RobotInterface,
 from bootstrapping_olympics.utils import indent
 from bootstrapping_olympics.interfaces import get_observations_dtype
 import numpy as np
+from bootstrapping_olympics.configuration.master import get_boot_config
+import warnings
+from bootstrapping_olympics.interfaces.robot import RobotObservations
 
 __all__ = ['EquivRobot']
 
@@ -11,17 +14,19 @@ __all__ = ['EquivRobot']
 class EquivRobot(RobotInterface):
     ''' This is used to create the perturbed version of a robot. '''
 
-    @contract(robot='str',
-              obs_nuisance='str|list(str)',
-              cmd_nuisance='str|list(str)')
+    @contract(robot='str|dict|code_spec',
+              obs_nuisance='str|list(str|dict|code_spec)',
+              cmd_nuisance='str|list(str|dict|code_spec)')
     def __init__(self, robot, obs_nuisance=[], cmd_nuisance=[]):
         self.inner_robot_name = robot 
         # todo: use get_current_bo_config()
         
-        self.robot = BootOlympicsConfig.specs['robots'].instance(robot)
+        boot_config = get_boot_config()
+        id_robot, self.robot = boot_config.robots.instance_smarter(robot)
 
+        warnings.warn('handle the case better')
         self.desc = ('EquivRobot(%s,obs:%s,cmd:%s)'
-                    % (robot, obs_nuisance, cmd_nuisance))
+                    % (id_robot, obs_nuisance, cmd_nuisance))
 
         # convert to (possibly empty) list of strings
         if isinstance(obs_nuisance, str):
@@ -29,7 +34,8 @@ class EquivRobot(RobotInterface):
         if isinstance(cmd_nuisance, str):
             cmd_nuisance = [cmd_nuisance]
 
-        instance = BootOlympicsConfig.specs['nuisances'].instance
+        instance = lambda y: boot_config.nuisances.instance_smarter(y)[1]
+        
         self.obs_nuisances = [instance(x) for x in obs_nuisance]
         self.cmd_nuisances = [instance(x) for x in cmd_nuisance]
         # No - we should not call inverse() before transform_spec()
@@ -74,13 +80,17 @@ class EquivRobot(RobotInterface):
         return self.robot.get_state()
 
     def get_observations(self):
-        obs = self.robot.get_observations()
+        try:
+            obs = self.robot.get_observations()
+        except RobotObservations.NotReady:
+            raise 
 
         obs.observations = self._apply_nuisances_observations(obs.observations)
 
         try:
             obs.commands = self._apply_nuisances_commands_inv(obs.commands)
-        except:
+        except Exception as e:
+            warnings.warn('Something fishy here: %s' % e)
             # FIXME: warn for this
             pass
         

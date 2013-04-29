@@ -3,13 +3,14 @@ from bootstrapping_olympics import AgentInterface, LogsFormat
 from bootstrapping_olympics.utils import (InAWhile, natsorted,
     unique_timestamp_string)
 import logging
+from contracts.interface import describe_value
 
 
 def simulate(data_central, id_agent, id_robot,
              max_episode_len,
              num_episodes,
              cumulative,
-             id_episodes=None, # if None, just use the ID given by the world
+             id_episodes=None,  # if None, just use the ID given by the world
              stateful=False,
              interval_print=None,
              write_extra=True):
@@ -25,13 +26,13 @@ def simulate(data_central, id_agent, id_robot,
 
     # Instance agent object    
     config = data_central.get_bo_config()
-    agent = config.agents.instance(id_agent) #@UndefinedVariable
+    agent = config.agents.instance(id_agent)  # @UndefinedVariable
     # Instance robot object
-    robot = config.robots.instance(id_robot) #@UndefinedVariable
+    robot = config.robots.instance(id_robot)  # @UndefinedVariable
 
     logger = logging.getLogger("BO:%s(%s)" % (id_agent, id_robot))
     logger.setLevel(logging.DEBUG)
-    AgentInterface.logger = logger # XXX
+    AgentInterface.logger = logger  # XXX
 
     boot_spec = robot.get_spec()
 
@@ -55,7 +56,7 @@ def simulate(data_central, id_agent, id_robot,
     filename = ds.get_simlog_filename(id_robot=id_robot,
                                       id_agent=id_agent,
                                       id_stream=id_stream)
-    #print('Creating stream %r\n in file %r' % (id_stream, filename))
+    logger.info('Creating stream %r\n in file %r' % (id_stream, filename))
 
     logs_format = LogsFormat.get_reader_for(filename)
 
@@ -69,7 +70,6 @@ def simulate(data_central, id_agent, id_robot,
         with logs_format.write_stream(filename=filename,
                                       id_stream=id_stream,
                                       boot_spec=boot_spec) as writer:
-
             while bk.another_episode_todo():
                 if id_episodes is not None:
                     id_episode = id_episodes.pop(0)
@@ -88,7 +88,8 @@ def simulate(data_central, id_agent, id_robot,
                     writer.push_observations(observations=observations,
                                              extra=extra)
                 bk.episode_done()
-
+                
+    logger.info('done')
     if cumulative:
         return bk.get_all_episodes()
     else:

@@ -1,6 +1,8 @@
 from . import contract, logger
 from bootstrapping_olympics import (RobotInterface, RobotObservations,
     AgentInterface, ObsKeeper)
+import time
+import warnings
 
 
 @contract(id_robot='str', id_agent='str',
@@ -26,12 +28,15 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
     obs_spec = robot.get_spec().get_observations()
     cmd_spec = robot.get_spec().get_commands()
 
-    logger.debug('Episode %s started (%s)' % (id_episode, episode))
-    logger.debug('max_observations: %s' % max_observations)
-    logger.debug('max_time: %s' % max_time)
+    logger.info('Episode %s started (%s)' % (id_episode, episode))
+    logger.info('max_observations: %s' % max_observations)
+    logger.info('max_time: %s' % max_time)
 
     def get_observations():
-        obs = robot.get_observations()
+        try:
+            obs = robot.get_observations()
+        except RobotObservations.NotReady:
+            raise
         if check_valid_values:
             assert isinstance(obs, RobotObservations)
             obs_spec.check_valid_value(obs.observations)
@@ -50,25 +55,33 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
 
         return observations, obs.episode_end
 
+    
     while counter < max_observations:
-
-        observations, episode_end = get_observations()
+        
+        try:
+            observations, episode_end = get_observations()
+        except RobotObservations.NotReady:
+            warnings.warn('remove')
+            time.sleep(0.001)
+            continue
+        
+        # print('counter %d ' % counter)
 
         yield observations
 
         if observations['time_from_episode_start'] > max_time:
-            logger.debug('Episode ended at %s for time limit %s > %s ' %
+            logger.info('Episode ended at %s for time limit %s > %s ' % 
                          (counter, observations['time_from_episode_start'],
                           max_time))
             break
 
-        if episode_end: # Fishy
-            logger.debug('Episode ended at %s due to obs.episode_end.'
+        if episode_end:  # Fishy
+            logger.info('Episode ended at %s due to obs.episode_end.'
                          % counter)
             break
 
         agent.process_observations(observations)
-        commands = agent.choose_commands() # repeated
+        commands = agent.choose_commands()  # repeated
 
         if check_valid_values:
             cmd_spec.check_valid_value(commands)
