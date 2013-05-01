@@ -1,0 +1,6 @@
+--- model commands_display_posneg
+input u
+output rgb
+
+|input name=u| -> |reshape2d| -> |posneg nan_color=[0.5,0.5,0.5] max_value=1| -> |output name=rgb|
+

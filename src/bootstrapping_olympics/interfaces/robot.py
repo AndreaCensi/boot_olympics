@@ -2,7 +2,8 @@ from . import contract, BootSpec
 from abc import abstractmethod, ABCMeta
 from contracts import new_contract
 
-__all__ = ['EpisodeDesc', 'RobotObservations', 'RobotInterface']
+__all__ = ['EpisodeDesc', 'RobotObservations', 'RobotInterface',
+           'PassiveRobotInterface']
 
 
 class EpisodeDesc:

@@ -1,6 +1,6 @@
 from . import check_no_spurious, OptionParser, declare_command, logger
-from bootstrapping_olympics.logs.logs_format import LogsFormat
-from bootstrapping_olympics.utils.scripts_utils import UserError
+from bootstrapping_olympics.logs import LogsFormat
+from bootstrapping_olympics.utils import UserError
 import os
 
 

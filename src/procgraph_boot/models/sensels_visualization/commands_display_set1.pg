@@ -1,0 +1,17 @@
+--- model commands_display_set1
+""" Visualizes the commands in all the ways we know. """
+
+config out_base """ Output base prefix """
+config container = 'mp4'
+config md = {}
+
+input u 
+
+
+|input name=u| -> u
+
+u -> |commands_display_posneg| ->  \
+     |resize_if_necessary| -> \
+     |boot_encode md=$md  file="${out_base}.posneg.${container}"|
+      
+    

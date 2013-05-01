@@ -7,8 +7,6 @@
         first_person: False
         zoom: 2
         show_sensor_data_compact: True
-        
-    
 
 - id: pdff2sb
   desc: ''

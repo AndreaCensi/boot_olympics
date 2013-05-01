@@ -93,7 +93,7 @@ def boot_agent_adapter_main(params):
 
     publish_interval = params.get('publish_interval', 0)
     agent_spec = params['agent_spec']
-#     check_valid_agent_config(agent_spec)
+    #     check_valid_agent_config(agent_spec)
     agent = bo_config.agents.instance_spec(agent_spec)  # @UndefinedVariable
     id_agent = agent_spec['id']
 

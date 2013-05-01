@@ -1,5 +1,6 @@
 from procgraph import Block, Generator
 
+# TODO: use IteratorGenerator
 
 class BOLogReader(Generator):
     '''
@@ -25,12 +26,12 @@ class BOLogReader(Generator):
         id_episode = self.config.id_episode
         read_extra = self.config.read_extra
 
-        self.info('Reading logs for robot: %r agent: %r episodes: %r' %
+        self.info('Reading logs for robot: %r agent: %r episodes: %r' % 
                 (id_robot, id_agent, id_episode))
 
         def go():
             if not id_episode:
-                self.info('Reading all episodes for %r/%r' %
+                self.info('Reading all episodes for %r/%r' % 
                           (id_robot, id_agent))
 
                 if id_agent is not None:
@@ -38,7 +39,7 @@ class BOLogReader(Generator):
                     episodes = index.get_episodes_for_robot(id_robot=id_robot,
                                                             id_agent=id_agent)
                     if not episodes:
-                        msg = ('No episodes found for %r/%r' %
+                        msg = ('No episodes found for %r/%r' % 
                                (id_robot, id_agent))
                         raise Exception(msg)
 
@@ -47,13 +48,13 @@ class BOLogReader(Generator):
                                                         id_agent=id_agent,
                                                         read_extra=read_extra):
                     yield obs['timestamp'].item(), obs.copy()
-                    obs['extra'] = {} # Tmp: debugging
+                    obs['extra'] = {}  # Tmp: debugging
             else:
                 for obs in index.read_robot_episode(id_robot=id_robot,
                                                     id_episode=id_episode,
                                                     read_extra=read_extra):
                     yield obs['timestamp'].item(), obs.copy()
-                    obs['extra'] = {} # Tmp: debugging
+                    obs['extra'] = {}  # Tmp: debugging
 
         self.iterator = go()
 

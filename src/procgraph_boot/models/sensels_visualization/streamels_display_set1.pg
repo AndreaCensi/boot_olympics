@@ -1,0 +1,26 @@
+--- model streamels_display_set1
+""" Visualizes the sensels in all the ways we know. """
+config out_base """ Output base prefix """
+config container = 'mp4'
+config md = {}
+input y """ Bootstrapping data array """
+
+
+|input name=y| -> y
+
+y -> |streamels_display_square| -> \
+      |resize_if_necessary| -> \
+     |square:boot_encode md=$md file="${out_base}.square.${container}"|
+
+y -> |streamels_display_bands| -> \
+      |resize_if_necessary| -> \
+     |band:boot_encode md=$md file="${out_base}.band.${container}"|
+
+y -> |apply_nuisance nuisance='rpermA'| -> |streamels_display_square| -> \
+      |resize_if_necessary| -> \
+     |rpermA:boot_encode md=$md file="${out_base}.rpermA.square.${container}"|
+
+y -> |apply_nuisance nuisance='rpermB'| -> |streamels_display_square| -> \
+      |resize_if_necessary| -> \
+     |rpermB:boot_encode md=$md file="${out_base}.rpermB.square.${container}"|
+
