@@ -18,14 +18,22 @@ def load_agent_state(data_central, id_agent, id_robot,
     agent = config.agents.instance(id_agent)  # @UndefinedVariable
 
     index = data_central.get_log_index()
-    if not index.has_streams_for_robot(id_robot):
+    has_log = index.has_streams_for_robot(id_robot)
+    has_instance = id_robot in config.robots 
+    
+    if has_log:
+        boot_spec = index.get_robot_spec(id_robot)
+    elif has_instance:
+        robot = config.robots.instance(id_robot)
+        boot_spec = robot.get_spec()
+    else:
         msg = 'Cannot load agent state for %r ' % id_agent
         msg += 'because I cannot find any streams for robot %r ' % id_robot
-        msg += 'and I need them to find the BootSpec.'
+        msg += 'and I need them to find the BootSpec. '
+        msg += 'Also I could not instance the robot.'
         msg += x_not_found('robot', id_robot, index.list_robots())
         raise UserError(msg)
-    
-    boot_spec = index.get_robot_spec(id_robot)
+        
     agent.init(boot_spec)
 
     return load_agent_state_core(data_central, id_agent, agent, id_robot,

@@ -94,7 +94,14 @@ class AgentInterface:
             Publish debug information. ``publisher`` is an instance 
             of the class PublisherInterface. 
         '''
+        
+    def get_predictor(self):
+        raise NotImplementedError()
 
+    def get_servo(self):
+        raise NotImplementedError()
+    
+    
     def state_vars(self):
         print('default state vars for %s' % type(self))
         return self.__dict__.keys()
@@ -128,7 +135,8 @@ class AgentInterface:
                           ' setting none.' % v)
                 self.__dict__[v] = None
             else:
-                if ((state[v] is None) and (v in self.__dict__) and (self.__dict__[v] is not None)):
+                if ((state[v] is None) and (v in self.__dict__) and 
+                    (self.__dict__[v] is not None)):
                     print('Warning, null state %s but has value in instance' % v)
                 else:
                     self.__dict__[v] = state[v]

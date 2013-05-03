@@ -1,6 +1,6 @@
 from . import logger
 from .. import Constants, LivePlugin
-from ..interfaces import AgentInterface, RobotInterface, RepresentationNuisance
+from ..interfaces import AgentInterface, RepresentationNuisance
 from conf_tools import ConfigMaster, check_generic_code_desc
 from contracts import contract
 import os

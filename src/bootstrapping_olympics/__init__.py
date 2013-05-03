@@ -43,4 +43,3 @@ from .configuration import BootOlympicsConfig, get_boot_config, set_boot_config
 from . import extra
 
 from .programs.manager.batch.batch_learn import batch_jobs1
-from .unittests import *

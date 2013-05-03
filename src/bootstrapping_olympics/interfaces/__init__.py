@@ -1,4 +1,4 @@
-''' The software interface to the various objects. '''
+
 from .. import logger, np, contract
 
 BOOT_OLYMPICS_SENSEL_RESOLUTION = 'float32'
@@ -12,7 +12,7 @@ from .stream_spec import (StreamSpec, streamels_from_spec, all_same_spec, get_st
 
 from .boot_spec import BootSpec
 from .agent  import AgentInterface, UnsupportedSpec
-from .robot  import EpisodeDesc, RobotObservations, RobotInterface
+from .robot  import EpisodeDesc, RobotObservations, RobotInterface, PassiveRobotInterface
 from .publisher  import Publisher
 from .observations import boot_observations_dtype, get_observations_dtype, ObsKeeper
 from .rep_nuisance  import RepresentationNuisance, NuisanceNotInvertible

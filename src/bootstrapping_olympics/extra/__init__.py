@@ -9,7 +9,7 @@ from .. import np, contract, getLogger, logger
 # Do not load these automatically 
 from . import procgraph # some video scripts assume already loaded 
     
-if True:
+if False:
     from . import ros
 else:
     logger.warning('Temporarely removed ROS')

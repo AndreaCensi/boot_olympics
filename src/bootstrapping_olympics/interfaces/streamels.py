@@ -54,6 +54,16 @@ def make_streamels_2D_float(shape, lower, upper, vdef=None):
     x['default'] = vdef
     return x
 
+@contract(shape='seq[2](int)')
+def make_streamels_rgb_float(shape):
+    """ An image, using floats instead of uint8. """
+    x = np.zeros((shape[0], shape[1], 3), streamel_dtype)
+    x['kind'] = ValueFormats.Continuous
+    x['lower'] = 0
+    x['upper'] = 1
+    x['default'] = 0.5
+    return x
+
 @contract(shape='seq[>=1](int,>=1)', lower='scalar_number,finite,x',
           upper='scalar_number,finite,y,>x', vdef='None|(scalar_number,finite,>x,<y)')
 def make_streamels_float(shape, lower, upper, vdef=None):
