@@ -1,4 +1,4 @@
-from . import contract
+from contracts import contract
 from bootstrapping_olympics import (BootSpec, RobotInterface)
 
 __all__ = ['DummyRobot', 'dummy_robot_from_spec']

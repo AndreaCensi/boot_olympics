@@ -5,6 +5,7 @@ from conf_tools import ConfigMaster, check_generic_code_desc
 from contracts import contract
 import os
 from bootstrapping_olympics.interfaces.robot import PassiveRobotInterface
+from bootstrapping_olympics.interfaces.rep_nuisance_causal import RepresentationNuisanceCausal
 
 
 class BootConfigMaster(ConfigMaster):
@@ -20,6 +21,8 @@ class BootConfigMaster(ConfigMaster):
         self.agents = self.add_class_generic('agents', '*.agents.yaml', AgentInterface)
 
         self.nuisances = self.add_class_generic('nuisances', '*.nuisances.yaml', RepresentationNuisance)
+        self.nuisances_causal = self.add_class_generic('nuisances_causal',
+                                                '*.nuisances_causal.yaml', RepresentationNuisanceCausal)
 
         self.videos = self.add_class('videos', '*.videos.yaml', check_valid_videos_config)
 

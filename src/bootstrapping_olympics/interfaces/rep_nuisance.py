@@ -4,11 +4,10 @@ from abc import abstractmethod, ABCMeta
 __all__ = ['RepresentationNuisance', 'NuisanceNotInvertible']
 
 
-class RepresentationNuisance():
+class RepresentationNuisance(object):
     ''' Encapsulates the idea of a representation nuisance,
         either on the observations or the commands. '''
     
-    # TODO: add "is_exact" to interface.
     __metaclass__ = ABCMeta
 
 

@@ -1,9 +1,10 @@
 '''A simple robot useful for testing.'''
 
-from . import contract, np
 from bootstrapping_olympics import (BootSpec, Constants, RobotInterface,
     RobotObservations, EpisodeDesc)
 from bootstrapping_olympics.utils import unique_timestamp_string
+from contracts import contract
+import numpy as np
 import time
 
 
@@ -37,11 +38,11 @@ class TestRobot(RobotInterface):
     @contract(returns='array')
     def compute_observations(self):
         """ Computes the observations from the user string. """
-        t = self.timestamp #@UnusedVariable
-        u = self.commands #@UnusedVariable
+        t = self.timestamp  # @UnusedVariable
+        u = self.commands  # @UnusedVariable
         value = eval(self.value)
         value = np.array(value)
-        #print('%s -> %s' % (self.value, value))
+        # print('%s -> %s' % (self.value, value))
         return value
 
     def get_spec(self):
@@ -67,6 +68,6 @@ class TestRobot(RobotInterface):
     def new_episode(self):
         self.timestamp = time.time()
         episode = EpisodeDesc(unique_timestamp_string(), 'n/a')
-        #print('Creating episode %s' % episode)
+        # print('Creating episode %s' % episode)
         return episode
 

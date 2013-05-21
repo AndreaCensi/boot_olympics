@@ -1,17 +1,12 @@
-'''
-    A streamel (stream element) describes the *format* of the data stream.
-    It specifies what are the valid values that the data can take. 
+from bootstrapping_olympics.utils import indent, show_differences
+from contracts import new_contract, contract
+import numpy as np
 
-'''
+BOOT_OLYMPICS_SENSEL_RESOLUTION = 'float32'
 
-from . import contract, np
-from ..utils import indent, show_differences
-from contracts import  new_contract
-from bootstrapping_olympics.interfaces import BOOT_OLYMPICS_SENSEL_RESOLUTION
 
-__all__ = ['ValueFormats', 'streamel_dtype', 'new_streamels',
-           'streamel_array', 'check_valid_streamels', 'make_streamels_2D_float']
-
+__all__ = ['ValueFormats', 'streamel_dtype',
+           'streamel_array', 'check_valid_streamels']
 
 class ValueFormats:
     Continuous = 'C'  # range is [lower, upper]
@@ -25,73 +20,6 @@ streamel_dtype = [
       ('upper', BOOT_OLYMPICS_SENSEL_RESOLUTION),  # This must be a finite value.
       ('default', BOOT_OLYMPICS_SENSEL_RESOLUTION)  # This must respect the bounds.
 ]
-
-
-@contract(shape='(int,>0)|seq[>0](int,>0)')
-def new_streamels(shape):
-    ''' 
-        Creates a new array of streamels, initialized with all invalid
-        values. This is useful to check if we forgot to initialize 
-        some fields.
-    '''
-    x = np.zeros(shape, streamel_dtype)
-    x['kind'] = '?'
-    x['lower'] = np.nan
-    x['upper'] = np.nan
-    x['default'] = np.nan
-    return x
-
-@contract(shape='seq[2](int,>=1)', lower='scalar_number,finite,x',
-          upper='scalar_number,finite,y,>x', vdef='None|(scalar_number,finite,>x,<y)')
-def make_streamels_2D_float(shape, lower, upper, vdef=None):
-    """ Creates a stremeals spec with the given shape, min and max. """
-    x = np.zeros(shape, streamel_dtype)
-    x['kind'] = ValueFormats.Continuous
-    x['lower'] = lower
-    x['upper'] = upper
-    if vdef is None: 
-        vdef = lower * 0.5 + upper * 0.5
-    x['default'] = vdef
-    return x
-
-@contract(shape='seq[2](int)')
-def make_streamels_rgb_float(shape):
-    """ An image, using floats instead of uint8. """
-    x = np.zeros((shape[0], shape[1], 3), streamel_dtype)
-    x['kind'] = ValueFormats.Continuous
-    x['lower'] = 0
-    x['upper'] = 1
-    x['default'] = 0.5
-    return x
-
-@contract(shape='seq[>=1](int,>=1)', lower='scalar_number,finite,x',
-          upper='scalar_number,finite,y,>x', vdef='None|(scalar_number,finite,>x,<y)')
-def make_streamels_float(shape, lower, upper, vdef=None):
-    """ Creates a stremeals spec with the given shape, min and max. """
-    x = np.zeros(shape, streamel_dtype)
-    x['kind'] = ValueFormats.Continuous
-    x['lower'] = lower
-    x['upper'] = upper
-    if vdef is None: 
-        vdef = lower * 0.5 + upper * 0.5
-    x['default'] = vdef
-    return x
-
-    
-@contract(nstreamels='int,>=1',
-          lower='scalar_number,finite,x',
-          upper='scalar_number,finite,y,>x',
-          vdef='None|(scalar_number,finite,>x,<y)')
-def make_streamels_1D_float(nstreamels, lower, upper, vdef=None):
-    x = np.zeros(nstreamels, streamel_dtype)
-    x['kind'] = ValueFormats.Continuous
-    x['lower'] = lower
-    x['upper'] = upper
-    if vdef is None: 
-        vdef = lower * 0.5 + upper * 0.5
-    x['default'] = vdef
-    return x
-    
 
 
 @new_contract

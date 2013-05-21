@@ -3,6 +3,7 @@ from bootstrapping_olympics.logs import LogsFormat
 from bootstrapping_olympics.utils import UserError
 from contracts import describe_type
 from bootstrapping_olympics.library.robots import EquivRobot
+import warnings
 
 __all__ = ['task_predict', 'predict_report']
 
@@ -15,7 +16,8 @@ def add_dummy_robots(data_central):
         boot_spec_yaml = boot_spec.to_yaml()
         conf = {'id': id_robot, 'desc': '',
                 'code': ['bootstrapping_olympics.library.robots.dummy_robot_from_spec',
-                         {'boot_spec_yaml': boot_spec_yaml}]} 
+                         {'boot_spec_yaml': boot_spec_yaml}]}
+        warnings.warn('check its not there yet?') 
         config.robots[id_robot] = conf     
         
 

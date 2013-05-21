@@ -1,6 +1,6 @@
 from . import logger
-from bootstrapping_olympics import BootOlympicsConstants, LogsFormat
-from bootstrapping_olympics.configuration.master import get_boot_config
+from bootstrapping_olympics import (BootOlympicsConstants, LogsFormat,
+    get_boot_config)
 from bootstrapping_olympics.utils import (check_contained, expand_environment,
     substitute, mkdirs_thread_safe, warn_good_identifier, warn_good_filename,
     friendly_filesize, unique_timestamp_string)
@@ -201,7 +201,7 @@ class DirectoryStructure:
         warn_good_filename(filename)
         return filename
 
-    def file_is_done(self, filename_or_basename, desc=None):
+    def file_is_done(self, filename_or_basename, desc=None):  # @UnusedVariable
         """ 
             Notifies that some file is done writing. 
             Used to create a list of recent files that are done.

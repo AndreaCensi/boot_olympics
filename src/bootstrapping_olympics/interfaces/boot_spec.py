@@ -1,15 +1,15 @@
 from . import StreamSpec, logger, contract
 from ..utils import check_contained
-from contracts import describe_type
+from contracts import describe_type, new_contract
 from pprint import pformat
 
 
 __all__ = ['BootSpec']
 
 
-class BootSpec:
+class BootSpec(object):
     ''' 
-        This class represents a sensorimotor interface.
+        This class describes input/output of a sensorimotor cascade.
     '''
 
     def __init__(self, obs_spec, cmd_spec, id_robot=None,
@@ -18,16 +18,19 @@ class BootSpec:
         self.desc = desc
         self.extra = extra
         if not isinstance(obs_spec, StreamSpec):
-            msg = ('Expected StreamSpec for observations, not %s.' %
+            msg = ('Expected StreamSpec for observations, not %s.' % 
                    describe_type(obs_spec))
             raise ValueError(msg)
         if not isinstance(cmd_spec, StreamSpec):
-            msg = ('Expected StreamSpec for commands, not %s.' %
+            msg = ('Expected StreamSpec for commands, not %s.' % 
                    describe_type(cmd_spec))
             raise ValueError(msg)
         self._observations = obs_spec
         self._commands = cmd_spec
 
+    def __repr__(self):
+        return 'BootSpec(%r,%r)' % (self._observations, self._commands)
+    
     @contract(returns=StreamSpec)
     def get_commands(self):
         ''' Returns a StreamSpec instance representing the commands. '''
@@ -50,7 +53,7 @@ class BootSpec:
         try:
             if not isinstance(xo, dict):
                 raise ValueError('Expected a dict, got %s' % xo)
-            x = dict(**xo) # make a copy
+            x = dict(**xo)  # make a copy
 
             check_contained('observations', x)
             check_contained('commands', x)
@@ -61,7 +64,7 @@ class BootSpec:
             id_robot = x.pop('id', None)
 
             if x.keys():
-                logger.warning('While reading\n%s\nextra keys detected: %s' %
+                logger.warning('While reading\n%s\nextra keys detected: %s' % 
                                (pformat(xo), x.keys()))
 
             return BootSpec(observations, commands,
@@ -80,4 +83,6 @@ class BootSpec:
         x['id'] = self.id_robot
         x['desc'] = self.desc
         return x
+
+new_contract('BootSpec', BootSpec)
 

@@ -1,7 +1,7 @@
 '''A simple agent useful for testing.'''
 
 from bootstrapping_olympics import AgentInterface
-from . import np
+import numpy as np
 
 __all__ = ['TestAgent']
 
@@ -32,15 +32,15 @@ class TestAgent(AgentInterface):
     def choose_commands(self):
         if isinstance(self.cmd, str):
             # Variables that can be used in the expression
-            y = self.y #@UnusedVariable
-            t = self.timestamp #@UnusedVariable
+            y = self.y  # @UnusedVariable
+            t = self.timestamp  # @UnusedVariable
             cmd = eval(self.cmd)
             value = np.array(cmd)
         else:
             value = np.array(self.cmd)
 
         if value.shape != self.default_cmd.shape:
-            #self.info('Invalid shape; patching up.')
+            # self.info('Invalid shape; patching up.')
             n = min(value.size, self.default_cmd.size)
             self.default_cmd.flat[:n] = value.flat[:n]
             return self.default_cmd

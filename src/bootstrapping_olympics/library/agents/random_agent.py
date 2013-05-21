@@ -1,7 +1,8 @@
 ''' A dummy agent that gives random commands. '''
 
 from bootstrapping_olympics import AgentInterface
-from bootstrapping_olympics.interfaces.agent import PredictorAgentInterface
+from bootstrapping_olympics.interfaces.agent import PredictorAgentInterface, \
+    ServoAgentInterface
 
 __all__ = ['RandomAgent', 'RandomAgentPredictor', 'RandomAgentServo']
 
@@ -31,7 +32,9 @@ class RandomAgent(AgentInterface):
             msg = 'choose_commands() called before process_observations().'
             raise Exception(msg)
 
-        return self.boot_spec.get_commands().get_random_value()
+        commands = self.boot_spec.get_commands().get_random_value()
+        # self.info('commands: %r' % commands)
+        return commands
 
     def __repr__(self):
         return "RandomAgent"
@@ -39,19 +42,21 @@ class RandomAgent(AgentInterface):
     def get_servo(self):
         if not self.inited:
             raise Exception('get_servo() called before init().')
-        return RandomAgentServo(self.boot_spec)
+        return RandomAgentServo()
 
     def get_predictor(self):
         if not self.inited:
             raise Exception('get_predictor() called before init().')
-        return RandomAgentPredictor(self.boot_spec)
+        return RandomAgentPredictor()
 
 
-class RandomAgentServo():
+class RandomAgentServo(ServoAgentInterface):
 
-    def __init__(self, boot_spec):
-        self.boot_spec = boot_spec
+    def __init__(self):
         self.goal_called = False
+        
+    def init(self, boot_spec):
+        self.boot_spec = boot_spec
 
     def set_goal_observations(self, goal):  # @UnusedVariable
         self.goal_called = True
@@ -69,7 +74,10 @@ class RandomAgentServo():
 
 class RandomAgentPredictor(PredictorAgentInterface):
 
-    def __init__(self, boot_spec):
+    def __init__(self):
+        pass
+        
+    def init(self, boot_spec):
         self.boot_spec = boot_spec
 
     def process_observations(self, obs):

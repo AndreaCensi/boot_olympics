@@ -1,12 +1,14 @@
 from . import contract, BootSpec
-from abc import abstractmethod, ABCMeta
+from abc import abstractmethod
 from contracts import new_contract
+from contracts.metaclass import ContractsMeta
+from bootstrapping_olympics.interfaces.with_internal_log import BootWithInternalLog
 
 __all__ = ['EpisodeDesc', 'RobotObservations', 'RobotInterface',
            'PassiveRobotInterface']
 
 
-class EpisodeDesc:
+class EpisodeDesc(object):
     ''' Structure that must be returned by new_episode(). '''
     @contract(id_episode='str', id_environment='str', extra='None|dict')
     def __init__(self, id_episode, id_environment, extra=None):
@@ -18,8 +20,9 @@ class EpisodeDesc:
         return "EpisodeDesc(%s,%s)" % (self.id_episode, self.id_environment)
 
 
-class RobotObservations:
+class RobotObservations(object):
     ''' Structure that must be returned by get_observations(). '''
+    
     @contract(timestamp='number',
               observations='array',
               commands='array',
@@ -45,6 +48,9 @@ class RobotObservations:
         self.episode_end = episode_end
         self.robot_pose = robot_pose
         
+    def __repr__(self):
+        return 'RobotObservations(t=%s,obs=...,cmd=%s)' % (self.timestamp, self.commands)
+        
     # Constant to return if the observations are not ready yet
     class NotReady(Exception):
         pass
@@ -56,8 +62,9 @@ class RobotObservations:
 new_contract('RobotObservations', RobotObservations)
 
 
-class PassiveRobotInterface(object):
-    __metaclass__ = ABCMeta
+class PassiveRobotInterface(BootWithInternalLog):
+    # __metaclass__ = ABCMeta
+    __metaclass__ = ContractsMeta
     
     @abstractmethod
     @contract(returns=BootSpec)
@@ -65,7 +72,7 @@ class PassiveRobotInterface(object):
         ''' Returns the sensorimotor spec for this robot
             (a BootSpec object). '''
 
-    @abstractmethod
+    # @abstractmethod
     @contract(returns=RobotObservations)
     def get_observations(self):
         ''' 
@@ -74,6 +81,16 @@ class PassiveRobotInterface(object):
             - RobotObservations.Finished => no more observations
             - RobotObservations.NotReady => not ready yet
         '''
+
+    @contract(returns='list[>=1]')
+    def get_inner_components(self):
+        """ Used internally. Used to access the inner 
+            layers in case a class wraps another (like EquivRobot).
+            We can get to the original robot using: :: 
+                r = robot.get_inner_components()[-1]
+         """ 
+        return [self]
+        
 
 class RobotInterface(PassiveRobotInterface):
     ''' 
@@ -97,11 +114,11 @@ class RobotInterface(PassiveRobotInterface):
         '''
 
     @abstractmethod
-    @contract(commands='array', commands_source='str')
+    @contract(commands='array', commands_source='str', returns='None')
     def set_commands(self, commands, commands_source):
         ''' Send the given commands. '''
+        assert False
 
-   
     @contract(returns='None|dict')
     def get_state(self):
         ''' 

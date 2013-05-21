@@ -10,7 +10,7 @@ def task_servo(data_central, id_agent, id_robot,
                max_episode_len,
                num_episodes,
                displacement,
-               id_episodes=None, # if None, just use the ID given by the world
+               id_episodes=None,  # if None, just use the ID given by the world
                cumulative=False,
                interval_print=None,
                num_episodes_with_robot_state=0):
@@ -37,6 +37,7 @@ def task_servo(data_central, id_agent, id_robot,
                              raise_if_no_state=True)
 
     servo_agent = agent.get_servo()
+    servo_agent.init(boot_spec)
 
     id_agent_servo = '%s_servo' % id_agent
 
@@ -101,7 +102,7 @@ def servoing_episode(id_robot, robot,
 
     def mean_observations(n=10):
         obss = []
-        for _ in range(n): # XXX: fixed threshold
+        for _ in range(n):  # XXX: fixed threshold
             obss.append(robot.get_observations().observations)
         return np.mean(obss, axis=0)
 
@@ -125,7 +126,7 @@ def servoing_episode(id_robot, robot,
                 logger.debug('Collision after %d steps' % ntries)
                 return False
 
-        logger.debug('%d steps of simulation to displace by %s' %
+        logger.debug('%d steps of simulation to displace by %s' % 
                     (nsteps, displacement))
         return True
 

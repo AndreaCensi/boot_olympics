@@ -1,11 +1,74 @@
-from abc import ABCMeta, abstractmethod
-from contracts import contract
+from abc import abstractmethod
 from bootstrapping_olympics.interfaces.publisher import Publisher
+from bootstrapping_olympics.interfaces.with_internal_log import (
+    BootWithInternalLog)
+from contracts import ContractsMeta, contract
 
 __all__ = ['AgentInterface', 'UnsupportedSpec']
 
 
-class AgentInterface:
+class UnsupportedSpec(Exception):
+    ''' Thrown by agents if they do not support the spec. '''
+
+
+class PassiveAgentInterface(BootWithInternalLog):
+    __metaclass__ = ContractsMeta
+    
+    @abstractmethod
+    def process_observations(self, bd):
+        '''
+            Process new observations.
+            
+            :param bd: a numpy array with field ['observations']
+        '''
+ 
+    @abstractmethod
+    def init(self, boot_spec):
+        ''' 
+            Called when the observations and commands shape are available,
+            so that the agent can initialize its data structures.
+            
+            The agent might throw the exception UnsupportedSpec if the 
+            spec is not supported.
+            
+            :param boot_spec: An instance of the class BootSpec, which
+             describes the specifications of the sensorimotor cascades.
+                              
+        '''
+
+class ActiveAgentInterface(PassiveAgentInterface):
+    
+    @abstractmethod
+    @contract(returns='array')
+    def choose_commands(self):
+        ''' 
+            Chooses commands to be generated; must return a sequence 
+            of numbers or array. 
+        '''
+
+class ServoAgentInterface(ActiveAgentInterface):
+    
+    @abstractmethod
+    @contract(goal='array')
+    def set_goal_observations(self, goal):
+        pass
+
+class PredictorAgentInterface(PassiveAgentInterface):
+    
+    @abstractmethod
+    @contract(returns='array')
+    def predict_y(self, dt):
+        pass
+
+    @abstractmethod
+    @contract(returns='array')
+    def estimate_u(self):
+        """ Estimate current u """
+
+
+    
+
+class AgentInterface(PassiveAgentInterface):
     ''' 
         
     This is the interface that the agents must implement.
@@ -56,38 +119,6 @@ class AgentInterface:
 
     '''
 
-    __metaclass__ = ABCMeta
-
-    @abstractmethod
-    def init(self, boot_spec):
-        ''' 
-            Called when the observations and commands shape are available,
-            so that the agent can initialize its data structures.
-            
-            The agent might throw the exception UnsupportedSpec if the 
-            spec is not supported.
-            
-            :param boot_spec: An instance of the class BootSpec, which
-             describes the specifications of the sensorimotor cascades.
-                              
-        '''
-
-    @abstractmethod
-    def process_observations(self, observations):
-        '''
-            Process new observations.
-            
-            :param observations: a structure of type Observations
-        '''
-
-    @abstractmethod
-    @contract(returns='array')
-    def choose_commands(self):
-        ''' 
-            Chooses commands to be generated; must return a sequence 
-            of numbers or array. 
-        '''
-
     @contract(publisher=Publisher)
     def publish(self, publisher):
         ''' 
@@ -95,15 +126,16 @@ class AgentInterface:
             of the class PublisherInterface. 
         '''
         
+    @contract(returns=PredictorAgentInterface)
     def get_predictor(self):
         raise NotImplementedError()
 
+    @contract(returns=ServoAgentInterface)
     def get_servo(self):
         raise NotImplementedError()
     
-    
     def state_vars(self):
-        print('default state vars for %s' % type(self))
+        # print('default state vars for %s' % type(self))
         return self.__dict__.keys()
 
     def get_state(self):
@@ -114,11 +146,7 @@ class AgentInterface:
         ''' Load the given state (obtained by 'get_state'). '''
         return self.set_state_vars(state, self.state_vars())
 
-    def info(self, msg):
-        ''' Logs something. '''
-        if AgentInterface.logger is not None:
-            AgentInterface.logger.info(msg)
-
+    # TODO: remove 
     logger = None
 
     def __str__(self):
@@ -141,30 +169,4 @@ class AgentInterface:
                 else:
                     self.__dict__[v] = state[v]
         # self.info('State loaded: %s' % state_vars)
-
-
-class ServoAgentInterface(AgentInterface):
-    
-    @abstractmethod
-    @contract(goal='array')
-    def set_goal_observations(self, goal):
-        pass
-
-class PredictorAgentInterface(AgentInterface):
-    __metaclass__ = ABCMeta
-    
-    @abstractmethod
-    def predict_y(self, dt):
-        pass
-
-    @abstractmethod
-    def estimate_u(self):
-        """ Estimate current u """
-
-
-class UnsupportedSpec(Exception):
-    ''' Thrown by agents if they do not support the spec. '''
-
-
-
 

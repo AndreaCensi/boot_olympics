@@ -10,6 +10,9 @@ def task_predict(data_central, id_agent, id_robot, live_plugins=[]):
     from bootstrapping_olympics.extra.reprep import (boot_has_reprep,
                                                      reprep_error)
 
+    log_index = data_central.get_log_index()
+    boot_spec = log_index.get_robot_spec(id_robot)
+    
     if not boot_has_reprep:
         msg = 'Cannot do this task because Reprep not installed: %s'
         msg = msg % reprep_error
@@ -18,14 +21,16 @@ def task_predict(data_central, id_agent, id_robot, live_plugins=[]):
     agent, state = load_agent_state(data_central, id_agent, id_robot,
                                     reset_state=False,
                                     raise_if_no_state=True)
+    
 
     predictor = agent.get_predictor()
+    predictor.init(boot_spec)
+    
     if not isinstance(predictor, PredictorAgentInterface):
         msg = ('I expect predictor to be PredictorAgentInterface, got: %s'
                  % describe_type(predictor))
         raise Exception(msg)  # TODO: better exception
 
-    log_index = data_central.get_log_index()
     streams = log_index.get_streams_for_robot(id_robot)
     y_dot_stats = PredictionStats('y_dot', 'y_dot_pred')
     y_dot_sign_stats = PredictionStats('y_dot_sign', 'y_dot_pred_sign')

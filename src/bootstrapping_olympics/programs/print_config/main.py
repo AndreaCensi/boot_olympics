@@ -1,9 +1,8 @@
 from . import logger
-from ... import BootOlympicsConfig
 from ...utils import wrap_script_entry_point, natsorted
+from bootstrapping_olympics import get_boot_config
 from optparse import OptionParser
 import os
-from bootstrapping_olympics.configuration.master import get_boot_config
 
 usage = """
 

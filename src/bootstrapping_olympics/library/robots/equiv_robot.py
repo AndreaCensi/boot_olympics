@@ -1,12 +1,12 @@
-from . import contract, logger
-from bootstrapping_olympics import (BootSpec, RobotInterface,
-                                    BootOlympicsConfig, StreamSpec)
-from bootstrapping_olympics.utils import indent
+from bootstrapping_olympics import (BootSpec, RobotInterface, StreamSpec,
+    get_boot_config, logger)
 from bootstrapping_olympics.interfaces import get_observations_dtype
+from bootstrapping_olympics import RobotObservations
+from bootstrapping_olympics.utils import indent
 import numpy as np
-from bootstrapping_olympics.configuration.master import get_boot_config
 import warnings
-from bootstrapping_olympics.interfaces.robot import RobotObservations
+from numpy.testing.decorators import deprecated
+from contracts import contract
 
 __all__ = ['EquivRobot']
 
@@ -19,8 +19,7 @@ class EquivRobot(RobotInterface):
               cmd_nuisance='str|list(str|dict|code_spec)')
     def __init__(self, robot, obs_nuisance=[], cmd_nuisance=[]):
         self.inner_robot_name = robot 
-        # todo: use get_current_bo_config()
-        
+
         boot_config = get_boot_config()
         id_robot, self.robot = boot_config.robots.instance_smarter(robot)
 
@@ -105,6 +104,10 @@ class EquivRobot(RobotInterface):
     def new_episode(self):
         return self.robot.new_episode()
 
+    def get_inner_components(self):
+        return [self] + self.robot.get_inner_components()
+  
+    @deprecated
     def get_original_robot(self):
         """ Returns the robot that we are wrapping with this nuisance. """
         if isinstance(self.robot, EquivRobot):
@@ -137,7 +140,6 @@ class EquivRobot(RobotInterface):
             obs = obsr + obs  # XXX: check order is correct
             cmd = cmd + cmdr
         return obs, cmd
-            
             
     @contract(obs1='array')
     def convert_observations_array(self, obs1):

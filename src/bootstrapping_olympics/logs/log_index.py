@@ -9,7 +9,8 @@ import traceback
 __all__ = ['LogIndex']
 
 
-class LogIndex:
+class LogIndex(object):
+    
     def __init__(self):
         # id robot -> list of streams
         self.robots2streams = {}
@@ -20,14 +21,13 @@ class LogIndex:
 
     def reindex(self):
         for dirname in self.directories_indexed:
-            new_streams = \
-                index_directory_cached(dirname, ignore_cache=False)
+            new_streams = index_directory_cached(dirname, ignore_cache=False)
             self.file2streams.update(new_streams)
         self.robots2streams = index_robots(self.file2streams)
 
     def index(self, directory, ignore_cache=False):
-        new_streams = \
-            index_directory_cached(directory, ignore_cache=ignore_cache)
+        new_streams = index_directory_cached(directory,
+                                             ignore_cache=ignore_cache)
         self.file2streams.update(new_streams)
         self.directories_indexed.add(directory)
         self.robots2streams = index_robots(self.file2streams)
@@ -106,8 +106,6 @@ class LogIndex:
                     yield obs
 
                 break
-#             else:
-#                 logger.info('%r not found in %s' % (id_episode, eps))
         else:
             msg = 'Streams found:\n'
             for stream in self.get_streams_for_robot(id_robot):

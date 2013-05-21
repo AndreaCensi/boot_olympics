@@ -1,23 +1,21 @@
-from . import (check_valid_streamels, ValueFormats, streamel_dtype, logger,
-    contract, np)
-from ..utils import (assert_allequal_verbose, assert_allclose_verbose,
+from contracts import contract
+import numpy as np
+from bootstrapping_olympics.utils import (assert_allequal_verbose, assert_allclose_verbose,
     display_some, display_some_extended)
 from contracts import check, describe_type, describe_value
 from numbers import Number
-from bootstrapping_olympics.interfaces import BOOT_OLYMPICS_SENSEL_RESOLUTION
-
-
-#__all__ = ['BootInvalidValue', 'StreamSpec']
-
-
+from .base import check_valid_streamels, streamel_dtype, ValueFormats
+    
+from bootstrapping_olympics import logger
+from bootstrapping_olympics.interfaces.streamels.base import BOOT_OLYMPICS_SENSEL_RESOLUTION
+ 
 # TODO: check how it is used
 class BootInvalidValue(ValueError):
     pass
 
 
-class StreamSpec:
+class StreamSpec(object):
     """ 
-        Describes the interface of a Robot. 
     
         The simplest way to describe this is by using the ``from_yaml`` 
         function, which can take structures like these: :: 
@@ -41,7 +39,7 @@ class StreamSpec:
 
     @contract(id_stream='None|str', streamels='streamel_array',
               extra='None|dict', filtered='None|dict', desc='None|str')
-    def __init__(self, id_stream, streamels, extra,
+    def __init__(self, id_stream, streamels, extra={},
                  filtered=None, desc=None):
 
         self.id_stream = id_stream
@@ -55,6 +53,9 @@ class StreamSpec:
         self.upper = self.streamels['upper']
 
         check_valid_streamels(streamels)
+
+    def __repr__(self):
+        return 'StreamSpec(shape=%s)' % str(self.streamels.shape)
 
     def __eq__(self, other):
         return np.all(self.streamels == other.streamels)
@@ -102,7 +103,7 @@ class StreamSpec:
             if kind == ValueFormats.Continuous:
                 val = np.random.uniform(lower, upper)
             elif kind == ValueFormats.Discrete:
-                val = np.random.randint(lower, upper)
+                val = np.random.randint(lower, upper + 1)
             elif kind == ValueFormats.Invalid:
                 val = np.NaN
             else:
@@ -137,7 +138,7 @@ class StreamSpec:
         discrete = self.kind == ValueFormats.Discrete
 
         # First check all invalids are NaN
-        if not np.all(np.isnan(x[invalids])): # XXX: slow
+        if not np.all(np.isnan(x[invalids])):  # XXX: slow
             bail('Not all invalids are set to NaN.')
 
         # Check that all valid are not NaN
@@ -156,7 +157,7 @@ class StreamSpec:
                    display_some(d, not_discrete))
             bail(msg)
 
-        lv = self.lower[valid] # XXX: is this only 1D?
+        lv = self.lower[valid]  # XXX: is this only 1D?
         uv = self.upper[valid]
         out_of_range = np.logical_or(xv < lv, xv > uv)
         if np.any(out_of_range):
@@ -190,14 +191,14 @@ class StreamSpec:
                 if not x in s:
                     raise ValueError('Missing entry %r.' % x)
             shape = s.pop('shape')
-            check('list[>0](int,>0)', shape) # XXX: slow
-            format = s.pop('format') #@ReservedAssignment
-            range = s.pop('range') #@ReservedAssignment
+            check('list[>0](int,>0)', shape)  # XXX: slow
+            format = s.pop('format')  # @ReservedAssignment
+            range = s.pop('range')  # @ReservedAssignment
             extra = s.pop('extra', {})
             filtered = s.pop('filtered', None)
             default = s.pop('default', None)
 
-            names = s.pop('names', None) # TODO: do something useful with this
+            names = s.pop('names', None)  # TODO: do something useful with this
             if names:
                 extra['names'] = names
 
@@ -225,7 +226,7 @@ class StreamSpec:
         }
 
         if all_same_spec(self.streamels):
-            #print("OK, we can optimize for %s" % self.streamels)
+            # print("OK, we can optimize for %s" % self.streamels)
             # We can optimize the representation
             s = self.streamels.flat[0]
             data['format'] = s['kind'].item()
@@ -233,7 +234,7 @@ class StreamSpec:
             data['range'] = [s['lower'].item(), s['upper'].item()]
 
         else:
-            #print("Sorry, we can't optimize for %s" % self.streamels)
+            # print("Sorry, we can't optimize for %s" % self.streamels)
             if self.streamels.ndim == 1:
                 for i in range(self.streamels.size):
                     arange.append(get_streamel_range(self.streamels[i]))
@@ -271,8 +272,8 @@ class StreamSpec:
         # names TODO
         id_stream = '%s-%s' % (obs1.id_stream, obs2.id_stream)
         shape = list(joint.shape)
-        format = joint['kind'].tolist() #@ReservedAssignment
-        mrange = np.zeros(shape=joint.shape + (2,)) # XXX: use int?
+        format = joint['kind'].tolist()  # @ReservedAssignment
+        mrange = np.zeros(shape=joint.shape + (2,))  # XXX: use int?
         mrange[..., 0] = joint['lower']
         mrange[..., 1] = joint['upper']
         mrange = mrange.tolist()
@@ -281,7 +282,7 @@ class StreamSpec:
                         original=[obs1.to_yaml(), obs2.to_yaml()])
         desc = 'Join of %s and %s' % (obs1.id_stream, obs2.id_stream)
 
-        default = joint['default'].tolist() # XXX --- not tested
+        default = joint['default'].tolist()  # XXX --- not tested
         streamels = streamels_from_spec(shape=shape, format=format,
                                         range=mrange, default=default)
         return StreamSpec(id_stream=id_stream,
@@ -301,7 +302,7 @@ def all_same_spec(streamels):
     ''' Checks that all streamels have the same attributes. '''
     for s in ['upper', 'lower', 'kind', 'default']:
         if not only_one_value(streamels[s]):
-            #print('Cannot optimize because of %s' % s)
+            # print('Cannot optimize because of %s' % s)
             return False
     return True
 
@@ -312,7 +313,7 @@ def only_one_value(array):
     if len(un) == 1:
         return True
     else:
-        #print('Different values: %s' % un)
+        # print('Different values: %s' % un)
         return False
 
 
@@ -363,7 +364,7 @@ def get_streamel_range(streamel):
 
 @contract(shape='list[int]', format='list|str', range='list',
           returns='array')
-def streamels_from_spec(shape, format, range, default): #@ReservedAssignment
+def streamels_from_spec(shape, format, range, default):  # @ReservedAssignment
     streamels = np.zeros(shape=shape, dtype=streamel_dtype)
     kind = streamels['kind']
     lower = streamels['lower']
@@ -427,7 +428,7 @@ def streamels_from_spec(shape, format, range, default): #@ReservedAssignment
     if default is None:
         # Use half of the range
         half = (streamels['upper'] + streamels['lower']) / 2.0
-        streamels['default'][:] = half # XXX
+        streamels['default'][:] = half  # XXX
         # round down, discretize if discrete
         isdiscrete = kind == ValueFormats.Discrete
         rounded = np.floor(half)
@@ -435,7 +436,7 @@ def streamels_from_spec(shape, format, range, default): #@ReservedAssignment
     elif isinstance(default, Number):
         # 
         streamels['default'].flat[:] = default
-    elif isinstance(default, list): # explicit list
+    elif isinstance(default, list):  # explicit list
         defaults = np.array(default, dtype=BOOT_OLYMPICS_SENSEL_RESOLUTION)
         if defaults.shape != streamels.shape:
             msg = ('Expected defaults shape to be %s instead of %s.' % 

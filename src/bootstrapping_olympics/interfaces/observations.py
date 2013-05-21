@@ -17,6 +17,7 @@ from . import contract, np
                       are not logically in sequence with previous ones.
 '''
 from bootstrapping_olympics.interfaces import BOOT_OLYMPICS_SENSEL_RESOLUTION
+from bootstrapping_olympics.interfaces.boot_spec import BootSpec
 
 boot_observations_version = [1, 0]
 
@@ -47,6 +48,7 @@ boot_observations_dtype = [
 ]
 
 
+@contract(boot_spec=BootSpec)
 def get_observations_dtype(boot_spec):
     dtype = list(boot_observations_dtype)
     # ok, here we go. 
