@@ -39,8 +39,6 @@ Exceptions
     bootstrapping_olympics.NuisanceNotInvertible    
     bootstrapping_olympics.UnsupportedSpec            
   
-
-
            
 
 Streamels functions

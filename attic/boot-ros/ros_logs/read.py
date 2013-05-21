@@ -1,6 +1,6 @@
-from . import ROS2Python, logger, boot_spec_from_ros_message
+from . import ROS2Python, boot_spec_from_ros_message
 from bootstrapping_olympics.logs.hints import read_hints
-
+from bootstrapping_olympics import logger
     
 
 def bag_read(bag_file, topic, spec, substitute_id_episode, only_episodes=None):

@@ -1,7 +1,6 @@
-import zlib
 from bootstrapping_olympics.utils import yaml_load
-from . import contract
-from contracts.interface import describe_type
+from contracts import contract, describe_type
+import zlib
 
 
 @contract(index='int', returns='dict')

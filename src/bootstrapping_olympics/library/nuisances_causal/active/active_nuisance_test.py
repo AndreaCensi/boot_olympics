@@ -22,7 +22,7 @@ class ActiveNuisanceTest(unittest.TestCase):
         r0 = RandomRobot(BootSpec(obs_spec, cmd_spec), t0=0.0, y0=y0)
         robot = EquivRobotCausal(r0, nuisance)
 
-        print robot.get_spec()
+        
         # bit off    
         rest1 = np.array([0.5, 0.5, 0.0])
         # bit on
@@ -30,7 +30,7 @@ class ActiveNuisanceTest(unittest.TestCase):
     
         robot.set_commands(rest1, 'rest')
         obs1 = robot.get_observations()
-        print obs1.observations
+        
         robot.set_commands(rest2, 'rest')
         obs2 = robot.get_observations()
         

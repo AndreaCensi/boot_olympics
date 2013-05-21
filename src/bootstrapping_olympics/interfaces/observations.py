@@ -1,5 +1,9 @@
-from . import contract, np
+from .boot_spec import BootSpec
+from .streamels import BOOT_OLYMPICS_SENSEL_RESOLUTION
+from contracts import contract
+import numpy as np
 
+__all__ = ['boot_observations_dtype', 'get_observations_dtype', 'ObsKeeper']
 
 ''' 
     This is the structure passed to an agent's process_observations(). 
@@ -16,8 +20,6 @@ from . import contract, np
      episode_start: True if the episode changed, meaning that the observations
                       are not logically in sequence with previous ones.
 '''
-from bootstrapping_olympics.interfaces import BOOT_OLYMPICS_SENSEL_RESOLUTION
-from bootstrapping_olympics.interfaces.boot_spec import BootSpec
 
 boot_observations_version = [1, 0]
 
@@ -59,7 +61,7 @@ def get_observations_dtype(boot_spec):
     return np.dtype(dtype)
 
 
-class ObsKeeper:  # TODO: move away from here
+class ObsKeeper(object):  # TODO: move away from here
     ''' This is a simple utility class to fill in the redundant 
         fields in the Observations class. '''
 

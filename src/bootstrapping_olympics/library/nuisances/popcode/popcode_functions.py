@@ -1,4 +1,5 @@
-from . import contract, np
+from contracts import contract
+import numpy as np
 from bootstrapping_olympics.utils import assert_allclose
 
 __all__ = ['popcode', 'popcode_inv']

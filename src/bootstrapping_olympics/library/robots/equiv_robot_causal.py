@@ -1,20 +1,35 @@
-from bootstrapping_olympics import (RobotInterface, RobotObservations,
-    get_boot_config)
-from bootstrapping_olympics.interfaces.rep_nuisance_causal import (
-    RepresentationNuisanceCausal)
+from blocks import SimpleBlackBox
+from blocks.utils import bb_pump
+from bootstrapping_olympics import (RepresentationNuisanceCausal, RobotInterface,
+    RobotObservations, get_boot_config, BootWithInternalLog)
 from contracts import contract
-from blocks.utils import WithQueue, bb_pump
-from blocks.simple_black_box import SimpleBlackBox
-from bootstrapping_olympics.interfaces.with_internal_log import BootWithInternalLog
 import warnings
+import time
 
-class RobotAsBlackBox(BootWithInternalLog, WithQueue):
+def bb_get_block_poll_sleep(bb, timeout, sleep):
+    t0 = time.time()
+    while True:
+        t1 = time.time()
+        delta = t1 - t0
+        if timeout is not None and delta > timeout:
+            msg = 'timeout: %s > %s' % (delta, timeout)
+            raise SimpleBlackBox.NotReady(msg)
+        try:
+            value = bb.get(block=False)
+            return value
+        except SimpleBlackBox.NotReady:
+            pass
+        
+        time.sleep(sleep)
+    
+
+class RobotAsBlackBox(BootWithInternalLog):
     
     @contract(robot=RobotInterface)
-    def __init__(self, robot):
-        WithQueue.__init__(self)
+    def __init__(self, robot, sleep=0.1):
         self.log_add_child('robot', robot)
         
+        self.sleep = sleep
         self.robot = robot
         self.last_obs = None
 
@@ -25,32 +40,30 @@ class RobotAsBlackBox(BootWithInternalLog, WithQueue):
     def put(self, value):
         _, cmds = value
         self.robot.set_commands(*cmds)
-        self._pump()
-        
-    def _pump(self):
-        while True:
-            try:
-                obs = self.robot.get_observations()
-            except RobotObservations.NotReady:
-                break
-    
-            # Dont' give the same observations over and over again
-            if self.last_obs is not None:
-                if self.last_obs.timestamp == obs.timestamp:
-                    break
-                
-            self.last_obs = obs
-            
-            cmd = obs.commands
-            cmd_source = obs.commands_source
-            self.queue.append((obs.timestamp, ((cmd, cmd_source), obs)))
-    
-    def get(self, block=True, timeout=None):  # @UnusedVariable
-        self._pump()
-        if not self.queue:
+       
+    def get(self, block=True, timeout=None):
+        if block:
+            return bb_get_block_poll_sleep(self, timeout=timeout,
+                                           sleep=self.sleep)
+        else:
+            return self._get_notblock()
+              
+    def _get_notblock(self):
+        try:
+            obs = self.robot.get_observations()
+        except RobotObservations.NotReady:
             raise SimpleBlackBox.NotReady()
-        return self.queue.pop(0)
-    
+     
+        if self.last_obs is not None:
+            if self.last_obs.timestamp == obs.timestamp:
+                raise SimpleBlackBox.NotReady()
+                
+        self.last_obs = obs
+            
+        cmd = obs.commands
+        cmd_source = obs.commands_source
+        return (obs.timestamp, ((cmd, cmd_source), obs))
+
 
 class EquivRobotCausal(RobotInterface):
      
@@ -88,13 +101,13 @@ class EquivRobotCausal(RobotInterface):
         if self.last_obs is None:
             self.last_obs = self.robot.get_observations()
         t = self.last_obs.timestamp
-        self.info('EquivRobotCausal:set_commands()')
+        # self.info('EquivRobotCausal:set_commands()')
         self.last_commands = (commands, commands_source)
         self.pre.put((t, self.last_commands))
         bb_pump(self.pre, self.robotw)
           
     def get_observations(self):
-        self.info('EquivRobotCausal:get_observations()')
+        # self.info('EquivRobotCausal:get_observations()')
         bb_pump(self.robotw, self.post)
         try:
             _, obs1 = self.post.get(block=False)

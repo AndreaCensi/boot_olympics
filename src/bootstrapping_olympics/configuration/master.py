@@ -1,11 +1,7 @@
-from . import logger
-from .. import Constants, LivePlugin
-from ..interfaces import AgentInterface, RepresentationNuisance
+from bootstrapping_olympics import Constants, logger
 from conf_tools import ConfigMaster, check_generic_code_desc
-from contracts import contract
+
 import os
-from bootstrapping_olympics.interfaces.robot import PassiveRobotInterface
-from bootstrapping_olympics.interfaces.rep_nuisance_causal import RepresentationNuisanceCausal
 
 
 class BootConfigMaster(ConfigMaster):
@@ -16,6 +12,11 @@ class BootConfigMaster(ConfigMaster):
     def __init__(self):
         ConfigMaster.__init__(self, 'BootOlympics')
 
+        from bootstrapping_olympics import PassiveRobotInterface
+        from bootstrapping_olympics import RepresentationNuisanceCausal
+        from bootstrapping_olympics import RepresentationNuisance
+        from bootstrapping_olympics import AgentInterface
+        from bootstrapping_olympics import LivePlugin
  
         self.robots = self.add_class_generic('robots', '*.robots.yaml', PassiveRobotInterface)
         self.agents = self.add_class_generic('agents', '*.agents.yaml', AgentInterface)
@@ -51,29 +52,13 @@ class BootConfigMaster(ConfigMaster):
         return resource_filename("bootstrapping_olympics", "configs")
 
 
-    singleton = None
+get_boot_config = BootConfigMaster.get_singleton
 
 
 
 def check_valid_videos_config(spec):
     check_generic_code_desc(spec, 'video')
  
-
-
-@contract(returns=BootConfigMaster)
-def get_boot_config():
-    if BootConfigMaster.singleton is None:
-        BootConfigMaster.singleton = BootConfigMaster()
-    return BootConfigMaster.singleton 
-
-
-@contract(c=BootConfigMaster)
-def set_boot_config(c):
-    BootConfigMaster.singleton = c  
-
-
-BootOlympicsConfig = get_boot_config()
-
 
 
 

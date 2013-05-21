@@ -1,4 +1,5 @@
-from . import StreamSpec, contract
+from .streamels import StreamSpec
+from contracts import contract
 from abc import abstractmethod, ABCMeta
 
 __all__ = ['RepresentationNuisance', 'NuisanceNotInvertible']

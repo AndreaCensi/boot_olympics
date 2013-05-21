@@ -1,9 +1,13 @@
-from . import contract, np
+from contracts import contract
+import numpy as np
 
 BLOCK_SIZE = 8
 PAD_CHAR = '?'
 NBITS_IN_BYTE = 8
 
+
+__all__ = ['bits2string', 'string2bits', 'bits2bytes', 'bytes2bits', 'bits2value',
+           'value2bits', 'nbytes_to_encrypt', 'nbytes_to_hold', 'nbytes_to_encrypt', 'value2bits']
 
 def nbytes_to_hold(nbits):
     ''' 
@@ -39,7 +43,6 @@ def bits2value(b):
     bit_values = 2 ** np.array(range(len(b)))
     return int(np.sum(b * bit_values))
 
-
 @contract(s='seq[N](int,>=0,<256)', returns='seq[8*N](0|1)')
 def bytes2bits(s):
     ''' Returns the bits in a string '''
@@ -64,7 +67,6 @@ def bits2bytes(bits):
         bi = bits[i * 8:(i + 1) * 8]
         res.append(bits2value(bi))
     return np.array(res)
-
 
 @contract(s='str', returns='seq(0|1)')
 def string2bits(s):

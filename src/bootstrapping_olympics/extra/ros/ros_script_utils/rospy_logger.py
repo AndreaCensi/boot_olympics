@@ -1,5 +1,5 @@
 try:
-    from .. import rospy
+    import rospy
 except:  # allow to run nose even if ros is not installed
     pass
 

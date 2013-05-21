@@ -1,6 +1,7 @@
-from . import check_streamels_1D, np, contract
 from bootstrapping_olympics import (UnsupportedSpec, RepresentationNuisance,
-    NuisanceNotInvertible)
+    NuisanceNotInvertible, check_streamels_1D)
+from contracts import contract
+import numpy as np
 
 __all__ = ['Select']
 

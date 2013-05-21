@@ -2,11 +2,13 @@ from bootstrapping_olympics.utils import indent, show_differences
 from contracts import new_contract, contract
 import numpy as np
 
-BOOT_OLYMPICS_SENSEL_RESOLUTION = 'float32'
 
 
 __all__ = ['ValueFormats', 'streamel_dtype',
-           'streamel_array', 'check_valid_streamels']
+           'streamel_array', 'check_valid_streamels', 'BOOT_OLYMPICS_SENSEL_RESOLUTION']
+
+BOOT_OLYMPICS_SENSEL_RESOLUTION = 'float32'
+
 
 class ValueFormats:
     Continuous = 'C'  # range is [lower, upper]

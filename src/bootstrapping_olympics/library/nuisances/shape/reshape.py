@@ -1,4 +1,6 @@
-from . import contract, UnsupportedSpec, RepresentationNuisance
+from bootstrapping_olympics import RepresentationNuisance, UnsupportedSpec
+from contracts import contract
+
 
 
 __all__ = ['Reshape']

@@ -4,7 +4,7 @@ procgraph_info = {
     'requires': ['bootstrapping_olympics']
 }
 
-
+from . import boot_log_reader
 from . import signal_utils 
 from . import apply_nuisance
 from . import resize

@@ -1,6 +1,5 @@
 ''' Some example applications of agents, robots, etc. '''
 from .. import logger, np, contract
-from ..utils import assign_all_to_module
 
 __all__ = ['agents', 'robots', 'nuisances', 'nuisances_causal', 'live_plugins']
 
@@ -11,6 +10,7 @@ from . import nuisances_causal
 from . import live_plugins
 
 # Useful for documentation purposes (but not used so far)
+from ..utils import assign_all_to_module
 assign_all_to_module(agents)
 assign_all_to_module(nuisances)
 assign_all_to_module(nuisances_causal)

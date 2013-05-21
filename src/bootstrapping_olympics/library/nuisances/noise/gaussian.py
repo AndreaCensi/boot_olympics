@@ -1,6 +1,7 @@
-from .. import contract, np
-from ..generic_scalar import GenericScalar
+from contracts  import contract
+import numpy as np 
 from bootstrapping_olympics import NuisanceNotInvertible
+from bootstrapping_olympics.library.nuisances import GenericScalar
 
 
 __all__ = ['Gaussian']

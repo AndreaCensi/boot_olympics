@@ -1,6 +1,7 @@
-from . import StreamSpec, logger, contract
-from ..utils import check_contained
-from contracts import describe_type, new_contract
+from . import StreamSpec
+from bootstrapping_olympics import logger
+from bootstrapping_olympics.utils import check_contained
+from contracts import describe_type, new_contract, contract
 from pprint import pformat
 
 

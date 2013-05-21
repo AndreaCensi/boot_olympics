@@ -43,6 +43,9 @@ def publish_agent_output(data_central, state, agent, progress, filename, rd=None
              (len(state.id_episodes), state.num_observations))
     report.text('learning_statistics', stats)
 
+#     try:
+#         agent.display(report)
+#     except:
     agent.publish(publisher)
 
     if rd is None:

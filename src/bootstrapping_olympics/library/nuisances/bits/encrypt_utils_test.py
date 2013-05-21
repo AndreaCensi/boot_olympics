@@ -1,5 +1,6 @@
-from . import bits_encrypt, bits_decrypt, np
-from bootstrapping_olympics.utils.numpy_backported import assert_allclose
+from . import bits_encrypt, bits_decrypt
+from bootstrapping_olympics.utils import assert_allclose
+import numpy as np
 
 
 def test_encryption():

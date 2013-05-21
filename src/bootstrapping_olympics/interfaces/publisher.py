@@ -1,4 +1,4 @@
-from . import contract
+from contracts import contract 
 from abc import ABCMeta, abstractmethod
 from contextlib import contextmanager
 
@@ -25,7 +25,7 @@ class Publisher:
     @abstractmethod
     @contract(name='str', value='array')
     def array_as_image(self, name, value,
-                       filter='posneg', filter_params={}, #@ReservedAssignment
+                       filter='posneg', filter_params={},  # @ReservedAssignment
                        caption=None):
         ''' 
             Publishes an array as a false-color image. 
@@ -61,7 +61,7 @@ class Publisher:
         '''
 
     # TODO: make this abstract   
-    def section(self, section_name, caption=None, cols=None): #@UnusedVariable
+    def section(self, section_name, caption=None, cols=None):  # @UnusedVariable
         return Section(self, section_name)
 
 

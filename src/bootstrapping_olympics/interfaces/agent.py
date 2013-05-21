@@ -1,10 +1,10 @@
+from .publisher import Publisher
+from .with_internal_log import BootWithInternalLog
 from abc import abstractmethod
-from bootstrapping_olympics.interfaces.publisher import Publisher
-from bootstrapping_olympics.interfaces.with_internal_log import (
-    BootWithInternalLog)
 from contracts import ContractsMeta, contract
 
-__all__ = ['AgentInterface', 'UnsupportedSpec']
+__all__ = ['AgentInterface', 'UnsupportedSpec', 'ServoAgentInterface',
+           'PredictorAgentInterface']
 
 
 class UnsupportedSpec(Exception):
@@ -119,11 +119,10 @@ class AgentInterface(PassiveAgentInterface):
 
     '''
 
-    @contract(publisher=Publisher)
-    def publish(self, publisher):
+    @contract(pub=Publisher)
+    def publish(self, pub):
         ''' 
-            Publish debug information. ``publisher`` is an instance 
-            of the class PublisherInterface. 
+            Publish debug information. 
         '''
         
     @contract(returns=PredictorAgentInterface)

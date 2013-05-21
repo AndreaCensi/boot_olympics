@@ -1,6 +1,7 @@
-from . import check_streamels_1D, check_streamels_continuous, np
 from bootstrapping_olympics import (NuisanceNotInvertible, streamel_dtype,
-     RepresentationNuisance, ValueFormats)
+    RepresentationNuisance, ValueFormats, check_streamels_1D,
+    check_streamels_continuous)
+import numpy as np
 
 __all__ = ['NormalizeMinMax']
 
@@ -34,7 +35,7 @@ class NormalizeMinMax(RepresentationNuisance):
         # this is the spread of the data        
         streamels2['lower'][n + 1] = 0
         # XXX: we should find a different bounded  
-        streamels2['upper'][n + 1] = (np.max(streamels['upper']) -
+        streamels2['upper'][n + 1] = (np.max(streamels['upper']) - 
                                       np.min(streamels['lower']))
 
         # Save this so we can enforce it later

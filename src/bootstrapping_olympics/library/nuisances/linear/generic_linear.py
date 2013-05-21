@@ -1,8 +1,10 @@
-from .. import (check_streamels_1D, check_streamels_continuous, contract, np,
-    find_polytope_bounds_after_linear, check_streamels_1D_size)
-from bootstrapping_olympics import (RepresentationNuisance,
-    ValueFormats, streamel_dtype, NuisanceNotInvertible)
-from bootstrapping_olympics.interfaces import BOOT_OLYMPICS_SENSEL_RESOLUTION
+from bootstrapping_olympics import (RepresentationNuisance, ValueFormats,
+    streamel_dtype, NuisanceNotInvertible, check_streamels_1D,
+    check_streamels_continuous, contract, np, check_streamels_1D_size,
+    BOOT_OLYMPICS_SENSEL_RESOLUTION)
+from bootstrapping_olympics.library.nuisances import (
+    find_polytope_bounds_after_linear)
+
 
 __all__ = ['GenericLinear']
 
@@ -28,7 +30,7 @@ class GenericLinear(RepresentationNuisance):
         self.A = None
 
     @contract(streamels='array', returns='array[MxN]')
-    def get_matrix(self, streamels): #@UnusedVariable
+    def get_matrix(self, streamels):  # @UnusedVariable
         ''' Returns the matrix representing the transformation. '''
         # TODO: warn not implemented
         return None
@@ -103,7 +105,7 @@ class GenericLinear(RepresentationNuisance):
         # TODO: check for numerical errors
         Ainv = np.linalg.inv(self.A)
 
-        #return GenericLinear(Ainv)
+        # return GenericLinear(Ainv)
         return GenericLinearInverse(Ainv, self.old_streamels)
 
     def __str__(self):
@@ -124,7 +126,7 @@ class GenericLinearInverse(GenericLinear):
         self.A = A
         self.old_streamels = old_streamels
 
-    def transform_streamels(self, streamels): #@UnusedVariable
+    def transform_streamels(self, streamels):  # @UnusedVariable
         # redefined
         streamels2 = self.old_streamels
         self.lower = streamels2['lower'].copy()

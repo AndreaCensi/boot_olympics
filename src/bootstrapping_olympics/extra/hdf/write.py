@@ -1,7 +1,10 @@
-from . import logger, np, tables, contract
-from bootstrapping_olympics import BootSpec
+
+from . import tables
+from bootstrapping_olympics import BootSpec, logger
 from bootstrapping_olympics.utils import (warn_good_identifier,
     warn_good_filename, copy_from, yaml_dump)
+from contracts import contract
+import numpy as np
 import os
 import warnings
 import zlib

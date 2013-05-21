@@ -1,4 +1,5 @@
-from . import contract, UnsupportedSpec, RepresentationNuisance
+from contracts import contract
+from bootstrapping_olympics import UnsupportedSpec, RepresentationNuisance
 
 __all__ = ['Flatten']
 

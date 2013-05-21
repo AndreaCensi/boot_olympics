@@ -1,7 +1,10 @@
-from . import load_extra, logger, np, tables
-from bootstrapping_olympics import BootSpec, EpisodeSummary, BootStream
+from . import load_extra, tables
+from bootstrapping_olympics import BootSpec, EpisodeSummary, BootStream, logger
 from bootstrapping_olympics.utils import yaml_load
+import numpy as np
 import os
+
+
 
 __all__ = ['hdf_list_streams', 'spec_from_group']
 
@@ -42,7 +45,7 @@ def hdf_list_streams(filename):
         f.close()
 
 
-#def spec_from_table(table):
+# def spec_from_table(table):
 #    ''' Loads the spec from the boot_stream table. '''
 #    
 #    spec = BootSpec.from_yaml(yaml_load(str(table.attrs['boot_spec'])))
@@ -65,7 +68,7 @@ def episode_summary(boot_stream, extra_table, id_episode):
     sel = boot_stream[:]['id_episode'] == id_episode
     stream = boot_stream[sel]
 
-    id_agent = stream[-1]['commands_source'] # XXX
+    id_agent = stream[-1]['commands_source']  # XXX
     id_world = stream[0]['id_world']
     length = stream[-1]['timestamp'] - stream[0]['timestamp']
     num_observations = len(stream)

@@ -1,6 +1,6 @@
-from .. import logger
-import time
+from bootstrapping_olympics import logger
 from contracts import contract
+import time
 
 __all__ = ['BootWithInternalLog']
 

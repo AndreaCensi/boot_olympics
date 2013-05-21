@@ -1,8 +1,5 @@
-''' A dummy agent that gives random commands. '''
-
-from bootstrapping_olympics import AgentInterface
-from bootstrapping_olympics.interfaces.agent import PredictorAgentInterface, \
-    ServoAgentInterface
+from bootstrapping_olympics import (PredictorAgentInterface, ServoAgentInterface,
+    AgentInterface)
 
 __all__ = ['RandomAgent', 'RandomAgentPredictor', 'RandomAgentServo']
 

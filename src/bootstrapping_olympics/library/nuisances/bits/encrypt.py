@@ -1,8 +1,10 @@
-from . import (bits_encrypt, bits_decrypt, contract, np, nbytes_to_encrypt,
-    NBITS_IN_BYTE)
-from .. import check_1d_bit_sequence
-from bootstrapping_olympics import (UnsupportedSpec, ValueFormats,
-    streamel_dtype, RepresentationNuisance)
+from . import bits_encrypt, bits_decrypt, nbytes_to_encrypt
+from .bits_utils import NBITS_IN_BYTE
+from bootstrapping_olympics import (UnsupportedSpec, ValueFormats, streamel_dtype,
+    RepresentationNuisance, check_1d_bit_sequence)
+from contracts import contract
+import numpy as np
+
 
 __all__ = ['Encrypt', 'Decrypt']
 
@@ -35,7 +37,7 @@ class Encrypt(RepresentationNuisance):
         return Decrypt(self.password, self.nbits)
 
     @contract(value='array[N](=0|=1)',
-              returns='array[X](=0|=1),X>=N,X<=N+64') # XXX
+              returns='array[X](=0|=1),X>=N,X<=N+64')  # XXX
     def transform_value(self, value):
         return bits_encrypt(value, self.password)
 
@@ -67,7 +69,7 @@ class Decrypt(RepresentationNuisance):
         return Encrypt(self.password)
 
     @contract(value='array[N](=0|=1)',
-              returns='array[X](=0|=1),X<=N,X>=N-64') # XXX
+              returns='array[X](=0|=1),X<=N,X>=N-64')  # XXX
     def transform_value(self, value):
         return bits_decrypt(value, self.password, self.ngoodbits)
 

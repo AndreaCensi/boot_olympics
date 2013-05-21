@@ -1,4 +1,4 @@
-from . import contract
+from contracts import contract
 try:
     from .. import BootstrappingObservations
 except:  # allow to run nose even if ros is not installed
@@ -44,7 +44,7 @@ def observations2ros(robot_spec, obs):
         'id_actuators': robot_spec.get_observations().get_id_stream(),
         'id_sensors': robot_spec.get_commands().get_id_stream(),
         'commands_spec': Cache.last_spec,
-        'type': 'sim' # XXX: do we need this at all?
+        'type': 'sim'  # XXX: do we need this at all?
         # XXX: what about the 'version' field?
     }
     return BootstrappingObservations(**fields)

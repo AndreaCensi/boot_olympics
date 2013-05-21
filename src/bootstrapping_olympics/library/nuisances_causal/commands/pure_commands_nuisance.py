@@ -15,7 +15,7 @@ class PureCommandsNuisance(RepresentationNuisanceCausal):
         
     @contract(spec=BootSpec, returns=BootSpec)
     def transform_spec(self, spec):
-        warnings.warn('Think this over')
+        warnings.warn('Think this over: do we need time intervals?')
         return spec    
     
     @contract(returns=SimpleBlackBox)
@@ -52,7 +52,8 @@ class PureCommandsNuisance(RepresentationNuisanceCausal):
                 self.pc = PureCommands(delta=delta, new_behavior=True)
                 self.last_out = None
                 self.log_add_child('pc', self.pc)
-                
+                self.pc.set_log_output(False)  # silence output
+
             def __repr__(self):
                 return 'PureCommandsPostFilter(%s)' % (self.delta)
                 
@@ -60,7 +61,7 @@ class PureCommandsNuisance(RepresentationNuisanceCausal):
             def put(self, value):
                 t, (cmds, obs) = value
                 if cmds is None:
-                    self.info('skipping if we do not have commands')
+                    # self.info('skipping if we do not have commands')
                     return
                 
                 cmd, source = cmds  # @UnusedVariable
@@ -68,16 +69,17 @@ class PureCommandsNuisance(RepresentationNuisanceCausal):
                 
                 last = self.pc.last()
                 if last is not None:
-                    self.info('Finally last = %s' % str(last))
+                    # self.info('Finally last = %s' % str(last))
                     self.last_out = (t, obs)
-                    self.queue.append(self.last_out)
+                    self.append(self.last_out)
                 else:
-                    self.info('No output generated from %s' % str(value))
-             
+                    # self.info('No output generated from %s' % str(value))
+                    pass
+                
                 # send the first anyway
                 if self.last_out is None:
                     self.last_out = (t, obs)
-                    self.queue.append(self.last_out)
+                    self.append(self.last_out)
                     
         return PostFilter(self.delta)
 

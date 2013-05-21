@@ -1,5 +1,6 @@
-from . import load_extra, logger, np, tables, spec_from_group
-from ... import get_observations_dtype
+import numpy as np
+from bootstrapping_olympics import logger, get_observations_dtype
+from . import load_extra, tables, spec_from_group
 
 
 __all__ = ['hdf_read']
@@ -8,7 +9,7 @@ __all__ = ['hdf_read']
 def hdf_read(filename, id_stream, boot_spec=None, read_extra=False,
               only_episodes=None):
     f = tables.openFile(filename)
-    #logger.info("opening file %r" % filename)
+    # logger.info("opening file %r" % filename)
     try:
         # TODO: check table exists
         stream_group = f.root.boot_olympics.streams._v_children[id_stream]
@@ -36,7 +37,7 @@ def hdf_read(filename, id_stream, boot_spec=None, read_extra=False,
             for x in dtype.names:
                 if x == 'extra':
                     continue
-                observations[x].flat = row[x].flat # FIXME Strange strange
+                observations[x].flat = row[x].flat  # FIXME Strange strange
 
             if read_extra:
                 observations['extra'] = load_extra(extra, i)

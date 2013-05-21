@@ -21,7 +21,7 @@ class ROSLogsFormat(LogsFormat):
                           stream.get_topic(),
                           stream.get_spec(),
                           only_episodes=only_episodes,
-                          substitute_id_episode=subst): # XXX
+                          substitute_id_episode=subst):  # XXX
             yield x
 
     def read_from_stream(self, filename, id_stream, read_extra=False,
@@ -34,7 +34,7 @@ class ROSLogsFormat(LogsFormat):
         subst = os.path.splitext(os.path.basename(filename))[0]
         for x in bag_read(filename, id_stream, spec=None,
                           only_episodes=only_episodes,
-                          substitute_id_episode=subst): # XXX
+                          substitute_id_episode=subst):  # XXX
             yield x
 
     @contextmanager

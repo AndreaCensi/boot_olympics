@@ -1,7 +1,9 @@
 # Taken from:
 # http://stackoverflow.com/questions/4119617/code-golf-gray-code
-from . import np, contract
+import numpy as np
+from contracts import contract
 
+__all__ = ['gray']
 
 @contract(n='int,>0')
 def _gray(n):

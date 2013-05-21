@@ -1,4 +1,5 @@
-from . import gray, np
+from . import gray
+import numpy as np
 from bootstrapping_olympics.utils import assert_allclose
 
 

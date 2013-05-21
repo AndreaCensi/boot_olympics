@@ -2,7 +2,8 @@
 """ 
     A bunch of diffeomorphisms of the real line.
 """
-from . import contract, np
+import numpy as np
+from contracts import contract
 from .. import GenericScalar
 
 
@@ -11,8 +12,8 @@ def power(x, alpha=2.0):
     return np.sign(x) * np.power(np.abs(x), alpha)
 
 #
-#@contract(x='array', alpha='>0')
-#def powerinv(x, alpha=2):
+# @contract(x='array', alpha='>0')
+# def powerinv(x, alpha=2):
 #    return power(x, 1.0 / alpha)
 
 
@@ -25,10 +26,10 @@ def to01(f):
     return wrap
     
 power01 = to01(power)
-#power01inv = to01(powerinv)
+# power01inv = to01(powerinv)
 
 #
-#def nlf1(x):
+# def nlf1(x):
 #    return np.sin(np.pi * x / 2)
 
 

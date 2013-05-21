@@ -1,4 +1,5 @@
-from . import GenericLinear, np
+from .generic_linear import GenericLinear
+import numpy as np 
 
 __all__ = ['NormalizeMean']
 

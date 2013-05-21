@@ -1,15 +1,11 @@
 ''' Functions for dealing with HDF logs. '''
 
-from .. import np, contract, getLogger
-
-logger = getLogger(__name__)
-
-
 try:
     import tables
 except ImportError as e:
     boot_has_hdf = False
     hdf_error = e
+    from bootstrapping_olympics import logger
     logger.warning('PyTables/HDF support not available (%s).' % e)
 else:
     boot_has_hdf = True

@@ -1,5 +1,4 @@
 ''' Minimal examples of representation nuisances. '''
-from .. import logger, np, contract
 from .commons import *
 from .generic_scalar import *
 from .identity import *

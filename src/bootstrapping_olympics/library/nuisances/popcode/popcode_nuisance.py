@@ -1,8 +1,9 @@
-from . import popcode, popcode_inv
-from .. import (check_streamels_1D, check_streamels_continuous, np,
-    check_streamels_2D, check_streamels_range)
+from .popcode_functions import popcode, popcode_inv
 from bootstrapping_olympics import (RepresentationNuisance, streamel_dtype,
-    ValueFormats, UnsupportedSpec)
+    ValueFormats, UnsupportedSpec, check_streamels_1D, check_streamels_continuous,
+    check_streamels_2D, check_streamels_range)
+import numpy as np
+
 
 __all__ = ['PopCode', 'PopCodeInv']
 
@@ -51,7 +52,7 @@ class PopCodeInv(RepresentationNuisance):
     """ Inverse of PopCode """
 
     def inverse(self):
-        return PopCode() # XXX: cannot pass resolution
+        return PopCode()  # XXX: cannot pass resolution
 
     def transform_streamels(self, streamels):
         check_streamels_2D(streamels)

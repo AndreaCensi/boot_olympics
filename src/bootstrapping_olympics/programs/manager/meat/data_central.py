@@ -1,9 +1,10 @@
 from . import DirectoryStructure
-from bootstrapping_olympics import (BootOlympicsConfig, LearningStateDB,
+from bootstrapping_olympics import (LearningStateDB,
     LogIndex)
 import os
 from conf_tools.utils.friendly_paths import friendly_path
 from . import logger
+from bootstrapping_olympics.configuration.master import get_boot_config
 
 class DataCentral:
     def __init__(self, boot_root=None):
@@ -19,7 +20,7 @@ class DataCentral:
 
     def get_bo_config(self):
         if self.bo_config is None:
-            self.bo_config = BootOlympicsConfig
+            self.bo_config = get_boot_config()
             
             dirs = self.dir_structure.get_config_directories()
             for dirname in dirs:

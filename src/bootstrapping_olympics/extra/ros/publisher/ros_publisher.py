@@ -1,14 +1,14 @@
-from reprep.constants import MIME_PNG
+
+from bootstrapping_olympics import Publisher
+from contextlib import contextmanager
+from contracts import contract
+from reprep import MIME_PNG, scale, posneg, Report
+import numpy as np
 try:
     from .. import (rospy, ROSImage, Float32MultiArray, MultiArrayLayout,
     MultiArrayDimension)
 except:  # allow to run nose even if ros is not installed
     pass
-from bootstrapping_olympics import Publisher
-from contextlib import contextmanager
-from contracts import contract
-from reprep import scale, posneg, Report
-import numpy as np
 
 
 class ROSPublisher(Publisher):

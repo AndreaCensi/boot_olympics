@@ -36,7 +36,7 @@ from .constants import *
 from .interfaces import *
 from .agent_states import *
 from .logs import *
-from .configuration import BootOlympicsConfig, get_boot_config, set_boot_config
+from .configuration import *
 
 
 # Try to load extra components (ROS, HDF, etc.)

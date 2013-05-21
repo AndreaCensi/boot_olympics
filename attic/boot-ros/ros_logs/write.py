@@ -1,5 +1,6 @@
-from . import contract, logger, observations2ros
-from bootstrapping_olympics import BootSpec
+from . import observations2ros
+from bootstrapping_olympics import BootSpec, logger
+from contracts import contract
 import os
 
 
@@ -8,7 +9,7 @@ class BagLogWriter():
     # TODO XXX extra not written
 
     def __init__(self, filename, id_stream, boot_spec):
-        from ros import rosbag #@UnresolvedImport
+        from ros import rosbag  # @UnresolvedImport
         assert isinstance(boot_spec, BootSpec)
         self.filename = filename
         # XXX: check that we are not given the same filename
@@ -21,8 +22,8 @@ class BagLogWriter():
         self.num = 0
 
     @contract(observations='array')
-    def push_observations(self, observations, extra={}): #@UnusedVariable TODO FIXME extra not written
-        from rospy import rostime #@UnresolvedImport
+    def push_observations(self, observations, extra={}):  # @UnusedVariable TODO FIXME extra not written
+        from rospy import rostime  # @UnresolvedImport
         msg = observations2ros(self.boot_spec, observations)
         t = rostime.Time.from_sec(observations['timestamp'])
         self.bag.write(self.topic, msg, t)

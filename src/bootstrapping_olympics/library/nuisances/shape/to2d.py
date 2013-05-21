@@ -1,5 +1,5 @@
-from . import Flatten, RepresentationNuisance
-from .. import check_streamels_1D
+from . import Flatten
+from bootstrapping_olympics import check_streamels_1D, RepresentationNuisance
 
 
 __all__ = ['To2D']

@@ -1,4 +1,4 @@
-from .. import  np, contract, getLogger
+from .. import np, contract, getLogger
 
 
 from .meat import *

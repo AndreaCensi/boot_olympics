@@ -1,8 +1,9 @@
 from abc import ABCMeta, abstractmethod
-# from collections import namedtuple
+
+__all__ = ['LivePlugin']
 
 
-class LivePlugin:
+class LivePlugin(object):
     __metaclass__ = ABCMeta
 
     """ 
@@ -10,13 +11,7 @@ class LivePlugin:
         with the agent. Mostly used for visualization or 
         informal statistics.
     """
-
-#     InitData = namedtuple('InitData',
-#                           ['data_central',
-#                            'id_agent',
-#                            'id_robot'
-#                            ])
-
+ 
     @abstractmethod
     def init(self, init_data):
         """

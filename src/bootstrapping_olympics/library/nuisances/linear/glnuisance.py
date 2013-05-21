@@ -1,5 +1,6 @@
-from . import GenericLinear
-from .. import contract, np
+from .generic_linear import GenericLinear
+from  contracts import contract
+import numpy as np 
 
 __all__ = ['GLNuisance']
 

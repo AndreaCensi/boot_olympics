@@ -11,6 +11,11 @@ class WithQueue(SimpleBlackBox):
             raise SimpleBlackBox.NotReady()
         return self.queue.pop(0)
     
+    def append(self, value):
+        self.queue.append(value)
+        if len(self.queue) > 100:
+            print('%s: Warning, too much growth? %s' % (type(self), len(self.queue)))
+    
 class Identity(WithQueue):
     def put(self, x):
         self.queue.append(x)

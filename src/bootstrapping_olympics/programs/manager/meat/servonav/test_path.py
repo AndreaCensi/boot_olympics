@@ -1,9 +1,9 @@
-from bootstrapping_olympics.configuration.master import BootOlympicsConfig
+from bootstrapping_olympics import get_boot_config
 from bootstrapping_olympics.programs.manager.meat.servonav.find_path import (
     get_grid)
+from bootstrapping_olympics.utils import yaml_dump
 from geometry import SE2_from_SE3
 from pprint import pprint
-from bootstrapping_olympics.utils import yaml_dump
 
 
 def main():
@@ -16,16 +16,16 @@ def main():
     filename = 'test.png'
     resolution = 0.5
 
-    config = BootOlympicsConfig
+    config = get_boot_config()
     vconfig = VehiclesConfig
     cd1 = '/Users/andrea/scm/boot11_env/src/vehicles/src/vehicles/configs'
     cd2 = '/Users/andrea/scm/boot11_env/src/bvapps/bo_app1/config'
     config.load(cd1)
     config.load(cd2)
-    vconfig.load() # Default
+    vconfig.load()  # Default
     vconfig.load(cd2)
 
-    robot = config.robots.instance(id_robot) #@UndefinedVariable
+    robot = config.robots.instance(id_robot)  # @UndefinedVariable
     robot.new_episode()
 
     locations = get_grid(robot=robot, debug=True,

@@ -1,4 +1,4 @@
-from . import np
+import numpy as np
 from bootstrapping_olympics import ObsKeeper, BootInvalidValue
 
 
@@ -31,7 +31,7 @@ class ROS2Python():
 
     def convert(self, ros_obs, filter_doubles=True):
         ''' Returns None if the same message is repeated. '''
-        current_data_description = ('[%s#%s at %s]' %
+        current_data_description = ('[%s#%s at %s]' % 
                     (ros_obs.id_episode, ros_obs.counter, ros_obs.timestamp))
 
         self.debug('Considering %s' % current_data_description)
@@ -55,7 +55,7 @@ class ROS2Python():
         except BootInvalidValue as e:
             self.debug('Found invalid values: %s' % e)
             if self.tolerant:
-                self.debug('%s: Skipping invalid data.' %
+                self.debug('%s: Skipping invalid data.' % 
                          current_data_description)
             else:
                 self.debug('Raising error because not tolerating.')

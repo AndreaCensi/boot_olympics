@@ -1,9 +1,10 @@
-from . import contract, RepresentationNuisance
-from .. import check_streamels_2D, check_streamels_continuous
-from bootstrapping_olympics.interfaces import (NuisanceNotInvertible,
-    make_streamels_2D_float)
+from bootstrapping_olympics import (NuisanceNotInvertible,
+    make_streamels_2D_float, RepresentationNuisance, check_streamels_2D,
+    check_streamels_continuous)
+from contracts import contract
 import numpy as np
 import warnings
+
 
 __all__ = ['Resample']
 

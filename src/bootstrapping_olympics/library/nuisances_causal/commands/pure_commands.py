@@ -1,6 +1,6 @@
+from bootstrapping_olympics import BootWithInternalLog
 from collections import namedtuple
 from contracts import contract, new_contract
-from bootstrapping_olympics.interfaces.with_internal_log import BootWithInternalLog
 
 
 PureCommandsLast = namedtuple('PureCommandsLast',
@@ -40,21 +40,28 @@ class PureCommands(BootWithInternalLog):
 
     def update(self, time, commands, y):
         if self.cmd is None:
-            self.info('Starting tracking command %r' % commands)
+            # self.info('Starting tracking command %r' % commands)
             self.cmd = commands
         else:
             if cmd2key(self.cmd) != cmd2key(commands):
-                self.info('Switching from %r to %r' % (self.cmd, commands))
+                # self.info('Switching from %r to %r' % (self.cmd, commands))
                 self.q = []
                 self.cmd = commands
 
+        if self.q:
+            tlast, _ = self.q[-1]
+            if tlast == time:
+                msg = 'Repeated entry with same time %r.' % tlast
+                msg += ' Ignoring.'
+                self.warn(msg)
+                return
         self.q.append((time, y))
 
         # print('Time: %s' % [x[0] for x in self.q])
-        t0, _ = self.q[0]
-        t1, _ = self.q[-1]
-        self.info('Now: %d elements, len= %.3f (t0: %.3f t1: %.3f) delta= %s' % 
-         (len(self.q), t1 - t0, t0, t1, self.delta))
+        # t0, _ = self.q[0]
+        # t1, _ = self.q[-1]
+        # self.info('Now: %d elements, len= %.3f (t0: %.3f t1: %.3f) delta= %s' % 
+        # (len(self.q), t1 - t0, t0, t1, self.delta))
 
     @contract(returns='None|PureCommandsLast')
     def last(self):
@@ -70,7 +77,7 @@ class PureCommands(BootWithInternalLog):
         
         eps = 0.00001
         if length < self.delta - eps:
-            self.info('length = %.3f < %.3f, return None' % (length, self.delta))
+            # self.info('length = %.3f < %.3f, return None' % (length, self.delta))
             return None
 
         commands = self.cmd

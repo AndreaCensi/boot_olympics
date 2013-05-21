@@ -1,9 +1,11 @@
-from contracts.metaclass import ContractsMeta
-from bootstrapping_olympics.interfaces.boot_spec import BootSpec
-from contracts import contract
-from blocks import SimpleBlackBox
+from .boot_spec import BootSpec
 from abc import abstractmethod
+from blocks import SimpleBlackBox
+from contracts import ContractsMeta, contract
     
+__all__ = ['RepresentationNuisanceCausal']
+
+
 class RepresentationNuisanceCausal(object):
     ''' 
 

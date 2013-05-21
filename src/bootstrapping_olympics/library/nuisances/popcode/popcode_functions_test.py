@@ -1,4 +1,4 @@
-from . import np
+import numpy as np
 from .popcode_functions import popcode, popcode_inv
 from bootstrapping_olympics.utils import assert_allclose
 
@@ -35,9 +35,9 @@ def test_popcode():
     for resolution, a, b in examples:
         a = np.array([a]).astype('float32')
         b2 = popcode(a, resolution)
-        #print(' a = %s' % a)
-        #print(' b = %s' % b)
-        #print('b2 = %s' % b2)
+        # print(' a = %s' % a)
+        # print(' b = %s' % b)
+        # print('b2 = %s' % b2)
         assert_allclose(b2[0], b)
 
 

@@ -1,8 +1,7 @@
-from . import contract, BootSpec
+from .boot_spec import BootSpec
+from .with_internal_log import BootWithInternalLog
 from abc import abstractmethod
-from contracts import new_contract
-from contracts.metaclass import ContractsMeta
-from bootstrapping_olympics.interfaces.with_internal_log import BootWithInternalLog
+from contracts import ContractsMeta, new_contract, contract
 
 __all__ = ['EpisodeDesc', 'RobotObservations', 'RobotInterface',
            'PassiveRobotInterface']
@@ -53,6 +52,9 @@ class RobotObservations(object):
         
     # Constant to return if the observations are not ready yet
     class NotReady(Exception):
+        pass
+
+    class Timeout(Exception):
         pass
     
     class Finished(Exception):
@@ -115,7 +117,7 @@ class RobotInterface(PassiveRobotInterface):
 
     @abstractmethod
     @contract(commands='array', commands_source='str', returns='None')
-    def set_commands(self, commands, commands_source):
+    def set_commands(self, commands, commands_source):  # @UnusedVariable
         ''' Send the given commands. '''
         assert False
 
