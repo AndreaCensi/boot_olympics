@@ -26,27 +26,15 @@ def publish_once(data_central, id_agent, id_robot,
 def publish_agent_output(data_central, state, agent, progress, filename, rd=None,
                          save_pickle=False):
     rid = ('%s-%s-%s' % (state.id_agent, state.id_robot, progress))
-    from bootstrapping_olympics.extra.reprep import (boot_has_reprep,
-                                                     reprep_error)
 
-    if not boot_has_reprep:
-        msg = 'Cannot do this task because Reprep not installed: %s'
-        msg = msg % reprep_error
-        raise Exception(msg)
-
-    from bootstrapping_olympics.extra.reprep import ReprepPublisher
-
-    publisher = ReprepPublisher(rid)
-    report = publisher.r
+    from reprep import Report
+    report = Report(rid)
 
     stats = ("Num episodes: %s\nNum observations: %s" % 
              (len(state.id_episodes), state.num_observations))
     report.text('learning_statistics', stats)
 
-#     try:
-#         agent.display(report)
-#     except:
-    agent.publish(publisher)
+    agent.publish(report)
 
     if rd is None:
         rd = os.path.join(os.path.dirname(filename), 'images')

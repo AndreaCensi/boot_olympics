@@ -1,12 +1,12 @@
 from . import DirectoryStructure
-from bootstrapping_olympics import (LearningStateDB,
-    LogIndex)
+from bootstrapping_olympics import LearningStateDB, LogIndex, get_boot_config, logger
+from conf_tools.utils import friendly_path
 import os
-from conf_tools.utils.friendly_paths import friendly_path
-from . import logger
-from bootstrapping_olympics.configuration.master import get_boot_config
 
-class DataCentral:
+__all__ = ['DataCentral']
+
+
+class DataCentral(object):
     def __init__(self, boot_root=None):
         # Important, it can be deserialized from somewhere else
         self.root = os.path.realpath(boot_root)
@@ -15,6 +15,9 @@ class DataCentral:
         self.log_index = None
         self.bo_config = None
 
+    def get_boot_root(self):
+        return self.root
+        
     def __repr__(self):
         return 'DataCentral(root=%r)' % self.root
 

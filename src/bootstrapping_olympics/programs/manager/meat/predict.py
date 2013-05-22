@@ -7,16 +7,16 @@ __all__ = ['task_predict', 'predict_report']
 
 
 def task_predict(data_central, id_agent, id_robot, live_plugins=[]):
-    from bootstrapping_olympics.extra.reprep import (boot_has_reprep,
-                                                     reprep_error)
+#     from bootstrapping_olympics.extra.reprep import (boot_has_reprep,
+#                                                      reprep_error)
 
     log_index = data_central.get_log_index()
     boot_spec = log_index.get_robot_spec(id_robot)
     
-    if not boot_has_reprep:
-        msg = 'Cannot do this task because Reprep not installed: %s'
-        msg = msg % reprep_error
-        raise Exception(msg)
+#     if not boot_has_reprep:
+#         msg = 'Cannot do this task because Reprep not installed: %s'
+#         msg = msg % reprep_error
+#         raise Exception(msg)
 
     agent, state = load_agent_state(data_central, id_agent, id_robot,
                                     reset_state=False,
@@ -62,7 +62,7 @@ def task_predict(data_central, id_agent, id_robot, live_plugins=[]):
 
 
 def predict_report(data_central, id_agent, id_robot, statistics, save_pickle=False):
-    from bootstrapping_olympics.extra.reprep import ReprepPublisher
+    from reprep import Report
 
     u_stats = statistics['u_stats'] 
     y_dot_stats = statistics['y_dot_stats'] 
@@ -70,12 +70,12 @@ def predict_report(data_central, id_agent, id_robot, statistics, save_pickle=Fal
     id_state = statistics['id_state']
     
     basename = 'pred-%s-%s' % (id_agent, id_robot)
-    from reprep import Report
+    
     r = Report(basename)
-    publisher = ReprepPublisher(report=r)
-    y_dot_stats.publish(publisher.section('y_dot'))
-    y_dot_sign_stats.publish(publisher.section('y_dot_sign'))
-    u_stats.publish(publisher.section('u'))
+    
+    y_dot_stats.publish(r.section('y_dot'))
+    y_dot_sign_stats.publish(r.section('y_dot_sign'))
+    u_stats.publish(r.section('u'))
     
     ds = data_central.get_dir_structure()
     report_dir = ds.get_report_res_dir(id_agent=id_agent, id_robot=id_robot,

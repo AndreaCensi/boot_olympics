@@ -6,7 +6,7 @@ from contextlib import contextmanager
 __all__ = ['Publisher']
 
 
-class Publisher:
+class Publisher(object):
     ''' 
         This is the interface that the agents can use to publish
         debug information. 
@@ -63,6 +63,11 @@ class Publisher:
     # TODO: make this abstract   
     def section(self, section_name, caption=None, cols=None):  # @UnusedVariable
         return Section(self, section_name)
+
+    @contract(nid='None|valid_id', caption='None|str', robust='bool')
+    def subsection(self, nid=None, caption=None, robust=False):
+        """ use as context manager """
+
 
 
 class Section():

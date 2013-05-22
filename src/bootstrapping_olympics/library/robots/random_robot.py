@@ -53,7 +53,7 @@ class RandomRobot(RobotInterface):
 
     @contract(commands='array')
     def set_commands(self, commands, commands_source):
-        print('set_commands %s at %s' % (commands, self.timestamp))
+        # print('set_commands %s at %s' % (commands, self.timestamp))
         self.commands = commands
         self.commands_source = commands_source
         self.timestamp += self.dt

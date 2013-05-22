@@ -26,21 +26,21 @@ class ReprepPublisher(Publisher):
             self._f = self.r.figure(cols=self.cols)
         return self._f
 
-    @contract(name='str', caption='None|str')
-    def array(self, name, value, caption=None): # XXX to change
+    @contract(name='str', value='array', caption='None|str')
+    def array(self, name, value, caption=None):  # XXX to change
         self.r.data(name, value, mime=MIME_PYTHON, caption=caption)
 
     @contract(name='str', value='array', filter='str', caption='None|str')
     def array_as_image(self, name, value,
-                       filter='posneg', #@ReservedAssignment # XXX: config
+                       filter='posneg',  # @ReservedAssignment # XXX: config
                        filter_params={},
-                       caption=None): #@ReservedAssignment
+                       caption=None):  # @ReservedAssignment
         # try image XXX check uint8
         # If this is RGB
         if len(value.shape) == 3 and value.shape[2] == 3:
             # zoom images smaller than 50
-#            if value.shape[0] < 50:
-#                value = zoom(value, 10)
+            #            if value.shape[0] < 50:
+            #                value = zoom(value, 10)
             self.fig().data_rgb(name, value, caption=caption)
         else:
             node = self.r.data(name, value, mime=MIME_PYTHON, caption=caption)

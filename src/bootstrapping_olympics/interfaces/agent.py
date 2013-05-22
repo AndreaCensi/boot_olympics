@@ -119,12 +119,13 @@ class AgentInterface(PassiveAgentInterface):
 
     '''
 
-    @contract(pub=Publisher)
+    # @contract(pub=Publisher)
+    # @contract(pub=Report)
     def publish(self, pub):
         ''' 
             Publish debug information. 
         '''
-        
+
     @contract(returns=PredictorAgentInterface)
     def get_predictor(self):
         raise NotImplementedError()
@@ -145,9 +146,6 @@ class AgentInterface(PassiveAgentInterface):
         ''' Load the given state (obtained by 'get_state'). '''
         return self.set_state_vars(state, self.state_vars())
 
-    # TODO: remove 
-    logger = None
-
     def __str__(self):
         return 'Agent(%s)' % self.__class__.__name__
 
@@ -155,7 +153,7 @@ class AgentInterface(PassiveAgentInterface):
         return dict((x, self.__dict__[x]) for x in state_vars)
 
     def set_state_vars(self, state, state_vars):
-        print('Setting state vars: %s' % state_vars)
+        # print('Setting state vars: %s' % state_vars)
         for v in state_vars:
             if v not in state:
                 self.info('Warning, no variable %r found in state vars,'

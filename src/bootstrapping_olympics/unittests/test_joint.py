@@ -6,7 +6,7 @@ import cPickle as pickle
 
 
 @for_all_pairs
-def check_agent_init(id_agent, agent, id_robot, robot): #@UnusedVariable
+def check_agent_init(id_agent, agent, id_robot, robot):  # @UnusedVariable
     spec = robot.get_spec()
     try:
         agent.init(spec)
@@ -55,9 +55,10 @@ def check_publish(id_agent, agent, id_robot, robot):
         return
 
     # Check first without observations
-    from bootstrapping_olympics.extra.reprep import ReprepPublisher
-
-    publisher = ReprepPublisher()
+    from reprep import Report
+    
+    # before
+    publisher = Report()
     agent.publish(publisher)
 
     for _ in run_simulation(id_robot=id_robot,
@@ -67,7 +68,8 @@ def check_publish(id_agent, agent, id_robot, robot):
                             max_observations=10, max_time=100):
         pass
 
-    publisher = ReprepPublisher()
+    # and after
+    publisher = Report()
     agent.publish(publisher)
 
 

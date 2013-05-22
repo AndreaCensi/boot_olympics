@@ -6,15 +6,3 @@
 
 # Logs in HDF
 from . import hdf
-
-# Do not load these automatically 
-# from . import procgraph  # some video scripts assume already loaded 
-    
-if False:
-    from . import ros
-else:
-    from bootstrapping_olympics import logger
-    logger.warning('Temporarely removed ROS')
-
-
-

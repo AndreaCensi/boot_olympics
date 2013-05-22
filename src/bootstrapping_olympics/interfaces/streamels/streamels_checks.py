@@ -38,6 +38,7 @@ def check_streamels_1D_size(streamels, size):
         raise UnsupportedSpec(msg)
 
 
+
 @contract(streamels='streamel_array')
 def check_streamels_continuous(streamels):
     from bootstrapping_olympics import UnsupportedSpec

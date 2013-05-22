@@ -6,7 +6,7 @@ import numpy as np
 import warnings
 
 
-__all__ = ['Resample']
+__all__ = ['Resample', 'scipy_image_resample']
 
 
 class Resample(RepresentationNuisance):
@@ -31,8 +31,8 @@ class Resample(RepresentationNuisance):
 
     @contract(value='array[HxW]')
     def transform_value(self, value):
-        assert value.shape == self.shape_from
-        from scipy.misc import imresize 
+        assert value.shape == self.shape_from        
+        from scipy.misc import imresize
         y = imresize(value, self.shape_to, mode='F')
         y = np.array(y, dtype='float32')      
         warnings.warn('Hardcoded float32')
@@ -42,5 +42,20 @@ class Resample(RepresentationNuisance):
 
     def __repr__(self):
         return 'Resample({})'.format(self.shape_to)
+
+@contract(image='array[HxWx3](float32)|array', shape='seq[2](int,>1), x', returns='shape(x)')
+def scipy_image_resample(image, shape):
+    if image.dtype == 'float32' and len(image.shape) == 3:
+        y1 = (image * 255).astype('uint8')
+        y1r = scipy_image_resample(y1, shape)
+        return y1r / 255.0
+    warnings.warn('extra depedency to remove')
+    from procgraph_pil import resize 
+    y = resize(image, width=shape[1], height=shape[0])
+#     from scipy.misc import imresize
+#     y = imresize(image, shape, mode='F')
+    return y
+
+    
 
 
