@@ -1,9 +1,11 @@
-from . import logger, np, run_simulation
-from bootstrapping_olympics import AgentInterface, LogsFormat
+from .m_run_simulation import run_simulation
+from bootstrapping_olympics import AgentInterface, LogsFormat, logger
 from bootstrapping_olympics.utils import (InAWhile, natsorted,
     unique_timestamp_string)
 import logging
-from contracts.interface import describe_value
+import numpy as np
+
+__all__ = ['simulate']
 
 
 def simulate(data_central, id_agent, id_robot,

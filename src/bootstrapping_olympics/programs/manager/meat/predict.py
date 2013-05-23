@@ -1,7 +1,10 @@
-from . import load_agent_state, np, save_report
+from .load_agent_state import load_agent_state
+from .report_utils import save_report
+from bootstrapping_olympics import PredictorAgentInterface
+from bootstrapping_olympics.utils import PredictionStats
 from contracts import describe_type
-from bootstrapping_olympics.utils.prediction_stats import PredictionStats
-from bootstrapping_olympics.interfaces.agent import PredictorAgentInterface
+import numpy as np
+
 
 __all__ = ['task_predict', 'predict_report']
 

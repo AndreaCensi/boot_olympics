@@ -3,6 +3,8 @@ from conf_tools import ConfigMaster, check_generic_code_desc
 
 import os
 
+__all__ = ['get_boot_config']
+
 
 class BootConfigMaster(ConfigMaster):
     """

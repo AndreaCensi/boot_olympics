@@ -1,9 +1,11 @@
-from . import BootStream, logger, LogsFormat, contract
-from ..utils import natsorted
-from ..utils import warn_long_time
+from .boot_stream import BootStream
+from .logs_format import LogsFormat
+from bootstrapping_olympics import logger
+from bootstrapping_olympics.utils import warn_long_time, natsorted
 from collections import defaultdict
 from conf_tools import locate_files
 from conf_tools.utils import friendly_path
+from contracts import contract
 import traceback
 
 __all__ = ['LogIndex']
@@ -77,12 +79,12 @@ class LogIndex(object):
                     episodes.extend(stream.get_id_episodes())
         return natsorted(episodes)
 
-    # TODO: implement has_extra
     def read_all_robot_streams(self, id_robot,
                                id_agent=None, read_extra=False):
-        ''' Reads all the data corresponding to a robot.
+        ''' 
+            Reads all the data corresponding to a robot.
             If agent is not None, it filters by agent.
-         '''
+        '''
         for stream in self.get_streams_for_robot(id_robot):
             if not id_agent:
                 do_this = True

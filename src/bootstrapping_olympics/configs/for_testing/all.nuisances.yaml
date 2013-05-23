@@ -39,7 +39,7 @@
   desc: Population code with resolution = 127
   code:
   - bootstrapping_olympics.library.nuisances.PopCode
-  - resolution: 32
+  - resolution: 128
 
 
 - id: flatten

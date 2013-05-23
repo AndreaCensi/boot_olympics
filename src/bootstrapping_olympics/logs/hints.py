@@ -3,6 +3,8 @@ import yaml
 from contracts import contract
 from bootstrapping_olympics import logger
 
+__all__ = ['read_hints']
+
 @contract(returns='dict')
 def read_hints(filename, hints_filename="boot_log.hints.yaml"):
     """

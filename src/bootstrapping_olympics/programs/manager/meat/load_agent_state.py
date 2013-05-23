@@ -1,7 +1,7 @@
-from . import logger
-from bootstrapping_olympics import LearningState
+from bootstrapping_olympics import LearningState, logger
 from bootstrapping_olympics.utils import UserError, x_not_found
 
+__all__ = ['load_agent_state', 'load_agent_state_core']
 
 def load_agent_state(data_central, id_agent, id_robot,
                      reset_state=False,

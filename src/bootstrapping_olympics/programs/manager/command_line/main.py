@@ -1,10 +1,11 @@
-from . import Storage, OptionParser, logger, np
+from . import Storage, OptionParser
 from ..meat import DataCentral, DirectoryStructure
-from bootstrapping_olympics import LogsFormat, BootOlympicsConstants
+from bootstrapping_olympics import LogsFormat, BootOlympicsConstants, logger
 from bootstrapping_olympics.utils import (wrap_script_entry_point, UserError,
     substitute)
 from conf_tools import ConfToolsException
 import contracts
+import numpy as np
 
 
 commands_list = "\n".join(['  %-15s  %s\n  %-15s  Usage: %s' % 

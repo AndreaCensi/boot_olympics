@@ -1,8 +1,8 @@
-from . import check_no_spurious, OptionParser, declare_command, logger
+from . import check_no_spurious, OptionParser, declare_command
+from bootstrapping_olympics import logger
 from bootstrapping_olympics.logs import LogsFormat
 from bootstrapping_olympics.utils import UserError
 import os
-
 
 @declare_command('compact', 'compact -o <directory>')
 def cmd_compact(data_central, argv):

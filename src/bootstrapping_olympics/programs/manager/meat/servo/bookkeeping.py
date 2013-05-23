@@ -1,5 +1,10 @@
-from . import  logger, contract, np
+from bootstrapping_olympics import logger
+from contracts import contract
+import numpy as np
 from bootstrapping_olympics.utils import InAWhile, natsorted
+
+
+__all__ = ['BookkeepingServo']
 
 
 class BookkeepingServo():
@@ -16,14 +21,14 @@ class BookkeepingServo():
             self.done_before = log_index.get_episodes_for_robot(id_robot,
                                                                 id_agent)
             self.num_episodes_done_before = len(self.done_before)
-            self.num_episodes_todo = (num_episodes -
+            self.num_episodes_todo = (num_episodes - 
                                       self.num_episodes_done_before)
-            logger.info('Preparing to do %d episodes (already done %d).' %
+            logger.info('Preparing to do %d episodes (already done %d).' % 
                         (self.num_episodes_todo,
                          self.num_episodes_done_before))
         else:
             self.num_episodes_todo = num_episodes
-            logger.info('Preparing to do %d episodes.' %
+            logger.info('Preparing to do %d episodes.' % 
                         self.num_episodes_todo)
         self.num_episodes_done = 0
         self.num_observations = 0
@@ -46,12 +51,12 @@ class BookkeepingServo():
         self.num_observations_episode += 1
         self.num_observations += 1
         if self.tracker.its_time():
-            msg = ('simulating %d/%d episodes obs %d (%5.1f fps)' %
+            msg = ('simulating %d/%d episodes obs %d (%5.1f fps)' % 
                    (self.num_episodes_done,
                     self.num_episodes_todo,
                     self.num_observations, self.tracker.fps()))
             if self.num_episodes_done > 0:
-                msg += (' (mean obs/ep: %.1f)' %
+                msg += (' (mean obs/ep: %.1f)' % 
                         (np.mean(self.observations_per_episode)))
             logger.info(msg)
 

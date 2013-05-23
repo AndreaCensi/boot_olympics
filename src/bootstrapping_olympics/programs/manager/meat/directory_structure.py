@@ -1,6 +1,5 @@
-from . import logger
 from bootstrapping_olympics import (BootOlympicsConstants, LogsFormat,
-    get_boot_config)
+    get_boot_config, logger)
 from bootstrapping_olympics.utils import (check_contained, expand_environment,
     substitute, mkdirs_thread_safe, warn_good_identifier, warn_good_filename,
     friendly_filesize, unique_timestamp_string)
@@ -9,7 +8,9 @@ from contracts import contract
 import os
 import tempfile
 
-class DirectoryStructure:
+__all__ = ['DirectoryStructure']
+
+class DirectoryStructure(object):
     ''' 
         This class knows how to organize the output of the various programs
         on the filesystem.

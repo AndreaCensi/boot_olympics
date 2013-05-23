@@ -1,5 +1,7 @@
-from . import DirectoryStructure
-from bootstrapping_olympics import LearningStateDB, LogIndex, get_boot_config, logger
+from .directory_structure import DirectoryStructure
+from bootstrapping_olympics import (LearningStateDB, LogIndex, get_boot_config,
+    logger)
+from bootstrapping_olympics.utils import expand_environment
 from conf_tools.utils import friendly_path
 import os
 
@@ -8,7 +10,9 @@ __all__ = ['DataCentral']
 
 class DataCentral(object):
     def __init__(self, boot_root=None):
+        boot_root = expand_environment(boot_root)
         # Important, it can be deserialized from somewhere else
+        self.boot_root = boot_root
         self.root = os.path.realpath(boot_root)
         self.dir_structure = DirectoryStructure(self.root)
         self.states_db = None

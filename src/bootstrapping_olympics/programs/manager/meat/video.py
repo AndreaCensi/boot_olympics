@@ -1,14 +1,18 @@
-from . import logger
+from bootstrapping_olympics import logger
 
-
+# TODO: move away
 # TODO: make sure that the log has extra robot_state
+
+__all__ = ['create_video']
+
+
 def create_video(data_central, id_robot, id_agent,
                  model='boot_log2movie',
-                 model_params={}, #{'plotter.zoom': 2},
+                 model_params={},  # {'plotter.zoom': 2},
                  suffix='',
                  id_episode=''):
 
-    logger.info('Creating video for robot: %r agent: %r episode %r' %
+    logger.info('Creating video for robot: %r agent: %r episode %r' % 
                 (id_robot, id_agent, id_episode))
 
     ds = data_central.get_dir_structure()
@@ -22,9 +26,9 @@ def create_video(data_central, id_robot, id_agent,
     logdir = ds.get_simulated_logs_dir()
 
     # TODO: check has_procgraph
-    import procgraph_vehicles #@UnusedImport
+    import procgraph_vehicles  # @UnusedImport
     from procgraph import pg
-    #logger.info('Writing to %r.' % basename)
+    # logger.info('Writing to %r.' % basename)
     config = dict(logdir=logdir,
                 id_robot=id_robot,
                 id_agent=id_agent,

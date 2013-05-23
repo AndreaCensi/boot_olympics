@@ -1,8 +1,9 @@
-from . import logger, contract
-from bootstrapping_olympics import RobotInterface, RobotObservations, ObsKeeper
+from bootstrapping_olympics import (RobotInterface, RobotObservations, ObsKeeper,
+    logger)
+from contracts import contract
 
 # FIXME: should be the same as run_simulation()
-
+__all__ = ['run_simulation_servo']
 
 @contract(id_robot='str', id_agent='str',
           robot=RobotInterface, max_observations='>=1',
@@ -41,18 +42,18 @@ def run_simulation_servo(id_robot, robot, id_agent, agent,
         yield obs, observations
 
         if observations['time_from_episode_start'] > max_time:
-            logger.debug('Episode ended at %s for time limit %s > %s ' %
+            logger.debug('Episode ended at %s for time limit %s > %s ' % 
                          (counter, observations['time_from_episode_start'],
                           max_time))
             break
 
-        if episode_end: # Fishy
+        if episode_end:  # Fishy
             logger.debug('Episode ended at %s due to obs.episode_end.'
                          % counter)
             break
 
         agent.process_observations(observations)
-        commands = agent.choose_commands() # repeated
+        commands = agent.choose_commands()  # repeated
 
         if check_valid_values:
             cmd_spec.check_valid_value(commands)

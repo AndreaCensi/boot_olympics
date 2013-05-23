@@ -1,13 +1,14 @@
-from . import load_agent_state, publish_agent_output, logger
-from .publish_output import publish_once as do_publish_once
-from bootstrapping_olympics import AgentInterface
-from bootstrapping_olympics.programs.manager.meat.log_learn_plugins import (
-    CompmakeProgress, PrintStatus)
+from .load_agent_state import load_agent_state
+from .log_learn_plugins import CompmakeProgress, PrintStatus
+from .publish_output import (publish_once as do_publish_once,
+    publish_agent_output)
+from bootstrapping_olympics import AgentInterface, logger
 from bootstrapping_olympics.utils import InAWhile
 from contracts import contract
 import logging
 import warnings
 
+__all__ = ['learn_log']
 
 @contract(episodes='None|list(str)')
 def learn_log(data_central, id_agent, id_robot,

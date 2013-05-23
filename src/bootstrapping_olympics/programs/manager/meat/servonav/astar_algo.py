@@ -1,5 +1,7 @@
-from . import np, contract
 from collections import namedtuple
+from contracts import contract
+import numpy as np
+
 
 
 NodeInfo = namedtuple('NodeInfo', 'parent cost_to_come min_cost_to_go')

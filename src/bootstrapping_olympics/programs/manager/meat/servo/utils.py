@@ -1,6 +1,7 @@
 from bootstrapping_olympics.library.robots.equiv_robot import EquivRobot
 from contracts import describe_type
 
+__all__ = ['get_vsim_from_robot']
 
 def get_vsim_from_robot(robot):
     """ Checks that the robot is a VehicleSimulation

@@ -1,5 +1,6 @@
-from . import BatchConfigMaster, logger
+from . import BatchConfigMaster
 from ..meat import DataCentral
+from bootstrapping_olympics import logger
 from bootstrapping_olympics.utils import (safe_makedirs, safe_symlink, UserError,
     expand_string)
 from conf_tools import import_name, ConfToolsException
@@ -10,7 +11,7 @@ import os
 
 def batch_process_manager(data_central, which_sets, command=None):
     try:
-        import compmake #@UnusedImport
+        import compmake  # @UnusedImport
     except:
         logger.error('Compmake not installed; multiprocessor '
                      'processes not available.')
@@ -26,8 +27,8 @@ def batch_process_manager(data_central, which_sets, command=None):
 
     sets_available = batch_config.sets.keys()
 
-    #logger.info('Available: %r' % sets_available)
-    #logger.info('Sets:      %r' % which_sets)
+    # logger.info('Available: %r' % sets_available)
+    # logger.info('Sets:      %r' % which_sets)
     which_sets_int = expand_string(which_sets, options=sets_available)
 
     if not which_sets_int:
@@ -35,7 +36,7 @@ def batch_process_manager(data_central, which_sets, command=None):
         msg += ' Available: %s' % sets_available
         raise UserError(msg)
 
-    #logger.info('Expanded:  %r' % which_sets)
+    # logger.info('Expanded:  %r' % which_sets)
 
     for x in which_sets_int:
         if not x in sets_available:
@@ -87,7 +88,7 @@ def batch_process_manager(data_central, which_sets, command=None):
         return 0
 
 
-def batch_set(data_central, id_set, spec): #@UnusedVariable
+def batch_set(data_central, id_set, spec):  # @UnusedVariable
     function_name = spec['code'][0]
     args = spec['code'][1]
     function = import_name(function_name)

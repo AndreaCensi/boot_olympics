@@ -1,4 +1,4 @@
-from . import logger
+from bootstrapping_olympics import logger
 from bootstrapping_olympics.utils import (isodate, safe_pickle_dump,
     warn_long_time_writing, warn_long_time_reading)
 from reprep.output import report_from_hdf
@@ -10,7 +10,7 @@ def save_report(data_central, report, filename, resources_dir=None,
                 check_hdf_written_correctly=True):
     """ filename.html """
     
-    report.text('report_date', isodate()) # TODO: add other stuff
+    report.text('report_date', isodate())  # TODO: add other stuff
     
     ds = data_central.get_dir_structure()
     

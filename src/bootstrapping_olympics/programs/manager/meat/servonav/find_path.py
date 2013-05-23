@@ -1,8 +1,10 @@
-from . import astar, node2children_grid, contract, np
+from . import astar, node2children_grid
 from contracts import describe_type
 from geometry import SE3, SE2, angle_from_SE2, SE2_from_SE3
 import itertools
 
+from contracts import contract
+import numpy as np
 
 @contract(resolution='float,>0')
 def get_grid(robot, vsim, resolution, debug=False):
@@ -11,7 +13,7 @@ def get_grid(robot, vsim, resolution, debug=False):
     # directly
     from vehicles import VehicleSimulation
     if not isinstance(vsim, VehicleSimulation):
-        msg = ('I really require a VehicleSimulation; obtained %s.' %
+        msg = ('I really require a VehicleSimulation; obtained %s.' % 
                describe_type(vsim))
         raise ValueError(msg)
 
@@ -54,14 +56,14 @@ def get_grid(robot, vsim, resolution, debug=False):
         center = translation_from_SE2(SE2_from_SE3(pose))
         collision = collides_with(primitives, center=center,
                                   radius=vehicle.radius * 2.5)
-        #print('center %s: %s' % (center, collision))
+        # print('center %s: %s' % (center, collision))
         return collision.collided
 
     def cell_free(node):
         loc = locations[grid[node]]
         if not 'collision' in loc:
             loc['collision'] = collision_at(loc['pose'])
-            #print('Checking %s: %s' % (node, loc['collision']))
+            # print('Checking %s: %s' % (node, loc['collision']))
 
         return not loc['collision']
 
@@ -100,7 +102,7 @@ def get_grid(robot, vsim, resolution, debug=False):
             cell = locations[k]['cell']
             if cell_free(cell):
                 found = True
-                #print('TRying %s (%s)' % (str(cell), goodness(cell)))
+                # print('TRying %s (%s)' % (str(cell), goodness(cell)))
                 yield cell
         if not found:
             raise Exception("No free space at all")
@@ -141,7 +143,7 @@ def get_grid(robot, vsim, resolution, debug=False):
     # compute observations
     print('Found path of length %s' % len(poses))
 
-    #poses = interpolate_sequence(poses, max_theta_diff_deg=30)
+    # poses = interpolate_sequence(poses, max_theta_diff_deg=30)
     # compute observations
     print('Upsampled at %s' % len(poses))
 
@@ -155,7 +157,7 @@ def get_grid(robot, vsim, resolution, debug=False):
     return locations
 
 
-#def get_random_path(find_path):
+# def get_random_path(find_path):
 #    ''' Find a path between two cells. 
 #            find_path(start, target)
 #    '''
@@ -203,7 +205,7 @@ def mean_observations(robot, n):
     """ Averages the robot's observations at the given place. """
     # XXX: only works for 1D?
     obss = []
-    for _ in range(n): # XXX: fixed threshold
+    for _ in range(n):  # XXX: fixed threshold
         obss.append(robot.get_observations().observations)
 
     mean = np.mean(obss, axis=0)

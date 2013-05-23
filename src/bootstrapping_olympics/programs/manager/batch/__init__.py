@@ -1,6 +1,5 @@
 ''' Utilities for creating parallel jobs using Compmake. '''
 
-from .. import np, logger, contract
 from .batch_config import *
 from .batch_manager import *
 
@@ -29,8 +28,8 @@ default_expl_videos = [
 
 # TODO: check not repeated
 
-default_servo_videos = ['mp4f2sr', 'mp4f2no'] # 'mp4z0sr', 
-default_servonav_videos = ['mp4f2sr', 'mp4f2no'] # 'mp4z0sr', 
+default_servo_videos = ['mp4f2sr', 'mp4f2no']  # 'mp4z0sr', 
+default_servonav_videos = ['mp4f2sr', 'mp4f2no']  # 'mp4z0sr', 
 
 
 from .batch_learn import *

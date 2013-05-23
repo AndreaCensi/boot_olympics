@@ -1,19 +1,23 @@
-from . import get_grid, logger, contract, np
+from . import get_grid
 from .. import load_agent_state
 from ..servo import BookkeepingServo, get_vsim_from_robot
-from bootstrapping_olympics import RobotInterface, ObsKeeper, LogsFormat
+from bootstrapping_olympics import RobotInterface, ObsKeeper, LogsFormat, logger
 from bootstrapping_olympics.utils import InAWhile, unique_timestamp_string
+from contracts import contract
+import numpy as np
 
+
+__all__ = ['task_servonav']
 
 @contract(interval_print='None|>=0')
 def task_servonav(data_central, id_agent, id_robot,
                max_episode_len,
                num_episodes,
                fail_if_not_working,
-               id_episodes=None, # if None, just use the ID given by the world
+               id_episodes=None,  # if None, just use the ID given by the world
                cumulative=False,
                interval_print=None,
-               interval_write=10, # write every 10 frames
+               interval_write=10,  # write every 10 frames
                num_episodes_with_robot_state=0,
                 resolution=1):
     ''' Returns the list of the episodes IDs simulated. '''
@@ -106,8 +110,8 @@ def servonav_episode(id_robot, robot,
                      max_episode_len, save_robot_state,
                      interval_write=1,
                      interval_print=5,
-                     resolution=0.5, # grid resolution
-                     delta_t_threshold=0.2, # when to switch
+                     resolution=0.5,  # grid resolution
+                     delta_t_threshold=0.2,  # when to switch
                      MIN_PATH_LENGTH=8,
                      MAX_TIME_FOR_SWITCH=20.0,
                      fail_if_not_working=False,
@@ -182,7 +186,7 @@ def servonav_episode(id_robot, robot,
         delta_th = np.abs(angle_from_SE2(delta))
 
         if stats_write.its_time():
-            msg = ('  deltaT: %.2fm  deltaTh: %.1fdeg' %
+            msg = ('  deltaT: %.2fm  deltaTh: %.1fdeg' % 
                      (delta_t, np.rad2deg(delta_th)))
             logger.debug(msg)
 
@@ -295,17 +299,17 @@ def run_simulation_servonav(id_robot, robot, id_agent, agent,
         now = 'step %s' % counter
 
         if counter >= max_observations:
-            logger.info('Finished at %s because %s >= %s' %
+            logger.info('Finished at %s because %s >= %s' % 
                         (now, counter, max_observations))
             break
 
         if observations['time_from_episode_start'] > max_time:
-            logger.info('Finished at %s because of max_time: %s > %s' %
+            logger.info('Finished at %s because of max_time: %s > %s' % 
                         (now, observations['time_from_episode_start'],
                          max_time))
             break
 
-        if episode_end: # Fishy
+        if episode_end:  # Fishy
             msg = 'Finished at %s because of robot driver.' % now
 
             if raise_error_on_collision:

@@ -1,8 +1,7 @@
-from . import logger
-from bootstrapping_olympics.logs import LogsFormat
+from bootstrapping_olympics import LogsFormat, logger
+from bootstrapping_olympics.library.robots import EquivRobot
 from bootstrapping_olympics.utils import UserError
 from contracts import describe_type
-from bootstrapping_olympics.library.robots import EquivRobot
 import warnings
 
 __all__ = ['task_predict', 'predict_report']

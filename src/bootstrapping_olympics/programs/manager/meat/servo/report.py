@@ -1,5 +1,8 @@
-from . import np
+import numpy as np
 from bootstrapping_olympics.programs.manager.meat.report_utils import save_report
+
+
+__all__ = ['servo_stats_report']
 
 
 def servo_stats_report(data_central, id_agent, id_robot, summaries,
@@ -25,7 +28,7 @@ def servo_stats_report(data_central, id_agent, id_robot, summaries,
     for s in summaries:
         dist_xy = s['dist_xy']
         dist_th = s['dist_th']
-        #converged = (dist_xy[0] > dist_xy[-1]) and (dist_th[0] > dist_th[-1])
+        # converged = (dist_xy[0] > dist_xy[-1]) and (dist_th[0] > dist_th[-1])
 
         converged = ((dist_xy[-1] < dist_xy_converged) and
                      (dist_th[-1] < dist_th_converged))

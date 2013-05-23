@@ -1,9 +1,12 @@
 from . import BookkeepingServo, run_simulation_servo
-from .. import load_agent_state, logger, contract, np
-from bootstrapping_olympics import LogsFormat, BootOlympicsConstants
+from .. import load_agent_state
+from bootstrapping_olympics import LogsFormat, BootOlympicsConstants, logger
 from bootstrapping_olympics.utils import unique_timestamp_string
+from contracts import contract
 from geometry import translation_from_SE2, angle_from_SE2, SE2_from_SE3
+import numpy as np
 
+__all__ = ['task_servo']
 
 @contract(interval_print='None|>=0')
 def task_servo(data_central, id_agent, id_robot,

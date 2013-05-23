@@ -1,8 +1,7 @@
 # from . import check_no_spurious, logger, OptionParser
-from . import  declare_command
-from . import check_no_spurious, logger, OptionParser
-from bootstrapping_olympics.programs.manager.command_line.common import check_mandatory
-
+from . import declare_command, check_no_spurious, OptionParser
+from .common import check_mandatory
+from bootstrapping_olympics import logger
 
 @declare_command('clean-states', 'clean-states')
 def cmd_clean_states(data_central, argv):

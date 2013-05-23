@@ -1,6 +1,6 @@
-from . import logger, check_no_spurious, OptionParser, declare_command
+from . import check_no_spurious, OptionParser, declare_command
 from contracts import describe_value
-
+from bootstrapping_olympics import logger
 
 @declare_command('list-states', 'list-states [-v]')
 def cmd_list_states(data_central, argv):
@@ -28,7 +28,7 @@ def cmd_list_states(data_central, argv):
             try:
                 state = db.get_state(id_robot=id_robot, id_agent=id_agent)
                 logger.info('  # episodes: %s' % len(state.id_episodes))
-                logger.info('      object: %s' %
+                logger.info('      object: %s' % 
                             describe_value(state.agent_state))
             except Exception as e:
                 logger.error('  (could not load state: %s) ' % e)

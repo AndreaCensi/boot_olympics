@@ -1,13 +1,14 @@
-from . import BootStream, logger
+from .boot_stream import BootStream
 from abc import abstractmethod, ABCMeta
+from bootstrapping_olympics import logger
+from bootstrapping_olympics.utils import (safe_pickle_load, safe_pickle_dump,
+    warn_long_time)
+from conf_tools.utils import friendly_path
 import os
-from bootstrapping_olympics.utils.safe_pickle import safe_pickle_load, \
-    safe_pickle_dump
-from bootstrapping_olympics.utils.warn_long_time_exc import warn_long_time
-from conf_tools.utils.friendly_paths import friendly_path
 
+__all__ = ['LogsFormat']
 
-class LogsFormat:
+class LogsFormat(object):
     __metaclass__ = ABCMeta
 
     # extension -> LogsFormat
@@ -21,7 +22,7 @@ class LogsFormat:
     # TODO: this is not really concurrent friendly
     def index_file_cached(self, filename, ignore_cache=False):
         cache = '%s.index_cache' % filename
-        if os.path.exists(cache) and not ignore_cache: # TODO: mtime
+        if os.path.exists(cache) and not ignore_cache:  # TODO: mtime
             try:
                 return safe_pickle_load(cache)
             except Exception as e:

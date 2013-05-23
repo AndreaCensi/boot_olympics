@@ -1,16 +1,16 @@
 '''Some functions to help in writing experiments scripts'''
-from . import (default_expl_videos, default_servo_videos, default_servonav_videos,
-    contract)
-from .. import (create_video, servo_stats_report, simulate, task_predict, logger,
-    learn_log, publish_once, np, task_servo, task_servonav, publish_report_robot,
+from . import default_expl_videos, default_servo_videos, default_servonav_videos
+from .. import (create_video, servo_stats_report, simulate, task_predict,
+    learn_log, publish_once, task_servo, task_servonav, publish_report_robot,
     servo_stats_summary, predict_report)
-from bootstrapping_olympics import UnsupportedSpec
-from bootstrapping_olympics.library.robots.equiv_robot import EquivRobot
+from bootstrapping_olympics import UnsupportedSpec, logger
+from bootstrapping_olympics.library.robots import EquivRobot
 from bootstrapping_olympics.programs.manager.meat.nuislog import (
     nuislog_episodes)
 from conf_tools import SemanticMistake
+from contracts import contract
 import itertools
-
+import numpy as np
 
 def batch_jobs1(data_central, **kwargs):
     tr = TaskRegister(data_central)
@@ -142,9 +142,9 @@ class TaskRegister:
 
             # FIXME: num_ep_expl (should work also for logs)
             self.add_learning(id_robot, id_agent, num_ep_expl=num_ep_expl,
-                              explorer=explorer, # XXX
+                              explorer=explorer,  # XXX
                               publish_progress=False,
-                              save_pickle=True) # TODO: make param
+                              save_pickle=True)  # TODO: make param
 
             if servo is not None:
                 self.add_tasks_servo(id_agent=id_agent, id_robot=id_robot,
@@ -190,7 +190,7 @@ class TaskRegister:
                              statistics=statistics, save_pickle=save_pickle,
              job_id='report-predict-%s-%s' % (id_robot, id_agent))
 
-    def add_learning(self, id_robot, id_agent, num_ep_expl, explorer, # XXX
+    def add_learning(self, id_robot, id_agent, num_ep_expl, explorer,  # XXX
                      publish_progress=False, save_pickle=False,
                      episodes_per_tranche=500):
         all_id_episodes = [self.episode_id_exploration(explorer, i)
@@ -311,7 +311,7 @@ class TaskRegister:
                                             id_episodes=tranche,
                                             id_equiv=id_derived,
                                             obs_nuisances=derived_obs,
-                                            cmd_nuisances=[], # <- correct
+                                            cmd_nuisances=[],  # <- correct
                                             with_extras=True,
                                             job_id=job_id,
                                             extra_dep=extra_dep)
@@ -554,7 +554,7 @@ class TaskRegister:
             if num <= 2:
                 continue
             psummaries = summaries[:num]
-            #logger.info('Creatint partial summaries with %d/%d using %s' % (num, ntot, psummaries))
+            # logger.info('Creatint partial summaries with %d/%d using %s' % (num, ntot, psummaries))
             self.compmake_job(servo_stats_report, self.data_central, id_agent,
                                id_robot, psummaries,
                                phase='servo_stats-partial%d' % i,
@@ -581,4 +581,4 @@ class TaskRegister:
 
 def checkpoint(msg):
     ''' Dummy function for job. '''
-    #print(msg)
+    # print(msg)

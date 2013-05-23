@@ -1,4 +1,4 @@
-from . import check_no_spurious, logger, OptionParser, declare_command
+from . import check_no_spurious, OptionParser, declare_command
 from conf_tools.utils import friendly_path
 
 

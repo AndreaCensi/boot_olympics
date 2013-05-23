@@ -1,9 +1,11 @@
-from . import contract, logger
 from bootstrapping_olympics import (RobotInterface, RobotObservations,
-    AgentInterface, ObsKeeper)
+    AgentInterface, ObsKeeper, logger)
+from contracts import contract
 import time
 import warnings
 
+
+__all__ = ['run_simulation']
 
 @contract(id_robot='str', id_agent='str',
           robot=RobotInterface, agent=AgentInterface, max_observations='>=1',

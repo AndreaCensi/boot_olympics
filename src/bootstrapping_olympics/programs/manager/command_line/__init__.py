@@ -1,10 +1,9 @@
 ''' Command-line interface to the functions in "meat". '''
-from .. import np, contract, getLogger
+
 
 from .common import *
 from .commands_list import *
 
-logger = getLogger(__name__)
 
 # TODO: put in utils/
 import optparse
@@ -18,8 +17,8 @@ class LenientOptionParser(optparse.OptionParser):
         return optparse.OptionParser.parse_args(self, args)
 
     def error(self, msg):
-        #msg = '%s: %s' % (self.get_prog_name(), msg)
-        msg += ('\nArguments: %s %s' %
+        # msg = '%s: %s' % (self.get_prog_name(), msg)
+        msg += ('\nArguments: %s %s' % 
                 (self.get_prog_name(), " ".join(self.arguments)))
         raise UserError(msg)
 

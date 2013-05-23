@@ -1,10 +1,7 @@
-from blocks.simple_black_box import SimpleBlackBox
-from blocks.utils import WithQueue, Identity
+from blocks import SimpleBlackBox, WithQueue, Identity
 from bootstrapping_olympics import (BootSpec, RepresentationNuisanceCausal,
-    BootWithInternalLog)
-from bootstrapping_olympics.interfaces import StreamSpec
-from bootstrapping_olympics.interfaces.streamels import (check_streamels_1D,
-    make_streamel_bit, streamels_join_1D)
+    BootWithInternalLog, check_streamels_1D, make_streamel_bit, streamels_join_1D,
+    StreamSpec)
 from contracts import contract
 
 class ActiveNuisance(RepresentationNuisanceCausal):

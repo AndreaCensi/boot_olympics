@@ -1,7 +1,7 @@
-from . import declare_command, logger, OptionParser
+from . import declare_command, OptionParser
 from . import check_no_spurious, check_mandatory
 from ..meat import learn_log
-
+from bootstrapping_olympics import logger
 
 @declare_command('learn-log', 'learn-log -a <AGENT> -r <ROBOT>'
                               '  [--reset] [--publish interval] [--once]')

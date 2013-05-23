@@ -1,7 +1,11 @@
 from . import load_agent_state, save_report
 import os
+from contracts import contract
+from reprep import Report
+from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
+from bootstrapping_olympics.interfaces.agent import AgentInterface
 
-__all__ = ['publish_once', 'publish_agent_output']
+__all__ = ['publish_once', 'publish_agent_output', 'get_agent_report']
 
 def publish_once(data_central, id_agent, id_robot,
                  phase='learn', progress='all',
@@ -11,7 +15,7 @@ def publish_once(data_central, id_agent, id_robot,
                                     id_agent=id_agent,
                                     id_robot=id_robot,
                                     reset_state=False)
-
+    
     ds = data_central.get_dir_structure()
     filename = ds.get_report_filename(id_agent=id_agent, id_robot=id_robot,
                                        id_state=state.id_state, phase=phase)
@@ -25,9 +29,19 @@ def publish_once(data_central, id_agent, id_robot,
 
 def publish_agent_output(data_central, state, agent, progress, filename, rd=None,
                          save_pickle=False):
+
+    if rd is None:
+        rd = os.path.join(os.path.dirname(filename), 'images')
+        
+    report = get_agent_report_from_state(state, agent, progress)
+    save_report(data_central, report, filename, resources_dir=rd,
+                save_pickle=save_pickle) 
+
+@contract(returns=Report,
+          agent=AgentInterface, state='*', progress='str')
+def get_agent_report_from_state(agent, state, progress):
     rid = ('%s-%s-%s' % (state.id_agent, state.id_robot, progress))
 
-    from reprep import Report
     report = Report(rid)
 
     stats = ("Num episodes: %s\nNum observations: %s" % 
@@ -36,11 +50,21 @@ def publish_agent_output(data_central, state, agent, progress, filename, rd=None
 
     agent.publish(report)
 
-    if rd is None:
-        rd = os.path.join(os.path.dirname(filename), 'images')
-        
-    save_report(data_central, report, filename, resources_dir=rd,
-                save_pickle=save_pickle) 
+    return report
+
+@contract(returns=Report, data_central=DataCentral,
+          id_agent='str', id_robot='str', progress='str')
+def get_agent_report(data_central, id_agent, id_robot, progress):
+    """ 
+        The report name is ('%s-%s-%s' % (state.id_agent, state.id_robot, progress)),
+        you might want to choose "progress" to not have conflicts.
+    """
+    agent, state = load_agent_state(data_central,
+                                    id_agent=id_agent,
+                                    id_robot=id_robot,
+                                    reset_state=False)
+    return get_agent_report_from_state(agent, state, progress)
+
     
 #    
 #    

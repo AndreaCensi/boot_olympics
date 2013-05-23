@@ -1,5 +1,6 @@
-from . import logger, OptionParser, check_no_spurious, declare_command
+from . import  OptionParser, check_no_spurious, declare_command
 from pprint import pformat
+from bootstrapping_olympics import logger
 
 
 @declare_command('list-agents', 'list-agents [-v]')
@@ -16,7 +17,7 @@ def cmd_list_agents(data_central, argv):
 
     bo_config = data_central.get_bo_config()
     agents = bo_config.agents
-    which = bo_config.agents.keys() # TODO: selection
+    which = bo_config.agents.keys()  # TODO: selection
 
     max_len = max(len(x) for x in which)
     formats = '%%%ds: %%s' % (max_len + 1)
