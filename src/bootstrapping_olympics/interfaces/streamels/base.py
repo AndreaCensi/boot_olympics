@@ -57,8 +57,8 @@ def check_valid_streamels(streamels):
         invalid = streamels['kind'] == ValueFormats.Invalid
 
         check(np.logical_or(invalid,
-                            streamels['lower'] < streamels['upper']),
-              'lower<upper', streamels['lower'], streamels['upper'])
+                            streamels['lower'] <= streamels['upper']),
+              'lower<=upper', streamels['lower'], streamels['upper'])
         check(np.logical_or(invalid,
                             streamels['default'] <= streamels['upper']),
               'default<=upper', streamels['default'], streamels['upper'])

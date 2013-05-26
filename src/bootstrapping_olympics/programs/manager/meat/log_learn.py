@@ -129,7 +129,7 @@ class ProgressSingle:
         s += "; done: %s %s, todo: %s" % (s_done, units, s_todo)  
         return s
     
-class Progress:
+class Progress(object):
     def __init__(self):
         self.len = ProgressSingle(0.0)
         self.obs = ProgressSingle()
@@ -155,8 +155,11 @@ def find_episodes_to_learn(log_index, id_robot, episodes_to_learn=None, episodes
     logger.info('Learned:  %s' % episodes_learned)
     
     if not log_index.has_streams_for_robot(id_robot):
-        msg = ('No log for robot %r found. I know: %s.'
+        msg = ('No log for robot %r found.\nI have logs for: %s.'
                % (id_robot, ", ".join(log_index.robots2streams.keys())))
+        dirnames = log_index.get_indexed_dirs()
+        msg += '\nIndexed directories:\n'
+        msg += '\n'.join('- %s' % d for d in dirnames)
         raise ValueError(msg)
 
 

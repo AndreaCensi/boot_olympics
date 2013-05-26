@@ -21,6 +21,10 @@ class LogIndex(object):
 
         self.directories_indexed = set()
 
+    @contract(returns='list(str)')
+    def get_indexed_dirs(self):
+        return list(self.directories_indexed)
+    
     def reindex(self):
         for dirname in self.directories_indexed:
             new_streams = index_directory_cached(dirname, ignore_cache=False)
