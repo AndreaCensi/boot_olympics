@@ -10,7 +10,9 @@ import warnings
 
 __all__ = ['learn_log']
 
-@contract(episodes='None|list(str)')
+@contract(episodes='None|list(str)',
+          parallel_hint='None|tuple(int,int)',
+          returns='tuple(*,*)')
 def learn_log(data_central, id_agent, id_robot,
               reset=False,
               publish_interval=None,
@@ -19,6 +21,7 @@ def learn_log(data_central, id_agent, id_robot,
               interval_print=None,
               episodes=None,
               save_state=True,
+              parallel_hint=None,
               live_plugins=[]):
     ''' If episodes is not None, it is a list of episodes id to learn. '''
 
@@ -35,13 +38,17 @@ def learn_log(data_central, id_agent, id_robot,
     live_plugins.append(CompmakeProgress())
     live_plugins.append(PrintStatus(interval_print))
 
-    agent_logger = logging.getLogger("BO.learn:%s(%s)" % (id_agent, id_robot))
-    agent_logger.setLevel(logging.DEBUG)
-    AgentInterface.logger = agent_logger
+#     agent_logger = logging.getLogger("BO.learn:%s(%s)" % (id_agent, id_robot))
+#     agent_logger.setLevel(logging.DEBUG)
+#     AgentInterface.logger = agent_logger
 
     agent, state = load_agent_state(data_central, id_agent=id_agent,
                                     id_robot=id_robot, reset_state=reset)
     
+    if parallel_hint is not None:
+        logger.info('setting parallel hint: %r' % str(parallel_hint))
+        agent.parallel_process_hint(*parallel_hint)
+        
     if publish_interval is not None or publish_once:
         do_publish_once(data_central, id_agent=id_agent, id_robot=id_robot,
                         phase='learn', progress='all', save_pickle=False)
@@ -91,8 +98,8 @@ def learn_log(data_central, id_agent, id_robot,
                                          filename)
 
             # Update plugins
-            up = dict(agent=agent, robot=None, obs=obs, progress=progress, state=state,
-                      stream=stream)
+            up = dict(agent=agent, robot=None, obs=obs, progress=progress,
+                      state=state, stream=stream)
             for plugin in live_plugins:
                 plugin.update(up)
 
@@ -108,10 +115,10 @@ def learn_log(data_central, id_agent, id_robot,
     if publish_interval is not None:
         warnings.warn('to fix')
         
-    return agent 
+    return agent, state 
 
 
-class ProgressSingle:
+class ProgressSingle(object):
     # total > target = done + todo
     def __init__(self, zero=0):
         self.done = zero

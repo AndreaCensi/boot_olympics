@@ -65,7 +65,6 @@ new_contract('RobotObservations', RobotObservations)
 
 
 class PassiveRobotInterface(BootWithInternalLog):
-    # __metaclass__ = ABCMeta
     __metaclass__ = ContractsMeta
     
     @abstractmethod

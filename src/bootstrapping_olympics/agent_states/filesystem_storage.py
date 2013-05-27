@@ -1,7 +1,6 @@
-from . import logger
-from bootstrapping_olympics.utils import warn_long_time
-from bootstrapping_olympics.utils.safe_pickle import (safe_pickle_dump,
-    safe_pickle_load)
+from bootstrapping_olympics import logger
+from bootstrapping_olympics.utils import (safe_pickle_dump, safe_pickle_load,
+    warn_long_time)
 from glob import glob
 from os.path import splitext, basename
 from pickle import HIGHEST_PROTOCOL

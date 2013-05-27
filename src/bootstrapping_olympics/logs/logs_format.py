@@ -1,15 +1,16 @@
 from .boot_stream import BootStream
-from abc import abstractmethod, ABCMeta
+from abc import abstractmethod
 from bootstrapping_olympics import logger
 from bootstrapping_olympics.utils import (safe_pickle_load, safe_pickle_dump,
     warn_long_time)
 from conf_tools.utils import friendly_path
 import os
+from contracts import ContractsMeta
 
 __all__ = ['LogsFormat']
 
 class LogsFormat(object):
-    __metaclass__ = ABCMeta
+    __metaclass__ = ContractsMeta
 
     # extension -> LogsFormat
     formats = {}

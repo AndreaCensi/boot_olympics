@@ -1,6 +1,7 @@
 from contracts import contract 
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 from contextlib import contextmanager
+from contracts import ContractsMeta
 
 
 __all__ = ['Publisher']
@@ -12,7 +13,7 @@ class Publisher(object):
         debug information. 
     '''
 
-    __metaclass__ = ABCMeta
+    __metaclass__ = ContractsMeta
 
     @abstractmethod
     @contract(name='str', value='array')

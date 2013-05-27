@@ -1,7 +1,7 @@
-from contracts import contract
 from bootstrapping_olympics import (Constants, RobotObservations, BootSpec,
     RobotInterface, EpisodeDesc)
 from bootstrapping_olympics.utils import unique_timestamp_string
+from contracts import contract
 import time
 
 __all__ = ['RandomRobot']

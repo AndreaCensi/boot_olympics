@@ -17,19 +17,19 @@ class DummyRobot(RobotInterface):
         return self.spec 
 
     def new_episode(self):
-        raise NotImplemented()
+        raise NotImplementedError()
     
     def set_commands(self, commands, commands_source):
-        raise NotImplemented()
+        raise NotImplementedError()
 
     def get_observations(self):
-        raise NotImplemented()
+        raise NotImplementedError()
 
     def get_state(self):
-        raise NotImplemented()
+        raise NotImplementedError()
 
     def set_state(self, state):
-        raise NotImplemented()
+        raise NotImplementedError()
 
 
 def dummy_robot_from_spec(boot_spec_yaml):

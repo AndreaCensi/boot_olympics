@@ -1,6 +1,8 @@
-from . import get_vsim_from_robot, save_report
 from bootstrapping_olympics.library.robots import EquivRobot
 from reprep import MIME_PDF, MIME_SVG, Report
+from .report_utils import save_report
+from .servo.utils import get_vsim_from_robot
+
 
 
 def publish_report_robot(data_central, id_robot, save_pickle=False):

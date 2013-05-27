@@ -1,6 +1,6 @@
 from .streamels import StreamSpec
-from contracts import contract
-from abc import abstractmethod, ABCMeta
+from contracts import contract, ContractsMeta
+from abc import abstractmethod
 
 __all__ = ['RepresentationNuisance', 'NuisanceNotInvertible']
 
@@ -9,7 +9,7 @@ class RepresentationNuisance(object):
     ''' Encapsulates the idea of a representation nuisance,
         either on the observations or the commands. '''
     
-    __metaclass__ = ABCMeta
+    __metaclass__ = ContractsMeta
 
 
     @abstractmethod

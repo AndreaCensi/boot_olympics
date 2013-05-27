@@ -2,16 +2,18 @@ from quickapp import QuickApp
 from bootstrapping_olympics.programs.manager.meat.log_learn import learn_log
 from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
 
-__all__ = ['LearnLogNoSave']
+__all__ = ['LearnLogNoSaveHint']
 
 
-class LearnLogNoSave(QuickApp):
-    cmd = 'learn-log-nosave'
+class LearnLogNoSaveHint(QuickApp):
+    cmd = 'learn-log-nosave-hint'
      
     '''
         Runs the learning for a given agent and set of episodes,
         but does not save the state, ever, but the agent
-        itself is returned for use.          
+        itself is returned for use.
+        
+        Here, the agent is also given the parallel hint.          
     '''
      
     def define_options(self, params):
@@ -25,6 +27,8 @@ class LearnLogNoSave(QuickApp):
         params.add_string_list("episodes", help="List of episodes to learn, "
                                "or None to mean all episodes.")
  
+        params.add_int_list("parallel_hint", help="Parallel hint")
+        
  
     def define_jobs_context(self, context):
         options = self.get_options()
@@ -38,5 +42,6 @@ class LearnLogNoSave(QuickApp):
                               episodes=options.episodes,
                               publish_interval=None,
                               publish_once=False,
-                              save_state=False)
+                              save_state=False,
+                              parallel_hint=tuple(options.parallel_hint))
 

@@ -1,7 +1,9 @@
-from . import StorageFilesystem, logger, contract
-from ..utils import isodate, expand_environment
-
+from .filesystem_storage import StorageFilesystem
+from bootstrapping_olympics import logger
+from bootstrapping_olympics.utils import isodate, expand_environment
+from contracts import contract
 import os
+
 
 __all__ = ['LearningState', 'LearningStateDB']
 
@@ -29,6 +31,13 @@ class LearningState(object):
                 (self.id_agent, self.id_robot, len(self.id_episodes), self.num_observations,
                  self.id_state))
 
+    def merge(self, other):
+        assert self.id_agent == other.id_agent
+        assert self.id_robot == other.id_robot
+        print('merging %r and %r' % (self.id_episodes, other.id_episodes))
+        self.id_episodes.update(other.id_episodes)
+        self.num_observations += other.num_observations
+        
 
 def key2tuple(key):
     return tuple(key.split(","))

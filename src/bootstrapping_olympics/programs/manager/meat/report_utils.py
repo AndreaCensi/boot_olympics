@@ -4,6 +4,8 @@ from bootstrapping_olympics.utils import (isodate, safe_pickle_dump,
 from reprep.output import report_from_hdf
 import os
 
+__all__ = ['save_report']
+
 
 def save_report(data_central, report, filename, resources_dir=None,
                 save_pickle=False, save_hdf=True,

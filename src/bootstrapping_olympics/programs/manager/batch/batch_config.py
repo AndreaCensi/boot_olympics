@@ -1,5 +1,6 @@
 from conf_tools import ConfigMaster
 
+__all__ = ['BatchConfigMaster']
 
 class BatchConfigMaster(ConfigMaster):
     def __init__(self):
@@ -8,7 +9,7 @@ class BatchConfigMaster(ConfigMaster):
         self.sets = self.specs['sets']
 
     def get_default_dir(self):
-        from pkg_resources import resource_filename #@UnresolvedImport
+        from pkg_resources import resource_filename  # @UnresolvedImport
         return resource_filename("bootstrapping_olympics", "configs")
 
 

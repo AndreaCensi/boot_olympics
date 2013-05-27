@@ -1,4 +1,3 @@
-from .publisher import Publisher
 from .with_internal_log import BootWithInternalLog
 from abc import abstractmethod
 from contracts import ContractsMeta, contract
@@ -167,3 +166,21 @@ class AgentInterface(PassiveAgentInterface):
                     self.__dict__[v] = state[v]
         # self.info('State loaded: %s' % state_vars)
 
+    @contract(i='int,>=0,i', n='int,>=1,>=i')
+    def parallel_process_hint(self, i, n):
+        """ 
+            Hint for parallel processing. It tells this instance that
+            it is instance "i" of "n" that sees the same data.
+            
+            Learning modality: 
+            1) N copies of the same thing that looks at the same data
+               Then parallel_process_hint(i, N) is called for each one.
+               
+            2) Different learners look at the same thing.
+                Then parallel_process_hint(0, 1) is called for all learners.
+        """
+        raise NotImplementedError()
+    
+    def merge(self, other):
+        raise NotImplementedError()
+    
