@@ -1,7 +1,7 @@
 from .boot_spec import BootSpec
-from .with_internal_log import BootWithInternalLog
 from abc import abstractmethod
 from contracts import ContractsMeta, new_contract, contract
+from decent_logs import WithInternalLog
 
 __all__ = ['EpisodeDesc', 'RobotObservations', 'RobotInterface',
            'PassiveRobotInterface']
@@ -64,7 +64,7 @@ class RobotObservations(object):
 new_contract('RobotObservations', RobotObservations)
 
 
-class PassiveRobotInterface(BootWithInternalLog):
+class PassiveRobotInterface(WithInternalLog):
     __metaclass__ = ContractsMeta
     
     @abstractmethod

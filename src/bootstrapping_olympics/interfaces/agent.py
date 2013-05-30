@@ -1,17 +1,26 @@
-from .with_internal_log import BootWithInternalLog
 from abc import abstractmethod
 from contracts import ContractsMeta, contract
 
+from decent_logs import WithInternalLog
+
 __all__ = ['AgentInterface', 'UnsupportedSpec', 'ServoAgentInterface',
-           'PredictorAgentInterface']
+           'PredictorAgentInterface', 'PassiveAgentInterface']
 
 
 class UnsupportedSpec(Exception):
     ''' Thrown by agents if they do not support the spec. '''
 
 
-class PassiveAgentInterface(BootWithInternalLog):
+class PassiveAgentInterface(WithInternalLog):
     __metaclass__ = ContractsMeta
+
+    class LearningConverged(Exception):
+        """ 
+        Thrown by process_observations() in learning agents
+        to signal that they do not need more data to converge. 
+        """
+        pass
+
     
     @abstractmethod
     def process_observations(self, bd):
@@ -19,6 +28,9 @@ class PassiveAgentInterface(BootWithInternalLog):
             Process new observations.
             
             :param bd: a numpy array with field ['observations']
+           
+            For learning agents, it might raise LearningConverged to signal that 
+            the learning has converged and no more data is necessary. 
         '''
  
     @abstractmethod
@@ -41,8 +53,8 @@ class ActiveAgentInterface(PassiveAgentInterface):
     @contract(returns='array')
     def choose_commands(self):
         ''' 
-            Chooses commands to be generated; must return a sequence 
-            of numbers or array. 
+            Chooses commands to be generated; must return an 
+            array that conforms to the specs.
         '''
 
 class ServoAgentInterface(ActiveAgentInterface):

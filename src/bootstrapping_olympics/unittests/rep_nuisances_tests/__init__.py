@@ -1,1 +1,1 @@
-from .. import logger
+from .test_nuisances import *

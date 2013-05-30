@@ -1,9 +1,31 @@
 from bootstrapping_olympics import Constants, logger
-from conf_tools import ConfigMaster, check_generic_code_desc
-
+from conf_tools import ConfigMaster, check_generic_code_desc, ObjectSpec
+from contracts import contract
 import os
 
-__all__ = ['get_boot_config']
+
+__all__ = ['get_boot_config',
+           'get_conftools_agents',
+           'get_conftools_robots',
+           'get_conftools_nuisances',
+           'get_conftools_nuisances_causal']
+
+
+@contract(returns=ObjectSpec)
+def get_conftools_agents():
+    return get_boot_config().agents
+
+@contract(returns=ObjectSpec)
+def get_conftools_robots():
+    return get_boot_config().robots
+
+@contract(returns=ObjectSpec)
+def get_conftools_nuisances():
+    return get_boot_config().nuisances
+
+@contract(returns=ObjectSpec)
+def get_conftools_nuisances_causal():
+    return get_boot_config().nuisances_causal
 
 
 class BootConfigMaster(ConfigMaster):

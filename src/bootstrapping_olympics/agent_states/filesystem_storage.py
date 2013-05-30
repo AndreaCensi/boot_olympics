@@ -10,7 +10,7 @@ import os
 __all__ = ['StorageFilesystem']
 
 
-class StorageFilesystem:
+class StorageFilesystem(object):
     checked_existence = False
 
     def __init__(self, basepath, warn_long_time=1):

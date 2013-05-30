@@ -10,7 +10,7 @@ __all__ = ['ValueFormats', 'streamel_dtype',
 BOOT_OLYMPICS_SENSEL_RESOLUTION = 'float32'
 
 
-class ValueFormats:
+class ValueFormats(object):
     Continuous = 'C'  # range is [lower, upper]
     Discrete = 'D'  # finite number of elements 
     Invalid = 'I'  # invalid/not used # TODO: tests for invalid values

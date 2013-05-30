@@ -44,6 +44,13 @@ class Resample(RepresentationNuisance):
     def __repr__(self):
         return 'Resample({})'.format(self.shape_to)
 
+
+# def scipy_image_resample_01(image, shape, order=3):
+#     """ clips in 0 1 """
+#     y = scipy_image_resample(image, shape, order)
+#     np.clip(y, 0, 1, y)
+#     return y
+
 @contract(image='array[HxWx3](float32)|array[HxWx3](uint8)|array[HxW](float32)',
           shape='seq[2](int,>1)', returns='array')
 def scipy_image_resample(image, shape, order=3):

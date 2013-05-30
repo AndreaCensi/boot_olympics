@@ -1,14 +1,13 @@
-from . import create_tmp_dir
-from .. import for_all_pairs
+from .utils import create_tmp_dir
 from bootstrapping_olympics import LogsFormat
-from bootstrapping_olympics.programs.manager.meat import (DataCentral,
-                                                          learn_log,
+from bootstrapping_olympics.programs.manager.meat import (DataCentral, learn_log,
     simulate, task_predict, task_servo)
+from bootstrapping_olympics.unittests import for_all_pairs
 import os
 
 
 @for_all_pairs
-def check_basic_ops(id_agent, agent, id_robot, robot): #@UnusedVariable
+def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
 
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config'))
@@ -62,18 +61,25 @@ def check_basic_ops(id_agent, agent, id_robot, robot): #@UnusedVariable
 
         learn_log(data_central, id_robot=id_robot, id_agent=id_agent)
 
-        task_servo(data_central, id_agent, id_robot,
-                   max_episode_len=1,
-                   num_episodes=1,
-                   displacement=1,
-                   id_episodes=None,
-                   cumulative=False,
-                   interval_print=None,
-                   num_episodes_with_robot_state=0)
+        try:
+            task_servo(data_central, id_agent, id_robot,
+                       max_episode_len=1,
+                       num_episodes=1,
+                       displacement=1,
+                       id_episodes=None,
+                       cumulative=False,
+                       interval_print=None,
+                       num_episodes_with_robot_state=0)
+        except NotImplementedError:
+            msg = 'Agent does not implement servo'
+            print(msg)
 
-        
-        task_predict(data_central,
-             id_agent=id_agent,
-             id_robot=id_robot)
+        try:        
+            task_predict(data_central,
+                 id_agent=id_agent,
+                 id_robot=id_robot)
+        except NotImplementedError:
+            msg = 'Agent does not implement predictor'
+            print(msg)
     
 

@@ -2,13 +2,13 @@ from .load_agent_state import load_agent_state
 from .log_learn_plugins import CompmakeProgress, PrintStatus
 from .publish_output import (publish_once as do_publish_once,
     publish_agent_output)
-from bootstrapping_olympics import AgentInterface, logger
+from bootstrapping_olympics import logger
 from bootstrapping_olympics.utils import InAWhile
 from contracts import contract
-import logging
 import warnings
+from bootstrapping_olympics.interfaces.agent import PassiveAgentInterface
 
-__all__ = ['learn_log']
+__all__ = ['learn_log', 'learn_log_base']
 
 @contract(episodes='None|list(str)',
           parallel_hint='None|tuple(int,int)',
@@ -25,11 +25,9 @@ def learn_log(data_central, id_agent, id_robot,
               live_plugins=[]):
     ''' If episodes is not None, it is a list of episodes id to learn. '''
 
+    
     logger.info('id_agent: %r\nepisodes:\n%r' % (id_agent, episodes))
 
-    log_index = data_central.get_log_index()
-    ds = data_central.get_dir_structure()
-    db = data_central.get_agent_state_db()
     bo_config = data_central.get_bo_config()
 
     live_plugins = [bo_config.live_plugins.instance(x)
@@ -37,35 +35,58 @@ def learn_log(data_central, id_agent, id_robot,
     
     live_plugins.append(CompmakeProgress())
     live_plugins.append(PrintStatus(interval_print))
+    # if publish_interval is not None:
+    warnings.warn('add publish_interval plugins')
+#    if publish_interval is not None:
+#    if 0 == state.num_observations % publish_interval:
+#        phase = 'learn-active'
+#        filename = ds.get_report_filename(id_agent=id_agent, id_robot=id_robot,
+#                                          id_state=state.id_state, phase=phase)
+# 
+#        publish_agent_output(data_central, state, agent, '%05d' % state.num_observations,
+#                             filename)
 
-#     agent_logger = logging.getLogger("BO.learn:%s(%s)" % (id_agent, id_robot))
-#     agent_logger.setLevel(logging.DEBUG)
-#     AgentInterface.logger = agent_logger
 
-    agent, state = load_agent_state(data_central, id_agent=id_agent,
+    
+    agent0, state0 = load_agent_state(data_central, id_agent=id_agent,
                                     id_robot=id_robot, reset_state=reset)
     
     if parallel_hint is not None:
         logger.info('setting parallel hint: %r' % str(parallel_hint))
-        agent.parallel_process_hint(*parallel_hint)
-        
-    if publish_interval is not None or publish_once:
-        do_publish_once(data_central, id_agent=id_agent, id_robot=id_robot,
-                        phase='learn', progress='all', save_pickle=False)
-
-    if publish_once:
-        logger.info('As requested, exiting after publishing information.')
-        return
-
+        agent0.parallel_process_hint(*parallel_hint)
     
+    agent, state = learn_log_base(data_central, id_agent, (agent0, state0),
+                                    id_robot, episodes,
+                                    live_plugins=[])
+
+    # Saving agent state
+    if save_state:
+        logger.debug('Saving state (end of streams)')
+        state.agent_state = agent.get_state()
+        # ds = data_central.get_dir_structure()
+        db = data_central.get_agent_state_db()
+        db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
+          
+    return agent, state
+
+@contract(episodes='None|list(str)',
+          returns='tuple(*,*)')    
+def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
+                   live_plugins=[], ignore_learned=False):
+    log_index = data_central.get_log_index()
+    agent, state = agent_state
+    
+    if ignore_learned:
+        episodes_learned = set()
+    else:
+        episodes_learned = state.id_episodes
+        
     remain, progress = find_episodes_to_learn(log_index, id_robot,
                                               episodes_to_learn=episodes,
-                                              episodes_learned=state.id_episodes)
+                                              episodes_learned=episodes_learned)
 
     logger.info('Progress for %r %r:\n%s' % (id_robot, id_agent, progress.summary()))
  
-    tracker_save = InAWhile(interval_save)
-
     # Initialize plugins
     init = dict(data_central=data_central, id_agent=id_agent, id_robot=id_robot)
     for plugin in live_plugins:
@@ -73,6 +94,7 @@ def learn_log(data_central, id_agent, id_robot,
 
     for stream, to_learn in remain:
         
+        # plugins
         for plugin in live_plugins:
             plugin.starting_stream(stream)
         
@@ -80,23 +102,12 @@ def learn_log(data_central, id_agent, id_robot,
             state.num_observations += 1
             progress.obs.done += 1
 
-            if save_state and tracker_save.its_time():
-                logger.debug('Saving state (periodic)')
-                # note: episodes not updated
-                state.agent_state = agent.get_state()
-                db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
-
-            agent.process_observations(obs)
-
-            if publish_interval is not None:
-                if 0 == state.num_observations % publish_interval:
-                    phase = 'learn-active'
-                    filename = ds.get_report_filename(id_agent=id_agent, id_robot=id_robot,
-                                                      id_state=state.id_state, phase=phase)
-
-                    publish_agent_output(data_central, state, agent, '%05d' % state.num_observations,
-                                         filename)
-
+            try:
+                agent.process_observations(obs)
+            except PassiveAgentInterface.LearningConverged as e:
+                logger.info('Learning converged: %s' % e)
+                break
+            
             # Update plugins
             up = dict(agent=agent, robot=None, obs=obs, progress=progress,
                       state=state, stream=stream)
@@ -106,16 +117,23 @@ def learn_log(data_central, id_agent, id_robot,
         state.id_episodes.update(to_learn)
         progress.eps.done += len(to_learn)
         
-    # Saving agent state
-    if save_state:
-        logger.debug('Saving state (end of streams)')
-        state.agent_state = agent.get_state()
-        db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
-
-    if publish_interval is not None:
-        warnings.warn('to fix')
-        
     return agent, state 
+
+# if save_state and tracker_save.its_time():
+#     logger.debug('Saving state (periodic)')
+#     # note: episodes not updated
+#     state.agent_state = agent.get_state()
+#     db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
+#             if publish_interval is not None:
+#                 if 0 == state.num_observations % publish_interval:
+#                     phase = 'learn-active'
+#                     filename = ds.get_report_filename(id_agent=id_agent, id_robot=id_robot,
+#                                                       id_state=state.id_state, phase=phase)
+# 
+#                     publish_agent_output(data_central, state, agent, '%05d' % state.num_observations,
+#                                          filename)
+
+
 
 
 class ProgressSingle(object):

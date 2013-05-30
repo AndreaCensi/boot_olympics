@@ -1,7 +1,7 @@
-from . import for_all_pairs
 from StringIO import StringIO
 from bootstrapping_olympics import UnsupportedSpec
 from bootstrapping_olympics.programs.manager import run_simulation
+from bootstrapping_olympics.unittests import for_all_pairs
 import cPickle as pickle
 
 

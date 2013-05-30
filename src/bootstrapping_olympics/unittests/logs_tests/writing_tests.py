@@ -1,10 +1,11 @@
-from . import np
-from .. import for_all_pairs
-from ...programs.manager import run_simulation, DirectoryStructure # XXX
 from bootstrapping_olympics import (UnsupportedSpec, BootStream, LogIndex,
     LogsFormat)
+from bootstrapping_olympics.programs.manager import (run_simulation,
+    DirectoryStructure)  # XXX
+from bootstrapping_olympics.unittests import for_all_pairs
 from bootstrapping_olympics.utils import unique_timestamp_string
 from numpy.testing.utils import assert_equal
+import numpy as np
 import shutil
 import tempfile
 
@@ -65,7 +66,7 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
         read_back.append(observations2)
 
     if len(read_back) != len(written):
-        raise Exception('Written %d, read back %d.' %
+        raise Exception('Written %d, read back %d.' % 
                         (len(written), len(read_back)))
 
     for i in range(len(read_back)):

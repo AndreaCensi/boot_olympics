@@ -1,23 +1,28 @@
-from . import logger
 from bootstrapping_olympics import (StreamSpec, UnsupportedSpec,
-    NuisanceNotInvertible)
-from bootstrapping_olympics.unittests.tests_generation import (
-    for_all_robot_nuisance_pairs)
+    NuisanceNotInvertible, logger)
+from bootstrapping_olympics.unittests import (for_all_robot_nuisance_pairs,
+    for_all_nuisances)
 from bootstrapping_olympics.utils import assert_allclose, indent
 
 
+
+@for_all_nuisances
+def check_instance(id_ob, ob):
+    pass
+
+
 @for_all_robot_nuisance_pairs
-def check_nuisances_cmd(id_robot, robot, id_nuisance, nuisance): #@UnusedVariable
+def check_nuisances_cmd(id_robot, robot, id_nuisance, nuisance):  # @UnusedVariable
     check_conversions(robot.get_spec().get_commands(), nuisance)
 
 
 @for_all_robot_nuisance_pairs
-def check_nuisances_obs(id_robot, robot, id_nuisance, nuisance): #@UnusedVariable
+def check_nuisances_obs(id_robot, robot, id_nuisance, nuisance):  # @UnusedVariable
     check_conversions(robot.get_spec().get_observations(), nuisance)
 
 
 @for_all_robot_nuisance_pairs
-def check_nuisances_obs2(id_robot, robot, id_nuisance, nuisance): #@UnusedVariable
+def check_nuisances_obs2(id_robot, robot, id_nuisance, nuisance):  # @UnusedVariable
     check_conversions_upper_lower(robot.get_spec().get_observations(), nuisance)
 
 def check_conversions_upper_lower(stream_spec1, nuisance):
@@ -40,7 +45,7 @@ def check_conversions_upper_lower(stream_spec1, nuisance):
     stream_spec2.check_valid_value(lower2)
     
 def check_conversions(stream_spec1, nuisance):
-    #print('Checking %s / %s ' % (stream_spec1, nuisance))
+    # print('Checking %s / %s ' % (stream_spec1, nuisance))
     nuisance_inv = None
     try:
         try:

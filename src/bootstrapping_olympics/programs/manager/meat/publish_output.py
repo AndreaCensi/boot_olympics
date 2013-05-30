@@ -1,11 +1,14 @@
 from . import load_agent_state, save_report
-import os
+from bootstrapping_olympics import AgentInterface
+from bootstrapping_olympics.programs.manager.meat.data_central import (
+    DataCentral)
 from contracts import contract
 from reprep import Report
-from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
-from bootstrapping_olympics.interfaces.agent import AgentInterface
+import os
 
-__all__ = ['publish_once', 'publish_agent_output', 'get_agent_report']
+__all__ = ['publish_once', 'publish_agent_output', 'get_agent_report',
+           'get_agentstate_report',
+           'get_agent_report_from_state']
 
 def publish_once(data_central, id_agent, id_robot,
                  phase='learn', progress='all',
@@ -51,6 +54,12 @@ def get_agent_report_from_state(agent, state, progress):
     agent.publish(report)
 
     return report
+
+@contract(agent_state='tuple', progress='str')
+def get_agentstate_report(agent_state, progress):
+    agent, state = agent_state
+    return get_agent_report_from_state(agent, state, progress)  
+
 
 @contract(returns=Report, data_central=DataCentral,
           id_agent='str', id_robot='str', progress='str')

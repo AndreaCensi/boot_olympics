@@ -1,9 +1,8 @@
-from . import create_tmp_dir
-from .. import for_all_pairs
+from .utils import create_tmp_dir
 from bootstrapping_olympics import LogsFormat
-from bootstrapping_olympics.programs.manager.command_line.main import (
-    boot_olympics_manager)
-from bootstrapping_olympics.programs.manager.meat import DataCentral
+from bootstrapping_olympics.programs.manager import (boot_olympics_manager,
+    DataCentral)
+from bootstrapping_olympics.unittests import for_all_pairs
 from bootstrapping_olympics.utils import assert_allclose
 import os
 
@@ -11,9 +10,9 @@ import os
 
 
 @for_all_pairs
-def check_cmdline(id_agent, agent, id_robot, robot): #@UnusedVariable
+def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
     with create_tmp_dir() as root:
-        os.mkdir(os.path.join(root, 'config')) # XXX make it automatic
+        os.mkdir(os.path.join(root, 'config'))  # XXX make it automatic
         data_central = DataCentral(root)
         log_index = data_central.get_log_index()
 
@@ -45,12 +44,20 @@ def check_cmdline(id_agent, agent, id_robot, robot): #@UnusedVariable
 
         execute_command('learn-log', '-a', id_agent, '-r', id_robot)
 
-        if hasattr(agent, 'get_servo'): #XXX not elegant         
+        try:
+            agent.get_servo()
+        except NotImplementedError:
+            pass
+        else:         
             execute_command('servo', '-a', id_agent, '-r', id_robot,
                                 '--num_episodes', '1',
                                 '--max_episode_len', '1')
 
-        if hasattr(agent, 'get_predictor'):
+        try:
+            agent.get_predictor()
+        except NotImplementedError:
+            pass
+        else:         
             execute_command('predict', '-a', id_agent, '-r', id_robot)
     
         execute_command('list-logs')
@@ -61,7 +68,7 @@ def check_cmdline(id_agent, agent, id_robot, robot): #@UnusedVariable
         execute_command('list-logs', '-R')
 
         # TODO: publish
-        #execute_command('batch') # TODO: test batch 
+        # execute_command('batch') # TODO: test batch 
 
         execute_command('list-agents')
         execute_command('list-agents', '-v')

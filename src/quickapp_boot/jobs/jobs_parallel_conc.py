@@ -1,11 +1,12 @@
-from .jobs_parallel_learning import jobs_merging_linear, save_state
+from .jobs_parallel import jobs_merging_linear, save_state
 from bootstrapping_olympics.programs.manager import DataCentral
+from bootstrapping_olympics.programs.manager.meat.publish_output import (
+    get_agentstate_report)
 from contracts import contract
 from quickapp import CompmakeContext, iterate_context_names
-from quickapp_boot.programs.learn_log_nosave_hint import LearnLogNoSaveHint
-from bootstrapping_olympics.programs.manager.meat.publish_output import get_agent_report_from_state
+from quickapp_boot.programs import LearnLogNoSaveHint
 
-__all__ = ['jobs_parallel_learning_concurrent']
+__all__ = ['jobs_parallel_learning_concurrent', 'get_agentstate_report']
 
 
 @contract(context=CompmakeContext, data_central=DataCentral,
@@ -38,7 +39,7 @@ def jobs_parallel_learning_concurrent(context, data_central, id_agent, id_robot,
                             add_job_prefix='')
         
         if intermediate_reports:
-            report = context.comp(get_agent_report, agent_i, progress)
+            report = context.comp(get_agentstate_report, agent_i, progress)
             context.add_report(report, 'agent_report_partial',
                                id_agent=id_agent, id_robot=id_robot,
                                progress=progress)
@@ -52,11 +53,5 @@ def jobs_parallel_learning_concurrent(context, data_central, id_agent, id_robot,
                         id_agent, id_robot, agent_state)
     
     return save
-
-@contract(agent_state='tuple', progress='str')
-def get_agent_report(agent_state, progress):
-    agent, state = agent_state
-    return get_agent_report_from_state(agent, state, progress)  
-    
-    
+ 
     

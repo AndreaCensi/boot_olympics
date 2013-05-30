@@ -71,6 +71,7 @@ class LogIndex(object):
         return self.robots2streams[id_robot][0].get_spec()
 
     # TODO: implement has_extra
+    @contract(returns='list(str)')
     def get_episodes_for_robot(self, id_robot, id_agent=None):
         ''' Returns a list of all episodes for the given robot (and
             agent if it is given). '''  # TODO: implement this
@@ -94,6 +95,7 @@ class LogIndex(object):
                 do_this = True
             else:
                 do_this = id_agent in stream.get_id_agents()
+            
             if not do_this:
                 continue
 

@@ -5,7 +5,7 @@ import os
 __all__ = ['BootStream', 'EpisodeSummary']
 
 
-class EpisodeSummary:
+class EpisodeSummary(object):
     @contract(id_episode='str', id_agent='str', id_world='str',
               extras='list(str)', timestamp='float', length='>0',
               num_observations='int,>0')

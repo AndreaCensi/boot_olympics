@@ -17,7 +17,7 @@ def batch_jobs1(data_central, **kwargs):
     tr.main(**kwargs)
 
 
-class TaskRegister:
+class TaskRegister(object):
 
     def __init__(self, data_central):
         self.data_central = data_central

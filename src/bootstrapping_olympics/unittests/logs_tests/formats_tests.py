@@ -1,14 +1,13 @@
-from . import logger
 from ..manager_tests import create_tmp_dir
 from ..tests_generation import for_all_pairs
-from bootstrapping_olympics import LogsFormat
+from bootstrapping_olympics import LogsFormat, logger
 from bootstrapping_olympics.programs.manager.meat import DataCentral, simulate
 from bootstrapping_olympics.utils import assert_allclose, safe_makedirs
 import os
 
 
 @for_all_pairs
-def check_logs_formats(id_agent, agent, id_robot, robot): #@UnusedVariable
+def check_logs_formats(id_agent, agent, id_robot, robot):  # @UnusedVariable
 
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config'))
@@ -20,7 +19,7 @@ def check_logs_formats(id_agent, agent, id_robot, robot): #@UnusedVariable
         # have overlapping timestamps
         simulate(data_central, id_agent=id_agent, id_robot=id_robot,
              max_episode_len=2,
-             num_episodes=1, # changed from 2 (see above)
+             num_episodes=1,  # changed from 2 (see above)
              cumulative=False,
              id_episodes=None,
              stateful=False,
@@ -47,7 +46,7 @@ def check_logs_formats(id_agent, agent, id_robot, robot): #@UnusedVariable
                 with interface.write_stream(filename, id_stream,
                                             robot.get_spec()) as writer:
                     for observations in stream_orig.read():
-                        logger.info('Writing %s:%s (%s)' %
+                        logger.info('Writing %s:%s (%s)' % 
                               (observations['id_episode'],
                                observations['counter'],
                                observations['timestamp']))
@@ -57,7 +56,7 @@ def check_logs_formats(id_agent, agent, id_robot, robot): #@UnusedVariable
                 count = 0
                 for obs_read in interface.read_from_stream(filename,
                                                            id_stream):
-                    logger.info('Reading %s:%s (%s)' %
+                    logger.info('Reading %s:%s (%s)' % 
                           (obs_read['id_episode'],
                            obs_read['counter'],
                            obs_read['timestamp']))
@@ -67,7 +66,7 @@ def check_logs_formats(id_agent, agent, id_robot, robot): #@UnusedVariable
                     try:
                         if obs_read['counter'] != original['counter']:
                             msg = ('Not even the counter is the same!'
-                                   ' %s vs %s' %
+                                   ' %s vs %s' % 
                                    (obs_read['counter'], original['counter']))
                             raise Exception(msg)
 
@@ -85,7 +84,7 @@ def check_logs_formats(id_agent, agent, id_robot, robot): #@UnusedVariable
                     count += 1
 
                 if count != len(written):
-                    msg = ('I wrote %d entries, but obtained %d.' %
+                    msg = ('I wrote %d entries, but obtained %d.' % 
                            (len(written), count))
                     raise Exception(msg)
             except:
