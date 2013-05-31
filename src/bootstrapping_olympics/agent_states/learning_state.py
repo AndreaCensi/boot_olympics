@@ -34,7 +34,7 @@ class LearningState(object):
     def merge(self, other):
         assert self.id_agent == other.id_agent
         assert self.id_robot == other.id_robot
-        print('merging %r and %r' % (self.id_episodes, other.id_episodes))
+        # print('merging %r and %r' % (self.id_episodes, other.id_episodes))
         self.id_episodes.update(other.id_episodes)
         self.num_observations += other.num_observations
         

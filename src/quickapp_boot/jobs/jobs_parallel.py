@@ -23,8 +23,10 @@ def jobs_parallel_learning(context, data_central, id_agent, id_robot, episodes):
     agents = []
     for c, id_episode in iterate_context_episodes(context, episodes):
         c.needs('episode-ready', id_robot=id_robot, id_episode=id_episode)
-        agent_i = c.subtask(LearnLogNoSave, boot_root=data_central.get_boot_root(),
-                            agent=id_agent, robot=id_robot,
+        agent_i = c.subtask(LearnLogNoSave,
+                            boot_root=data_central.get_boot_root(),
+                            agent=id_agent,
+                            robot=id_robot,
                             episodes=[id_episode],
                             add_job_prefix='')
         agents.append(agent_i)

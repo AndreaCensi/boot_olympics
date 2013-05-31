@@ -10,16 +10,8 @@ __all__ = ['task_predict', 'predict_report']
 
 
 def task_predict(data_central, id_agent, id_robot, live_plugins=[]):
-#     from bootstrapping_olympics.extra.reprep import (boot_has_reprep,
-#                                                      reprep_error)
-
     log_index = data_central.get_log_index()
     boot_spec = log_index.get_robot_spec(id_robot)
-    
-#     if not boot_has_reprep:
-#         msg = 'Cannot do this task because Reprep not installed: %s'
-#         msg = msg % reprep_error
-#         raise Exception(msg)
 
     agent, state = load_agent_state(data_central, id_agent, id_robot,
                                     reset_state=False,

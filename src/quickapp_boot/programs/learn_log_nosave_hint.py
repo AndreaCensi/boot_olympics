@@ -93,14 +93,16 @@ class LearnLogNoSaveHintRepeated(QuickApp):
                                   publish_interval=None,
                                   publish_once=False,
                                   save_state=False,
-                                  parallel_hint=options.parallel_hint)
+                                  parallel_hint=options.parallel_hint,
+                                  job_id='learn-rep0')
         
         ast = first_ast
         for i in range(self.options.max_reps - 1):
             
             if self.options.intermediate_reports:
                 progress = 'rep%d' % i
-                report = context.comp(get_agentstate_report, ast, progress)
+                report = context.comp(get_agentstate_report, ast, progress,
+                                      job_id='learn-rep%d-report' % i)
                 context.add_report(report, 'agent_report_partial_rep',
                                    id_agent=id_agent, id_robot=id_robot,
                                    progress=progress, parallel_hint=parallel_hint[0])
@@ -111,6 +113,10 @@ class LearnLogNoSaveHintRepeated(QuickApp):
                                       id_agent=id_agent,
                                       agent_state=ast, id_robot=id_robot,
                                       episodes=episodes,
-                                      ignore_learned=True)
+                                      ignore_learned=True,
+                                      job_id='learn-rep%d' % (i + 1))
             
         return ast 
+
+
+

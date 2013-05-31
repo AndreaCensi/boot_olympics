@@ -31,11 +31,12 @@ def jobs_parallel_learning_concurrent_reps(context, data_central, id_agent, id_r
                             episodes=episodes,
                             parallel_hint=[i, n],
                             max_reps=max_reps,
+                            intermediate_reports=True,
                             add_job_prefix='')
         
         if intermediate_reports:
-            report = context.comp(get_agentstate_report, agent_i, progress)
-            context.add_report(report, 'agent_report_partial',
+            report = c.comp(get_agentstate_report, agent_i, progress, job_id='report')
+            c.add_report(report, 'agent_report_partial',
                                id_agent=id_agent, id_robot=id_robot,
                                progress=progress)
             

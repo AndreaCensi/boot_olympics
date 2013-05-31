@@ -8,10 +8,10 @@ import warnings
 
 class PureCommandsNuisance(RepresentationNuisanceCausal):
     
-    @contract(delta='float,>0', n='int,>=2')
+    @contract(delta='(float|int),>0', n='int,>=2')
     def __init__(self, delta, n):
         self.n = n
-        self.delta = delta
+        self.delta = float(delta)
         
     @contract(spec=BootSpec, returns=BootSpec)
     def transform_spec(self, spec):

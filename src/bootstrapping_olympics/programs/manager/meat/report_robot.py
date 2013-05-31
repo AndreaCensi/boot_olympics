@@ -4,7 +4,6 @@ from .report_utils import save_report
 from .servo.utils import get_vsim_from_robot
 
 
-
 def publish_report_robot(data_central, id_robot, save_pickle=False):
     ds = data_central.get_dir_structure()
     filename, resources_dir = ds.get_report_robot_filename_rd(id_robot)

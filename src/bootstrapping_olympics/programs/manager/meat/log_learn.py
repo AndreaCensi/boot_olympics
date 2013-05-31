@@ -1,12 +1,9 @@
 from .load_agent_state import load_agent_state
 from .log_learn_plugins import CompmakeProgress, PrintStatus
-from .publish_output import (publish_once as do_publish_once,
-    publish_agent_output)
-from bootstrapping_olympics import logger
-from bootstrapping_olympics.utils import InAWhile
+from bootstrapping_olympics import PassiveAgentInterface, logger
 from contracts import contract
 import warnings
-from bootstrapping_olympics.interfaces.agent import PassiveAgentInterface
+
 
 __all__ = ['learn_log', 'learn_log_base']
 
