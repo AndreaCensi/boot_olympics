@@ -17,12 +17,19 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
         Runs an episode of the simulation. The agent should already been
         init()ed. 
     '''
+    logger.info('run_simulation(max_time=%s; max_observations=%s)' % (max_time, max_observations))
     episode = robot.new_episode()
-
+    
+    logger.info('episode %s' % str(episode))
+    
     keeper = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
 
+    logger.info('xxx')
+    
     if id_episode is None:
         id_episode = episode.id_episode
+
+    logger.info('xxx')
 
     id_world = episode.id_environment
 
@@ -57,8 +64,10 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
 
         return observations, obs.episode_end
 
-    
+    logger.info('starting loop')
     while counter < max_observations:
+        
+        logger.info('looop %d' % counter)
         
         try:
             observations, episode_end = get_observations()

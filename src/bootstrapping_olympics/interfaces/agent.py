@@ -2,6 +2,7 @@ from abc import abstractmethod
 from contracts import ContractsMeta, contract
 
 from decent_logs import WithInternalLog
+from reprep import Report
 
 __all__ = ['AgentInterface', 'UnsupportedSpec', 'ServoAgentInterface',
            'PredictorAgentInterface', 'PassiveAgentInterface']
@@ -63,6 +64,12 @@ class ServoAgentInterface(ActiveAgentInterface):
     @contract(goal='array')
     def set_goal_observations(self, goal):
         pass
+    
+    @contract(report=Report, observations='array', goal='array')
+    def display_query(self, report, observations, goal):  # @UnusedVariable
+        """ Displays information regarding this particular query. """
+        report.text('warn', 'display_query not implemented for %r' % type(self).__name__)
+    
 
 class PredictorAgentInterface(PassiveAgentInterface):
     
@@ -130,8 +137,6 @@ class AgentInterface(PassiveAgentInterface):
 
     '''
 
-    # @contract(pub=Publisher)
-    # @contract(pub=Report)
     def publish(self, pub):
         ''' 
             Publish debug information. 

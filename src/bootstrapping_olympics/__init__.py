@@ -37,7 +37,7 @@ from .interfaces import *
 from .agent_states import *
 from .logs import *
 from .configuration import *
-
+from .misc import *
 
 # Try to load extra components (ROS, HDF, etc.)
 from . import extra

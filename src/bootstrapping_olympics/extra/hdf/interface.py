@@ -1,5 +1,5 @@
 from . import HDFLogWriter, hdf_list_streams, hdf_read
-from bootstrapping_olympics import LogsFormat
+from bootstrapping_olympics import LogsFormat, logger
 from contextlib import contextmanager
 
 __all__ = ['HDFLogsFormat']
@@ -43,6 +43,7 @@ class HDFLogsFormat(LogsFormat):
         try:
             yield writer
         except:
+            logger.error('Got exception in the write_stream() context manager')
             writer.cleanup()
             raise
         else:

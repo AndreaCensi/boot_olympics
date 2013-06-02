@@ -6,6 +6,7 @@ from bootstrapping_olympics.utils import (wrap_script_entry_point, UserError,
 from conf_tools import ConfToolsException
 import contracts
 import numpy as np
+from conf_tools.master import GlobalConfig
 
 
 commands_list = "\n".join(['  %-15s  %s\n  %-15s  Usage: %s' % 
@@ -82,20 +83,11 @@ def boot_olympics_manager(arguments):
         logger.info('Using %r as default root directory '
                     '(use -d <dir> to change)' % options.boot_root)
 
-    # TODO: make more elegant
-    # FIXME: remove this dependency
-    try:
-        from vehicles import VehiclesConfig
-        VehiclesConfig.load()
-        VehiclesConfig.load(options.boot_root)
-    except ImportError:
-        pass
 
     data_central = DataCentral(options.boot_root)
     
-    boot_config = data_central.get_bo_config()
     for dirname in options.extra_conf_dirs:
-        boot_config.load(dirname)
+        GlobalConfig.global_load_dir(dirname)
     
     dir_structure = data_central.get_dir_structure() 
     dir_structure.set_log_format(options.log_format)

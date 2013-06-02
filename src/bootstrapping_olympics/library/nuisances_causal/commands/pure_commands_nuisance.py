@@ -6,6 +6,10 @@ from bootstrapping_olympics import (RepresentationNuisanceCausal, BootSpec,
 from contracts import contract
 import warnings
 
+
+__all__ = ['PureCommandsNuisance']
+
+
 class PureCommandsNuisance(RepresentationNuisanceCausal):
     
     @contract(delta='(float|int),>0', n='int,>=2')

@@ -32,9 +32,9 @@ def simulate(data_central, id_agent, id_robot,
     # Instance robot object
     robot = config.robots.instance(id_robot)  # @UndefinedVariable
 
-    logger = logging.getLogger("BO:%s(%s)" % (id_agent, id_robot))
-    logger.setLevel(logging.DEBUG)
-    AgentInterface.logger = logger  # XXX
+#     logger = logging.getLogger("BO:%s(%s)" % (id_agent, id_robot))
+#     logger.setLevel(logging.DEBUG)
+#     AgentInterface.logger = logger  # XXX
 
     boot_spec = robot.get_spec()
 
@@ -67,12 +67,15 @@ def simulate(data_central, id_agent, id_robot,
                      num_episodes=num_episodes,
                      cumulative=cumulative,
                      interval_print=interval_print)
+    
 
     if bk.another_episode_todo():
         with logs_format.write_stream(filename=filename,
                                       id_stream=id_stream,
                                       boot_spec=boot_spec) as writer:
+            logger.info('here')
             while bk.another_episode_todo():
+                logger.info('here')
                 if id_episodes is not None:
                     id_episode = id_episodes.pop(0)
                 else:
@@ -82,6 +85,8 @@ def simulate(data_central, id_agent, id_robot,
                                                    agent,
                                                    100000, max_episode_len,
                                                    id_episode=id_episode):
+                    raise Exception('ciao')
+                    logger.info('obs_inside')
                     bk.observations(observations)
                     if write_extra:
                         extra = dict(robot_state=robot.get_state())
@@ -89,8 +94,13 @@ def simulate(data_central, id_agent, id_robot,
                         extra = {}
                     writer.push_observations(observations=observations,
                                              extra=extra)
-                bk.episode_done()
+                raise Exception('ciao2')
                 
+                bk.episode_done()
+            logger.info('Peacefully done all episodes')
+    else:
+        logger.warn('No episodes to do?')
+                    
     logger.info('done')
     if cumulative:
         return bk.get_all_episodes()
