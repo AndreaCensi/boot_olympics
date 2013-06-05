@@ -1,5 +1,4 @@
 from .load_agent_state import load_agent_state
-from .log_learn_plugins import CompmakeProgress, PrintStatus
 from bootstrapping_olympics import PassiveAgentInterface, logger
 from contracts import contract
 import warnings
@@ -21,7 +20,8 @@ def learn_log(data_central, id_agent, id_robot,
               parallel_hint=None,
               live_plugins=[]):
     ''' If episodes is not None, it is a list of episodes id to learn. '''
-
+    from bootstrapping_olympics.library.live_plugins import CompmakeProgress
+    from bootstrapping_olympics.library.live_plugins import PrintStatus
     
     logger.info('id_agent: %r\nepisodes:\n%r' % (id_agent, episodes))
 

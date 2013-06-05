@@ -156,3 +156,11 @@
   code:
   - bootstrapping_olympics.library.nuisances.Resample
   - shape: [128, 128]
+
+
+- id: sub4
+  desc: Subsamples a 1D signal
+  code:
+  - bootstrapping_olympics.library.nuisances.Subsample
+  - every: 4
+  

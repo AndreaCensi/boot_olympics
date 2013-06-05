@@ -59,7 +59,7 @@ def iterate_robot_observations(robot, sleep=0.1):
             yield robot.get_observations()
         except RobotObservations.NotReady:
             if sleep > 0:
-                print('sleeping %s' % sleep)
+                # print('sleeping %s' % sleep)
                 time.sleep(sleep)
                 continue
             else:

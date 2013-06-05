@@ -1,7 +1,7 @@
 from ..manager_tests import create_tmp_dir
 from ..tests_generation import for_all_pairs
-from bootstrapping_olympics import LogsFormat, logger
-from bootstrapping_olympics.programs.manager.meat import DataCentral, simulate
+from bootstrapping_olympics import LogsFormat, logger, UnsupportedSpec
+from bootstrapping_olympics.programs.manager import DataCentral, simulate
 from bootstrapping_olympics.utils import assert_allclose, safe_makedirs
 import os
 
@@ -17,14 +17,17 @@ def check_logs_formats(id_agent, agent, id_robot, robot):  # @UnusedVariable
         # NO! there is a bug in bag reading; the messages are read
         # in timestamp order; and for now different episodes can
         # have overlapping timestamps
-        simulate(data_central, id_agent=id_agent, id_robot=id_robot,
-             max_episode_len=2,
-             num_episodes=1,  # changed from 2 (see above)
-             cumulative=False,
-             id_episodes=None,
-             stateful=False,
-             interval_print=None,
-             write_extra=True)
+        try:
+            simulate(data_central, id_agent=id_agent, id_robot=id_robot,
+                 max_episode_len=2,
+                 num_episodes=1,  # changed from 2 (see above)
+                 cumulative=False,
+                 id_episodes=None,
+                 stateful=False,
+                 interval_print=None,
+                 write_extra=True)
+        except UnsupportedSpec:
+            return
 
         log_index = data_central.get_log_index()
         log_index.reindex()

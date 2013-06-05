@@ -2,7 +2,7 @@ from bootstrapping_olympics.interfaces import LivePlugin
 from procgraph.core.registrar import default_library, Library
 from procgraph.core.model_loader import pg_look_for_models
 from contracts import contract
-from .. import logger
+from bootstrapping_olympics import logger
 
 __all__ = ['ProcgraphBridge']
 
@@ -22,9 +22,9 @@ class ProcgraphBridge(LivePlugin):
             :param code: Procgraph model/params (array of string, dict) 
         """
         self.suffix = suffix
-        self.code = procgraph_code # TODO: check
+        self.code = procgraph_code  # TODO: check
 
-        for module in procgraph_extra_modules: # XXX: maybe module:model
+        for module in procgraph_extra_modules:  # XXX: maybe module:model
             __import__(module)
 
     def init(self, init_data):
@@ -42,7 +42,7 @@ class ProcgraphBridge(LivePlugin):
         pg_look_for_models(library)
 
         # load standard components
-        import procgraph.components #@UnusedImport
+        import procgraph.components  # @UnusedImport
 
         # Give config passed by user
         config = dict(**self.code[1])

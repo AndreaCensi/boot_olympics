@@ -4,6 +4,7 @@ from bootstrapping_olympics.programs.manager.meat import (DataCentral, learn_log
     simulate, task_predict, task_servo)
 from bootstrapping_olympics.unittests import for_all_pairs
 import os
+from bootstrapping_olympics import UnsupportedSpec
 
 
 @for_all_pairs
@@ -29,11 +30,14 @@ def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
 
         formats = LogsFormat.formats.keys()
 
-        for logs_format in formats:
-            ds.set_log_format(logs_format)
-            simulate_some(2)
-            simulate_some(2)
-
+        try:
+            for logs_format in formats:
+                ds.set_log_format(logs_format)
+                simulate_some(2)
+                simulate_some(2)
+        except UnsupportedSpec:
+            return
+        
         assert not log_index.has_streams_for_robot(id_robot)
         log_index.reindex()
         assert log_index.has_streams_for_robot(id_robot)

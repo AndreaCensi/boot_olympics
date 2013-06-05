@@ -1,15 +1,17 @@
-from quickapp_boot.utils import iterate_context_episodes
-from quickapp_boot.programs import LearnLogNoSave
-from contracts import contract
-from bootstrapping_olympics.programs.manager import DataCentral
-from quickapp import CompmakeContext
+from bootstrapping_olympics.programs.manager import (DataCentral,
+    get_agentstate_report)
 from compmake import Promise
+from contracts import contract
+from quickapp import CompmakeContext
+from quickapp_boot.programs import LearnLogNoSave
+from quickapp_boot.utils import iterate_context_episodes
 
 __all__ = ['jobs_parallel_learning']
 
 @contract(context=CompmakeContext, data_central=DataCentral,
           id_agent='str', id_robot='str', episodes='list(str)', returns=Promise)
-def jobs_parallel_learning(context, data_central, id_agent, id_robot, episodes):
+def jobs_parallel_learning(context, data_central, id_agent, id_robot, episodes,
+                           intermediate_reports=True):
     """
         In this way, the agent learns separately on each log, and then
         the instances are merged using the merge() function.
@@ -30,7 +32,14 @@ def jobs_parallel_learning(context, data_central, id_agent, id_robot, episodes):
                             episodes=[id_episode],
                             add_job_prefix='')
         agents.append(agent_i)
-        
+     
+        if intermediate_reports:
+            progress = '%s' % id_episode
+            report = c.comp(get_agentstate_report, agent_i, progress, job_id='report')
+            c.add_report(report, 'agent_report_partial',
+                               id_agent=id_agent, id_robot=id_robot,
+                               progress=progress)
+         
     agent_state = jobs_merging_linear(context, agents)
     
     save = context.comp(save_state, data_central,

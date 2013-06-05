@@ -10,5 +10,7 @@ from . import apply_nuisance
 from . import resize
 from . import reshape_band
 
+from .procgraph_bridge import *
+
 from procgraph import pg_add_this_package_models
 pg_add_this_package_models(__file__, __package__)

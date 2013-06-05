@@ -322,8 +322,8 @@ def check_valid_bounds(bounds):
         msg = 'Expect list or array, got %s.' % bounds
         raise ValueError(msg)
     expect_size(bounds, 2)
-    if not bounds[0] < bounds[1]:
-        msg = ('Invalid bounds lower: %s upper: %s (lower>=upper)' % 
+    if not bounds[0] <= bounds[1]:
+        msg = ('Invalid bounds lower: %s upper: %s (lower>upper)' % 
                 (bounds[0], bounds[1]))
         raise ValueError(msg)
 

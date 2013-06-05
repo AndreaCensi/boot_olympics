@@ -160,8 +160,8 @@ def get_all_log_files(directory):
 def index_directory(directory, ignore_cache=False, warn_if_longer=3):
     ''' Returns a hash filename -> list of streams. '''
     file2streams = {}
-    logger.debug('Indexing directory %r (ignore cache: %s).' % 
-                 (friendly_path(directory), ignore_cache))
+    # logger.debug('Indexing directory %r (ignore cache: %s).' % 
+    #             (friendly_path(directory), ignore_cache))
     
     with warn_long_time(warn_if_longer, 'indexing directory %r' % 
                                         friendly_path(directory)):

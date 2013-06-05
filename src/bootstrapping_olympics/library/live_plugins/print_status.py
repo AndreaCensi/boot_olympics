@@ -1,19 +1,8 @@
-from . import  logger
 from bootstrapping_olympics.utils import InAWhile
-from compmake import progress as compmake_progress
 from bootstrapping_olympics.interfaces.live_plugin import LivePlugin
+from bootstrapping_olympics import logger
 
-
-class CompmakeProgress(LivePlugin):
-    
-    def init(self, data):
-        pass
-    
-    def update(self, up):
-        progress = up['progress']
-        if progress.obs.done % 200 == 0:
-            compmake_progress('Observations', (progress.obs.done, progress.obs.target))
-
+__all__ = ['PrintStatus']
 
 class PrintStatus(LivePlugin):
     

@@ -15,3 +15,4 @@ from .normalize_min import *
 from .nonlinear import *
 from .noise import *
 from .shape import *
+from .subsample import *

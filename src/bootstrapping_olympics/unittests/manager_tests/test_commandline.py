@@ -1,5 +1,5 @@
 from .utils import create_tmp_dir
-from bootstrapping_olympics import LogsFormat
+from bootstrapping_olympics import LogsFormat, UnsupportedSpec
 from bootstrapping_olympics.programs.manager import (boot_olympics_manager,
     DataCentral)
 from bootstrapping_olympics.unittests import for_all_pairs
@@ -11,6 +11,11 @@ import os
 
 @for_all_pairs
 def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
+    try:
+        agent.init(robot.get_spec())
+    except UnsupportedSpec:
+        return
+    
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config'))  # XXX make it automatic
         data_central = DataCentral(root)
@@ -44,6 +49,7 @@ def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
 
         execute_command('learn-log', '-a', id_agent, '-r', id_robot)
 
+        
         try:
             agent.get_servo()
         except NotImplementedError:

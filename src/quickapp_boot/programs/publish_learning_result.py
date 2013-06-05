@@ -27,7 +27,7 @@ class PublishLearningResult(QuickApp):
         key = dict(id_agent=options.agent,
                   id_robot=options.robot,
                   progress=options.progress)
-        report = context.comp(get_agent_report,
+        report = context.comp_config(get_agent_report,
                               data_central=data_central,
                               **key)
         context.add_report(report, 'agent_report', **key)
