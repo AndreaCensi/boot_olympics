@@ -11,8 +11,8 @@ def get_grid(robot, vsim, resolution, debug=False):
     # Note: use robot to get the observations, be cause it might 
     # include some nuisances that you don't get if you use vsim 
     # directly
-    from vehicles import VehicleSimulation
-    if not isinstance(vsim, VehicleSimulation):
+    from vehicles_boot import BOVehicleSimulation
+    if not isinstance(vsim, BOVehicleSimulation):
         msg = ('I really require a VehicleSimulation; obtained %s.' % 
                describe_type(vsim))
         raise ValueError(msg)

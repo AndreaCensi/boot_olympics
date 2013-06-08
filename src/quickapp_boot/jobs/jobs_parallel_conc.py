@@ -5,6 +5,7 @@ from bootstrapping_olympics.programs.manager.meat.publish_output import (
 from contracts import contract
 from quickapp import CompmakeContext, iterate_context_names
 from quickapp_boot.programs import LearnLogNoSaveHint
+from quickapp_boot import RM_EPISODE_READY
 
 __all__ = ['jobs_parallel_learning_concurrent', 'get_agentstate_report']
 
@@ -21,7 +22,7 @@ def jobs_parallel_learning_concurrent(context, data_central, id_agent, id_robot,
     
         Needs:
         
-            "episode-ready", id_robot, id_episode 
+            RM_EPISODE_READY, id_robot, id_episode 
     """    
     agents = []
     
@@ -29,7 +30,7 @@ def jobs_parallel_learning_concurrent(context, data_central, id_agent, id_robot,
         
     for i, (c, progress) in enumerate(iterate_context_names(context, contexts)):
         for id_episode in episodes: 
-            c.needs('episode-ready', id_robot=id_robot, id_episode=id_episode)
+            c.needs(RM_EPISODE_READY, id_robot=id_robot, id_episode=id_episode)
          
         agent_i = c.subtask(LearnLogNoSaveHint,
                             boot_root=data_central.get_boot_root(),

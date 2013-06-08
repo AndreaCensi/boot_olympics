@@ -156,6 +156,10 @@ class EquivRobot(RobotInterface):
         obs2['id_robot'] = 'unset'
         return obs2
     
+    def debug_get_vel_from_commands(self, commands):
+        commands = self._apply_nuisances_commands(commands)
+        return self.robot.debug_get_vel_from_commands(commands)
+        
     def _apply_nuisances_observations(self, values):
         for n in self.obs_nuisances:
             values = n.transform_value(values)
@@ -167,3 +171,7 @@ class EquivRobot(RobotInterface):
             values = n.transform_value(values)
         return values
 
+    def _apply_nuisances_commands(self, commands):
+        for n in self.cmd_nuisances:
+            commands = n.transform_value(commands)
+        return commands

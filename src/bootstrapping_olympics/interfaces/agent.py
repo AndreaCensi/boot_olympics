@@ -3,6 +3,7 @@ from contracts import ContractsMeta, contract
 
 from decent_logs import WithInternalLog
 from reprep import Report
+from reprep.interface import ReportInterface
 
 __all__ = ['AgentInterface', 'UnsupportedSpec', 'ServoAgentInterface',
            'PredictorAgentInterface', 'PassiveAgentInterface']
@@ -47,11 +48,21 @@ class PassiveAgentInterface(WithInternalLog):
              describes the specifications of the sensorimotor cascades.
                               
         '''
+        
+    def publish(self, pub):
+        return self.display(pub)
+    
+
+    @contract(report=ReportInterface)
+    def display(self, report):
+        report.text('warn', 'display not implemented for %r' % type(self).__name__)
+
+        
 
 class ActiveAgentInterface(PassiveAgentInterface):
     
     @abstractmethod
-    @contract(returns='array')
+    @contract(returns='array,finite')
     def choose_commands(self):
         ''' 
             Chooses commands to be generated; must return an 
@@ -68,9 +79,26 @@ class ServoAgentInterface(ActiveAgentInterface):
     @contract(report=Report, observations='array', goal='array')
     def display_query(self, report, observations, goal):  # @UnusedVariable
         """ Displays information regarding this particular query. """
-        report.text('warn', 'display_query not implemented for %r' % type(self).__name__)
+        # report.text('warn', 'display_query not implemented for %r' % type(self).__name__)
     
-
+        f = report.figure(cols=4)
+        y0 = observations
+        y_goal = goal
+        
+        e = y0 - y_goal
+               
+        # from yc1304.s10_servo_field.plots import plot_style_sensels  # XXX
+        
+        with f.plot('y0_vs_y_goal') as pylab:
+            pylab.plot(y0, '.', label='y0')
+            pylab.plot(y_goal, '.', label='ygoal')
+            # plot_style_sensels(pylab)   
+            pylab.legend()
+         
+        with f.plot('error') as pylab:
+            pylab.plot(e, label='error')
+     
+    
 class PredictorAgentInterface(PassiveAgentInterface):
     
     @abstractmethod
@@ -137,11 +165,6 @@ class AgentInterface(PassiveAgentInterface):
 
     '''
 
-    def publish(self, pub):
-        ''' 
-            Publish debug information. 
-        '''
-
     @contract(returns=PredictorAgentInterface)
     def get_predictor(self):
         raise NotImplementedError()
@@ -149,6 +172,30 @@ class AgentInterface(PassiveAgentInterface):
     @contract(returns=ServoAgentInterface)
     def get_servo(self):
         raise NotImplementedError()
+    
+
+    @contract(i='int,>=0,i', n='int,>=1,>=i')
+    def parallel_process_hint(self, i, n):
+        """ 
+            Hint for parallel processing. It tells this instance that
+            it is instance "i" of "n" that sees the same data.
+            
+            Learning modality: 
+            1) N copies of the same thing that looks at the same data
+               Then parallel_process_hint(i, N) is called for each one.
+               
+            2) Different learners look at the same thing.
+                Then parallel_process_hint(0, 1) is called for all learners.
+        """
+        raise NotImplementedError()
+    
+    def merge(self, other):
+        raise NotImplementedError()
+    
+    
+    
+    
+    # Serialization stuff
     
     def state_vars(self):
         # print('default state vars for %s' % type(self))
@@ -182,22 +229,3 @@ class AgentInterface(PassiveAgentInterface):
                 else:
                     self.__dict__[v] = state[v]
         # self.info('State loaded: %s' % state_vars)
-
-    @contract(i='int,>=0,i', n='int,>=1,>=i')
-    def parallel_process_hint(self, i, n):
-        """ 
-            Hint for parallel processing. It tells this instance that
-            it is instance "i" of "n" that sees the same data.
-            
-            Learning modality: 
-            1) N copies of the same thing that looks at the same data
-               Then parallel_process_hint(i, N) is called for each one.
-               
-            2) Different learners look at the same thing.
-                Then parallel_process_hint(0, 1) is called for all learners.
-        """
-        raise NotImplementedError()
-    
-    def merge(self, other):
-        raise NotImplementedError()
-    

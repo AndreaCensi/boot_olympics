@@ -2,6 +2,7 @@ from .boot_spec import BootSpec
 from abc import abstractmethod
 from contracts import ContractsMeta, new_contract, contract
 from decent_logs import WithInternalLog
+import geometry  # for geometry contracts @UnusedImport
 
 __all__ = ['EpisodeDesc', 'RobotObservations', 'RobotInterface',
            'PassiveRobotInterface']
@@ -91,6 +92,13 @@ class PassiveRobotInterface(WithInternalLog):
                 r = robot.get_inner_components()[-1]
          """ 
         return [self]
+    
+    @contract(commands='array', returns='se3')
+    def debug_get_vel_from_commands(self, commands):
+        """ 
+            For visualization/debug purposes only: it converts a commands array
+            into an element of se3 corresponding to a velocity.
+        """
         
 
 class RobotInterface(PassiveRobotInterface):

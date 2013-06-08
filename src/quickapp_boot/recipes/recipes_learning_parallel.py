@@ -3,6 +3,7 @@ from contracts import contract
 from quickapp import CompmakeContext, ResourceManager
 from quickapp_boot.jobs import (jobs_parallel_learning,
     jobs_parallel_learning_concurrent, jobs_parallel_learning_concurrent_reps)
+from quickapp_boot import RM_AGENT_LEARN
 
 
 __all__ = ['recipe_agentlearn_by_parallel',
@@ -11,7 +12,8 @@ __all__ = ['recipe_agentlearn_by_parallel',
 
 @contract(context=CompmakeContext, data_central=DataCentral, episodes='list(str)',
           only_agents='None|list(str)')
-def recipe_agentlearn_by_parallel(context, data_central, episodes, only_agents=None):
+def recipe_agentlearn_by_parallel(context, data_central, episodes, only_agents=None,
+                                  intermediate_reports=False):
     """
         provides:  agent-learn (id_agent, id_robot)
         
@@ -26,9 +28,10 @@ def recipe_agentlearn_by_parallel(context, data_central, episodes, only_agents=N
                 msg = 'Agent %r not in %r' % (id_agent, only_agents)
                 raise ResourceManager.CannotProvide(msg)
         return jobs_parallel_learning(context, data_central,
-                                      id_agent, id_robot, episodes)
+                                      id_agent, id_robot, episodes,
+                                      intermediate_reports=intermediate_reports)
         
-    rm.set_resource_provider('agent-learn', rp_learn)
+    rm.set_resource_provider(RM_AGENT_LEARN, rp_learn)
 
 
 @contract(context=CompmakeContext, data_central=DataCentral, episodes='list(str)',
@@ -58,7 +61,7 @@ def recipe_agentlearn_by_parallel_concurrent(context, data_central, episodes, n=
         return jobs_parallel_learning_concurrent(context, data_central,
                                       id_agent, id_robot, episodes, n=n)
         
-    rm.set_resource_provider('agent-learn', rp_learn)
+    rm.set_resource_provider(RM_AGENT_LEARN, rp_learn)
 
 
 @contract(context=CompmakeContext, data_central=DataCentral, episodes='list(str)',
@@ -90,4 +93,4 @@ def recipe_agentlearn_by_parallel_concurrent_reps(context, data_central, episode
                                       id_agent, id_robot, episodes, n=n,
                                       max_reps=max_reps)
         
-    rm.set_resource_provider('agent-learn', rp_learn)
+    rm.set_resource_provider(RM_AGENT_LEARN, rp_learn)

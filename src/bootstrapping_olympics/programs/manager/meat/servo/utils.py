@@ -11,8 +11,8 @@ def get_vsim_from_robot(robot):
         robot = robot.get_original_robot()
         return get_vsim_from_robot(robot)
 
-    from vehicles import VehicleSimulation
-    if isinstance(robot, VehicleSimulation):
+    from vehicles_boot import BOVehicleSimulation
+    if isinstance(robot, BOVehicleSimulation):
         return robot
 
     msg = ('I require that the robot is a VehiclesSimulation, '

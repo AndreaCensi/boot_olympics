@@ -20,7 +20,8 @@ def jobs_parallel_learning(context, data_central, id_agent, id_robot, episodes,
         
             "episode-ready", id_robot, id_episode
             
-        Returns the promise for the agent with learning complete. 
+        Returns the promise for the agent with learning complete
+        (tuple agent, state) 
     """    
     agents = []
     for c, id_episode in iterate_context_episodes(context, episodes):
@@ -66,8 +67,8 @@ def merge_agents(as1, as2):
 @contract(data_central=DataCentral, id_agent='str', id_robot='str')
 def save_state(data_central, id_agent, id_robot, agent_state):
     agent, state = agent_state
-#     state = LearningState(id_robot=id_robot, id_agent=id_agent)
     state.agent_state = agent.get_state()
-#     state.id_episodes = set(id_episodes)
     db = data_central.get_agent_state_db() 
     db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
+    return agent_state
+

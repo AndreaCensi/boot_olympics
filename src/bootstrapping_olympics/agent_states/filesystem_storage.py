@@ -4,8 +4,8 @@ from bootstrapping_olympics.utils import (safe_pickle_dump, safe_pickle_load,
 from glob import glob
 from os.path import splitext, basename
 from pickle import HIGHEST_PROTOCOL
+import cPickle as pickle
 import os
-
 
 __all__ = ['StorageFilesystem']
 
@@ -42,8 +42,15 @@ class StorageFilesystem(object):
         filename = self.filename_for_key(key)
 
         with warn_long_time(self.warn_long_time,
-                            'dumping %r' % key) as moreinfo:        
-            safe_pickle_dump(value, filename, protocol=HIGHEST_PROTOCOL)
+                            'dumping %r' % key) as moreinfo:
+            protocol = HIGHEST_PROTOCOL
+            paranoid = False
+            if paranoid:        
+                safe_pickle_dump(value, filename, protocol)
+            else:
+                with open(filename, 'wb') as f:
+                    pickle.dump(value, f, protocol)
+                
             moreinfo['size'] = os.stat(filename).st_size
             
         # TODO: remove this

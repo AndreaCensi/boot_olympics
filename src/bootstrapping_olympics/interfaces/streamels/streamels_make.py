@@ -22,8 +22,8 @@ def new_streamels(shape):
     return x
 
 
-@contract(shape='seq[2](int,>=1)', lower='scalar_number,finite,x',
-          upper='scalar_number,finite,y,>x', vdef='None|(scalar_number,finite,>x,<y)')
+@contract(shape='seq[2](int,>=1)', lower='number,finite,x',
+          upper='number,finite,y,>x', vdef='None|(number,finite,>x,<y)')
 def make_streamels_2D_float(shape, lower, upper, vdef=None):
     """ Creates a stremeals spec with the given shape, min and max. """
     x = np.zeros(shape, streamel_dtype)
@@ -47,8 +47,8 @@ def make_streamels_rgb_float(shape):
     return x
 
 
-@contract(shape='seq[>=1](int,>=1)', lower='scalar_number,finite,x',
-          upper='scalar_number,finite,y,>x', vdef='None|(scalar_number,finite,>x,<y)')
+@contract(shape='seq[>=1](int,>=1)', lower='number,finite,x',
+          upper='number,finite,y,>x', vdef='None|(number,finite,>x,<y)')
 def make_streamels_float(shape, lower, upper, vdef=None):
     """ Creates a stremeals spec with the given shape, min and max. """
     x = np.zeros(shape, streamel_dtype)
@@ -62,9 +62,9 @@ def make_streamels_float(shape, lower, upper, vdef=None):
 
     
 @contract(nstreamels='int,>=1',
-          lower='scalar_number,finite,x',
-          upper='scalar_number,finite,y,>x',
-          vdef='None|(scalar_number,finite,>x,<y)')
+          lower='number,finite,x',
+          upper='number,finite,y,>x',
+          vdef='None|(number,finite,>x,<y)')
 def make_streamels_1D_float(nstreamels, lower, upper, vdef=None):
     x = np.zeros(nstreamels, streamel_dtype)
     x['kind'] = ValueFormats.Continuous

@@ -4,12 +4,13 @@ from bootstrapping_olympics.programs.manager.meat.servonav.find_path import (
 from bootstrapping_olympics.utils import yaml_dump
 from geometry import SE2_from_SE3
 from pprint import pprint
+from conf_tools.master import GlobalConfig
 
 
 def main():
     from vehicles_cairo import (cairo_ref_frame, cairo_rototranslate,
                                 vehicles_cairo_display_png)
-    from vehicles import VehiclesConfig
+#     from vehicles import VehiclesConfig
 
     # Instance robot object
     id_robot = 'r_cam_A'
@@ -17,13 +18,13 @@ def main():
     resolution = 0.5
 
     config = get_boot_config()
-    vconfig = VehiclesConfig
+#     vconfig = VehiclesConfig
     cd1 = '/Users/andrea/scm/boot11_env/src/vehicles/src/vehicles/configs'
     cd2 = '/Users/andrea/scm/boot11_env/src/bvapps/bo_app1/config'
-    config.load(cd1)
-    config.load(cd2)
-    vconfig.load()  # Default
-    vconfig.load(cd2)
+    
+    GlobalConfig.global_load_dir('default')
+    GlobalConfig.global_load_dir(cd1)
+    GlobalConfig.global_load_dir(cd2)
 
     robot = config.robots.instance(id_robot)  # @UndefinedVariable
     robot.new_episode()
