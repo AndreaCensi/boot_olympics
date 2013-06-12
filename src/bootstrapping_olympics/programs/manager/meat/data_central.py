@@ -4,6 +4,7 @@ from bootstrapping_olympics import (LearningStateDB, LogIndex, get_boot_config,
 from bootstrapping_olympics.utils import expand_environment
 from conf_tools.utils import friendly_path
 import os
+from conf_tools.master import GlobalConfig
 
 __all__ = ['DataCentral']
 
@@ -36,7 +37,8 @@ class DataCentral(object):
                            friendly_path(dirname))
                     logger.info(msg)  
                 else:
-                    self.bo_config.load(dirname)
+                    GlobalConfig.global_load_dir(dirname)
+#                     self.bo_config.load(dirname)
         return self.bo_config
 
     def get_log_index(self, ignore_cache=False):

@@ -17,3 +17,7 @@ from .noise import *
 from .shape import *
 from .subsample import *
 from .normalize import *
+
+
+from .chain import *
+

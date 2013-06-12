@@ -1,5 +1,5 @@
 from .streamels import StreamSpec
-from contracts import contract, ContractsMeta
+from contracts import contract, ContractsMeta, new_contract
 from abc import abstractmethod
 
 __all__ = ['RepresentationNuisance', 'NuisanceNotInvertible']
@@ -47,6 +47,7 @@ class RepresentationNuisance(object):
     def transform_value(self, values):
         ''' Returns the transformed value. '''
 
+new_contract('RepresentationNuisance', RepresentationNuisance)
 
 class NuisanceNotInvertible(ValueError):
     pass

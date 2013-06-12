@@ -64,10 +64,10 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
 
         return observations, obs.episode_end
 
-    logger.info('starting loop')
+    # logger.info('starting loop')
     while counter < max_observations:
         
-        logger.info('looop %d' % counter)
+        # logger.info('looop %d' % counter)
         
         try:
             observations, episode_end = get_observations()

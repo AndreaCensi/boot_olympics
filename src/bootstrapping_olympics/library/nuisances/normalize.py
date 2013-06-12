@@ -62,7 +62,7 @@ class Normalize(RepresentationNuisance):
 #         value2 = np.clip(value2, self.lower, self.upper)
         value2 = value2.astype('float32')
         
-        print('vmin: %s max: %s mean: %s' % (np.min(value2), np.max(value2), np.mean(value2)))
+#        print('vmin: %s max: %s mean: %s' % (np.min(value2), np.max(value2), np.mean(value2)))
         return value2
 
     def __repr__(self):

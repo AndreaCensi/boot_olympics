@@ -3,6 +3,8 @@ import os
 
 __version__ = '1.1'
 
+__all__ = ['safe_write']
+
 
 @contextmanager
 def safe_write(filename, mode='wb', suffix_tmp='.tmp', suffix_old='.old'):
@@ -28,7 +30,6 @@ def safe_write(filename, mode='wb', suffix_tmp='.tmp', suffix_old='.old'):
         # % filename_old)
         os.unlink(filename_old)
 
-    
     try:
         with open(filename_new, mode) as f:
             yield f

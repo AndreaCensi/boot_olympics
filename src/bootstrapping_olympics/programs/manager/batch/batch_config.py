@@ -6,7 +6,7 @@ __all__ = ['BatchConfigMaster']
 
 class BatchConfigMaster(ConfigMaster):
     def __init__(self):
-        ConfigMaster.__init__(self)
+        ConfigMaster.__init__(self, 'batchconfig')
         self.add_class('sets', '*.sets.yaml', check_valid_set_config)
         self.sets = self.specs['sets']
 

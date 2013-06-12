@@ -4,9 +4,9 @@ from bootstrapping_olympics import LogsFormat, BootOlympicsConstants, logger
 from bootstrapping_olympics.utils import (wrap_script_entry_point, UserError,
     substitute)
 from conf_tools import ConfToolsException
+from conf_tools.master import GlobalConfig
 import contracts
 import numpy as np
-from conf_tools.master import GlobalConfig
 
 
 commands_list = "\n".join(['  %-15s  %s\n  %-15s  Usage: %s' % 
@@ -86,6 +86,7 @@ def boot_olympics_manager(arguments):
 
     data_central = DataCentral(options.boot_root)
     
+    GlobalConfig.global_load_dir('default')  # need skins
     for dirname in options.extra_conf_dirs:
         GlobalConfig.global_load_dir(dirname)
     

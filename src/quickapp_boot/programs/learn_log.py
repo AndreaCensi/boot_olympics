@@ -46,8 +46,8 @@ class LearnLog(QuickApp):
  
         data_central = DataCentral(options.boot_root)
          
-        context.comp(learn_log,
-                     data_central=data_central,
+        context.comp_config(learn_log,
+                            data_central=data_central,
                       id_agent=options.agent,
                       id_robot=options.robot,
                       reset=options.reset,
