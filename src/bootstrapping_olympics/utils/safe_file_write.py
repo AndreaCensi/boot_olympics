@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 import os
+import warnings
 
 __version__ = '1.1'
 
@@ -59,8 +60,10 @@ def safe_write(filename, mode='wb', suffix_tmp='.tmp', suffix_old='.old'):
         assert os.path.exists(filename)
         assert not os.path.exists(filename_new)
         assert not os.path.exists(filename_old)
-        
-    if not os.path.exists(filename):
-        msg = "Sorry, filename %r does not exists. Race conditions. It's a bug."
-        raise Exception(msg)
-        
+    
+    warnings.warn('this was a race condition')
+#         
+#     if not os.path.exists(filename):
+#         msg = "Sorry, filename %r does not exists. Race conditions. It's a bug." % filename
+#         raise Exception(msg)
+#         

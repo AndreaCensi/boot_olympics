@@ -4,6 +4,7 @@ from bootstrapping_olympics.programs.manager import (DataCentral,
 from contracts import contract
 from quickapp import CompmakeContext, iterate_context_names
 from quickapp_boot.programs import LearnLogNoSaveHintRepeated
+from quickapp_boot import RM_EPISODE_READY
 
 
 __all__ = ['jobs_parallel_learning_concurrent_reps']
@@ -13,7 +14,8 @@ __all__ = ['jobs_parallel_learning_concurrent_reps']
           id_agent='str', id_robot='str', episodes='list(str)', n='int,>=2',
           max_reps='int,>=2')
 def jobs_parallel_learning_concurrent_reps(context, data_central, id_agent, id_robot, episodes,
-                                      n, max_reps, intermediate_reports=True):
+                                      n, max_reps, intermediate_reports=True,
+                                      final_report=True):
     """
         This one cycles multiple times in the data.
     """    
@@ -22,8 +24,10 @@ def jobs_parallel_learning_concurrent_reps(context, data_central, id_agent, id_r
     contexts = ['learn%02dof%02d' % (i + 1, n) for i in range(n)]
         
     for i, (c, progress) in enumerate(iterate_context_names(context, contexts)):
-        for id_episode in episodes: 
-            c.needs('episode-ready', id_robot=id_robot, id_episode=id_episode)
+        extra_dep = []
+        for id_episode in episodes:
+            er = c.get_resource(RM_EPISODE_READY, id_robot=id_robot, id_episode=id_episode)
+            extra_dep.append(er)
          
         agent_i = c.subtask(LearnLogNoSaveHintRepeated,
                             boot_root=data_central.get_boot_root(),
@@ -32,7 +36,8 @@ def jobs_parallel_learning_concurrent_reps(context, data_central, id_agent, id_r
                             parallel_hint=[i, n],
                             max_reps=max_reps,
                             intermediate_reports=True,
-                            add_job_prefix='')
+                            add_job_prefix='',
+                            extra_dep=extra_dep)
         
         if intermediate_reports:
             report = c.comp(get_agentstate_report, agent_i, progress, job_id='report')
@@ -44,6 +49,10 @@ def jobs_parallel_learning_concurrent_reps(context, data_central, id_agent, id_r
 
 
     agent_state = jobs_merging_linear(context, agents)
+
+    if final_report:
+        report = context.comp(get_agentstate_report, agent_state, 'all', job_id='report')
+        context.add_report(report, 'agent_report', id_agent=id_agent, id_robot=id_robot)
     
     save = context.comp(save_state, data_central,
                         id_agent, id_robot, agent_state)

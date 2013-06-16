@@ -28,9 +28,10 @@ class RobotObservations(object):
               commands='array',
               commands_source='str',
               episode_end='bool',
-              robot_pose='None|array[4x4]')
+              robot_pose='None|array[4x4]',
+              extra='dict')
     def __init__(self, timestamp, observations, commands, commands_source,
-                        episode_end, robot_pose):
+                        episode_end, robot_pose, extra={}):
         '''
             Initializes the structure.    
         
@@ -40,6 +41,8 @@ class RobotObservations(object):
             - ``robot_pose`` should be either None or a 4x4 Numpy matrix 
               representing an element of SE(3). This is used for tasks such as servoing,
               where we need to know the pose of the robot for assessing performance.
+            - ``extra`` is application-specific; it will be serialized in yaml.
+              
         '''
         self.timestamp = timestamp
         self.observations = observations
@@ -47,6 +50,7 @@ class RobotObservations(object):
         self.commands_source = commands_source
         self.episode_end = episode_end
         self.robot_pose = robot_pose
+        self.extra = extra
         
     def __repr__(self):
         return 'RobotObservations(t=%s,obs=...,cmd=%s)' % (self.timestamp, self.commands)

@@ -13,7 +13,7 @@ __all__ = ['jobs_parallel_learning_concurrent', 'get_agentstate_report']
 @contract(context=CompmakeContext, data_central=DataCentral,
           id_agent='str', id_robot='str', episodes='list(str)', n='int,>=2')
 def jobs_parallel_learning_concurrent(context, data_central, id_agent, id_robot, episodes,
-                                      n, intermediate_reports=True):
+                                      n, intermediate_reports=True, final_report=True):
     """
         In this way, there are "n" instances of each agent. 
         Each instance sees all logs, but is given a hint using the 
@@ -49,7 +49,11 @@ def jobs_parallel_learning_concurrent(context, data_central, id_agent, id_robot,
 
 
     agent_state = jobs_merging_linear(context, agents)
-    
+
+    if final_report:
+        report = context.comp(get_agentstate_report, agent_state, 'all', job_id='report')
+        context.add_report(report, 'agent_report', id_agent=id_agent, id_robot=id_robot)
+
     save = context.comp(save_state, data_central,
                         id_agent, id_robot, agent_state)
     

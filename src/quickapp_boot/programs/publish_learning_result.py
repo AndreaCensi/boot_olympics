@@ -30,4 +30,4 @@ class PublishLearningResult(QuickApp):
         report = context.comp_config(get_agent_report,
                               data_central=data_central,
                               **key)
-        context.add_report(report, 'agent_report', **key)
+        context.add_report(report, 'agent_report_partial', **key)

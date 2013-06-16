@@ -1,6 +1,6 @@
-from quickapp import QuickApp
+from bootstrapping_olympics.programs.manager import DataCentral
 from bootstrapping_olympics.programs.manager.meat.log_learn import learn_log
-from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
+from quickapp import QuickApp
 
 __all__ = ['LearnLogNoSave']
 
@@ -30,13 +30,13 @@ class LearnLogNoSave(QuickApp):
         options = self.get_options()
         data_central = DataCentral(options.boot_root)
          
-        return context.comp(learn_log,
-                            reset=True,
-                            data_central=data_central,
-                              id_agent=options.agent,
-                              id_robot=options.robot,
-                              episodes=options.episodes,
-                              publish_interval=None,
-                              publish_once=False,
-                              save_state=False)
+        return context.comp_config(learn_log,
+                                   reset=True,
+                                   data_central=data_central,
+                                  id_agent=options.agent,
+                                  id_robot=options.robot,
+                                  episodes=options.episodes,
+                                  publish_interval=None,
+                                  publish_once=False,
+                                  save_state=False)
 

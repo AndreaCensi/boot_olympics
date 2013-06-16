@@ -13,7 +13,9 @@ __all__ = ['recipe_agentlearn_by_parallel',
 @contract(context=CompmakeContext, data_central=DataCentral, episodes='list(str)',
           only_agents='None|list(str)')
 def recipe_agentlearn_by_parallel(context, data_central, episodes, only_agents=None,
-                                  intermediate_reports=False):
+                                  only_robots=None,
+                                  intermediate_reports=False,
+                                  episodes_per_tranche=50):
     """
         provides:  agent-learn (id_agent, id_robot)
         
@@ -27,9 +29,16 @@ def recipe_agentlearn_by_parallel(context, data_central, episodes, only_agents=N
             if not id_agent in only_agents:
                 msg = 'Agent %r not in %r' % (id_agent, only_agents)
                 raise ResourceManager.CannotProvide(msg)
+            
+        if only_robots is not None:
+            if not id_robot in only_robots:
+                msg = 'Robot %r not in %r' % (id_robot, only_robots)
+                raise ResourceManager.CannotProvide(msg)
+        
         return jobs_parallel_learning(context, data_central,
                                       id_agent, id_robot, episodes,
-                                      intermediate_reports=intermediate_reports)
+                                      intermediate_reports=intermediate_reports,
+                                      episodes_per_tranche=episodes_per_tranche)
         
     rm.set_resource_provider(RM_AGENT_LEARN, rp_learn)
 

@@ -1,14 +1,14 @@
 from .m_run_simulation import run_simulation
-from bootstrapping_olympics import AgentInterface, LogsFormat, logger
+from bootstrapping_olympics import LogsFormat, logger
 from bootstrapping_olympics.utils import (InAWhile, natsorted,
     unique_timestamp_string)
-import logging
 import numpy as np
 
-__all__ = ['simulate']
+__all__ = ['simulate', 'simulate_agent_robot']
 
 
-def simulate(data_central, id_agent, id_robot,
+
+def simulate_agent_robot(data_central, id_agent, id_robot,
              max_episode_len,
              num_episodes,
              cumulative,
@@ -185,3 +185,5 @@ class Bookkeeping():
     def another_episode_todo(self):
         return self.num_episodes_done < self.num_episodes_todo
 
+
+simulate = simulate_agent_robot

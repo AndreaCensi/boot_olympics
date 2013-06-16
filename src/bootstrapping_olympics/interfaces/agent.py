@@ -98,6 +98,9 @@ class ServoAgentInterface(ActiveAgentInterface):
         with f.plot('error') as pylab:
             pylab.plot(e, label='error')
      
+    def get_distance(self, y1, y2):
+        import numpy as np
+        return np.linalg.norm(y1 - y2)
     
 class PredictorAgentInterface(PassiveAgentInterface):
     
@@ -172,7 +175,6 @@ class AgentInterface(PassiveAgentInterface):
     @contract(returns=ServoAgentInterface)
     def get_servo(self):
         raise NotImplementedError()
-    
 
     @contract(i='int,>=0,i', n='int,>=1,>=i')
     def parallel_process_hint(self, i, n):

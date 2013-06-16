@@ -4,14 +4,17 @@ from compmake import Promise
 from contracts import contract
 from quickapp import CompmakeContext
 from quickapp_boot.programs import LearnLogNoSave
-from quickapp_boot.utils import iterate_context_episodes
+import numpy as np
+from quickapp import iterate_context_names
+from quickapp_boot import RM_EPISODE_READY
 
 __all__ = ['jobs_parallel_learning']
 
 @contract(context=CompmakeContext, data_central=DataCentral,
           id_agent='str', id_robot='str', episodes='list(str)', returns=Promise)
 def jobs_parallel_learning(context, data_central, id_agent, id_robot, episodes,
-                           intermediate_reports=True):
+                           intermediate_reports=True, final_report=True,
+                           episodes_per_tranche=1):
     """
         In this way, the agent learns separately on each log, and then
         the instances are merged using the merge() function.
@@ -24,28 +27,43 @@ def jobs_parallel_learning(context, data_central, id_agent, id_robot, episodes,
         (tuple agent, state) 
     """    
     agents = []
-    for c, id_episode in iterate_context_episodes(context, episodes):
-        c.needs('episode-ready', id_robot=id_robot, id_episode=id_episode)
+    
+    tranches = get_tranches(episodes, episodes_per_tranche=episodes_per_tranche)
+    ntranches = len(tranches)
+    tranches_names = ['tranche%02d' % i for i in range(ntranches)]
+    
+    for i, (c, _) in enumerate(iterate_context_names(context, tranches_names)):
+        tranche_episodes = tranches[i]
+        extra_dep = []
+        for id_episode in tranche_episodes:
+            er = c.get_resource(RM_EPISODE_READY, id_robot=id_robot, id_episode=id_episode)
+            extra_dep.append(er)
+        
         agent_i = c.subtask(LearnLogNoSave,
                             boot_root=data_central.get_boot_root(),
                             agent=id_agent,
                             robot=id_robot,
-                            episodes=[id_episode],
-                            add_job_prefix='')
+                            episodes=tranche_episodes,
+                            add_job_prefix='',
+                            extra_dep=extra_dep)
         agents.append(agent_i)
      
         if intermediate_reports:
             progress = '%s' % id_episode
-            report = c.comp(get_agentstate_report, agent_i, progress, job_id='report')
+            report = c.comp_config(get_agentstate_report, agent_i, progress, job_id='report')
             c.add_report(report, 'agent_report_partial',
                                id_agent=id_agent, id_robot=id_robot,
                                progress=progress)
          
     agent_state = jobs_merging_linear(context, agents)
     
-    save = context.comp(save_state, data_central,
+    save = context.comp_config(save_state, data_central,
                         id_agent, id_robot, agent_state)
     
+    if final_report:
+        report = context.comp(get_agentstate_report, agent_state, 'all', job_id='report')
+        context.add_report(report, 'agent_report', id_agent=id_agent, id_robot=id_robot)
+         
     return save
 
 @contract(context=CompmakeContext, agents='list[>=2]', returns=Promise)
@@ -72,3 +90,12 @@ def save_state(data_central, id_agent, id_robot, agent_state):
     db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
     return agent_state
 
+def get_tranches(ids, episodes_per_tranche=10):
+    """ Returns a list of list """
+    l = []
+    num_tranches = int(np.ceil(len(ids) * 1.0 / episodes_per_tranche))
+    for t in range(num_tranches):
+        e_from = t * episodes_per_tranche
+        e_to = min(len(ids), e_from + episodes_per_tranche)
+        l.append([ids[i] for i in range(e_from, e_to)])
+    return l
