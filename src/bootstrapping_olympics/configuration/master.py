@@ -1,7 +1,5 @@
-from bootstrapping_olympics import Constants, logger
 from conf_tools import ConfigMaster, check_generic_code_desc, ObjectSpec
 from contracts import contract
-import os
 
 
 __all__ = ['get_boot_config',
@@ -55,21 +53,21 @@ class BootConfigMaster(ConfigMaster):
                                                    '*.live_plugins.yaml', LivePlugin)
 
         
-        v = Constants.TEST_ADDITIONAL_CONFIG_DIR_ENV
-        if v in os.environ:
-            logger.info('Loading configuration according to env var %s:' % v)
-
-            for dirname in os.environ[v].split(':'):
-                if dirname == 'default':
-                    logger.info('Loading default config.')
-                    self.load()
-                else:
-                    logger.info('Using additional dir %r' % dirname)
-                    self.load(dirname)
-        else:
-            # logger.debug('You can use the environment variable %r to preload '
-            #             'the configuration in that directory.' % v)
-            pass
+#         v = Constants.TEST_ADDITIONAL_CONFIG_DIR_ENV
+#         if v in os.environ:
+#             logger.info('Loading configuration according to env var %s:' % v)
+# 
+#             for dirname in os.environ[v].split(':'):
+#                 if dirname == 'default':
+#                     logger.info('Loading default config.')
+#                     self.load()
+#                 else:
+#                     logger.info('Using additional dir %r' % dirname)
+#                     self.load(dirname)
+#         else:
+#             # logger.debug('You can use the environment variable %r to preload '
+#             #             'the configuration in that directory.' % v)
+#             pass
 
     def get_default_dir(self):
         from pkg_resources import resource_filename  # @UnresolvedImport

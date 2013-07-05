@@ -1,24 +1,21 @@
+from .find_path import get_grid
 from bootstrapping_olympics import get_boot_config
-from bootstrapping_olympics.programs.manager.meat.servonav.find_path import (
-    get_grid)
 from bootstrapping_olympics.utils import yaml_dump
+from conf_tools import GlobalConfig
 from geometry import SE2_from_SE3
 from pprint import pprint
-from conf_tools.master import GlobalConfig
 
 
 def main():
     from vehicles_cairo import (cairo_ref_frame, cairo_rototranslate,
                                 vehicles_cairo_display_png)
-#     from vehicles import VehiclesConfig
-
     # Instance robot object
     id_robot = 'r_cam_A'
     filename = 'test.png'
     resolution = 0.5
 
     config = get_boot_config()
-#     vconfig = VehiclesConfig
+
     cd1 = '/Users/andrea/scm/boot11_env/src/vehicles/src/vehicles/configs'
     cd2 = '/Users/andrea/scm/boot11_env/src/bvapps/bo_app1/config'
     

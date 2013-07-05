@@ -1,5 +1,5 @@
-from bootstrapping_olympics import (UnsupportedSpec, RepresentationNuisance,
-    NuisanceNotInvertible, check_streamels_1D)
+from bootstrapping_olympics import (RepresentationNuisance, NuisanceNotInvertible,
+    check_streamels_1D)
 from contracts import contract
 
 __all__ = ['Subsample']
@@ -32,6 +32,6 @@ class Subsample(RepresentationNuisance):
         return value[self.select]
 
     def __repr__(self):
-        return 'Select(%s)' % self.which
+        return 'Subsample(%s)' % self.every
 
 
