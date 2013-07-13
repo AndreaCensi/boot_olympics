@@ -1,12 +1,10 @@
 from bootstrapping_olympics import (BootSpec, RobotInterface, StreamSpec,
-    get_boot_config, logger)
-from bootstrapping_olympics.interfaces import get_observations_dtype
-from bootstrapping_olympics import RobotObservations
+    get_boot_config, logger, RobotObservations, get_observations_dtype)
 from bootstrapping_olympics.utils import indent
+from contracts import contract, describe_type
+from numpy.testing.decorators import deprecated
 import numpy as np
 import warnings
-from numpy.testing.decorators import deprecated
-from contracts import contract
 
 __all__ = ['EquivRobot']
 
@@ -23,6 +21,10 @@ class EquivRobot(RobotInterface):
         boot_config = get_boot_config()
         id_robot, self.robot = boot_config.robots.instance_smarter(robot)
 
+        if not isinstance(self.robot, RobotInterface):
+            msg = 'Expected RobotInterface, got %s' % describe_type(self.robot)
+            raise ValueError(msg)
+        
         warnings.warn('handle the case better')
         self.desc = ('EquivRobot(%s,obs:%s,cmd:%s)'
                     % (id_robot, obs_nuisance, cmd_nuisance))

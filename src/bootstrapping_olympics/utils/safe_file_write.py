@@ -36,7 +36,10 @@ def safe_write(filename, mode='wb', suffix_tmp='.tmp', suffix_old='.old'):
             yield f
     except:
         if os.path.exists(filename_new):
-            os.unlink(filename_new)
+            try:
+                os.unlink(filename_new)
+            except:
+                pass
         raise
 
     try:
@@ -47,6 +50,7 @@ def safe_write(filename, mode='wb', suffix_tmp='.tmp', suffix_old='.old'):
             # if we have an old version
             os.rename(filename, filename_old)
             os.rename(filename_new, filename)
+            
             os.unlink(filename_old)
         else:
             # no previous file, just rename

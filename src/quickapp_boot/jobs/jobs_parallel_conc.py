@@ -1,11 +1,12 @@
-from .jobs_parallel import jobs_merging_linear, save_state
+from .jobs_parallel import save_state
 from bootstrapping_olympics.programs.manager import DataCentral
 from bootstrapping_olympics.programs.manager.meat.publish_output import (
     get_agentstate_report)
 from contracts import contract
 from quickapp import CompmakeContext, iterate_context_names
-from quickapp_boot.programs import LearnLogNoSaveHint
 from quickapp_boot import RM_EPISODE_READY
+from quickapp_boot.jobs.jobs_parallel import jobs_merging_recursive
+from quickapp_boot.programs import LearnLogNoSaveHint
 
 __all__ = ['jobs_parallel_learning_concurrent', 'get_agentstate_report']
 
@@ -48,7 +49,7 @@ def jobs_parallel_learning_concurrent(context, data_central, id_agent, id_robot,
         agents.append(agent_i)
 
 
-    agent_state = jobs_merging_linear(context, agents)
+    agent_state = jobs_merging_recursive(context, agents)
 
     if final_report:
         report = context.comp(get_agentstate_report, agent_state, 'all', job_id='report')

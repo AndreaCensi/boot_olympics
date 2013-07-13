@@ -1,9 +1,9 @@
 from bootstrapping_olympics.programs.manager import DataCentral
 from contracts import contract
 from quickapp import CompmakeContext, ResourceManager
+from quickapp_boot import RM_AGENT_LEARN
 from quickapp_boot.jobs import (jobs_parallel_learning,
     jobs_parallel_learning_concurrent, jobs_parallel_learning_concurrent_reps)
-from quickapp_boot import RM_AGENT_LEARN
 
 
 __all__ = ['recipe_agentlearn_by_parallel',
@@ -12,7 +12,8 @@ __all__ = ['recipe_agentlearn_by_parallel',
 
 @contract(context=CompmakeContext, data_central=DataCentral, episodes='list(str)',
           only_agents='None|list(str)')
-def recipe_agentlearn_by_parallel(context, data_central, episodes, only_agents=None,
+def recipe_agentlearn_by_parallel(context, data_central, episodes,
+                                  only_agents=None,
                                   only_robots=None,
                                   intermediate_reports=False,
                                   episodes_per_tranche=50):

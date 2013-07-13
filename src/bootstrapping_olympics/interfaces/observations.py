@@ -131,9 +131,8 @@ class ObsKeeper(object):  # TODO: move away from here
         x['id_world'] = self.id_world
 
         if self.last_observations is None:
-            x['dt'] = 0
+            x['dt'] = 0.1  # XXX temp fix; cannot have dt = 0
             x['episode_start'] = True
-
         else:
             x['dt'] = x['timestamp'] - self.last_observations['timestamp']
             x['episode_start'] = False

@@ -4,8 +4,8 @@ from bootstrapping_olympics.utils import (InAWhile, natsorted,
     unique_timestamp_string)
 import numpy as np
 
-__all__ = ['simulate', 'simulate_agent_robot']
 
+__all__ = ['simulate', 'simulate_agent_robot']
 
 
 def simulate_agent_robot(data_central, id_agent, id_robot,
@@ -76,6 +76,7 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
             while bk.another_episode_todo():
                 if id_episodes is not None:
                     id_episode = id_episodes.pop(0)
+                    logger.info('Simulating episode %s' % id_episode)
                 else:
                     id_episode = None
 

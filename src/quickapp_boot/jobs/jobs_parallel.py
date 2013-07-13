@@ -2,11 +2,10 @@ from bootstrapping_olympics.programs.manager import (DataCentral,
     get_agentstate_report)
 from compmake import Promise
 from contracts import contract
-from quickapp import CompmakeContext
+from quickapp import CompmakeContext, iterate_context_names
+from quickapp_boot import RM_EPISODE_READY
 from quickapp_boot.programs import LearnLogNoSave
 import numpy as np
-from quickapp import iterate_context_names
-from quickapp_boot import RM_EPISODE_READY
 
 __all__ = ['jobs_parallel_learning']
 
@@ -48,14 +47,14 @@ def jobs_parallel_learning(context, data_central, id_agent, id_robot, episodes,
                             extra_dep=extra_dep)
         agents.append(agent_i)
      
-        if intermediate_reports:
+        if intermediate_reports and ntranches > 1:
             progress = '%s' % id_episode
             report = c.comp_config(get_agentstate_report, agent_i, progress, job_id='report')
             c.add_report(report, 'agent_report_partial',
                                id_agent=id_agent, id_robot=id_robot,
                                progress=progress)
          
-    agent_state = jobs_merging_linear(context, agents)
+    agent_state = jobs_merging_recursive(context, agents)
     
     save = context.comp_config(save_state, data_central,
                         id_agent, id_robot, agent_state)
@@ -66,13 +65,32 @@ def jobs_parallel_learning(context, data_central, id_agent, id_robot, episodes,
          
     return save
 
-@contract(context=CompmakeContext, agents='list[>=2]', returns=Promise)
-def jobs_merging_linear(context, agents):
-    agent_state = agents[0]
-    for i, a in enumerate(agents[1:]):
-        agent_state = context.comp(merge_agents, agent_state, a,
-                             job_id='merge-%d' % i) 
-    return agent_state
+# @contract(context=CompmakeContext, agents='list[>=1]', returns=Promise)
+# def jobs_merging_linear(context, agents):
+#     """ merges ((A1, A2), A3), A4), ...) """ 
+#     agent_state = agents[0]
+#     for i, a in enumerate(agents[1:]):
+#         agent_state = context.comp(merge_agents, agent_state, a,
+#                              job_id='merge-%d' % i) 
+#     return agent_state
+
+@contract(context=CompmakeContext, agents='list[>=1]', returns=Promise)
+def jobs_merging_recursive(context, agents):
+    """ merges hyerarchically """
+    n = len(agents)
+    if n == 1:
+        return agents[0]
+    
+    half = n / 2
+    a1 = agents[0:half]
+    a2 = agents[half:]
+    assert len(a1) > 0
+    assert len(a2) > 0
+    
+    m1 = jobs_merging_recursive(context, a1)
+    m2 = jobs_merging_recursive(context, a2)
+    return context.comp(merge_agents, m1, m2)
+      
     
 def merge_agents(as1, as2):
     agent1, state1 = as1
@@ -90,6 +108,7 @@ def save_state(data_central, id_agent, id_robot, agent_state):
     db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
     return agent_state
 
+@contract(returns='list(list(str))')
 def get_tranches(ids, episodes_per_tranche=10):
     """ Returns a list of list """
     l = []
