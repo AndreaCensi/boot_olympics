@@ -24,12 +24,8 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
     
     keeper = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
 
-    logger.info('xxx')
-    
     if id_episode is None:
         id_episode = episode.id_episode
-
-    logger.info('xxx')
 
     id_world = episode.id_environment
 
