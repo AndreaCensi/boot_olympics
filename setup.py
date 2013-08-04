@@ -32,7 +32,7 @@ setup(name='BootOlympics',
         'ConfTools>=1.0,<2',
         'RepRep>=1.0,<3',
         'compmake>=2,<3',
-        'system_cmd'
+        'SystemCmd'
       ],
       extras_require={},
 
