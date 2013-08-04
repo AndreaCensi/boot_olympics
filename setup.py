@@ -26,12 +26,13 @@ setup(name='BootOlympics',
       package_dir={'':'src'},
       packages=find_packages('src'),
       install_requires=[
-	'nose',
+	                   'nose',
         'PyYAML',
         'PyContracts>=1.2,<2',
         'ConfTools>=1.0,<2',
         'RepRep>=1.0,<3',
         'compmake>=2,<3',
+        'system_cmd'
       ],
       extras_require={},
 
