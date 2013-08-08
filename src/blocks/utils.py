@@ -1,8 +1,15 @@
 from blocks import SimpleBlackBox
  
-__all__ = ['WithQueue', 'Identity']
+__all__ = ['WithQueue']
  
 class WithQueue(SimpleBlackBox):
+    """ 
+        A black box that is implemented by doing something every time
+        the element is put() inside.
+    
+        Implement put() and use append() to output stuff.
+    """
+        
     def __init__(self):
         self.queue = []
           
@@ -12,13 +19,12 @@ class WithQueue(SimpleBlackBox):
         return self.queue.pop(0)
     
     def append(self, value):
+        """ Appends to the internal queue """
         self.queue.append(value)
         if len(self.queue) > 100:
-            print('%s: Warning, too much growth? %s' % (type(self), len(self.queue)))
-    
-class Identity(WithQueue):
-    def put(self, x):
-        self.queue.append(x)
+            print('%s: Warning, too much growth? %s' 
+                  % (type(self), len(self.queue)))
+        
      
 def bb_pump(a, b):
     while True:
@@ -27,6 +33,3 @@ def bb_pump(a, b):
         except SimpleBlackBox.NotReady:
             break
         b.put(x)
-#         print('pump %s -> %s: %s ' % (type(a).__name__,
-#                                       type(b).__name__, x))
-#         

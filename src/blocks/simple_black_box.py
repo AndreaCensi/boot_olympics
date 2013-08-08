@@ -46,8 +46,7 @@ class SimpleBlackBox(object):
         """
             Same semantics of arguments for ``Queue.get``.
             
-            timeout=None: 
+            timeout=None: blocking
             timeout=0 nonblock
-            
         """
         pass
