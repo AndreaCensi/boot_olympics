@@ -75,7 +75,7 @@ def recipe_episodeready_by_simulation_tranches(context, data_central, explorer, 
         tranche_episodes = tranches[tranche]
         job_id = basename_from_key(dict(id_robot=id_robot, explorer=explorer, tranche=tranche))
         return c.comp_config(simulate_agent_robot,
-                            data_central=data_central,
+                             data_central=data_central,
                              id_agent=explorer,
                              id_robot=id_robot,
                              max_episode_len=max_episode_len,
@@ -86,6 +86,9 @@ def recipe_episodeready_by_simulation_tranches(context, data_central, explorer, 
                              cumulative=False,
                              write_extra=False,
                              job_id=job_id)    
+        
+    print('recipe_episodeready_by_simulation_tranches: explorer %s max_episode_len %s' % (explorer, max_episode_len))
+    rp_simulation_tranche.__docs__ = 'ciao'
         
     rm = context.get_resource_manager()        
     rm.set_resource_provider(RM_SIMULATION_TRANCHES, rp_simulation_tranche)
