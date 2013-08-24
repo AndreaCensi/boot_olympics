@@ -1,6 +1,9 @@
 from bootstrapping_olympics import LivePlugin
 
 
+__all__ = ['CompmakeProgress']
+
+
 class CompmakeProgress(LivePlugin):
     
     def init(self, data):

@@ -1,12 +1,12 @@
 from .load_agent_state import load_agent_state
 from .report_utils import save_report
+from astatsa.prediction import PredictionStatsSampled
 from bootstrapping_olympics import PredictorAgentInterface
 from bootstrapping_olympics.utils import PredictionStats
 from contracts import describe_type
+from numpy.ma.core import allclose
 from reprep import Report
 import numpy as np
-from astatsa.prediction.predictionstats_sampled import PredictionStatsSampled
-from numpy.ma.core import allclose
 import warnings
 
 
@@ -323,9 +323,4 @@ def get_subs_same_u(stream, skip_initial=5):
                 current_episode = obs['id_episode']
                 seq = [obs]
         
-        
-        
-    
-    
-    
 

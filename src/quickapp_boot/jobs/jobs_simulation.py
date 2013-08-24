@@ -97,7 +97,11 @@ def recipe_episodeready_by_simulation_tranches(context, data_central, explorer, 
         if not robot_supports_simulation(id_robot):
             msg = 'Robot %r is not simulatable.' % id_robot
             raise ResourceManager.CannotProvide(msg)
-        
+
+        if not id_episode in episode2tranche:
+            msg = 'Episode %r not found for robot %r.' % (id_episode, id_robot)
+            raise ResourceManager.CannotProvide(msg)
+                
         t = episode2tranche[id_episode]
         return rm.get_resource(RM_SIMULATION_TRANCHES, id_robot=id_robot, tranche=t)
 
