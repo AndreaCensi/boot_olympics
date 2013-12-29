@@ -1,5 +1,7 @@
 from procgraph import Block, Generator
 
+__all__ = ['BOLogReader']
+
 # TODO: use IteratorGenerator
 
 class BOLogReader(Generator):
@@ -28,8 +30,11 @@ class BOLogReader(Generator):
 
         self.info('Reading logs for robot: %r agent: %r episodes: %r' % 
                 (id_robot, id_agent, id_episode))
+        self.info('read extra: %r' % read_extra)
+
 
         def go():
+
             if not id_episode:
                 self.info('Reading all episodes for %r/%r' % 
                           (id_robot, id_agent))
@@ -48,13 +53,11 @@ class BOLogReader(Generator):
                                                         id_agent=id_agent,
                                                         read_extra=read_extra):
                     yield obs['timestamp'].item(), obs.copy()
-                    obs['extra'] = {}  # Tmp: debugging
             else:
                 for obs in index.read_robot_episode(id_robot=id_robot,
                                                     id_episode=id_episode,
                                                     read_extra=read_extra):
                     yield obs['timestamp'].item(), obs.copy()
-                    obs['extra'] = {}  # Tmp: debugging
 
         self.iterator = go()
 
