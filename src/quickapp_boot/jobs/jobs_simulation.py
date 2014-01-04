@@ -5,7 +5,6 @@ from bootstrapping_olympics.programs.manager.meat.simulate import (
 from quickapp import ResourceManager
 from quickapp.report_manager import basename_from_key
 from quickapp_boot import RM_EPISODE_READY
-from vehicles import VehicleSimulation
 
 __all__ = ['recipe_episodeready_by_simulation_tranches',
            'recipe_episodeready_by_simulation']
@@ -49,6 +48,7 @@ def recipe_episodeready_by_simulation(context, data_central,
 def robot_supports_simulation(id_robot):
     robot = get_conftools_robots().instance(id_robot)
     orobot = robot.get_inner_components()[-1]
+    from vehicles import VehicleSimulation
     if not isinstance(orobot, VehicleSimulation):
         return False
     else:
