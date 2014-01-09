@@ -1,4 +1,5 @@
-from bootstrapping_olympics.interfaces import LivePlugin
+from bootstrapping_olympics import LivePlugin
+
 
 __all__ = ['Dummy']
 
@@ -17,7 +18,7 @@ class Dummy(LivePlugin):
         update_data['agent']
         update_data['robot']
         update_data['obs']
-        #print('observation: %s' % update_data.obs.dtype)
+        # print('observation: %s' % update_data.obs.dtype)
 
     def finish(self):
         pass

@@ -1,8 +1,7 @@
-
 from . import tables
 from bootstrapping_olympics import BootSpec, logger
 from bootstrapping_olympics.utils import (warn_good_identifier,
-    warn_good_filename, copy_from, yaml_dump)
+    warn_good_filename, copy_from, yaml_dump, make_sure_dir_exists)
 from contracts import contract
 import numpy as np
 import os
@@ -17,7 +16,8 @@ class HDFLogWriter():
     def __init__(self, filename, id_stream, boot_spec):
         warn_good_filename(filename)
         warn_good_identifier(id_stream)
-
+        make_sure_dir_exists(filename)
+        
         assert isinstance(boot_spec, BootSpec)
         self.filename = filename
         # XXX: check that we are not given the same filename

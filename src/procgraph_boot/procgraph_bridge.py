@@ -1,8 +1,8 @@
-from bootstrapping_olympics.interfaces import LivePlugin
-from procgraph.core.registrar import default_library, Library
-from procgraph.core.model_loader import pg_look_for_models
+from bootstrapping_olympics import LivePlugin, logger
 from contracts import contract
-from bootstrapping_olympics import logger
+from procgraph.core.model_loader import pg_look_for_models
+from procgraph.core.registrar import default_library, Library
+
 
 __all__ = ['ProcgraphBridge']
 
@@ -19,15 +19,21 @@ class ProcgraphBridge(LivePlugin):
     def __init__(self, procgraph_code, procgraph_extra_modules, suffix):
         """ 
             :param suffix: Suffix for the video
-            :param code: Procgraph model/params (array of string, dict) 
+            :param code: Procgraph model/params (array of two elements: a string, and dict) 
         """
         self.suffix = suffix
         self.code = procgraph_code  # TODO: check
-
-        for module in procgraph_extra_modules:  # XXX: maybe module:model
-            __import__(module)
-
+        self.procgraph_extra_modules = procgraph_extra_modules
+        
     def init(self, init_data):
+        try:
+            for module in self.procgraph_extra_modules:  # XXX: maybe module:model
+                __import__(module)
+        except:
+            pass
+
+        # import procgraph_bdse
+        
         data_central = init_data['data_central']
         id_agent = init_data['id_agent']
         id_robot = init_data['id_robot']
@@ -83,4 +89,5 @@ class ProcgraphBridge(LivePlugin):
             self.model.update()
 
     def finish(self):
+        self.info('finishing')
         self.model.finish()

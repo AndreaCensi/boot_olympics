@@ -1,9 +1,11 @@
-from reprep.plot_utils import x_axis_set, y_axis_set
-import numpy as np
+from reprep.plot_utils import (turn_off_bottom_and_top, turn_off_right,
+    set_left_spines_outward, set_thick_ticks, x_axis_set, y_axis_set)
 import astatsa
-from reprep.plot_utils.spines import turn_off_bottom_and_top, turn_off_right, \
-    set_left_spines_outward, set_thick_ticks
+import numpy as np
 import warnings
+
+
+__all__ = ['PredictionStats']
 
 
 class PredictionStats(astatsa.PredictionStats):
@@ -14,7 +16,7 @@ class PredictionStats(astatsa.PredictionStats):
                      'Cannot publish anything as I was never updated.')
             return
 
-        pub.text('stats', 'Num samples: %s' % self.num_samples)
+#         pub.text('stats', 'Num samples: %s' % self.num_samples)
 
         R = self.get_correlation()
         
@@ -22,12 +24,14 @@ class PredictionStats(astatsa.PredictionStats):
         pub.array('last_a', self.last_a)
         pub.array('last_b', self.last_b)
 
+        f = pub.figure()
+        
         if R.ndim == 1:
-            with pub.plot('correlation') as pylab:
+            with f.plot('correlation') as pylab:
                 pylab.plot(R, 'k.')
                 pylab.axis((0, R.size, -1.1, +1.1))
 
-            with pub.plot('last') as pylab:
+            with f.plot('last') as pylab:
                 pylab.plot(self.last_a, 'g.', label=self.label_a)
                 pylab.plot(self.last_b, 'm.', label=self.label_b)
                 a = pylab.axis()
@@ -35,7 +39,7 @@ class PredictionStats(astatsa.PredictionStats):
                 pylab.axis((a[0], a[1], a[2] - m, a[3] + m))
                 pylab.legend()
             
-            with pub.plot('vs') as pylab:
+            with f.plot('vs') as pylab:
                 pylab.plot(self.last_a, self.last_b, '.')
                 pylab.xlabel(self.label_a)
                 pylab.ylabel(self.label_b)
@@ -61,19 +65,19 @@ class PredictionStats(astatsa.PredictionStats):
                 pylab.plot([0, n - 1], [0, 0], '--', color=[0.7, 0.7, 0.7])
 
             # TODO: remove    
-            with pub.plot('comp_balanced') as pylab:
+            with f.plot('comp_balanced') as pylab:
                 pylab.plot(self.last_a, 'g.', label=self.label_a)  # XXX: colors
                 pylab.plot(self.last_b, 'm.', label=self.label_b)
                 comparison_balanced(pylab, self.last_a, self.last_b, perc=0.9, M=1.1)
                 style_1d_sensel_func(pylab, n=R.size, y_max=1)
 
-            with pub.plot('comp_balanced_lines') as pylab:
+            with f.plot('comp_balanced_lines') as pylab:
                 pylab.plot(self.last_a, 'g-', label=self.label_a)  # XXX: colors
                 pylab.plot(self.last_b, 'm-', label=self.label_b)
                 comparison_balanced(pylab, self.last_a, self.last_b, perc=0.9, M=1.1)
                 style_1d_sensel_func(pylab, n=R.size, y_max=1)
                 
-            with pub.plot('correlationB', figsize=BV1Style.figsize) as pylab:
+            with f.plot('correlationB', figsize=BV1Style.figsize) as pylab:
                 pylab.plot(R, **BV1Style.dots_format)
                 style_1d_sensel_func(pylab, n=R.size, y_max=1)
                 

@@ -1,18 +1,20 @@
 from abc import abstractmethod
 from contracts import ContractsMeta
+from decent_logs import WithInternalLog
+
 
 __all__ = ['LivePlugin']
 
 
-class LivePlugin(object):
-    __metaclass__ = ContractsMeta
-
+class LivePlugin(WithInternalLog):
     """ 
         The interface for plugins that are run in parallel
         with the agent. Mostly used for visualization or 
         informal statistics.
     """
- 
+
+    __metaclass__ = ContractsMeta
+
     @abstractmethod
     def init(self, init_data):
         """

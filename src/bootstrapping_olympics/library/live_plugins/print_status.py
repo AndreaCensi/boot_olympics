@@ -1,8 +1,9 @@
+from bootstrapping_olympics import LivePlugin, logger
 from bootstrapping_olympics.utils import InAWhile
-from bootstrapping_olympics.interfaces.live_plugin import LivePlugin
-from bootstrapping_olympics import logger
+
 
 __all__ = ['PrintStatus']
+
 
 class PrintStatus(LivePlugin):
     
