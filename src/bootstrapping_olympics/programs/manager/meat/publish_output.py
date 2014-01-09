@@ -1,14 +1,21 @@
-from . import load_agent_state, save_report
+import os
+
+from contracts import contract
+
 from bootstrapping_olympics import AgentInterface
+from bootstrapping_olympics.agent_states.learning_state import LearningState
 from bootstrapping_olympics.programs.manager.meat.data_central import (
     DataCentral)
-from contracts import contract
 from reprep import Report
-import os
+
+from .load_agent_state import load_agent_state
+from .report_utils import save_report
+
 
 __all__ = ['publish_once', 'publish_agent_output', 'get_agent_report',
            'get_agentstate_report',
            'get_agent_report_from_state']
+
 
 def publish_once(data_central, id_agent, id_robot,
                  phase='learn', progress='all',
@@ -25,23 +32,24 @@ def publish_once(data_central, id_agent, id_robot,
     res_dir = ds.get_report_res_dir(id_agent=id_agent, id_robot=id_robot,
                                     id_state=state.id_state, phase=phase)
 
-    publish_agent_output(data_central, state, agent, progress,
+    publish_agent_output(data_central=data_central, state=state, agent=agent,
+                         progress=progress,
                          save_pickle=save_pickle,
                          filename=filename, rd=res_dir) 
 
-
+@contract(data_central=DataCentral, state=LearningState, agent=AgentInterface)
 def publish_agent_output(data_central, state, agent, progress, filename, rd=None,
                          save_pickle=False):
 
     if rd is None:
         rd = os.path.join(os.path.dirname(filename), 'images')
         
-    report = get_agent_report_from_state(state, agent, progress)
+    report = get_agent_report_from_state(agent=agent, state=state, progress=progress)
     save_report(data_central, report, filename, resources_dir=rd,
                 save_pickle=save_pickle) 
 
 @contract(returns=Report,
-          agent=AgentInterface, state='*', progress='str')
+          agent=AgentInterface, state=LearningState, progress='str')
 def get_agent_report_from_state(agent, state, progress):
     rid = ('%s-%s-%s' % (state.id_agent, state.id_robot, progress))
 
