@@ -1,11 +1,13 @@
-from .jobs_parallel import save_state
+from contracts import contract
+
 from bootstrapping_olympics.programs.manager import (DataCentral,
     get_agentstate_report)
-from contracts import contract
 from quickapp import CompmakeContext, iterate_context_names
 from quickapp_boot import RM_EPISODE_READY
 from quickapp_boot.jobs.jobs_parallel import jobs_merging_recursive
 from quickapp_boot.programs import LearnLogNoSaveHintRepeated
+
+from .jobs_parallel import save_state
 
 
 __all__ = ['jobs_parallel_learning_concurrent_reps']

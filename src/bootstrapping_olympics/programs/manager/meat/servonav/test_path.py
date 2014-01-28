@@ -1,9 +1,11 @@
-from .find_path import get_grid
+from pprint import pprint
+
 from bootstrapping_olympics import get_boot_config
 from bootstrapping_olympics.utils import yaml_dump
 from conf_tools import GlobalConfig
 from geometry import SE2_from_SE3
-from pprint import pprint
+
+from .find_path import get_grid
 
 
 def main():

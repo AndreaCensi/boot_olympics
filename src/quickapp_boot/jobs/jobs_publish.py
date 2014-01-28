@@ -25,12 +25,22 @@ def jobs_publish_learning(context, boot_root, id_agent, id_robot):
     
     report = context.comp_config(get_agent_report,
                                  data_central=DataCentral(boot_root),
-                                id_agent=id_agent, id_robot=id_robot, progress='all',
-                                extra_dep=[learn])
+                                 id_agent=id_agent, id_robot=id_robot, progress='all',
+                                 extra_dep=[learn])
                           
     context.add_report(report, 'agent_report_partial',
                        id_agent=id_agent, id_robot=id_robot, progress='all')
 
-#     context.subtask(PublishLearningResult,
-#                     boot_root=boot_root, agent=id_agent, robot=id_robot)
 
+# This has data_central instead of boot_root
+@contract(context=CompmakeContext, id_agent='str', id_robot='str')
+def jobs_publish_learning2(context, data_central, id_agent, id_robot):
+    learn = context.get_resource(RM_AGENT_LEARN, id_agent=id_agent, id_robot=id_robot)
+
+    report = context.comp_config(get_agent_report,
+                                 data_central=data_central,
+                                id_agent=id_agent, id_robot=id_robot, progress='all',
+                                extra_dep=[learn])
+
+    context.add_report(report, 'agent_report_partial',
+                       id_agent=id_agent, id_robot=id_robot, progress='all')
