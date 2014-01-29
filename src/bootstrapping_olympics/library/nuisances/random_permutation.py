@@ -1,7 +1,9 @@
+from contracts import contract
+
 from bootstrapping_olympics import (RepresentationNuisance, new_streamels,
     check_streamels_1D)
-from contracts import contract
 import numpy as np
+
 
 __all__ = ['RandomPermutation']
 

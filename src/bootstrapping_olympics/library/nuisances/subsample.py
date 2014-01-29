@@ -1,6 +1,8 @@
+from contracts import contract
+
 from bootstrapping_olympics import (RepresentationNuisance, NuisanceNotInvertible,
     check_streamels_1D)
-from contracts import contract
+
 
 __all__ = ['Subsample']
 

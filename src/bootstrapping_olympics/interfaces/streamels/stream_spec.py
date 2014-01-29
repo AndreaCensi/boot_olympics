@@ -1,12 +1,16 @@
-from .base import (BOOT_OLYMPICS_SENSEL_RESOLUTION, check_valid_streamels,
-    streamel_dtype, ValueFormats)
+from numbers import Number
+
+from contracts import check, describe_type, describe_value, contract
+
 from bootstrapping_olympics import logger
 from bootstrapping_olympics.utils import (assert_allequal_verbose,
     assert_allclose_verbose, display_some, display_some_extended)
-from contracts import check, describe_type, describe_value, contract
-from numbers import Number
 import numpy as np
-    
+
+from .base import (BOOT_OLYMPICS_SENSEL_RESOLUTION, check_valid_streamels,
+    streamel_dtype, ValueFormats)
+
+
 __all__ = ['StreamSpec', 'BootInvalidValue', 'streamels_all_of_kind']
  
 # TODO: check how it is used

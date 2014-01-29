@@ -1,7 +1,10 @@
-from .base import ValueFormats
 from contracts import contract
+
 import numpy as np
+
+from .base import ValueFormats
 from .stream_spec import streamels_all_of_kind
+
 
 __all__ = [
     'check_streamels_1D',
@@ -9,7 +12,8 @@ __all__ = [
     'check_streamels_1D_size',
     'check_streamels_continuous',
     'check_streamels_range',
-    'check_1d_bit_sequence'
+    'check_1d_bit_sequence',
+    'check_streamels_rgb'
 ]
 
 @contract(streamels='streamel_array')
@@ -19,6 +23,22 @@ def check_streamels_1D(streamels):
         msg = ('Only 1D streams are supported; shape is %s.'
                 % str(streamels.shape))
         raise UnsupportedSpec(msg)
+
+
+@contract(streamels='streamel_array')
+def check_streamels_rgb(streamels):
+    """ Checks that the streamels are RGB images (float between 0-1). """
+    check_streamels_continuous(streamels)
+    check_streamels_range(streamels, 0, 1)
+    from bootstrapping_olympics import UnsupportedSpec
+    def bail(m):
+        msg = '%s\nstreamels: %s' % (m, streamels)
+        raise UnsupportedSpec(msg)
+    if len(streamels.shape) != 3:
+        bail('Shape is not 3-dim.')
+    if streamels.shape[2] != 3:
+        bail('Shape does not have 3 components.')
+
 
 @contract(streamels='streamel_array')
 def check_streamels_2D(streamels):
