@@ -1,12 +1,14 @@
-from . import BatchConfigMaster
-from ..meat import DataCentral
+import os
+from pprint import pformat
+
 from bootstrapping_olympics import logger
 from bootstrapping_olympics.utils import (safe_makedirs, safe_symlink, UserError,
     expand_string)
 from conf_tools import import_name, ConfToolsException
 from conf_tools.utils import friendly_path
-from pprint import pformat
-import os
+
+from . import BatchConfigMaster
+from ..meat import DataCentral
 
 
 def batch_process_manager(data_central, which_sets, command=None):

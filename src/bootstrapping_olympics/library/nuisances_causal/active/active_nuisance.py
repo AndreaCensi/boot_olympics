@@ -1,8 +1,13 @@
+from contracts import contract
+
 from blocks import SimpleBlackBox, WithQueue, Identity
 from bootstrapping_olympics import (BootSpec, RepresentationNuisanceCausal,
     BootWithInternalLog, check_streamels_1D, make_streamel_bit, streamels_join_1D,
     StreamSpec)
-from contracts import contract
+
+
+__all__ = ['ActiveNuisance']
+
 
 class ActiveNuisance(RepresentationNuisanceCausal):
     

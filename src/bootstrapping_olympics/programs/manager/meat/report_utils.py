@@ -1,8 +1,9 @@
+import os
+
 from bootstrapping_olympics import logger
 from bootstrapping_olympics.utils import (isodate, safe_pickle_dump,
     warn_long_time_writing, warn_long_time_reading)
-from reprep.output import report_from_hdf
-import os
+
 
 __all__ = ['save_report']
 
@@ -11,6 +12,14 @@ def save_report(data_central, report, filename, resources_dir=None,
                 save_pickle=False, save_hdf=True,
                 check_hdf_written_correctly=True):
     """ filename.html """
+
+    try:
+        from reprep.output import report_from_hdf
+    except Exception as e:
+        logger.exception(e)
+        logger.warning('No HDF support from Reprep. (%s)' % e)
+        raise
+
     
     report.text('report_date', isodate())  # TODO: add other stuff
     

@@ -17,7 +17,7 @@ class DirectoryStructure(object):
     '''
     DEFAULT_ROOT = '.'
 
-    DIR_REPORTS = 'reports'
+    DIR_REPORTS = 'report'
     DIR_VIDEOS = 'videos'
     DIR_CONFIG = 'config'
     DIR_LOGS = 'logs'
