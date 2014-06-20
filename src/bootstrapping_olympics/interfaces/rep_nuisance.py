@@ -1,11 +1,12 @@
 from .streamels import StreamSpec
 from contracts import contract, ContractsMeta, new_contract
 from abc import abstractmethod
+from decent_logs import WithInternalLog
 
 __all__ = ['RepresentationNuisance', 'NuisanceNotInvertible']
 
 
-class RepresentationNuisance(object):
+class RepresentationNuisance(WithInternalLog):
     ''' Encapsulates the idea of a representation nuisance,
         either on the observations or the commands. '''
     

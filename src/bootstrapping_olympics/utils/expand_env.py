@@ -1,5 +1,6 @@
 import os
 
+__all__ = ['expand_environment']
 
 def expand_environment(s):
     ''' Expands ~ and ${ENV} in the string. '''

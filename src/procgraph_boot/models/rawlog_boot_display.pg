@@ -1,0 +1,36 @@
+--- model rawlog_boot_display
+""" Reads boot observations according to configuration id_robot
+    from the given rawlog. """
+
+config id_robot
+config id_rawlog
+config rawlog
+
+config out_base "Prefix for output files" 
+config container = 'mp4'
+config md = {} "Metadata to put in video"
+
+|rawlog_boot_reader id_robot=$id_robot id_rawlog=$id_rawlog rawlog=$rawlog| -> bd
+
+bd -> |extract_sensels| -> y 
+bd -> |extract_commands| -> u 
+
+
+u -> |commands_display_posneg| ->  \
+     |resize_if_necessary| -> u_rgb -> \
+     |boot_encode md=$md  file="${out_base}.u.posneg.${container}"|
+
+y -> |streamels_display_square| -> \
+      |resize_if_necessary| -> \
+     |square:boot_encode md=$md file="${out_base}.y.square.${container}"|
+
+y -> |streamels_display_bands| -> \
+      |resize_if_necessary| -> y_rgb -> \
+     |band:boot_encode md=$md file="${out_base}.y.band.${container}"|
+
+
+u_rgb, y_rgb -> |sync| -> |grid| -> rgb
+
+rgb->|boot_encode md=$md  file="${out_base}.display1.${container}"|
+
+

@@ -14,8 +14,10 @@ class Resample(RepresentationNuisance):
     ''' Resamples a 2D stream. Not invertible. '''
 
     @contract(shape='seq[2](int,>=1)')
-    def __init__(self, shape):
+    def __init__(self, shape, be_liberal=True):
         self.shape_to = shape
+        self.be_liberal = be_liberal
+        self.warned = False
 
     def inverse(self):
         raise NuisanceNotInvertible()
@@ -32,7 +34,17 @@ class Resample(RepresentationNuisance):
 
     @contract(value='array[HxW]')
     def transform_value(self, value):
-        assert value.shape == self.shape_from        
+        if not value.shape == self.shape_from:
+            msg = ('We were given value with shape %s instead of '
+                   'expected %s.' % (value.shape, self.shape_from))
+            if not self.be_liberal:
+                raise ValueError(msg)
+            else:
+                if not self.warned:
+                    self.warned = True
+                    self.error(msg)
+
+        # assert value.shape == self.shape_from
         from scipy.misc import imresize
         y = imresize(value, self.shape_to, mode='F')
         y = np.array(y, dtype='float32')      

@@ -1,10 +1,10 @@
-from bootstrapping_olympics.configuration.master import get_boot_config
-from bootstrapping_olympics.interfaces import StreamSpec
-from bootstrapping_olympics.interfaces.agent import UnsupportedSpec
-from bootstrapping_olympics.interfaces.streamels import make_streamels_float
-from procgraph import Block
 import warnings
 
+from bootstrapping_olympics import StreamSpec, UnsupportedSpec, get_boot_config, make_streamels_float
+from procgraph import Block
+
+
+__all__ = ['ApplyNuisance']
 
 class ApplyNuisance(Block):
     """ Applies a nuisance to the signal. """ 

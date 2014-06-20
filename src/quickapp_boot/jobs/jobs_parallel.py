@@ -1,11 +1,13 @@
+from contracts import contract
+
 from bootstrapping_olympics.programs.manager import (DataCentral,
     get_agentstate_report)
 from compmake import Promise
-from contracts import contract
+import numpy as np
 from quickapp import CompmakeContext, iterate_context_names
 from quickapp_boot import RM_EPISODE_READY
 from quickapp_boot.programs import LearnLogNoSave
-import numpy as np
+
 
 __all__ = ['jobs_parallel_learning']
 
@@ -76,7 +78,7 @@ def jobs_parallel_learning(context, data_central, id_agent, id_robot, episodes,
 
 @contract(context=CompmakeContext, agents='list[>=1]', returns=Promise)
 def jobs_merging_recursive(context, agents):
-    """ merges hyerarchically """
+    """ merges hierarchically """
     n = len(agents)
     if n == 1:
         return agents[0]
@@ -108,6 +110,7 @@ def save_state(data_central, id_agent, id_robot, agent_state):
     db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
     return agent_state
 
+
 @contract(returns='list(list(str))')
 def get_tranches(ids, episodes_per_tranche=10):
     """ Returns a list of list """
@@ -118,3 +121,6 @@ def get_tranches(ids, episodes_per_tranche=10):
         e_to = min(len(ids), e_from + episodes_per_tranche)
         l.append([ids[i] for i in range(e_from, e_to)])
     return l
+
+
+

@@ -1,5 +1,6 @@
-from bootstrapping_olympics import LivePlugin, logger
 from contracts import contract
+
+from bootstrapping_olympics import LivePlugin, logger
 from procgraph.core.model_loader import pg_look_for_models
 from procgraph.core.registrar import default_library, Library
 

@@ -1,10 +1,13 @@
+import time
+import warnings
+
+from contracts import contract
+
 from blocks import SimpleBlackBox
 from blocks.utils import bb_pump
 from bootstrapping_olympics import (RepresentationNuisanceCausal, RobotInterface,
     RobotObservations, get_boot_config, BootWithInternalLog)
-from contracts import contract
-import warnings
-import time
+
 
 def bb_get_block_poll_sleep(bb, timeout, sleep):
     t0 = time.time()

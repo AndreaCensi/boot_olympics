@@ -191,11 +191,9 @@ class AgentInterface(PassiveAgentInterface):
         """
         raise NotImplementedError()
     
-    def merge(self, other):
-        raise NotImplementedError()
-    
-    
-    
+    def merge(self, other):  # @UnusedVariable
+        msg = 'Capability merge() not implemented for %s.' % (type(self))
+        raise NotImplementedError(msg)
     
     # Serialization stuff
     
