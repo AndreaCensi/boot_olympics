@@ -1,32 +1,14 @@
-import time
 import warnings
 
 from contracts import contract
 
-from blocks import SimpleBlackBox
-from blocks.utils import bb_pump
+from blocks import SimpleBlackBox, bb_get_block_poll_sleep, bb_pump
 from bootstrapping_olympics import (RepresentationNuisanceCausal, RobotInterface,
-    RobotObservations, get_boot_config, BootWithInternalLog)
+    RobotObservations, get_boot_config)
+from decent_logs import WithInternalLog
 
 
-def bb_get_block_poll_sleep(bb, timeout, sleep):
-    t0 = time.time()
-    while True:
-        t1 = time.time()
-        delta = t1 - t0
-        if timeout is not None and delta > timeout:
-            msg = 'timeout: %s > %s' % (delta, timeout)
-            raise SimpleBlackBox.NotReady(msg)
-        try:
-            value = bb.get(block=False)
-            return value
-        except SimpleBlackBox.NotReady:
-            pass
-        
-        time.sleep(sleep)
-    
-
-class RobotAsBlackBox(BootWithInternalLog):
+class RobotAsBlackBox(WithInternalLog):
     
     @contract(robot=RobotInterface)
     def __init__(self, robot, sleep=0.1):

@@ -1,9 +1,10 @@
-from procgraph import simple_block
-from procgraph_images.reshape_rect import reshape_rectangular
-from procgraph_images.reshape_smart import reshape2d
-from reprep.graphics import rgb_zoom
-import numpy as np
 from contracts import contract
+
+import numpy as np
+from procgraph import simple_block
+from procgraph_images import reshape2d, reshape_rectangular
+from reprep.graphics import rgb_zoom
+
 
 @simple_block
 def resize_if_necessary(rgb):

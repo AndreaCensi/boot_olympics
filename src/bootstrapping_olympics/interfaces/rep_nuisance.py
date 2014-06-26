@@ -1,9 +1,16 @@
-from .streamels import StreamSpec
-from contracts import contract, ContractsMeta, new_contract
 from abc import abstractmethod
+
+from contracts import contract, ContractsMeta, new_contract
+
 from decent_logs import WithInternalLog
 
+from .streamels import StreamSpec
+
+
 __all__ = ['RepresentationNuisance', 'NuisanceNotInvertible']
+
+class NuisanceNotInvertible(ValueError):
+    pass
 
 
 class RepresentationNuisance(WithInternalLog):
@@ -49,7 +56,3 @@ class RepresentationNuisance(WithInternalLog):
         ''' Returns the transformed value. '''
 
 new_contract('RepresentationNuisance', RepresentationNuisance)
-
-class NuisanceNotInvertible(ValueError):
-    pass
-

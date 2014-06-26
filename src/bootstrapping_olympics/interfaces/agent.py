@@ -1,9 +1,11 @@
 from abc import abstractmethod
+
 from contracts import ContractsMeta, contract
 
 from decent_logs import WithInternalLog
-from reprep import Report
-from reprep.interface import ReportInterface
+from reprep import Report, ReportInterface
+from blocks.simple_black_box import Sink
+
 
 __all__ = ['AgentInterface', 'UnsupportedSpec', 'ServoAgentInterface',
            'PredictorAgentInterface', 'PassiveAgentInterface']
@@ -18,8 +20,8 @@ class PassiveAgentInterface(WithInternalLog):
 
     class LearningConverged(Exception):
         """ 
-        Thrown by process_observations() in learning agents
-        to signal that they do not need more data to converge. 
+            Thrown by process_observations() in learning agents
+            to signal that they do not need more data to converge. 
         """
         pass
 
@@ -52,12 +54,31 @@ class PassiveAgentInterface(WithInternalLog):
     def publish(self, pub):
         return self.display(pub)
     
-
     @contract(report=ReportInterface)
     def display(self, report):
         report.text('warn', 'display not implemented for %r' % type(self).__name__)
 
-        
+    @contract(returns=Sink)
+    def get_learner_as_sink(self):
+        """ 
+            Returns something that you can "put" things into.
+            timestamp, bd
+            bd['observations']
+        """
+        return LearnerAsSystem(self)
+
+class LearnerAsSystem(Sink):
+    """ Implements the push interface for agents """
+    def __init__(self, agent):
+        self.agent = agent
+
+    def put(self, value, block=True):  # @UnusedVariable
+        timestamp, bd = value  # @UnusedVariable
+        try:
+            self.agent.process_observations(bd)
+        except PassiveAgentInterface.LearningConverged:
+            raise
+
 
 class ActiveAgentInterface(PassiveAgentInterface):
     
@@ -114,9 +135,6 @@ class PredictorAgentInterface(PassiveAgentInterface):
     def estimate_u(self):
         """ Estimate current u """
 
-
-    
-
 class AgentInterface(PassiveAgentInterface):
     ''' 
         
@@ -170,14 +188,16 @@ class AgentInterface(PassiveAgentInterface):
 
     @contract(returns=PredictorAgentInterface)
     def get_predictor(self):
-        raise NotImplementedError()
+        msg = 'Capability get_predictor() not implemented for %s.' % (type(self))
+        raise NotImplementedError(msg)
 
     @contract(returns=ServoAgentInterface)
     def get_servo(self):
-        raise NotImplementedError()
+        msg = 'Capability get_servo() not implemented for %s.' % (type(self))
+        raise NotImplementedError(msg)
 
     @contract(i='int,>=0,i', n='int,>=1,>=i')
-    def parallel_process_hint(self, i, n):
+    def parallel_process_hint(self, i, n):  # @UnusedVariable
         """ 
             Hint for parallel processing. It tells this instance that
             it is instance "i" of "n" that sees the same data.
@@ -189,7 +209,8 @@ class AgentInterface(PassiveAgentInterface):
             2) Different learners look at the same thing.
                 Then parallel_process_hint(0, 1) is called for all learners.
         """
-        raise NotImplementedError()
+        msg = 'Capability parallel_process_hint() not implemented for %s.' % (type(self))
+        raise NotImplementedError(msg)
     
     def merge(self, other):  # @UnusedVariable
         msg = 'Capability merge() not implemented for %s.' % (type(self))

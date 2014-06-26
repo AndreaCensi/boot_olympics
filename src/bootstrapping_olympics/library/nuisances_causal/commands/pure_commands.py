@@ -1,6 +1,8 @@
-from bootstrapping_olympics import BootWithInternalLog
 from collections import namedtuple
+
 from contracts import contract, new_contract
+
+from decent_logs import WithInternalLog
 
 
 PureCommandsLast = namedtuple('PureCommandsLast',
@@ -9,7 +11,7 @@ PureCommandsLast = namedtuple('PureCommandsLast',
 new_contract('PureCommandsLast', PureCommandsLast)
 
 
-class PureCommands(BootWithInternalLog):
+class PureCommands(WithInternalLog):
     """ 
         Converts a stream of observations/commands pairs to
         discrete (y0, y1, commands), provided that the commands

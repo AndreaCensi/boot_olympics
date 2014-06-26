@@ -1,12 +1,15 @@
-from conf_tools import ConfigMaster, check_generic_code_desc, ObjectSpec
 from contracts import contract
 
+from conf_tools import ConfigMaster, check_generic_code_desc, ObjectSpec
 
-__all__ = ['get_boot_config',
-           'get_conftools_agents',
-           'get_conftools_robots',
-           'get_conftools_nuisances',
-           'get_conftools_nuisances_causal']
+
+__all__ = [
+   'get_boot_config',
+   'get_conftools_agents',
+   'get_conftools_robots',
+   'get_conftools_nuisances',
+   'get_conftools_nuisances_causal',
+]
 
 
 @contract(returns=ObjectSpec)
@@ -37,11 +40,13 @@ class BootConfigMaster(ConfigMaster):
         from bootstrapping_olympics import PassiveRobotInterface
         from bootstrapping_olympics import RepresentationNuisanceCausal
         from bootstrapping_olympics import RepresentationNuisance
-        from bootstrapping_olympics import AgentInterface
+        # from bootstrapping_olympics import AgentInterface
+        from bootstrapping_olympics import PassiveAgentInterface
         from bootstrapping_olympics import LivePlugin
  
         self.robots = self.add_class_generic('robots', '*.robots.yaml', PassiveRobotInterface)
-        self.agents = self.add_class_generic('agents', '*.agents.yaml', AgentInterface)
+
+        self.agents = self.add_class_generic('agents', '*.agents.yaml', PassiveAgentInterface)
 
         self.nuisances = self.add_class_generic('nuisances', '*.nuisances.yaml', RepresentationNuisance)
         self.nuisances_causal = self.add_class_generic('nuisances_causal',

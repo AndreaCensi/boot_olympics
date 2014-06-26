@@ -1,6 +1,8 @@
 --- model rawlog_boot_display
-""" Reads boot observations according to configuration id_robot
-    from the given rawlog. """
+""" 
+    Reads boot observations according to configuration id_robot
+    from the given rawlog and creates a visualization. 
+"""
 
 config id_robot
 config id_rawlog
@@ -15,22 +17,23 @@ config md = {} "Metadata to put in video"
 bd -> |extract_sensels| -> y 
 bd -> |extract_commands| -> u 
 
-
-u -> |commands_display_posneg| ->  \
+u -> |commands_display_history| ->  \
      |resize_if_necessary| -> u_rgb -> \
      |boot_encode md=$md  file="${out_base}.u.posneg.${container}"|
 
 y -> |streamels_display_square| -> \
-      |resize_if_necessary| -> \
+      |resize_if_necessary| -> y_rgb ->  \
      |square:boot_encode md=$md file="${out_base}.y.square.${container}"|
+# Does not work for some reason
+# y -> |streamels_display_bands| -> \
+#       |resize_if_necessary| -> y2_rgb -> \
+#      |band:boot_encode md=$md file="${out_base}.y.band.${container}"|
 
-y -> |streamels_display_bands| -> \
-      |resize_if_necessary| -> y_rgb -> \
-     |band:boot_encode md=$md file="${out_base}.y.band.${container}"|
+# u_rgb -> |info|
+# y_rgb -> |info|
+# y2_rgb -> |info|
+u_rgb, y_rgb ->  |grid| -> rgb 
 
-
-u_rgb, y_rgb -> |sync| -> |grid| -> rgb
-
-rgb->|boot_encode md=$md  file="${out_base}.display1.${container}"|
+rgb -> |boot_encode md=$md  file="${out_base}.display1.${container}"|
 
 

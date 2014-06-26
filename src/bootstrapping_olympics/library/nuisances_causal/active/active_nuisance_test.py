@@ -1,11 +1,13 @@
-from bootstrapping_olympics.interfaces import BootSpec, StreamSpec
-from bootstrapping_olympics.interfaces.streamels import (make_streamels_rgb_float,
-    make_streamels_1D_float)
-from bootstrapping_olympics.library.robots import EquivRobotCausal, RandomRobot
 import unittest
+
+from bootstrapping_olympics import (
+    make_streamels_1D_float, BootSpec, StreamSpec)
+from bootstrapping_olympics.library.robots import EquivRobotCausal, RandomRobot
+from bootstrapping_olympics.utils import assert_allclose
 import numpy as np
-from bootstrapping_olympics.library.nuisances_causal.active.active_nuisance import ActiveNuisance
-from bootstrapping_olympics.utils.numpy_backported import assert_allclose
+
+from .active_nuisance import ActiveNuisance
+
 
 class ActiveNuisanceTest(unittest.TestCase):
     

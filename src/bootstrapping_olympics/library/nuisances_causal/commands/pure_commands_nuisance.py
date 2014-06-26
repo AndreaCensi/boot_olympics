@@ -1,10 +1,14 @@
-from .pure_commands import PureCommands
-from blocks import SimpleBlackBox
-from blocks.utils import WithQueue
-from bootstrapping_olympics import (RepresentationNuisanceCausal, BootSpec,
-    BootWithInternalLog)
-from contracts import contract
 import warnings
+
+from contracts import contract
+
+from blocks import SimpleBlackBox
+from blocks import WithQueue
+from bootstrapping_olympics import (RepresentationNuisanceCausal, BootSpec,
+    )
+from decent_logs import WithInternalLog
+
+from .pure_commands import PureCommands
 
 
 __all__ = ['PureCommandsNuisance']
@@ -25,7 +29,7 @@ class PureCommandsNuisance(RepresentationNuisanceCausal):
     @contract(returns=SimpleBlackBox)
     def get_pre(self):
 
-        class PureCommandsPreFilter(BootWithInternalLog, WithQueue):
+        class PureCommandsPreFilter(WithInternalLog, WithQueue):
    
             def __init__(self, n, interval):
                 WithQueue.__init__(self)
@@ -48,7 +52,7 @@ class PureCommandsNuisance(RepresentationNuisanceCausal):
     @contract(returns=SimpleBlackBox)
     def get_post(self):
  
-        class PostFilter(BootWithInternalLog, WithQueue):
+        class PostFilter(WithInternalLog, WithQueue):
             
             def __init__(self, delta):
                 WithQueue.__init__(self)

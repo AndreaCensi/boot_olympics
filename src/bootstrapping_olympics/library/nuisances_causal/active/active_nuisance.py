@@ -1,9 +1,10 @@
 from contracts import contract
 
-from blocks import SimpleBlackBox, WithQueue, Identity
+from blocks import Identity, SimpleBlackBox, WithQueue
 from bootstrapping_olympics import (BootSpec, RepresentationNuisanceCausal,
-    BootWithInternalLog, check_streamels_1D, make_streamel_bit, streamels_join_1D,
+     check_streamels_1D, make_streamel_bit, streamels_join_1D,
     StreamSpec)
+from decent_logs import WithInternalLog
 
 
 __all__ = ['ActiveNuisance']
@@ -41,7 +42,7 @@ class ActiveNuisance(RepresentationNuisanceCausal):
     @contract(returns=SimpleBlackBox)
     def get_post(self):
  
-        class PostFilter(BootWithInternalLog, WithQueue):
+        class PostFilter(WithInternalLog, WithQueue):
             
             def __repr__(self):
                 return 'PostFilter()'

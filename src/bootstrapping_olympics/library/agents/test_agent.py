@@ -3,6 +3,7 @@
 from bootstrapping_olympics import AgentInterface
 import numpy as np
 
+
 __all__ = ['TestAgent']
 
 

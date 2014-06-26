@@ -1,14 +1,20 @@
-from .boot_spec import BootSpec
 from abc import abstractmethod
-from blocks import SimpleBlackBox
+
 from contracts import ContractsMeta, contract
-    
+
+from blocks import SimpleBlackBox
+from decent_logs import WithInternalLog
+
+from .boot_spec import BootSpec
+
+
 __all__ = ['RepresentationNuisanceCausal']
 
 
-class RepresentationNuisanceCausal(object):
+class RepresentationNuisanceCausal(WithInternalLog):
     ''' 
-
+        A Representation Nuisance that is a pair of dynamical systems:
+        one before and one after the original system.
     '''
     
     __metaclass__ = ContractsMeta
@@ -16,12 +22,15 @@ class RepresentationNuisanceCausal(object):
     class NotInvertible(Exception):
         pass
 
+    @abstractmethod
     def inverse(self):
         ''' 
             Returns the inverse representation nuisance,
             or raises NotInvertible 
         '''
+        raise NotImplemented(type(self))
 
+    @abstractmethod
     @contract(spec=BootSpec, returns=BootSpec)
     def transform_spec(self, spec):
         ''' 

@@ -8,6 +8,10 @@ __all__ = ['RawlogBootReader']
 
 
 class RawlogBootReader(IteratorGenerator):
+    """ 
+        Instances a ROSRobot and looks at what comes out from
+        the given log. 
+    """
     Block.alias('rawlog_boot_reader')
     Block.config('id_robot', dtype='str')
     Block.config('id_rawlog', 'Rawlog description (used as id_episode)',

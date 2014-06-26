@@ -1,0 +1,9 @@
+--- model commands_display_history
+""" Displays the commands as history of values """
+config width = 512
+config height = 512
+config interval = 10 
+input u
+output rgb
+
+|input name=u| -> |historyt interval=$interval| --> |plot width=$width height=$height| -> |output name=rgb|
