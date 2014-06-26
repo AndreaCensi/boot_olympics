@@ -3,23 +3,13 @@ from unittest.case import TestCase
 from contracts import contract
 
 from blocks.composition import series
+from blocks.library import Delay
 from blocks.library import FromData
 from blocks.library import Identity
 from blocks.library import NameSignal
 from blocks.library import Split
+from blocks.library import WithQueue
 from blocks.pumps import source_read_all_block
-from blocks.with_queue import WithQueue
-
-
-class Delay(WithQueue):
-    def __init__(self, delay):
-        WithQueue.__init__(self)
-        self.delay = delay
-
-    def put(self, value, block=False, timeout=None):  # @UnusedVariable
-        t, x = value
-        t2 = t + self.delay
-        self.append((t2, x))
 
 
 class HTest(WithQueue):
@@ -28,7 +18,7 @@ class HTest(WithQueue):
         WithQueue.__init__(self)
         self.sign = +1
 
-    def put(self, value, block=False, timeout=None):  # @UnusedVariable
+    def put_noblock(self, value):
         if(not(isinstance(value, tuple) and len(value) == 2 and
             isinstance(value[1], tuple) and len(value[1]) == 2)):
             msg = 'Invalid value: %s' % value
@@ -84,20 +74,10 @@ class NamingTests(TestCase):
         self.assertEqual(expected, res)
 
     def complex_nuisance_test_2(self):
-
-
         R = Identity()
         G = Identity()
         G2 = Identity()
-#         H = HTest()
-
-#         S = series(G, series(R, NameSignal('observations')))
-
         S = series(G, series(R, G2))
-#         S = series(G, R)
-#         
-#         S = series(Split(NameSignal('commands'),
-#                
 
         data = [(0.0, 10), (1.0, 20), (2.0, 31)]
         s = FromData(data)

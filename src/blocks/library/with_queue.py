@@ -1,6 +1,5 @@
-from blocks.exceptions import NotReady, Finished
-
-from .simple_black_box import SimpleBlackBox
+from blocks import NotReady, Finished, SimpleBlackBox
+from abc import abstractmethod
 
 
 __all__ = ['WithQueue']
@@ -10,8 +9,12 @@ class WithQueue(SimpleBlackBox):
         A black box that is implemented by doing something every time
         the element is put() inside.
     
-        Implement put() and use append() to output stuff.
+        Implement put_noblock() and use self.append() to output stuff.
     """
+
+    @abstractmethod
+    def put_noblock(self, value):
+        pass
 
     def __init__(self):
         self._queue = []
@@ -36,6 +39,9 @@ class WithQueue(SimpleBlackBox):
         # print('end_input() called for %s' % self)
         self._finished = True
 
+    def put(self, value, block=False, timeout=None):
+        self.put_noblock(value)
+    
 
 #         if len(self._queue) > 100:
 #             print('%s: Warning, too much growth? %s'

@@ -1,6 +1,6 @@
 from .exceptions import *
-from .simple_black_box import *
-from .with_queue import *
+from blocks.interface import *
+from blocks.library.with_queue import *
 from .pumps import *
 from .utils import *
 

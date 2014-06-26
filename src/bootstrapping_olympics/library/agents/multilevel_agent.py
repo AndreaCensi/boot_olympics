@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 from contracts import contract, describe_value
 
-from blocks.simple_black_box import Sink
+from blocks.interface import Sink
 from bootstrapping_olympics import AgentInterface, PassiveAgentInterface, get_conftools_agents
 from bootstrapping_olympics import RepresentationNuisanceCausal
 
@@ -93,7 +93,7 @@ class MultiLearningSink_(Sink):
         self.sink2 = None
         self.boot_spec = boot_spec
         
-    def put(self, value, block):
+    def put(self, value, block=True, timeout=None):
         if not self.ma.first_converged:
             try:
                 self.sink1.put(value, block)

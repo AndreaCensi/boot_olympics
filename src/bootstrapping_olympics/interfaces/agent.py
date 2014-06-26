@@ -4,7 +4,7 @@ from contracts import ContractsMeta, contract
 
 from decent_logs import WithInternalLog
 from reprep import Report, ReportInterface
-from blocks.simple_black_box import Sink
+from blocks.interface import Sink
 
 
 __all__ = ['AgentInterface', 'UnsupportedSpec', 'ServoAgentInterface',
@@ -72,7 +72,7 @@ class LearnerAsSystem(Sink):
     def __init__(self, agent):
         self.agent = agent
 
-    def put(self, value, block=True):  # @UnusedVariable
+    def put(self, value, block=True, timeout=None):  # @UnusedVariable
         timestamp, bd = value  # @UnusedVariable
         try:
             self.agent.process_observations(bd)

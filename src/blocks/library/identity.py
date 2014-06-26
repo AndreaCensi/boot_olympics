@@ -1,9 +1,9 @@
-from blocks import WithQueue
+from .with_queue import WithQueue
 
 __all__ = ['Identity']
     
 class Identity(WithQueue):
 
-    def put(self, value, block, timeout):  # @UnusedVariable
+    def put_noblock(self, value):
         self.append(value)
         

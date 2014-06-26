@@ -1,4 +1,4 @@
-from blocks.with_queue import WithQueue
+from blocks.library.with_queue import WithQueue
 
 
 __all__ = ['NameSignal']
@@ -10,7 +10,7 @@ class NameSignal(WithQueue):
         WithQueue.__init__(self)
         self.name = name
 
-    def put(self, value, block=False, timeout=None):
+    def put_noblock(self, value):
         timestamp, ob = value
         x = timestamp, (self.name, ob)
         self.append(x)

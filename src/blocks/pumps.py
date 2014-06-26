@@ -3,7 +3,7 @@ import warnings
 from contracts import  contract
 
 from blocks import SimpleBlackBox
-from .simple_black_box import Source, Sink
+from blocks.interface import Source, Sink
 import time
 from blocks.exceptions import Finished
 

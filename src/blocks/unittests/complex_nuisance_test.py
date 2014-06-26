@@ -1,10 +1,10 @@
 from unittest.case import TestCase
 
 from blocks.composition import series
-from blocks.library.from_data import FromData
-from blocks.library.identity import Identity
+from blocks.library import FromData
+from blocks.library import Identity
+from blocks.library import WithQueue
 from blocks.pumps import source_read_all_block
-from blocks.with_queue import WithQueue
 import numpy as np
 
 
@@ -17,7 +17,7 @@ class SuperSample(WithQueue):
         self.min_interval = min_interval
         self.last = None
 
-    def put(self, value, block=False, timeout=None):
+    def put_noblock(self, value):
         if self.last is not None:
             t1, v1 = self.last
             t2, _ = value

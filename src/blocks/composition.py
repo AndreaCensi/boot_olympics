@@ -2,7 +2,7 @@ from contracts import contract, describe_value
 
 from .exceptions import NotReady, Finished
 from .pumps import bb_pump
-from .simple_black_box import SimpleBlackBox, Source
+from blocks.interface import SimpleBlackBox, Source
 
 
 __all__ = ['series']

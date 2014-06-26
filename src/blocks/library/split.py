@@ -1,8 +1,8 @@
 from contracts import contract
 
 from blocks import NotReady, Finished
-from blocks.simple_black_box import SimpleBlackBox
-from blocks.with_queue import WithQueue
+from blocks.interface import SimpleBlackBox
+from blocks.library.with_queue import WithQueue
 
 
 __all__ = ['Split']
@@ -21,10 +21,10 @@ class Split(WithQueue):
         self.log_add_child(name1, a)
         self.log_add_child(name2, b)
 
-    def put(self, value, block=False, timeout=None):
+    def put_noblock(self, value):
         # TODO: does not consider Full as a special case
-        self.a.put(value, block, timeout)
-        self.b.put(value, block, timeout)
+        self.a.put(value, block=False, timeout=None)
+        self.b.put(value, block=False, timeout=None)
 
         self._pump()
     def _pump(self):

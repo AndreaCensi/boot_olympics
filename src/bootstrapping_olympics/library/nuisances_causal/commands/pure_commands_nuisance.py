@@ -40,7 +40,7 @@ class PureCommandsNuisance(RepresentationNuisanceCausal):
                 return 'PureCommandsPreFilter(%s,%s)' % (self.n, self.interval)
             
             @contract(x='tuple(float, *)')
-            def put(self, x):
+            def put_noblock(self, x):
                 t, cmd = x
                 # multiply the commands
                 for i in range(self.n):

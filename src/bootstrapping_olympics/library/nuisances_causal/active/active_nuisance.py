@@ -48,7 +48,7 @@ class ActiveNuisance(RepresentationNuisanceCausal):
                 return 'PostFilter()'
                 
             @contract(value='tuple(float, tuple( (None|tuple(*,str)), RobotObservations))')
-            def put(self, value):
+            def put_noblock(self, value):
                 t, ((cmds, source), obs) = value
                 self.info('found cmds: %s' % str(cmds))
                 bit = cmds[-1] > 0
