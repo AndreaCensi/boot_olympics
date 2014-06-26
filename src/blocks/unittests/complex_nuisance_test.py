@@ -6,6 +6,7 @@ from blocks.library import Identity
 from blocks.library import WithQueue
 from blocks.pumps import source_read_all_block
 import numpy as np
+from blocks.library.to_data import ToData
 
 
 class SuperSample(WithQueue):
@@ -64,6 +65,21 @@ class ConnectionTests(TestCase):
         f = SuperSample(0.25)
         S = series(FromData(data), f)
         res = source_read_all_block(S)
+        self.assertEqual(res, out)
+
+    def series_test_3(self):
+        """  Series(SuperSample, ToData) """
+        data = [(0.0, 'A'), (1.0, 'B'), (2.0, 'C')]
+        out = [(0.0, 'A'), (0.25, 'A'), (0.5, 'A'), (0.75, 'A'),
+               (1.0, 'B'), (1.25, 'B'), (1.5, 'B'), (1.75, 'B'),
+               (2.0, 'C')]
+        f = SuperSample(0.25)
+        todata = ToData()
+        S = series(f, todata)
+        for x in data:
+            S.put(x)
+        S.end_input()
+        res = todata.get_data()
         self.assertEqual(res, out)
 
 

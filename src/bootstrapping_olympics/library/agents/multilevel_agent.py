@@ -14,9 +14,7 @@ class MultiLevelBase(PassiveAgentInterface):
     @abstractmethod
     @contract(returns=RepresentationNuisanceCausal)
     def get_transform(self):
-        """ Returns Nuisance at the end of learning. """
-
-
+        """ Returns the nuisance at the end of learning. """
 
 
 class MultiLevelAgent(AgentInterface):

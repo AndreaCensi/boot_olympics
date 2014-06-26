@@ -1,7 +1,7 @@
 from contracts import contract
 
-from bootstrapping_olympics import UnsupportedSpec
 from bootstrapping_olympics import AgentInterface
+from bootstrapping_olympics import UnsupportedSpec
 
 from .multilevel_agent import MultiLevelBase
 

@@ -1,20 +1,25 @@
+import warnings
+
 from contracts import contract, describe_value
 
-from .exceptions import NotReady, Finished
+from blocks import SimpleBlackBox, Source, Sink
+
+from .exceptions import Full, NotReady, Finished
 from .pumps import bb_pump
-from blocks.interface import SimpleBlackBox, Source
 
 
 __all__ = ['series']
 
 
 @contract(a='isinstance(SimpleBlackBox)|isinstance(Source)',
-          b='isinstance(SimpleBlackBox)')
+          b='isinstance(SimpleBlackBox)|isinstance(Sink)')
 def series(a, b, name1='a', name2='b'):
-    if isinstance(a, SimpleBlackBox):
-        return SimpleBlackBoxSeries(a, b, name1, name2)
-    if isinstance(a, Source):
+    if isinstance(a, SimpleBlackBox) and isinstance(b, SimpleBlackBox):
+        return BBBBSeries(a, b, name1, name2)
+    if isinstance(a, Source) and isinstance(b, SimpleBlackBox):
         return SourceBBSeries(a, b, name1, name2)
+    if isinstance(a, SimpleBlackBox) and isinstance(b, Sink):
+        return BBSinkSeries(a, b, name1, name2)
     assert(False)
 
 
@@ -52,21 +57,45 @@ class SourceBBSeries(Source):
             self.info('b finished: we are finished')
             raise
 
-  
-class SimpleBlackBoxSeries(SimpleBlackBox):
-    """ Implements series between two SimpleBlackBoxes """
 
-    @contract(a=SimpleBlackBox, b=SimpleBlackBox)
-    def __init__(self, a, b, name1='a', name2='b'):
+class BBSinkSeries(Sink):
+    """ Implements series between a Source and a SimpleBlackBox """
+
+    @contract(a=SimpleBlackBox, b=Sink)
+    def __init__(self, a, b, name1='bb', name2='sink'):
         self.a = a
         self.b = b
         self.log_add_child(name1, a)
         self.log_add_child(name2, b)
 
-#     def get_typsy_type(self):
-#         ta = self.a.get_typsy_type()
-#         tb = self.b.get_typsy_type()
-#         return BlackBox(ta.i, tb.o, ta.t)
+    @contract(block='bool', timeout='None|>=0', returns='None')
+    def put(self, value, block=False, timeout=None):
+        try:
+            self.a.put(value, block=block, timeout=timeout)
+        except Full:
+            warnings.warn('to implement')
+            raise
+        self._pump()
+
+    def _pump(self):
+        try:
+            bb_pump(self.a, self.b)
+        except Finished:
+            self.b.end_input()
+
+    def end_input(self):
+        self.a.end_input()
+        self._pump()
+  
+class BBBBSeries(SimpleBlackBox):
+    """ Implements series between two SimpleBlackBoxes """
+
+    @contract(a=SimpleBlackBox, b=SimpleBlackBox)
+    def __init__(self, a, b, name1='bb1', name2='bb2'):
+        self.a = a
+        self.b = b
+        self.log_add_child(name1, a)
+        self.log_add_child(name2, b)
 
     def end_input(self):
         # self.info('Signaled end of input. Telling a (%s)' % type(self.a))
@@ -83,13 +112,6 @@ class SimpleBlackBoxSeries(SimpleBlackBox):
             bb_pump(self.a, self.b)
         except Finished:
             self.b.end_input()
-#         self.a.put(value, block=block, timeout=None)
-#         while True:
-#             try:
-#                 r = self.a.get(block=False, timeout=0)
-#             except NotReady:
-#                 break
-#             self.b.write(r)
 
     def get(self, block=False, timeout=None):
         self.info('trying to get from b')
@@ -101,10 +123,3 @@ class SimpleBlackBoxSeries(SimpleBlackBox):
         except Finished:
             self.info('b is finished')
             raise
-
-#         if block:
-#             return bb_get_block_poll_sleep(self, timeout=timeout,
-#                                            sleep=self.sleep)
-#         else:
-#             return self._get_notblock()
-#

@@ -1,4 +1,4 @@
-from blocks.library.with_queue import WithQueue
+from blocks.library import WithQueue
 
 
 __all__ = ['NameSignal']
