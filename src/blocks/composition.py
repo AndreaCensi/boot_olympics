@@ -10,29 +10,28 @@ __all__ = ['series']
 
 @contract(a='isinstance(SimpleBlackBox)|isinstance(Source)',
           b='isinstance(SimpleBlackBox)')
-def series(a, b):
+def series(a, b, name1='a', name2='b'):
     if isinstance(a, SimpleBlackBox):
-        return SimpleBlackBoxSeries(a, b)
+        return SimpleBlackBoxSeries(a, b, name1, name2)
     if isinstance(a, Source):
-        return SourceBBSeries(a, b)
+        return SourceBBSeries(a, b, name1, name2)
     assert(False)
-
 
 
 class SourceBBSeries(Source):
     """ Implements series between a Source and a SimpleBlackBox """
 
     @contract(a=Source, b=SimpleBlackBox)
-    def __init__(self, a, b):
+    def __init__(self, a, b, name1='a', name2='b'):
         self.a = a
         self.b = b
-        self.log_add_child('a', a)
-        self.log_add_child('b', b)
+        self.log_add_child(name1, a)
+        self.log_add_child(name2, b)
 
     @contract(block='bool', timeout='None|>=0', returns='*')
     def get(self, block=True, timeout=None):
         # XXX: not sure any of this is correct
-        self.info('trying to get')
+        self.info('%s trying to get' % id(self))
         try:
             return self.b.get(block=block, timeout=timeout)
         except NotReady:
@@ -58,11 +57,11 @@ class SimpleBlackBoxSeries(SimpleBlackBox):
     """ Implements series between two SimpleBlackBoxes """
 
     @contract(a=SimpleBlackBox, b=SimpleBlackBox)
-    def __init__(self, a, b):
+    def __init__(self, a, b, name1='a', name2='b'):
         self.a = a
         self.b = b
-        self.log_add_child('a', a)
-        self.log_add_child('b', b)
+        self.log_add_child(name1, a)
+        self.log_add_child(name2, b)
 
 #     def get_typsy_type(self):
 #         ta = self.a.get_typsy_type()
@@ -93,7 +92,16 @@ class SimpleBlackBoxSeries(SimpleBlackBox):
 #             self.b.write(r)
 
     def get(self, block=False, timeout=None):
-        return self.b.get(block=block, timeout=timeout)
+        self.info('trying to get from b')
+        try:
+            return self.b.get(block=block, timeout=timeout)
+        except NotReady:
+            self.info('b is not ready')
+            raise
+        except Finished:
+            self.info('b is finished')
+            raise
+
 #         if block:
 #             return bb_get_block_poll_sleep(self, timeout=timeout,
 #                                            sleep=self.sleep)

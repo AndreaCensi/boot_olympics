@@ -18,13 +18,13 @@ class WithQueue(SimpleBlackBox):
         self._finished = False
 
     def get(self, block=True, timeout=None):  # @UnusedVariable
+        self.info('trying to get(): qlen: %d finished: %d' % (len(self._queue), self._finished))
         if not self._queue:
-            # print('empty queue')
             if self._finished:
-                # print('.. and finished')
+                self.info('finished')
                 raise Finished()
             else:
-                # print('.. but not finished')
+                self.info('not ready')
                 raise NotReady()
         return self._queue.pop(0)
 
