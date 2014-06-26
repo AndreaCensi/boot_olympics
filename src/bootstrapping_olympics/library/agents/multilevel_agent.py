@@ -2,9 +2,9 @@ from abc import abstractmethod
 
 from contracts import contract, describe_value
 
-from blocks.interface import Sink
-from bootstrapping_olympics import AgentInterface, PassiveAgentInterface, get_conftools_agents
-from bootstrapping_olympics import RepresentationNuisanceCausal
+from blocks import Sink
+from bootstrapping_olympics import (AgentInterface, PassiveAgentInterface,
+                            get_conftools_agents, RepresentationNuisanceCausal)
 
 
 __all__ = ['MultiLevelAgent', 'MultiLevelBase']
@@ -15,6 +15,9 @@ class MultiLevelBase(PassiveAgentInterface):
     @contract(returns=RepresentationNuisanceCausal)
     def get_transform(self):
         """ Returns Nuisance at the end of learning. """
+
+
+
 
 class MultiLevelAgent(AgentInterface):
     ''' 
@@ -66,7 +69,7 @@ class MultiLevelAgent(AgentInterface):
     @contract(returns=Sink)
     def get_learner_as_sink(self):
         # something in which we push dict(commands=<>, observations=<>)
-        return MultiLearningSink_(self, self.boot_spec)
+        return MultiLevelAgentLearner(self, self.boot_spec)
 
     def get_predictor(self):
         pass
@@ -86,7 +89,7 @@ class MultiLevelAgent(AgentInterface):
             self.second.merge(other.second)
 
 
-class MultiLearningSink_(Sink):
+class MultiLevelAgentLearner(Sink):
     def __init__(self, ma, boot_spec):
         self.ma = ma
         self.sink1 = ma.first.get_learner_as_sink()

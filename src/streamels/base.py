@@ -1,7 +1,7 @@
-from bootstrapping_olympics.utils import indent, show_differences
 from contracts import new_contract, contract
-import numpy as np
+from contracts.utils import indent
 
+import numpy as np
 
 
 __all__ = ['ValueFormats', 'streamel_dtype',
@@ -49,6 +49,8 @@ def check_valid_streamels(streamels):
         # XXX: how about invalid values?
         def check(which, msg, a, b):
             if not np.all(which):
+                from bootstrapping_olympics.utils import show_differences
+
                 error = show_differences(a, b,
                                          is_failure=(~which), condition=msg)
                 raise ValueError(error)

@@ -1,8 +1,9 @@
-from . import StreamSpec
-from bootstrapping_olympics import logger
-from bootstrapping_olympics.utils import check_contained
-from contracts import describe_type, new_contract, contract
 from pprint import pformat
+
+from contracts import describe_type, new_contract, contract
+
+from streamels import StreamSpec
+from streamels import logger
 
 
 __all__ = ['BootSpec']
@@ -55,6 +56,16 @@ class BootSpec(object):
             if not isinstance(xo, dict):
                 raise ValueError('Expected a dict, got %s' % xo)
             x = dict(**xo)  # make a copy
+
+
+            def check_contained(key, D, name='key'):
+                ''' Raises a ValueError if key is not in the dictionary-like object D. '''
+                if not key in D:
+                    msg = 'No %s %r found among %s.' % (name, key, D.keys())
+                    # TODO: pretty print
+                    # TODO: only print a limited number
+                    # TODO: add suggestions
+                    raise ValueError(msg)
 
             check_contained('observations', x)
             check_contained('commands', x)

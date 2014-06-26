@@ -33,6 +33,8 @@ from .constants import *
 #    from . import interfaces
 #    assign_all_to_module(interfaces)
 
+from streamels import StreamSpec, BootSpec, UnsupportedSpec
+
 from .interfaces import *
 from .agent_states import *
 from .logs import *
@@ -49,3 +51,5 @@ def get_comptests():
     from comptests import get_comptests_app
     app = get_comptests_app(get_boot_config())
     return [app]
+
+

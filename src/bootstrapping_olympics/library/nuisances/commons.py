@@ -1,7 +1,7 @@
 from numpy.core.numeric import allclose
 from contracts import contract
 import numpy as np
-from bootstrapping_olympics import check_streamels_1D_size
+from streamels import check_streamels_1D_size
 
  
 __all__ = ['find_polytope_bounds_after_linear']

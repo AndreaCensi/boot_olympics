@@ -1,6 +1,5 @@
-from .boot_spec import BootSpec
-from .streamels import BOOT_OLYMPICS_SENSEL_RESOLUTION
 from contracts import contract
+from streamels import BOOT_OLYMPICS_SENSEL_RESOLUTION, BootSpec
 import numpy as np
 
 __all__ = ['boot_observations_dtype', 'get_observations_dtype', 'ObsKeeper']

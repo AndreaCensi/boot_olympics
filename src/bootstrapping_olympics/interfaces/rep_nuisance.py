@@ -3,8 +3,7 @@ from abc import abstractmethod
 from contracts import contract, ContractsMeta, new_contract
 
 from decent_logs import WithInternalLog
-
-from .streamels import StreamSpec
+from streamels import StreamSpec
 
 
 __all__ = ['RepresentationNuisance', 'NuisanceNotInvertible']

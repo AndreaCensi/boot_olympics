@@ -1,7 +1,8 @@
-from bootstrapping_olympics import (NuisanceNotInvertible, RepresentationNuisance,
-    new_streamels, check_streamels_1D)
 from contracts import contract
+
+from bootstrapping_olympics import  RepresentationNuisance, NuisanceNotInvertible
 import numpy as np
+from streamels import new_streamels, check_streamels_1D
 
 
 __all__ = ['ReplicateRows', 'ExtractRow']

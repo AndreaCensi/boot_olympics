@@ -1,9 +1,12 @@
-from bootstrapping_olympics import (UnsupportedSpec, RepresentationNuisance,
-    streamels_all_of_kind, ValueFormats, streamel_dtype, check_streamels_2D)
 from contracts import contract
+
+from bootstrapping_olympics import (UnsupportedSpec, RepresentationNuisance)
 import numpy as np
+from streamels import streamels_all_of_kind, ValueFormats, streamel_dtype, check_streamels_2D
+
 from .bits_utils import value2bits
 from .graycode import gray
+
 
 __all__ = ['Int2bits', 'Bits2int']
 

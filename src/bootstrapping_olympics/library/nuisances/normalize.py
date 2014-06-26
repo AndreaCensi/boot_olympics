@@ -1,7 +1,8 @@
-from bootstrapping_olympics import (NuisanceNotInvertible, streamel_dtype,
-    RepresentationNuisance, ValueFormats,
-    check_streamels_continuous)
+from bootstrapping_olympics import (NuisanceNotInvertible, RepresentationNuisance)
+    
+from streamels import (ValueFormats, check_streamels_continuous, streamel_dtype)
 import numpy as np
+
 
 __all__ = ['Normalize']
 

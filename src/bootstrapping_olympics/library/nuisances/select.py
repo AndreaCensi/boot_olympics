@@ -1,7 +1,10 @@
-from bootstrapping_olympics import (UnsupportedSpec, RepresentationNuisance,
-    NuisanceNotInvertible, check_streamels_1D)
 from contracts import contract
+
+from bootstrapping_olympics import (UnsupportedSpec, RepresentationNuisance,
+    NuisanceNotInvertible)
 import numpy as np
+from streamels import check_streamels_1D
+
 
 __all__ = ['Select']
 

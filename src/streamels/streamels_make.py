@@ -1,11 +1,20 @@
-from .base import streamel_dtype, ValueFormats
 from contracts import contract
+
 import numpy as np
 
-__all__ = ['new_streamels', 'make_streamels_2D_float',
-           'make_streamel_bit', 'streamels_join_1D', 'make_streamels_rgb_float',
-           'make_streamels_float', 'make_streamels_1D_float',
-           'make_streamels_finite_commands']
+from .base import streamel_dtype, ValueFormats
+
+
+__all__ = [
+    'new_streamels',
+    'make_streamels_2D_float',
+    'make_streamel_bit',
+    'streamels_join_1D',
+    'make_streamels_rgb_float',
+    'make_streamels_float',
+    'make_streamels_1D_float',
+    'make_streamels_finite_commands',
+]
 
 @contract(shape='(int,>0)|seq[>0](int,>0)')
 def new_streamels(shape):

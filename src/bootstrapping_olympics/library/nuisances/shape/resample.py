@@ -1,10 +1,14 @@
-from bootstrapping_olympics import (NuisanceNotInvertible,
-    make_streamels_2D_float, RepresentationNuisance, check_streamels_2D,
-    check_streamels_continuous)
-from contracts import contract
-import numpy as np
 import warnings
+
+from contracts import contract
 from numpy.testing.utils import assert_allclose
+
+from bootstrapping_olympics import (NuisanceNotInvertible,
+     RepresentationNuisance)
+import numpy as np
+from streamels import (
+    make_streamels_2D_float, check_streamels_2D,
+    check_streamels_continuous)
 
 
 __all__ = ['Resample', 'scipy_image_resample']

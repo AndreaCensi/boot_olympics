@@ -1,9 +1,12 @@
+from contracts import contract
+
+from bootstrapping_olympics import (UnsupportedSpec,
+    RepresentationNuisance)
+import numpy as np
+from streamels import  check_1d_bit_sequence, ValueFormats, streamel_dtype
+
 from . import bits_encrypt, bits_decrypt, nbytes_to_encrypt
 from .bits_utils import NBITS_IN_BYTE
-from bootstrapping_olympics import (UnsupportedSpec, ValueFormats, streamel_dtype,
-    RepresentationNuisance, check_1d_bit_sequence)
-from contracts import contract
-import numpy as np
 
 
 __all__ = ['Encrypt', 'Decrypt']

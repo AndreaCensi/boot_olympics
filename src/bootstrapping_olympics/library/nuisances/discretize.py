@@ -1,7 +1,11 @@
-from bootstrapping_olympics import (RepresentationNuisance, ValueFormats,
-    NuisanceNotInvertible, check_streamels_continuous)
 from contracts import contract
+
+from bootstrapping_olympics import (RepresentationNuisance,
+    NuisanceNotInvertible)
 import numpy as np
+from streamels import ValueFormats
+from streamels import check_streamels_continuous
+
 
 __all__ = ['Discretize']
 

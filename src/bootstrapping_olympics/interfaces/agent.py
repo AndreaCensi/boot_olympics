@@ -7,12 +7,8 @@ from reprep import Report, ReportInterface
 from blocks.interface import Sink
 
 
-__all__ = ['AgentInterface', 'UnsupportedSpec', 'ServoAgentInterface',
+__all__ = ['AgentInterface', 'ServoAgentInterface',
            'PredictorAgentInterface', 'PassiveAgentInterface']
-
-
-class UnsupportedSpec(Exception):
-    ''' Thrown by agents if they do not support the spec. '''
 
 
 class PassiveAgentInterface(WithInternalLog):

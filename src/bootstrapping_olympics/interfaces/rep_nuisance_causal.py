@@ -5,7 +5,7 @@ from contracts import ContractsMeta, contract
 from blocks import SimpleBlackBox
 from decent_logs import WithInternalLog
 
-from .boot_spec import BootSpec
+from streamels.boot_spec import BootSpec
 
 
 __all__ = ['RepresentationNuisanceCausal']

@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
-from bootstrapping_olympics import (RepresentationNuisance,
-    check_streamels_continuous)
+from bootstrapping_olympics import (RepresentationNuisance)
+from streamels import check_streamels_continuous
 
 
 __all__ = ['GenericScalar']

@@ -1,10 +1,11 @@
 import unittest
 
 from bootstrapping_olympics import (
-    make_streamels_1D_float, BootSpec, StreamSpec)
+     BootSpec, StreamSpec)
 from bootstrapping_olympics.library.robots import EquivRobotCausal, RandomRobot
 from bootstrapping_olympics.utils import assert_allclose
 import numpy as np
+from streamels import make_streamels_1D_float
 
 from .active_nuisance import ActiveNuisance
 

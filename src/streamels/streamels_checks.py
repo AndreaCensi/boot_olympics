@@ -3,6 +3,7 @@ from contracts import contract
 import numpy as np
 
 from .base import ValueFormats
+from .exceptions import UnsupportedSpec
 from .stream_spec import streamels_all_of_kind
 
 
@@ -18,7 +19,6 @@ __all__ = [
 
 @contract(streamels='streamel_array')
 def check_streamels_1D(streamels):
-    from bootstrapping_olympics import UnsupportedSpec
     if len(streamels.shape) != 1:
         msg = ('Only 1D streams are supported; shape is %s.'
                 % str(streamels.shape))
@@ -30,7 +30,6 @@ def check_streamels_rgb(streamels):
     """ Checks that the streamels are RGB images (float between 0-1). """
     check_streamels_continuous(streamels)
     check_streamels_range(streamels, 0, 1)
-    from bootstrapping_olympics import UnsupportedSpec
     def bail(m):
         msg = '%s\nstreamels: %s' % (m, streamels)
         raise UnsupportedSpec(msg)
@@ -42,7 +41,6 @@ def check_streamels_rgb(streamels):
 
 @contract(streamels='streamel_array')
 def check_streamels_2D(streamels):
-    from bootstrapping_olympics import UnsupportedSpec
     if len(streamels.shape) != 2:
         msg = ('Only 2D streams are supported; shape is %s.'
                 % str(streamels.shape))
@@ -51,7 +49,6 @@ def check_streamels_2D(streamels):
 
 @contract(streamels='streamel_array', size='int,>0')
 def check_streamels_1D_size(streamels, size):
-    from bootstrapping_olympics import UnsupportedSpec
     check_streamels_1D(streamels)
     if streamels.size != size:
         msg = 'Expected size %d, obtained %d.' % (size, streamels.size)
@@ -61,7 +58,6 @@ def check_streamels_1D_size(streamels, size):
 
 @contract(streamels='streamel_array')
 def check_streamels_continuous(streamels):
-    from bootstrapping_olympics import UnsupportedSpec
     '''
         Checks that all streamels have continuous data type. 
     
@@ -79,7 +75,6 @@ def check_streamels_range(streamels, lower, upper):
     
         :raise: UnsupportedSpec
     '''
-    from bootstrapping_olympics import UnsupportedSpec
     if not np.all(lower == streamels['lower']):
         msg = 'Not all streamels have lower bound %f.' % lower
         raise UnsupportedSpec(msg)
@@ -90,7 +85,6 @@ def check_streamels_range(streamels, lower, upper):
 
 def check_1d_bit_sequence(streamels, who):
     ''' Checks that it is a 1D sequence of bits (integers in {0,1}). '''
-    from bootstrapping_olympics import UnsupportedSpec
     if not streamels_all_of_kind(streamels, ValueFormats.Discrete):
         msg = '%s only supports discrete streams.' % who
         raise UnsupportedSpec(msg)

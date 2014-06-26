@@ -1,8 +1,10 @@
-from .popcode_functions import popcode, popcode_inv
-from bootstrapping_olympics import (RepresentationNuisance, streamel_dtype,
+from bootstrapping_olympics import (RepresentationNuisance)
+import numpy as np
+from streamels import (streamel_dtype,
     ValueFormats, UnsupportedSpec, check_streamels_1D, check_streamels_continuous,
     check_streamels_2D, check_streamels_range)
-import numpy as np
+
+from .popcode_functions import popcode, popcode_inv
 
 
 __all__ = ['PopCode', 'PopCodeInv']

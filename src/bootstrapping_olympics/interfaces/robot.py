@@ -1,4 +1,4 @@
-from .boot_spec import BootSpec
+from streamels.boot_spec import BootSpec
 from abc import abstractmethod
 from contracts import ContractsMeta, new_contract, contract
 from decent_logs import WithInternalLog

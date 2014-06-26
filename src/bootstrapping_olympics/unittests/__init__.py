@@ -6,7 +6,6 @@ from .manager_tests  import *
 from .logs_tests  import *
 from .rep_nuisances_tests  import *
 from .nuisances_causal_tests  import *
-from .boot_spec_tests  import *
 
 
 

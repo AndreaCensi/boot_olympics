@@ -1,9 +1,11 @@
-from bootstrapping_olympics import (RepresentationNuisance, ValueFormats,
-    streamel_dtype, NuisanceNotInvertible, check_streamels_1D,
-    check_streamels_continuous, contract, np, check_streamels_1D_size,
-    BOOT_OLYMPICS_SENSEL_RESOLUTION)
+from contracts import contract
+
+from bootstrapping_olympics import (RepresentationNuisance, NuisanceNotInvertible)
 from bootstrapping_olympics.library.nuisances import (
     find_polytope_bounds_after_linear)
+import numpy as np
+from streamels import (ValueFormats, streamel_dtype, check_streamels_1D_size,
+    BOOT_OLYMPICS_SENSEL_RESOLUTION, check_streamels_1D, check_streamels_continuous)
 
 
 __all__ = ['GenericLinear']

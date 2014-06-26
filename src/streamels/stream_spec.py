@@ -2,10 +2,8 @@ from numbers import Number
 
 from contracts import check, describe_type, describe_value, contract
 
-from bootstrapping_olympics import logger
-from bootstrapping_olympics.utils import (assert_allequal_verbose,
-    assert_allclose_verbose, display_some, display_some_extended)
 import numpy as np
+from streamels import logger
 
 from .base import (BOOT_OLYMPICS_SENSEL_RESOLUTION, check_valid_streamels,
     streamel_dtype, ValueFormats)
@@ -68,6 +66,8 @@ class StreamSpec(object):
     def check_same_spec(spec1, spec2):
         s1 = spec1.get_streamels()
         s2 = spec2.get_streamels()
+        from bootstrapping_olympics.utils import (assert_allequal_verbose, assert_allclose_verbose)
+
         assert_allequal_verbose(s1['kind'], s2['kind'])
         assert_allclose_verbose(s1['lower'], s2['lower'])
         assert_allclose_verbose(s1['upper'], s2['upper'])
@@ -148,6 +148,9 @@ class StreamSpec(object):
         # Check that all valid are not NaN
         xv = x[valid]
         xv_nan = np.isnan(xv)
+
+        from bootstrapping_olympics.utils import display_some, display_some_extended
+
         if np.any(xv_nan):
             msg = ('Found NaNs in the valid values. %s' % 
                     display_some(xv, xv_nan))
