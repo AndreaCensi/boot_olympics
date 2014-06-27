@@ -5,6 +5,7 @@ from contracts import contract, describe_value
 from blocks import Sink
 from bootstrapping_olympics import (AgentInterface, PassiveAgentInterface,
                             get_conftools_agents, RepresentationNuisanceCausal)
+from blocks.library.with_queue import WithQueue
 
 
 __all__ = ['MultiLevelAgent', 'MultiLevelBase']
@@ -97,22 +98,57 @@ class MultiLevelAgentLearner(Sink):
     def put(self, value, block=True, timeout=None):
         if not self.ma.first_converged:
             try:
-                self.sink1.put(value, block)
+                self.sink1.put(value, block, timeout)
             except AgentInterface.LearningConverged:
                 self.ma.first_converged = True
                 
-                transform = self.ma.fist.get_transform()
+                transform = self.ma.first.get_transform()
                 assert isinstance(transform, RepresentationNuisanceCausal)
                 self.boot_spec2 = transform.transform_spec(self.boot_spec)
-                
                 self.ma.second.init(self.boot_spec2)
-                self.sink2 = self.ma.second.get_learner_as_sink()
+                
+                G = transform.get_G()
+                Gc = transform.get_G_conj()
+                H = transform.get_H()
+                Hc = transform.get_H_conj()
+                self.info('G: %s' % G)
+                self.info('H: %s' % H)
+                self.info('Gc: %s' % Gc)
+                self.info('Hc: %s' % Hc)
+                
+                
+                learner = self.ma.second.get_learner_as_sink()
+                Split(learner)
+                
+                self.sink2 = 
         else:
             # XXX: implement transform
             self.sink2.put(value, block)
 
 
+class BootExpand(WithQueue):
+    def put_noblock(self, value):
+        t, bd = value
+        self.append((t, ('commands', bd['commands'])))
+        self.append((t, ('observations', bd['observations'])))
 
-            
-
+class Collect(WithQueue):
+    """ Collects all the signals with the same timestamp. """
+    def __init__(self):
+        # XXX
+        self.last = {}
+        self.last_t = None
+    def put_noblock(self, value):
+        t, (s, x) = value
+        
+        if self.last_t is not None:
+            if t > self.last_t:
+                self.append((t, self.last))
+                self.last = {}
+            else:
+                assert not s in self.last
+                self.last[s] = x
+        
+        self.last_t = t
+        
 

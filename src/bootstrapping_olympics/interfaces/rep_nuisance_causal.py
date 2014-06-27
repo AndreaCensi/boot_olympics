@@ -4,7 +4,6 @@ from contracts import ContractsMeta, contract
 
 from blocks import SimpleBlackBox
 from decent_logs import WithInternalLog
-
 from streamels.boot_spec import BootSpec
 
 
@@ -19,8 +18,6 @@ class RepresentationNuisanceCausal(WithInternalLog):
     
     __metaclass__ = ContractsMeta
 
-    class NotInvertible(Exception):
-        pass
 
     @abstractmethod
     def inverse(self):
@@ -37,12 +34,36 @@ class RepresentationNuisanceCausal(WithInternalLog):
         
         '''
 
-    @abstractmethod
     @contract(returns=SimpleBlackBox)
     def get_pre(self):
+        return self.get_G()
+
+    
+    @contract(returns=SimpleBlackBox)
+    def get_post(self):
+        return self.get_H()
+    
+
+    # New clearer interface
+
+    @abstractmethod
+    @contract(returns=SimpleBlackBox)
+    def get_G(self):
+        pass
+
+    @abstractmethod
+    @contract(returns=SimpleBlackBox)
+    def get_H(self):
         pass
     
     @abstractmethod
     @contract(returns=SimpleBlackBox)
-    def get_post(self):
+    def get_G_conj(self):
         pass
+
+    @abstractmethod
+    @contract(returns=SimpleBlackBox)
+    def get_H_conj(self):
+        pass
+
+

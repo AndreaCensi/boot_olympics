@@ -2,8 +2,7 @@ from pprint import pformat
 
 from contracts import describe_type, new_contract, contract
 
-from streamels import StreamSpec
-from streamels import logger
+from streamels import StreamSpec, logger
 
 
 __all__ = ['BootSpec']

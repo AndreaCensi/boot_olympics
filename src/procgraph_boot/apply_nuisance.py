@@ -1,7 +1,8 @@
 import warnings
 
-from bootstrapping_olympics import StreamSpec, UnsupportedSpec, get_boot_config, make_streamels_float
+from bootstrapping_olympics import StreamSpec, UnsupportedSpec, get_boot_config
 from procgraph import Block
+from streamels import make_streamels_float
 
 
 __all__ = ['ApplyNuisance']

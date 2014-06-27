@@ -1,6 +1,8 @@
-from .generic_linear import GenericLinear
 from  contracts import contract
-import numpy as np 
+
+import numpy as np
+
+from .generic_linear import GenericLinear
 
 
 __all__ = ['RandomLinear']

@@ -4,9 +4,13 @@ from contracts import contract, ContractsMeta, new_contract
 
 from decent_logs import WithInternalLog
 from streamels import StreamSpec
+import warnings
 
 
-__all__ = ['RepresentationNuisance', 'NuisanceNotInvertible']
+__all__ = [
+    'RepresentationNuisance',
+    'NuisanceNotInvertible',
+]
 
 class NuisanceNotInvertible(ValueError):
     pass
@@ -25,6 +29,10 @@ class RepresentationNuisance(WithInternalLog):
             Returns the inverse representation nuisance,
             or raises NuisanceNotInvertible 
         '''
+
+#     def left_inverse(self):
+#         warnings.warn('not sure of the name')
+#         return self.inverse()
 
     @contract(stream_spec=StreamSpec, returns=StreamSpec)
     def transform_spec(self, stream_spec):

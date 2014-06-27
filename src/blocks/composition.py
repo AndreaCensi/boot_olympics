@@ -87,6 +87,8 @@ class BBSinkSeries(Sink):
         self.a.end_input()
         self._pump()
   
+
+
 class BBBBSeries(SimpleBlackBox):
     """ Implements series between two SimpleBlackBoxes """
 
