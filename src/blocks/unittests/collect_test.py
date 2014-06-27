@@ -1,7 +1,8 @@
 from unittest.case import TestCase
-from blocks.library.from_data import FromData
-from blocks.library.collect import Collect
+
 from blocks.composition import series
+from blocks.library.collect import Collect
+from blocks.library.from_data import FromData
 from blocks.pumps import source_read_all_block
 
 

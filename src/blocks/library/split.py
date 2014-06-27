@@ -27,6 +27,7 @@ class Split(WithQueue):
         self.b.put(value, block=False, timeout=None)
 
         self._pump()
+
     def _pump(self):
         new_obs = []
         if not self.a_finished:

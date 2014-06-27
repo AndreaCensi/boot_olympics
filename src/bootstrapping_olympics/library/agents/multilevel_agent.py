@@ -6,6 +6,9 @@ from blocks import Sink
 from bootstrapping_olympics import (AgentInterface, PassiveAgentInterface,
                             get_conftools_agents, RepresentationNuisanceCausal)
 from blocks.library.with_queue import WithQueue
+from blocks.library.identity import Identity
+from blocks.library.collect import Collect
+from blocks.composition import series
 
 
 __all__ = ['MultiLevelAgent', 'MultiLevelBase']
@@ -116,11 +119,26 @@ class MultiLevelAgentLearner(Sink):
                 self.info('Gc: %s' % Gc)
                 self.info('Hc: %s' % Hc)
                 
-                
                 learner = self.ma.second.get_learner_as_sink()
-                Split(learner)
                 
-                self.sink2 = 
+                #   
+                # bd -> |expand| -> commands, observations
+                #
+                # cmd --> |G*| --> cmd' ---------------> |collect| -> learner
+                #                   |                |
+                #                   v                |
+                # obs -----------> |H| ----obs'-------                      
+                
+                r1= Route(({'commands':'commands'}, Gc, {'commands':'commands'}),
+                      ({'observations':'observations'}, Identity(),{'observations':'observations'}))
+                
+                r2=Route(({'observations':'observations',
+                        'commands':'commands'}, H, {'observations':'observations'}),
+                      ({'commands':'commands'}, Identity(), {'commands': 'commands'}))
+                
+                sys = series(r1,r2,Collect(), learner)
+                
+                self.sink2 = sys
         else:
             # XXX: implement transform
             self.sink2.put(value, block)
@@ -132,23 +150,5 @@ class BootExpand(WithQueue):
         self.append((t, ('commands', bd['commands'])))
         self.append((t, ('observations', bd['observations'])))
 
-class Collect(WithQueue):
-    """ Collects all the signals with the same timestamp. """
-    def __init__(self):
-        # XXX
-        self.last = {}
-        self.last_t = None
-    def put_noblock(self, value):
-        t, (s, x) = value
-        
-        if self.last_t is not None:
-            if t > self.last_t:
-                self.append((t, self.last))
-                self.last = {}
-            else:
-                assert not s in self.last
-                self.last[s] = x
-        
-        self.last_t = t
-        
+
 
