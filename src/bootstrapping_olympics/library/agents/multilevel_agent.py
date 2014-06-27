@@ -3,12 +3,13 @@ from abc import abstractmethod
 from contracts import contract, describe_value
 
 from blocks import Sink
+from blocks.composition import series_multi
+from blocks.library.collect import Collect
+from blocks.library.identity import Identity
+from blocks.library.route import Route
+from blocks.library.with_queue import WithQueue
 from bootstrapping_olympics import (AgentInterface, PassiveAgentInterface,
                             get_conftools_agents, RepresentationNuisanceCausal)
-from blocks.library.with_queue import WithQueue
-from blocks.library.identity import Identity
-from blocks.library.collect import Collect
-from blocks.composition import series
 
 
 __all__ = ['MultiLevelAgent', 'MultiLevelBase']
@@ -65,6 +66,13 @@ class MultiLevelAgent(AgentInterface):
         self.boot_spec = boot_spec
         self.first.init(boot_spec)
 
+    def publish(self, r):
+        r.text('first_converged', self.first_converged)
+        with r.subsection('first') as sub:
+            self.first.publish(sub)
+        with r.subsection('second') as sub:
+            self.second.publish(sub)
+
     def process_observations(self, bd):
         raise ValueError('BUG: Should not have got here; should use learner_system')
 
@@ -75,14 +83,9 @@ class MultiLevelAgent(AgentInterface):
 
     def get_predictor(self):
         pass
-#         # XXX: needs to concatenate
-#         return concat(self.get_nuisance(),
-#                       self.second.get_predictor())
 
     def get_servo(self):
         pass
-#         return concat(self.get_nuisance(),
-#                       self.second.get_servo())
 
     def merge(self, other):  # @UnusedVariable
         if not self.first_converged:
@@ -129,15 +132,14 @@ class MultiLevelAgentLearner(Sink):
                 #                   v                |
                 # obs -----------> |H| ----obs'-------                      
                 
-                r1= Route(({'commands':'commands'}, Gc, {'commands':'commands'}),
-                      ({'observations':'observations'}, Identity(),{'observations':'observations'}))
+                r1 = Route([({'commands':'commands'}, Gc, {'commands':'commands'}),
+                      ({'observations':'observations'}, Identity(), {'observations':'observations'})])
                 
-                r2=Route(({'observations':'observations',
+                r2 = Route([({'observations':'observations',
                         'commands':'commands'}, H, {'observations':'observations'}),
-                      ({'commands':'commands'}, Identity(), {'commands': 'commands'}))
+                      ({'commands':'commands'}, Identity(), {'commands': 'commands'})])
                 
-                sys = series(r1,r2,Collect(), learner)
-                
+                sys = series_multi(BootExpand(), r1, r2, Collect(), learner)
                 self.sink2 = sys
         else:
             # XXX: implement transform

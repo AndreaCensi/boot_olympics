@@ -1,6 +1,6 @@
 import warnings
 
-from contracts import contract, describe_value
+from contracts import contract, describe_type
 
 from blocks import SimpleBlackBox, Source, Sink
 
@@ -11,6 +11,18 @@ from .pumps import bb_pump
 __all__ = ['series']
 
 
+def series_multi(*args):
+    if len(args) < 2:
+        msg = 'Expected at least 2 args, got %d.' % len(args)
+        msg += '\n %s' % str(args)
+        raise ValueError(msg)
+    elif len(args) == 2:
+        return series(*args)
+    elif len(args) > 2:
+        return series(args[0], series_multi(*args[1:]))
+    else:
+        assert False
+
 @contract(a='isinstance(SimpleBlackBox)|isinstance(Source)',
           b='isinstance(SimpleBlackBox)|isinstance(Sink)')
 def series(a, b, name1='a', name2='b'):
@@ -20,7 +32,12 @@ def series(a, b, name1='a', name2='b'):
         return SourceBBSeries(a, b, name1, name2)
     if isinstance(a, SimpleBlackBox) and isinstance(b, Sink):
         return BBSinkSeries(a, b, name1, name2)
-    assert(False)
+
+    msg = 'Cannot find proper interconnection'
+    msg += '\n %10s: %s' % (name1, describe_type(a))
+    msg += '\n %10s: %s' % (name2, describe_type(b))
+    raise ValueError(msg)
+
 
 
 class SourceBBSeries(Source):
@@ -36,25 +53,25 @@ class SourceBBSeries(Source):
     @contract(block='bool', timeout='None|>=0', returns='*')
     def get(self, block=True, timeout=None):
         # XXX: not sure any of this is correct
-        self.info('%s trying to get' % id(self))
+        # self.info('%s trying to get' % id(self))
         try:
             return self.b.get(block=block, timeout=timeout)
         except NotReady:
-            self.info('b not ready (b: %s)' % describe_value(self.b))
+            # self.info('b not ready (b: %s)' % describe_value(self.b))
             try:
                 r = self.a.get(block=block, timeout=timeout)
-                self.info('Read from a, putting in b')
+                # self.info('Read from a, putting in b')
                 self.b.put(r, block=block, timeout=timeout)
                 return self.get(block=block, timeout=timeout)
             except NotReady:
-                self.info('b not ready: raising NotReady')
+                # self.info('b not ready: raising NotReady')
                 raise
             except Finished:
-                self.info('a finished: setting b.end_input()')
+                # self.info('a finished: setting b.end_input()')
                 self.b.end_input()
                 return self.get(block=block, timeout=timeout)
         except Finished:
-            self.info('b finished: we are finished')
+            # self.info('b finished: we are finished')
             raise
 
 
@@ -116,12 +133,12 @@ class BBBBSeries(SimpleBlackBox):
             self.b.end_input()
 
     def get(self, block=False, timeout=None):
-        self.info('trying to get from b')
+        # self.info('trying to get from b')
         try:
             return self.b.get(block=block, timeout=timeout)
         except NotReady:
-            self.info('b is not ready')
+            # self.info('b is not ready')
             raise
         except Finished:
-            self.info('b is finished')
+            # self.info('b is finished')
             raise

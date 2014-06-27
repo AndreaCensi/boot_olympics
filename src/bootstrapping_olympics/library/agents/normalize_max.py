@@ -51,6 +51,11 @@ class CmdNormalizeMax(MultiLevelBase):
     def get_transform(self):
         return NormalizeMin(self.y_max_abs)
 
+    def display(self, r):
+        r.text('nobs', self.num)
+        with r.plot('y_max_abs') as pylab:
+            pylab.plot(self.y_max_abs, '.')
+
 
 class NormalizeMin(RepresentationNuisanceCausal):
 
