@@ -2,7 +2,7 @@ from unittest.case import TestCase
 
 from contracts import contract
 
-from blocks.composition import series
+from blocks.composition import series, series_multi
 from blocks.library import Delay
 from blocks.library import FromData
 from blocks.library import Identity
@@ -10,6 +10,8 @@ from blocks.library import NameSignal
 from blocks.library import Split
 from blocks.library import WithQueue
 from blocks.pumps import source_read_all_block
+from blocks.library.route import Route
+from blocks.library.collect import Collect
 
 
 class HTest(WithQueue):
@@ -66,7 +68,8 @@ class NamingTests(TestCase):
         S = series(split, H, 'split', 'H')
 
         data = [(0.0, 0), (1.0, 1), (2.0, 2), (3.0, 3)]
-        expected = [(0.0 + d, 0), (1.0 + d, -1), (2.0 + d, 2), (3.0 + d, -3)]
+        expected = [(0.0 + d, 0),
+                    (1.0 + d, -1), (2.0 + d, 2), (3.0 + d, -3)]
         s = FromData(data)
         sys = series(s, S, 'fromdata', 'S')
         res = source_read_all_block(sys)
@@ -84,3 +87,48 @@ class NamingTests(TestCase):
         sys = series(s, S)
         res = source_read_all_block(sys)
         self.assertEqual(data, res)
+
+    def complex_nuisance_test_3(self):
+
+        Gc = Identity()
+        H = series(HTest(), NameSignal('observations'))
+
+        # note: woudl not work with observations arriving vefore commands
+        # because we memorize the last command given
+        data = [
+            (-1.0, ('commands', 1)),
+            (-1.0, ('observations', -10)),
+            (1.0, ('commands', 2)),
+            (1.0, ('observations', 10)),
+            (2.0, ('commands', 1)),
+            (2.0, ('observations', 20)),
+            (3.0, ('commands', 2)),
+           (3.0, ('observations', 30)),
+         ]
+        #
+        # bd -> |expand| -> commands, observations
+        #
+        # cmd --> |G*| --> cmd' ---------------> |collect| -> learner
+        #                   |                |
+        #                   v                |
+        # obs -----------> |H| ----obs'-------
+
+        r1 = Route([({'commands':'commands'}, Gc, {'commands':'commands'}),
+              ({'observations':'observations'}, Identity(), {'observations':'observations'})])
+
+        r2 = Route([({'observations':'observations',
+                'commands':'commands'}, H, {'observations':'observations'}),
+              ({'commands':'commands'}, Identity(), {'commands': 'commands'})])
+
+        sys = series_multi(FromData(data), r1, r2, Collect())
+
+        expected = [
+            (-1.0, dict(observations=10, commands=1)),
+            (1.0, dict(observations=10, commands=2)),
+            (2.0, dict(observations=-20, commands=1)),
+            (3.0, dict(observations=30, commands=2)),
+        ]
+
+        res = source_read_all_block(sys)
+        self.assertEqual(res, expected)
+

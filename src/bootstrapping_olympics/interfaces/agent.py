@@ -58,10 +58,27 @@ class PassiveAgentInterface(WithInternalLog):
     def get_learner_as_sink(self):
         """ 
             Returns something that you can "put" things into.
-            timestamp, bd
-            bd['observations']
+            The value put will have fields "commands" and "observations".
+            
+            The Sink's "put" command might result in LearningConverged.
         """
         return LearnerAsSystem(self)
+
+    @contract(returns='bool')
+    def need_another_phase(self):
+        """ 
+            Asks the agent whether it would like another learning phase,
+            by replaying again the same data.
+            
+            Agent should transition phase after this call.
+        """
+        return False
+
+
+    def merge(self, other):  # @UnusedVariable
+        msg = 'Capability merge() not implemented for %s.' % (type(self))
+        raise NotImplementedError(msg)
+
 
 class LearnerAsSystem(Sink):
     """ Implements the push interface for agents """
@@ -206,10 +223,6 @@ class AgentInterface(PassiveAgentInterface):
                 Then parallel_process_hint(0, 1) is called for all learners.
         """
         msg = 'Capability parallel_process_hint() not implemented for %s.' % (type(self))
-        raise NotImplementedError(msg)
-    
-    def merge(self, other):  # @UnusedVariable
-        msg = 'Capability merge() not implemented for %s.' % (type(self))
         raise NotImplementedError(msg)
     
     # Serialization stuff

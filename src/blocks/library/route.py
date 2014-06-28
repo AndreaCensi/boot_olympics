@@ -4,6 +4,7 @@ from blocks import NotReady, Finished
 
 from .with_queue import WithQueue
 import warnings
+from compmake.utils.describe import describe_value
 
 __all__ = ['Route']
 
@@ -26,7 +27,7 @@ class Route(WithQueue):
         self.finished = [False for i in range(len(self.boxes))]
 
     def put_noblock(self, value):
-        t, (name, ob) = value
+        t, (name, ob) = explode_signal(value)
         for i, (translate, b, _) in enumerate(self.routing):
             if not name in translate:
                 continue
@@ -49,7 +50,7 @@ class Route(WithQueue):
         while True:
             try:
                 x = b.get(block=False)
-                t, (name, value) = x
+                t, (name, value) = explode_signal(x)
                 name2 = translate[name]
                 x2 = t, (name2, value)
                 new_obs.append(x2)
@@ -73,3 +74,12 @@ class Route(WithQueue):
 
         if all(self.finished):
             self._finished = True
+
+def explode_signal(value):
+    if not (isinstance(value, tuple) and len(value) == 2 and isinstance(value[1], tuple) and len(value[1]) == 2):
+        msg = 'Expected (time, (signal, value)), got %s' % describe_value(value)
+        raise ValueError(msg)
+    return value
+
+
+

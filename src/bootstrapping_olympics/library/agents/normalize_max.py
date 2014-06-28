@@ -31,6 +31,15 @@ class CmdNormalizeMax(MultiLevelBase):
         self.num = 0
         self.y_max_abs = None
 
+    def merge(self, other):
+        if other.num > 0:
+            if self.num > 0:
+                self.num += other.num
+                self.y_max_abs = np.maximum(other.y_max_abs, self.y_max_abs)
+            else:
+                self.num = other.num
+                self.y_max_abs = other.y_max_abs
+
     def process_observations(self, bd):
         if self.num >= self.nsamples:
             msg = 'I saw %d samples -- converging' % self.num
@@ -51,9 +60,9 @@ class CmdNormalizeMax(MultiLevelBase):
     def get_transform(self):
         return NormalizeMin(self.y_max_abs)
 
-    def display(self, r):
-        r.text('nobs', self.num)
-        with r.plot('y_max_abs') as pylab:
+    def display(self, report):
+        report.text('nobs', self.num)
+        with report.plot('y_max_abs') as pylab:
             pylab.plot(self.y_max_abs, '.')
 
 
