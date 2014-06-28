@@ -103,7 +103,7 @@ class NamingTests(TestCase):
             (2.0, ('commands', 1)),
             (2.0, ('observations', 20)),
             (3.0, ('commands', 2)),
-           (3.0, ('observations', 30)),
+            (3.0, ('observations', 30)),
          ]
         #
         # bd -> |expand| -> commands, observations
@@ -131,4 +131,8 @@ class NamingTests(TestCase):
 
         res = source_read_all_block(sys)
         self.assertEqual(res, expected)
+
+
+
+
 

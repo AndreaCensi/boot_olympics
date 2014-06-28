@@ -15,6 +15,7 @@ class Collect(WithQueue):
 
     def put_noblock(self, value):
         t, (s, x) = value
+        # self.info('seeing %s %s' % (t, s))
 
         if self.last_t is not None:
             if t > self.last_t:
@@ -25,7 +26,7 @@ class Collect(WithQueue):
 
         self.last_t = t
 
-        self.info('cur: %s %s ' % (self.last_t, self.last))
+        # self.info('cur: %s %s ' % (self.last_t, self.last))
 
     def _flush(self):
         if self.last:

@@ -1,10 +1,11 @@
-from contracts import contract
+import warnings
+
+from contracts import contract, describe_value
 
 from blocks import NotReady, Finished
 
 from .with_queue import WithQueue
-import warnings
-from compmake.utils.describe import describe_value
+
 
 __all__ = ['Route']
 
@@ -27,21 +28,43 @@ class Route(WithQueue):
         self.finished = [False for i in range(len(self.boxes))]
 
     def put_noblock(self, value):
+
         t, (name, ob) = explode_signal(value)
-        for i, (translate, b, _) in enumerate(self.routing):
+        # self.info('routing %s, %s' % (t, name))
+        n = 0
+        for (translate, b, _) in self.routing:
             if not name in translate:
                 continue
             name2 = translate[name]
             x = t, (name2, ob)
             warnings.warn('check this')
-            b.put(x)
+            b.put(x, block=False)
+            n += 1
+        # if n == 0:
+            # self.info('no route for %s' % name)
             
+        self._pump()
+
     def end_input(self):
         # self.info('Signaled end of input. Telling a (%s)' % type(self.a))
         for b in self.boxes:
             b.end_input()
 
         self._pump()
+
+    def _pump(self):
+        new_obs = []
+        for i, b in enumerate(self.boxes):
+            ni = self._pump_one(i, b)
+            new_obs.extend(ni)
+
+        # Sort by timestamp
+        s = sorted(new_obs, key=lambda x: x[0])
+        for x in s:
+            self.append(x)
+
+        if all(self.finished):
+            self._finished = True
 
     def _pump_one(self, i, b):
         if self.finished[i]: return
@@ -61,19 +84,6 @@ class Route(WithQueue):
                 break
         return new_obs
 
-    def _pump(self):
-        new_obs = []
-        for i, b in enumerate(self.boxes):
-            ni = self._pump_one(i, b)
-            new_obs.extend(ni)
-
-        # Sort by timestamp
-        s = sorted(new_obs, key=lambda x: x[0])
-        for x in s:
-            self.append(x)
-
-        if all(self.finished):
-            self._finished = True
 
 def explode_signal(value):
     if not (isinstance(value, tuple) and len(value) == 2 and isinstance(value[1], tuple) and len(value[1]) == 2):

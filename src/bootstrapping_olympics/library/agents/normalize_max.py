@@ -9,6 +9,7 @@ import numpy as np
 from streamels import BootSpec, StreamSpec, make_streamels_float
 
 from .multilevel_agent import MultiLevelBase
+from blocks.library.route import Route
 
 
 __all__ = ['CmdNormalizeMax']
@@ -88,18 +89,32 @@ class NormalizeMin(RepresentationNuisanceCausal):
         return Identity()
 
     def get_H(self):
-        return Rescale(self.y_max_abs)
+        # H must receive 'observations' and 'commands'
+        H0 = Rescale(self.y_max_abs)
+        return  Route([({'observations':'observations'}, H0,
+                     {'observations':'observations'})])
 
     def get_H_conj(self):
         warnings.warn('check nan')
-        return Rescale(1.0 / self.y_max_abs)
+        Hconj0 = Rescale(1.0 / self.y_max_abs)
+        return  Route([({'observations':'observations'}, Hconj0,
+                     {'observations':'observations'})])
 
 
 class Rescale(Instantaneous):
     
+    @contract(scale='array[N]')
     def __init__(self, scale):
+        Instantaneous.__init__(self)
         self.scale = scale
 
+    @contract(value='tuple(float, tuple(str, array[N]))')
     def transform_value(self, value):
-        return value * self.scale
+        t, (name, x) = value
+        if not x.shape == self.scale.shape:
+            msg = 'Invalid shape: %s != %s' % (x.shape, self.scale.shape)
+            raise ValueError(msg)
+        return(t, (name, x * self.scale))
+
+
 

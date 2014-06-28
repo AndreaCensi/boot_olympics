@@ -3,7 +3,7 @@ from abc import abstractmethod
 from contracts import contract, describe_value
 
 from blocks import Sink
-from blocks.composition import series_multi
+from blocks.composition import series_multi, series
 from blocks.library import Collect
 from blocks.library import Identity
 from blocks.library import Route
@@ -145,7 +145,7 @@ class MultiLevelAgentLearner(Sink):
                     'commands':'commands'}, H, {'observations':'observations'}),
                   ({'commands':'commands'}, Identity(), {'commands': 'commands'})])
             
-            sys = series_multi(BootExpand(), r1, r2, Collect(), learner)
+            sys = series_multi(BootExpand(), r1, r2, Collect(), BootPutTimestamp(), learner)
             self.sink = sys 
 
     def put(self, value, block=True, timeout=None):
@@ -162,5 +162,9 @@ class BootExpand(WithQueue):
         self.append((t, ('commands', bd['commands'])))
         self.append((t, ('observations', bd['observations'])))
 
-
+class BootPutTimestamp(WithQueue):
+    def put_noblock(self, value):
+        t, bd = value
+        bd['timestamp'] = t
+        self.append((t, bd))
 
