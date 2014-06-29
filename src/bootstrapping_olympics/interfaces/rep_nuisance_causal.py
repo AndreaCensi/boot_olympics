@@ -3,11 +3,10 @@ from abc import abstractmethod
 from contracts import ContractsMeta, contract
 
 from blocks import SimpleBlackBox
+from blocks.composition import series
+from blocks.library import Identity, Route
 from decent_logs import WithInternalLog
 from streamels import BootSpec
-from blocks.composition import series
-from blocks.library import Identity
-from blocks.library import Route
 
 
 __all__ = [

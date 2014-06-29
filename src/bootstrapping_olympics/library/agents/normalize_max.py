@@ -48,13 +48,7 @@ class ObsNormalizeMax(MultiLevelBase):
                 self.y_max_abs = other.y_max_abs
 
     def process_observations(self, bd):
-#         if self.num >= self.nsamples:
-#             msg = 'I saw %d samples -- converging' % self.num
-#             self.info(msg)
-#             raise AgentInterface.LearningConverged(msg)
-
         y = bd['observations']
-        # u = bd['commands']
 
         y_abs = np.abs(y)
         if self.y_max_abs is None:
@@ -130,7 +124,9 @@ class Rescale(Instantaneous):
         if not x.shape == self.scale.shape:
             msg = 'Invalid shape: %s != %s' % (x.shape, self.scale.shape)
             raise ValueError(msg)
-        return(t, (name, x * self.scale))
+        res = x * self.scale
+
+        return(t, (name, res))
 
 
 
