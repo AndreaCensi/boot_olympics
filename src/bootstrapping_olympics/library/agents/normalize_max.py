@@ -2,28 +2,27 @@ import warnings
 
 from contracts import contract
 
-from blocks.library import Identity, Instantaneous
-from bootstrapping_olympics import (AgentInterface, NuisanceNotInvertible,
+from blocks.library import Identity, Instantaneous, Route
+from bootstrapping_olympics import (NuisanceNotInvertible,
                                     RepresentationNuisanceCausal, UnsupportedSpec)
 import numpy as np
 from streamels import BootSpec, StreamSpec, make_streamels_float
 
 from .multilevel_agent import MultiLevelBase
-from blocks.library.route import Route
 
 
-__all__ = ['CmdNormalizeMax']
+__all__ = ['ObsNormalizeMax']
 
 
-class CmdNormalizeMax(MultiLevelBase):
+class ObsNormalizeMax(MultiLevelBase):
     """ 
         Learns the bounds and normalizes the values
         between [-1,+1]. 
     """
 
-    @contract(nsamples='int,>0')
-    def __init__(self, nsamples):
-        self.nsamples = nsamples
+    def __init__(self):
+        MultiLevelBase.__init__(self)
+        self._was_inited = False
 
     def init(self, boot_spec):
         if len(boot_spec.get_observations().shape()) != 1:
@@ -31,8 +30,15 @@ class CmdNormalizeMax(MultiLevelBase):
 
         self.num = 0
         self.y_max_abs = None
+        self._was_inited = True
+
+    def _inited(self):
+        return self._was_inited
 
     def merge(self, other):
+        if not self._inited():
+            raise ValueError('Cannot call merge() before init().')
+
         if other.num > 0:
             if self.num > 0:
                 self.num += other.num
@@ -42,10 +48,10 @@ class CmdNormalizeMax(MultiLevelBase):
                 self.y_max_abs = other.y_max_abs
 
     def process_observations(self, bd):
-        if self.num >= self.nsamples:
-            msg = 'I saw %d samples -- converging' % self.num
-            self.info(msg)
-            raise AgentInterface.LearningConverged(msg)
+#         if self.num >= self.nsamples:
+#             msg = 'I saw %d samples -- converging' % self.num
+#             self.info(msg)
+#             raise AgentInterface.LearningConverged(msg)
 
         y = bd['observations']
         # u = bd['commands']
@@ -59,9 +65,17 @@ class CmdNormalizeMax(MultiLevelBase):
         self.num += 1
 
     def get_transform(self):
+        if not self._inited():
+            raise ValueError('Cannot call get_transform() before init().')
+        if self.num == 0:
+            raise Exception('Inited but no samples yet')
         return NormalizeMin(self.y_max_abs)
 
     def display(self, report):
+        if not self._inited():
+            report.text('warning', 'Not inited yet.')
+            return
+
         report.text('nobs', self.num)
         with report.plot('y_max_abs') as pylab:
             pylab.plot(self.y_max_abs, '.')
@@ -90,13 +104,15 @@ class NormalizeMin(RepresentationNuisanceCausal):
 
     def get_H(self):
         # H must receive 'observations' and 'commands'
-        H0 = Rescale(self.y_max_abs)
+        s = 1.0 / self.y_max_abs
+        s[self.y_max_abs == 0] = 0
+        H0 = Rescale(s)
         return  Route([({'observations':'observations'}, H0,
                      {'observations':'observations'})])
 
     def get_H_conj(self):
         warnings.warn('check nan')
-        Hconj0 = Rescale(1.0 / self.y_max_abs)
+        Hconj0 = Rescale(self.y_max_abs)
         return  Route([({'observations':'observations'}, Hconj0,
                      {'observations':'observations'})])
 

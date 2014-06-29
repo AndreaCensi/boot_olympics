@@ -1,5 +1,6 @@
-from blocks import NotReady, Finished, SimpleBlackBox
 from abc import abstractmethod
+
+from blocks import NotReady, Finished, SimpleBlackBox
 
 
 __all__ = ['WithQueue']

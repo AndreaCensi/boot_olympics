@@ -3,15 +3,9 @@ from unittest.case import TestCase
 from contracts import contract
 
 from blocks.composition import series, series_multi
-from blocks.library import Delay
-from blocks.library import FromData
-from blocks.library import Identity
-from blocks.library import NameSignal
-from blocks.library import Split
-from blocks.library import WithQueue
+from blocks.library import (Delay, FromData, Identity, NameSignal, Split,
+                            WithQueue, Collect, Route)
 from blocks.pumps import source_read_all_block
-from blocks.library.route import Route
-from blocks.library.collect import Collect
 
 
 class HTest(WithQueue):
@@ -114,7 +108,8 @@ class NamingTests(TestCase):
         # obs -----------> |H| ----obs'-------
 
         r1 = Route([({'commands':'commands'}, Gc, {'commands':'commands'}),
-              ({'observations':'observations'}, Identity(), {'observations':'observations'})])
+              ({'observations':'observations'}, Identity(),
+               {'observations':'observations'})])
 
         r2 = Route([({'observations':'observations',
                 'commands':'commands'}, H, {'observations':'observations'}),

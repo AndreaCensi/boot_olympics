@@ -64,20 +64,25 @@ class PassiveAgentInterface(WithInternalLog):
         """
         return LearnerAsSystem(self)
 
+    # Parallel
+
+    def merge(self, other):  # @UnusedVariable
+        msg = 'Capability merge() not implemented for %s.' % (type(self))
+        raise NotImplementedError(msg)
+
+    # phases
+
     @contract(returns='bool')
     def need_another_phase(self):
         """ 
             Asks the agent whether it would like another learning phase,
             by replaying again the same data.
             
-            Agent should transition phase after this call.
         """
         return False
 
-
-    def merge(self, other):  # @UnusedVariable
-        msg = 'Capability merge() not implemented for %s.' % (type(self))
-        raise NotImplementedError(msg)
+    def start_next_phase(self):
+        raise NotImplemented(type(self))
 
 
 class LearnerAsSystem(Sink):

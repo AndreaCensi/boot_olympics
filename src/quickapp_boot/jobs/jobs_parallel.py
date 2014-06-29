@@ -97,8 +97,11 @@ def jobs_merging_recursive(context, agents):
 def merge_agents(as1, as2):
     agent1, state1 = as1
     agent2, state2 = as2
+    print('merging agent 1: %s obs' % state1.num_observations)
+    print('merging agent 2: %s obs' % state2.num_observations)
     agent1.merge(agent2)
     state1.merge(state2)
+    print('res: %s obs' % state1.num_observations)
     return agent1, state1
 
 

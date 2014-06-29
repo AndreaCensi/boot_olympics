@@ -1,6 +1,7 @@
 import warnings
 
 from contracts import contract, describe_type
+from contracts.utils import deprecated
 
 from blocks import SimpleBlackBox, Source, Sink
 
@@ -8,24 +9,33 @@ from .exceptions import Full, NotReady, Finished
 from .pumps import bb_pump
 
 
-__all__ = ['series']
+__all__ = [
+    'series',
+    'series_multi',
+]
 
 
+@deprecated
 def series_multi(*args):
+    return series(*args)
+
+
+def series(*args):
     if len(args) < 2:
         msg = 'Expected at least 2 args, got %d.' % len(args)
         msg += '\n %s' % str(args)
         raise ValueError(msg)
     elif len(args) == 2:
-        return series(*args)
+        return series_two(*args)
     elif len(args) > 2:
-        return series(args[0], series_multi(*args[1:]))
+        return series_two(args[0], series(*args[1:]))
     else:
         assert False
 
+
 @contract(a='isinstance(SimpleBlackBox)|isinstance(Source)',
           b='isinstance(SimpleBlackBox)|isinstance(Sink)')
-def series(a, b, name1='a', name2='b'):
+def series_two(a, b, name1='a', name2='b'):
     if isinstance(a, SimpleBlackBox) and isinstance(b, SimpleBlackBox):
         return BBBBSeries(a, b, name1, name2)
     if isinstance(a, Source) and isinstance(b, SimpleBlackBox):

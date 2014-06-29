@@ -3,16 +3,22 @@ from abc import abstractmethod
 from contracts import contract, describe_value
 
 from blocks import Sink
-from blocks.composition import series_multi, series
+from blocks import series
 from blocks.library import Collect
 from blocks.library import Identity
 from blocks.library import Route
 from blocks.library import WithQueue
 from bootstrapping_olympics import (AgentInterface, PassiveAgentInterface,
-                            get_conftools_agents, RepresentationNuisanceCausal)
+                                    get_conftools_agents, RepresentationNuisanceCausal)
+from contracts.utils import check_isinstance
+from bootstrapping_olympics.interfaces.rep_nuisance_causal import series_rnc
 
 
-__all__ = ['MultiLevelAgent', 'MultiLevelBase']
+__all__ = [
+       'TwoLevelAgent',
+       'MultiLevelBase',
+       'MultiLevelAgent',
+]
 
 class MultiLevelBase(PassiveAgentInterface):
 
@@ -22,7 +28,16 @@ class MultiLevelBase(PassiveAgentInterface):
         """ Returns the nuisance at the end of learning. """
 
 
-class MultiLevelAgent(AgentInterface):
+def MultiLevelAgent(agents):
+    if len(agents) == 2:
+        return TwoLevelAgent(agents[0], agents[1])
+    elif len(agents) > 2:
+        first_levels = MultiLevelAgent(agents[:-1])
+        last = agents[-1]
+        return TwoLevelAgent(first_levels, last)
+
+
+class TwoLevelAgent(MultiLevelBase):
     ''' 
         This is an agent class that allows learning of multi-level
         representations.
@@ -46,7 +61,6 @@ class MultiLevelAgent(AgentInterface):
         - We decide: If the first agent throws LearningConverged.
           To signal this we throw NextLearningPhase.
         
-
     '''
 
     @contract(first='str|code_spec|isinstance(MultiLevelBase)',
@@ -60,6 +74,9 @@ class MultiLevelAgent(AgentInterface):
             msg =('Expected instance of MultiLevelBase, got %s.' % 
                    describe_value(self.first))
             raise ValueError(msg)
+
+        self.log_add_child('first', self.first)
+        self.log_add_child('second', self.second)
 
     def init(self, boot_spec):
         self.phase = 0
@@ -77,13 +94,21 @@ class MultiLevelAgent(AgentInterface):
         raise ValueError('BUG: Should not have got here; should use learner_system')
 
     def need_another_phase(self):
+        self.info('asked for next phase: current %s' % self.phase)
         if self.phase == 0:
-            self.info('asked for next phase--answering yes')
-            self.phase = 1
             return True
         else:
             self.info('asked for next phase--answering no')
             return False
+
+    def start_next_phase(self):
+        if self.phase == 0:
+            if self.first.need_another_phase():
+                self.first.start_next_phase()
+            else:
+                self.phase = 1
+        else:
+            raise ValueError('should not be here')
         
     @contract(returns=Sink)
     def get_learner_as_sink(self):
@@ -105,6 +130,13 @@ class MultiLevelAgent(AgentInterface):
             self.info('merge() for phase=%d' % self.phase)
             self.second.merge(other.second)
 
+    @contract(returns=RepresentationNuisanceCausal)
+    def get_transform(self):
+        check_isinstance(self.second, MultiLevelBase)
+        t1 = self.first.get_transform()
+        t2 = self.second.get_transform()
+        return series_rnc(t1, t2)
+
 
 class MultiLevelAgentLearner(Sink):
     def __init__(self, ma, boot_spec):
@@ -119,14 +151,14 @@ class MultiLevelAgentLearner(Sink):
             self.boot_spec2 = transform.transform_spec(self.boot_spec)
             self.ma.second.init(self.boot_spec2)
             
-            G = transform.get_G()
+            # G = transform.get_G()
             Gc = transform.get_G_conj()
             H = transform.get_H()
-            Hc = transform.get_H_conj()
-            self.info('G: %s' % G)
+            # Hc = transform.get_H_conj()
+            # self.info('G: %s' % G)
             self.info('H: %s' % H)
             self.info('Gc: %s' % Gc)
-            self.info('Hc: %s' % Hc)
+            # self.info('Hc: %s' % Hc)
             
             learner = self.ma.second.get_learner_as_sink()
             
@@ -145,7 +177,7 @@ class MultiLevelAgentLearner(Sink):
                     'commands':'commands'}, H, {'observations':'observations'}),
                   ({'commands':'commands'}, Identity(), {'commands': 'commands'})])
             
-            sys = series_multi(BootExpand(), r1, r2, Collect(), BootPutTimestamp(), learner)
+            sys = series(BootExpand(), r1, r2, Collect(), BootPutTimestamp(), learner)
             self.sink = sys 
 
     def put(self, value, block=True, timeout=None):
