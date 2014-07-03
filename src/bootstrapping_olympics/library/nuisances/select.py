@@ -42,9 +42,15 @@ class Select(RepresentationNuisance):
             raise UnsupportedSpec(msg)
 
         streamels2 = streamels[self.select]
+
+        self.expect_size = streamels.size
+
         return streamels2
 
     def transform_value(self, value):
+        if value.size != self.expect_size:
+            msg = 'Expected size %d, got shape %s.' % (self.expect_size, value.shape)
+            raise ValueError(msg)
         return value[self.select]
 
     def __repr__(self):

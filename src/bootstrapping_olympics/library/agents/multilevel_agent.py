@@ -1,6 +1,7 @@
 from abc import abstractmethod
 
 from contracts import contract, describe_value
+from contracts.utils import check_isinstance
 
 from blocks import Sink
 from blocks import series
@@ -10,8 +11,6 @@ from blocks.library import Route
 from blocks.library import WithQueue
 from bootstrapping_olympics import (AgentInterface, PassiveAgentInterface,
                                     get_conftools_agents, RepresentationNuisanceCausal)
-from contracts.utils import check_isinstance
-from bootstrapping_olympics.interfaces.rep_nuisance_causal import series_rnc
 
 
 __all__ = [
@@ -135,6 +134,7 @@ class TwoLevelAgent(MultiLevelBase):
         check_isinstance(self.second, MultiLevelBase)
         t1 = self.first.get_transform()
         t2 = self.second.get_transform()
+        from bootstrapping_olympics.library.nuisances_causal.rnc_comb import series_rnc
         return series_rnc(t1, t2)
 
 

@@ -22,7 +22,6 @@ class RepresentationNuisance(WithInternalLog):
     
     __metaclass__ = ContractsMeta
 
-
     @abstractmethod
     def inverse(self):
         ''' 
@@ -30,9 +29,9 @@ class RepresentationNuisance(WithInternalLog):
             or raises NuisanceNotInvertible 
         '''
 
-#     def left_inverse(self):
-#         warnings.warn('not sure of the name')
-#         return self.inverse()
+    def left_inverse(self):
+        warnings.warn('not sure of the name')
+        return self.inverse()
 
     @contract(stream_spec=StreamSpec, returns=StreamSpec)
     def transform_spec(self, stream_spec):
