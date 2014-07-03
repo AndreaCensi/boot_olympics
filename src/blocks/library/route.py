@@ -59,7 +59,9 @@ class Route(WithQueue):
             new_obs.extend(ni)
 
         # Sort by timestamp
+        # self.info('new_obs: %s' % new_obs)
         s = sorted(new_obs, key=lambda x: x[0])
+        # self.info('sorted: %s' % s)
         for x in s:
             self.append(x)
 

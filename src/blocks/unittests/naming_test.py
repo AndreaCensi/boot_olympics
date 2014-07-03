@@ -2,7 +2,7 @@ from unittest.case import TestCase
 
 from contracts import contract
 
-from blocks.composition import series, series_multi
+from blocks.composition import series, series_multi, series_two
 from blocks.library import (Delay, FromData, Identity, NameSignal, Split,
                             WithQueue, Collect, Route)
 from blocks.pumps import source_read_all_block
@@ -53,6 +53,8 @@ class NamingTests(TestCase):
         R = Delay(d)
         G = Identity()
         H = HTest()
+
+        series = series_two
 
         split = Split(NameSignal('commands'),
                       series(G, series(R, NameSignal('observations'), 'R', 'ns_obs'),

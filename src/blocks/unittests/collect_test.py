@@ -8,7 +8,7 @@ from blocks.pumps import source_read_all_block
 
 class CollectTest(TestCase):
 
-    def from_data_test1(self):
+    def collect_test1(self):
         data = [
             (0.0, ('a', 'A')),
             (1.0, ('b', 'B')),

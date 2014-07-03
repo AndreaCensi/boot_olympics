@@ -1,14 +1,12 @@
-src/boot_agents/recursive/remove_dead.pyfrom abc import abstractmethod
-
 from contracts import contract
 
 from blocks.interface import SimpleBlackBox
 from blocks.library.identity import Identity
 from blocks.library.instantaneous import InstantaneousF, WrapTimedNamed
+from blocks.library.route import Route
 from bootstrapping_olympics.interfaces.rep_nuisance import RepresentationNuisance
 from bootstrapping_olympics.interfaces.rep_nuisance_causal import RepresentationNuisanceCausal
 from streamels.boot_spec import BootSpec
-from blocks.library.route import Route
 
 
 __all__ = ['SimpleRNCObs']
