@@ -44,7 +44,10 @@ shape: [3]
 format: C
 range: [0,1]
 default: [0,0.5,0.2]
-
+---  # now 0-0 range is valid
+shape: [3]
+format: [C, C, C]
+range: [[0,0],[0,5],[0,2]]
 """)
 
      
@@ -89,10 +92,10 @@ range: [[0,1],[4,5,5],[0,2]]
 shape: [3]
 format: [C, C, C]
 range: [[0,1],['ciao',5],[0,2]]
----  # invalid range
-shape: [3]
-format: [C, C, C]
-range: [[0,0],[0,5],[0,2]]
+# ---  # invalid range
+# shape: [3]
+# format: [C, C, C]
+# range: [[0,0],[0,5],[0,2]]
 ---  # invalid range
 shape: [3]
 format: [C, C, C]
