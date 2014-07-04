@@ -5,6 +5,7 @@ from blocks.library import (Delay, Identity, NameSignal, Split,
                             WithQueue, Collect, Route)
 
 from .blocks_testing_utils import BlocksTest
+from blocks.utils import check_reset
 
 
 class HTest(WithQueue):
@@ -16,6 +17,8 @@ class HTest(WithQueue):
         self.sign = +1
 
     def put_noblock(self, value):
+        check_reset(self, 'sign')
+
         if(not(isinstance(value, tuple) and len(value) == 2 and
             isinstance(value[1], tuple) and len(value[1]) == 2)):
             msg = 'Invalid value: %s' % value

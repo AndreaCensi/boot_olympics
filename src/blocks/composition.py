@@ -7,6 +7,7 @@ from blocks import SimpleBlackBox, Source, Sink
 
 from .exceptions import Full, NotReady, Finished
 from .pumps import bb_pump
+from blocks.utils import check_reset
 
 
 __all__ = [
@@ -61,12 +62,14 @@ class SourceBBSeries(Source):
         self.log_add_child(name2, b)
 
     def reset(self):
-        self.info('resetting %s' % self)
         self.a.reset()
         self.b.reset()
+        self.reset_once = True
 
     @contract(block='bool', timeout='None|>=0', returns='*')
     def get(self, block=True, timeout=None):
+        check_reset(self, 'reset_once')
+
         # XXX: not sure any of this is correct
         # self.info('%s trying to get' % id(self))
         try:
@@ -101,12 +104,13 @@ class BBSinkSeries(Sink):
         self.log_add_child(name2, b)
 
     def reset(self):
-        self.info('resetting %s' % self)
         self.a.reset()
         self.b.reset()
+        self.reset_once = True
 
     @contract(block='bool', timeout='None|>=0', returns='None')
     def put(self, value, block=False, timeout=None):
+        check_reset(self, 'reset_once')
         try:
             self.a.put(value, block=block, timeout=timeout)
         except Full:
@@ -137,12 +141,13 @@ class BBBBSeries(SimpleBlackBox):
         self.log_add_child(name2, b)
 
     def reset(self):
-        self.info('resetting %s' % self)
         self.a.reset()
         self.b.reset()
+        self.reset_once = True
 
     def end_input(self):
         # self.info('Signaled end of input. Telling a (%s)' % type(self.a))
+        check_reset(self, 'reset_once')
         self.a.end_input()
         try:
             bb_pump(self.a, self.b)
@@ -150,6 +155,8 @@ class BBBBSeries(SimpleBlackBox):
             self.b.end_input()
 
     def put(self, value, block=False, timeout=None):
+        check_reset(self, 'reset_once')
+
         # XXX: not sure this is corect
         self.a.put(value, block=block, timeout=timeout)
         try:
@@ -158,6 +165,7 @@ class BBBBSeries(SimpleBlackBox):
             self.b.end_input()
 
     def get(self, block=False, timeout=None):
+        check_reset(self, 'reset_once')
         # self.info('trying to get from b')
         try:
             return self.b.get(block=block, timeout=timeout)

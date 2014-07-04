@@ -5,6 +5,7 @@ from contracts import contract, describe_value
 from blocks import NotReady, Finished
 
 from .with_queue import WithQueue
+from blocks.utils import check_reset
 
 
 __all__ = ['Route']
@@ -33,6 +34,7 @@ class Route(WithQueue):
         self.finished = [False for _ in range(len(self.boxes))]
 
     def put_noblock(self, value):
+        check_reset(self, 'finished')
 
         t, (name, ob) = explode_signal(value)
         # self.info('routing %s, %s' % (t, name))

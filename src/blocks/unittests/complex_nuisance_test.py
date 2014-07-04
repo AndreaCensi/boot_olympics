@@ -4,6 +4,7 @@ from blocks.pumps import source_read_all_block
 import numpy as np
 
 from .blocks_testing_utils import BlocksTest
+from blocks.utils import check_reset
 
 
 class SuperSample(WithQueue):
@@ -18,8 +19,7 @@ class SuperSample(WithQueue):
         self.last = None
 
     def put_noblock(self, value):
-        if not 'last' in self.__dict__:
-            raise Exception('did not reset() the block')
+        check_reset(self, 'last')
 
         if self.last is not None:
             t1, v1 = self.last
@@ -34,6 +34,8 @@ class SuperSample(WithQueue):
         self.last = value
 
     def end_input(self):
+        check_reset(self, 'last')
+
         if self.last is not None:
             self.append(self.last)
         WithQueue.end_input(self)

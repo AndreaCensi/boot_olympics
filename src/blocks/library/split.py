@@ -3,6 +3,7 @@ from contracts import contract
 from blocks import NotReady, Finished, SimpleBlackBox
 
 from .with_queue import WithQueue
+from blocks.utils import check_reset
 
 
 __all__ = ['Split']
@@ -20,10 +21,13 @@ class Split(WithQueue):
         self.log_add_child(name2, b)
 
     def reset(self):
+        self.a.reset()
+        self.b.reset()
         self.a_finished = False
         self.b_finished = False
 
     def put_noblock(self, value):
+        check_reset(self, 'a_finished')
         # TODO: does not consider Full as a special case
         self.a.put(value, block=False, timeout=None)
         self.b.put(value, block=False, timeout=None)
@@ -65,6 +69,7 @@ class Split(WithQueue):
             self._finished = True
 
     def end_input(self):
+        check_reset(self, 'a_finished')
         self.a.end_input()
         self.b.end_input()
         self._pump()
