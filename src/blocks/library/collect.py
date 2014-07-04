@@ -9,7 +9,8 @@ class Collect(WithQueue):
 
     def __init__(self):
         WithQueue.__init__(self)
-        # XXX
+
+    def reset(self):
         self.last = {}
         self.last_t = None
 

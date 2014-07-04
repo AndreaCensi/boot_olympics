@@ -40,11 +40,7 @@ class WithQueue(SimpleBlackBox):
         # print('end_input() called for %s' % self)
         self._finished = True
 
-    def put(self, value, block=False, timeout=None):
+    def put(self, value, block=False, timeout=None):  # @UnusedVariable
+        # XXX
         self.put_noblock(value)
     
-
-#         if len(self._queue) > 100:
-#             print('%s: Warning, too much growth? %s'
-#                   % (type(self), len(self._queue)))
-

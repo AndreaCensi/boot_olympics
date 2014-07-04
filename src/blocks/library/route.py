@@ -25,7 +25,12 @@ class Route(WithQueue):
         for i, b in enumerate(self.boxes):
             self.log_add_child('%d' % i, b)
 
-        self.finished = [False for i in range(len(self.boxes))]
+
+    def reset(self):
+        for b in self.boxes:
+            b.reset()
+
+        self.finished = [False for _ in range(len(self.boxes))]
 
     def put_noblock(self, value):
 

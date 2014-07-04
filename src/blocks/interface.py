@@ -2,17 +2,27 @@ from abc import abstractmethod
 
 from contracts import ContractsMeta, contract
 
-from decent_logs.withinternallog import WithInternalLog
+from decent_logs import WithInternalLog
 
 from .exceptions import Finished, NotReady, Full
 
 
-__all__ = ['Sink', 'Source', 'SimpleBlackBox']
+__all__ = [
+    'Sink',
+    'Source',
+    'SimpleBlackBox',
+]
+
 
 class Sink(WithInternalLog):
     __metaclass__ = ContractsMeta
 
     Full = Full
+
+    @abstractmethod
+    def reset(self):
+        """ Resets the sink. """
+        pass
 
     @abstractmethod
     @contract(block='bool', value='*', timeout='None|>=0')
@@ -34,6 +44,10 @@ class Source(WithInternalLog):
 
     NotReady = NotReady
     Finished = Finished
+
+    @abstractmethod
+    def reset(self):
+        """ Rewinds the source. """
 
     # def ready():
     # def finished():

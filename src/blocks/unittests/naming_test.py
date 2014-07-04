@@ -1,17 +1,18 @@
-from unittest.case import TestCase
-
 from contracts import contract
 
 from blocks.composition import series, series_multi, series_two
-from blocks.library import (Delay, FromData, Identity, NameSignal, Split,
+from blocks.library import (Delay, Identity, NameSignal, Split,
                             WithQueue, Collect, Route)
-from blocks.pumps import source_read_all_block
+
+from .blocks_testing_utils import BlocksTest
 
 
 class HTest(WithQueue):
 
     def __init__(self):
         WithQueue.__init__(self)
+
+    def reset(self):
         self.sign = +1
 
     def put_noblock(self, value):
@@ -35,7 +36,7 @@ class HTest(WithQueue):
             raise ValueError('No valid signal %r.' % signal)
 
 
-class NamingTests(TestCase):
+class NamingTests(BlocksTest):
 
 
     def complex_nuisance_test_1(self):
@@ -61,28 +62,25 @@ class NamingTests(TestCase):
                             'G', 'Rns_obs'),
                             'ns_cmd', 'GRn')
 
-        S = series(split, H, 'split', 'H')
+        bbox = series(split, H, 'split', 'H')
 
         data = [(0.0, 0), (1.0, 1), (2.0, 2), (3.0, 3)]
         expected = [(0.0 + d, 0),
                     (1.0 + d, -1), (2.0 + d, 2), (3.0 + d, -3)]
-        s = FromData(data)
-        sys = series(s, S, 'fromdata', 'S')
-        res = source_read_all_block(sys)
-        print('the output is %s' % res)
-        self.assertEqual(expected, res)
+        self.check_bbox_results(bbox, data, expected)
+
 
     def complex_nuisance_test_2(self):
         R = Identity()
         G = Identity()
         G2 = Identity()
-        S = series(G, series(R, G2))
+        bbox = series(G, series(R, G2))
 
         data = [(0.0, 10), (1.0, 20), (2.0, 31)]
-        s = FromData(data)
-        sys = series(s, S)
-        res = source_read_all_block(sys)
-        self.assertEqual(data, res)
+        expected = data
+        self.check_bbox_results(bbox, data, expected)
+
+
 
     def complex_nuisance_test_3(self):
 
@@ -117,8 +115,6 @@ class NamingTests(TestCase):
                 'commands':'commands'}, H, {'observations':'observations'}),
               ({'commands':'commands'}, Identity(), {'commands': 'commands'})])
 
-        sys = series_multi(FromData(data), r1, r2, Collect())
-
         expected = [
             (-1.0, dict(observations=10, commands=1)),
             (1.0, dict(observations=10, commands=2)),
@@ -126,8 +122,9 @@ class NamingTests(TestCase):
             (3.0, dict(observations=30, commands=2)),
         ]
 
-        res = source_read_all_block(sys)
-        self.assertEqual(res, expected)
+        bbox = series_multi(r1, r2, Collect())
+        self.check_bbox_results(bbox, data, expected)
+
 
 
 

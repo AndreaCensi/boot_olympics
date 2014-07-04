@@ -60,6 +60,11 @@ class SourceBBSeries(Source):
         self.log_add_child(name1, a)
         self.log_add_child(name2, b)
 
+    def reset(self):
+        self.info('resetting %s' % self)
+        self.a.reset()
+        self.b.reset()
+
     @contract(block='bool', timeout='None|>=0', returns='*')
     def get(self, block=True, timeout=None):
         # XXX: not sure any of this is correct
@@ -95,6 +100,11 @@ class BBSinkSeries(Sink):
         self.log_add_child(name1, a)
         self.log_add_child(name2, b)
 
+    def reset(self):
+        self.info('resetting %s' % self)
+        self.a.reset()
+        self.b.reset()
+
     @contract(block='bool', timeout='None|>=0', returns='None')
     def put(self, value, block=False, timeout=None):
         try:
@@ -125,6 +135,11 @@ class BBBBSeries(SimpleBlackBox):
         self.b = b
         self.log_add_child(name1, a)
         self.log_add_child(name2, b)
+
+    def reset(self):
+        self.info('resetting %s' % self)
+        self.a.reset()
+        self.b.reset()
 
     def end_input(self):
         # self.info('Signaled end of input. Telling a (%s)' % type(self.a))

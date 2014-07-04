@@ -10,6 +10,8 @@ class FromData(Source):
     @contract(data='list(tuple(float, *))')
     def __init__(self, data):
         self.data = data
+
+    def reset(self):
         self.k = 0
 
     def get(self, block=False, timeout=None):  # @UnusedVariable

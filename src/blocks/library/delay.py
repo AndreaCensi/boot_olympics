@@ -1,11 +1,17 @@
-from blocks.library.with_queue import WithQueue
+from .with_queue import WithQueue
+
 
 __all__ = ['Delay']
 
+
 class Delay(WithQueue):
+
     def __init__(self, delay):
         WithQueue.__init__(self)
         self.delay = delay
+
+    def reset(self):
+        pass
 
     def put_noblock(self, value):
         t, x = value

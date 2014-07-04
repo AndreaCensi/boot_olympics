@@ -1,14 +1,9 @@
-from unittest.case import TestCase
+from blocks.library import Delay, Identity, Route
 
-from blocks import series
-from blocks.library import Delay
-from blocks.library import FromData
-from blocks.library import Identity
-from blocks.library import Route
-from blocks.pumps import source_read_all_block
+from .blocks_testing_utils import BlocksTest
 
 
-class RouteTest(TestCase):
+class RouteTest(BlocksTest):
 
     def route_test1(self):
         data = [
@@ -43,22 +38,6 @@ class RouteTest(TestCase):
            ({'a':'c', 'b':'b'}, Identity(), {'c':'c', 'b':'d'}),
         ]
 
-        r = Route(routing)
-        s = series(FromData(data), r)
-        res = source_read_all_block(s)
-        self.assert_same_seq(res, expected)
+        bbox = Route(routing)
 
-
-    def assert_same_seq(self, a, b):
-        try:
-            self.assertEqual(a, b)
-        except:
-            print('result:')
-            self.display_signal(a)
-            print('expected:')
-            self.display_signal(b)
-            raise
-    def display_signal(self, x):
-        for (t, (name, obs)) in x:
-            print('%10s %10s %s' % (t,name, obs))
-        
+        self.check_bbox_results(bbox, data, expected)

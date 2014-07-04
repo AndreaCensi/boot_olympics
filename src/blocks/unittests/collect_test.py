@@ -1,12 +1,10 @@
-from unittest.case import TestCase
 
-from blocks.composition import series
-from blocks.library.collect import Collect
-from blocks.library.from_data import FromData
-from blocks.pumps import source_read_all_block
+from blocks.library import Collect
+
+from .blocks_testing_utils import BlocksTest
 
 
-class CollectTest(TestCase):
+class CollectTest(BlocksTest):
 
     def collect_test1(self):
         data = [
@@ -24,8 +22,7 @@ class CollectTest(TestCase):
             (2.0, dict(b='B2')),
             (3.0, dict(a='A3', b='B3', c='C3')),
         ]
-        s = series(FromData(data), Collect())
-        res = source_read_all_block(s)
-        self.assertEqual(res, expected)
-
+        bbox = Collect()
+        self.check_bbox_results(bbox, data, expected)
+        
 

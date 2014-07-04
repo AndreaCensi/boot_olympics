@@ -1,7 +1,10 @@
-from .load_agent_state import load_agent_state
-from bootstrapping_olympics import PassiveAgentInterface, logger
-from contracts import contract
 import warnings
+
+from contracts import contract
+
+from bootstrapping_olympics import PassiveAgentInterface, logger
+
+from .load_agent_state import load_agent_state
 
 
 __all__ = ['learn_log', 'learn_log_base']

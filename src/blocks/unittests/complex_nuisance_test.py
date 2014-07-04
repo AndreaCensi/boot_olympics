@@ -1,12 +1,9 @@
-from unittest.case import TestCase
-
 from blocks.composition import series
-from blocks.library import FromData
-from blocks.library import Identity
-from blocks.library import WithQueue
+from blocks.library import FromData, Identity, WithQueue, ToData
 from blocks.pumps import source_read_all_block
 import numpy as np
-from blocks.library.to_data import ToData
+
+from .blocks_testing_utils import BlocksTest
 
 
 class SuperSample(WithQueue):
@@ -16,9 +13,14 @@ class SuperSample(WithQueue):
             is at most min_interval. """
         WithQueue.__init__(self)
         self.min_interval = min_interval
+
+    def reset(self):
         self.last = None
 
     def put_noblock(self, value):
+        if not 'last' in self.__dict__:
+            raise Exception('did not reset() the block')
+
         if self.last is not None:
             t1, v1 = self.last
             t2, _ = value
@@ -39,33 +41,31 @@ class SuperSample(WithQueue):
 
 
 
-class ConnectionTests(TestCase):
+class ConnectionTests(BlocksTest):
 
     def from_data_test1(self):
         data = [(0.0, 'A'), (1.0, 'B'), (2.0, 'C')]
         s = FromData(data)
+        s.reset()
         res = source_read_all_block(s)
         self.assertEqual(data, res)
 
     def series_test_1(self):
         """  Series(FromDatA, Identity) """
         data = [(0.0, 'A'), (1.0, 'B'), (2.0, 'C')]
-        s = FromData(data)
-        f = Identity()
-        S = series(s, f)
-        res = source_read_all_block(S)
-        self.assertEqual(data, res)
+        bbox = Identity()
+        expected = data
+        self.check_bbox_results(bbox, data, expected)
+
 
     def series_test_2(self):
         """  Series(FromDatA, SuperSample) """
         data = [(0.0, 'A'), (1.0, 'B'), (2.0, 'C')]
-        out = [(0.0, 'A'), (0.25, 'A'), (0.5, 'A'), (0.75, 'A'),
+        expected = [(0.0, 'A'), (0.25, 'A'), (0.5, 'A'), (0.75, 'A'),
                (1.0, 'B'), (1.25, 'B'), (1.5, 'B'), (1.75, 'B'),
                (2.0, 'C')]
-        f = SuperSample(0.25)
-        S = series(FromData(data), f)
-        res = source_read_all_block(S)
-        self.assertEqual(res, out)
+        bbox = SuperSample(0.25)
+        self.check_bbox_results(bbox, data, expected)
 
     def series_test_3(self):
         """  Series(SuperSample, ToData) """
@@ -76,6 +76,7 @@ class ConnectionTests(TestCase):
         f = SuperSample(0.25)
         todata = ToData()
         S = series(f, todata)
+        S.reset()
         for x in data:
             S.put(x)
         S.end_input()

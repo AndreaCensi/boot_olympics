@@ -1,8 +1,8 @@
 from contracts import contract
 
-from blocks import NotReady, Finished
-from blocks.interface import SimpleBlackBox
-from blocks.library.with_queue import WithQueue
+from blocks import NotReady, Finished, SimpleBlackBox
+
+from .with_queue import WithQueue
 
 
 __all__ = ['Split']
@@ -16,10 +16,12 @@ class Split(WithQueue):
         WithQueue.__init__(self)
         self.a = a
         self.b = b
-        self.a_finished = False
-        self.b_finished = False
         self.log_add_child(name1, a)
         self.log_add_child(name2, b)
+
+    def reset(self):
+        self.a_finished = False
+        self.b_finished = False
 
     def put_noblock(self, value):
         # TODO: does not consider Full as a special case

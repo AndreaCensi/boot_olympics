@@ -1,16 +1,16 @@
-from blocks.library import WithQueue
+from .instantaneous import Instantaneous
 
 
 __all__ = ['NameSignal']
 
 
-class NameSignal(WithQueue):
+class NameSignal(Instantaneous):
 
     def __init__(self, name):
-        WithQueue.__init__(self)
+        Instantaneous.__init__(self)
         self.name = name
 
-    def put_noblock(self, value):
+    def transform_value(self, value):
         timestamp, ob = value
-        x = timestamp, (self.name, ob)
-        self.append(x)
+        return  timestamp, (self.name, ob)
+

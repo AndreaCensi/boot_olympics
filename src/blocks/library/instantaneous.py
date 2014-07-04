@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from blocks.exceptions import NotReady, Finished
+from blocks import NotReady, Finished
 
 from .with_queue import WithQueue
 
@@ -23,6 +23,9 @@ class Instantaneous(WithQueue):
     def put_noblock(self, value):
         value2 = self.transform_value(value)
         self.append(value2)
+
+    def reset(self):
+        pass
 
 
 class InstantaneousF(Instantaneous):
