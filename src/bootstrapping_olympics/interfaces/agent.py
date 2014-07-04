@@ -2,13 +2,17 @@ from abc import abstractmethod
 
 from contracts import ContractsMeta, contract
 
+from blocks import Sink
 from decent_logs import WithInternalLog
 from reprep import Report, ReportInterface
-from blocks.interface import Sink
 
 
-__all__ = ['AgentInterface', 'ServoAgentInterface',
-           'PredictorAgentInterface', 'PassiveAgentInterface']
+__all__ = [
+    'PassiveAgentInterface',
+    'AgentInterface',
+    'ServoAgentInterface',
+    'PredictorAgentInterface',
+]
 
 
 class PassiveAgentInterface(WithInternalLog):
@@ -27,7 +31,7 @@ class PassiveAgentInterface(WithInternalLog):
         '''
             Process new observations.
             
-            :param bd: a numpy array with field ['observations']
+            :param bd: a numpy array with field 'observations' and 'commands'
            
             For learning agents, it might raise LearningConverged to signal that 
             the learning has converged and no more data is necessary. 
@@ -60,7 +64,8 @@ class PassiveAgentInterface(WithInternalLog):
             Returns something that you can "put" things into.
             The value put will have fields "commands" and "observations".
             
-            The Sink's "put" command might result in LearningConverged.
+            The Sink's "put" command might result in LearningConverged
+            to signal that the learning has converged and no more data is necessary. 
         """
         return LearnerAsSystem(self)
 
@@ -68,6 +73,22 @@ class PassiveAgentInterface(WithInternalLog):
 
     def merge(self, other):  # @UnusedVariable
         msg = 'Capability merge() not implemented for %s.' % (type(self))
+        raise NotImplementedError(msg)
+    
+    @contract(i='int,>=0,i', n='int,>=1,>=i')
+    def parallel_process_hint(self, i, n):  # @UnusedVariable
+        """ 
+            Hint for parallel processing. It tells this instance that
+            it is instance "i" of "n" that sees the same data.
+            
+            Learning modality: 
+            1) N copies of the same thing that looks at the same data
+               Then parallel_process_hint(i, N) is called for each one.
+               
+            2) Different learners look at the same thing.
+                Then parallel_process_hint(0, 1) is called for all learners.
+        """
+        msg = 'Capability parallel_process_hint() not implemented for %s.' % (type(self))
         raise NotImplementedError(msg)
 
     # phases
@@ -82,7 +103,7 @@ class PassiveAgentInterface(WithInternalLog):
         return False
 
     def start_next_phase(self):
-        raise NotImplemented(type(self))
+        raise NotImplementedError(type(self))
 
 
 class LearnerAsSystem(Sink):
@@ -214,22 +235,7 @@ class AgentInterface(PassiveAgentInterface):
         msg = 'Capability get_servo() not implemented for %s.' % (type(self))
         raise NotImplementedError(msg)
 
-    @contract(i='int,>=0,i', n='int,>=1,>=i')
-    def parallel_process_hint(self, i, n):  # @UnusedVariable
-        """ 
-            Hint for parallel processing. It tells this instance that
-            it is instance "i" of "n" that sees the same data.
-            
-            Learning modality: 
-            1) N copies of the same thing that looks at the same data
-               Then parallel_process_hint(i, N) is called for each one.
-               
-            2) Different learners look at the same thing.
-                Then parallel_process_hint(0, 1) is called for all learners.
-        """
-        msg = 'Capability parallel_process_hint() not implemented for %s.' % (type(self))
-        raise NotImplementedError(msg)
-    
+ 
     # Serialization stuff
     
     def state_vars(self):

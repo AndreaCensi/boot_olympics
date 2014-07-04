@@ -47,9 +47,16 @@ from . import extra
 from .programs.manager.batch.batch_learn import batch_jobs1
 
 def get_comptests():
+    # load unittests
     from . import unittests
     from comptests import get_comptests_app
+    # Get the Quickapp for the boot_config
     app = get_comptests_app(get_boot_config())
     return [app]
+
+
+
+
+
 
 

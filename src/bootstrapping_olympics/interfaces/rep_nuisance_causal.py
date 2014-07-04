@@ -27,7 +27,7 @@ class RepresentationNuisanceCausal(WithInternalLog):
             Returns the inverse representation nuisance,
             or raises NotInvertible 
         '''
-        raise NotImplemented(type(self))
+        raise NotImplementedError(type(self))
 
     @abstractmethod
     @contract(spec=BootSpec, returns=BootSpec)

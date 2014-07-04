@@ -1,6 +1,9 @@
+from abc import abstractmethod
 from numbers import Number
+from pprint import pformat
 
-from contracts import check, describe_type, describe_value, contract
+from contracts import ContractsMeta, check, describe_type, describe_value, contract
+from contracts.utils import indent, check_isinstance
 
 import numpy as np
 from streamels import logger
@@ -9,14 +12,125 @@ from .base import (BOOT_OLYMPICS_SENSEL_RESOLUTION, check_valid_streamels,
     streamel_dtype, ValueFormats)
 
 
-__all__ = ['StreamSpec', 'BootInvalidValue', 'streamels_all_of_kind']
+__all__ = [
+    'BootInvalidValue',
+    'StreamSpec', 
+    'XStreamSpec',
+    'CompositeStreamSpec',
+    'streamels_all_of_kind',
+]
  
 # TODO: check how it is used
 class BootInvalidValue(ValueError):
     pass
 
 
-class StreamSpec(object):
+class XStreamSpec(object):
+    __metaclass__ = ContractsMeta
+    
+    @abstractmethod
+    def check_valid_value(self, x):
+        ''' 
+            Checks if the value x is valid according to this spec
+            and raises BootInvalidValue (derived from ValueError) if it is not.
+        '''
+
+    @abstractmethod
+    def get_default_value(self):
+        ''' 
+            Returns a "default value" for this stream. 
+            
+            For commands streams, this has the semantics of being
+            a "at rest" value. 
+            
+            For observations, this is an "example"
+            value, used for visualization. 
+        '''
+
+    @staticmethod
+    def from_yaml(y):
+        try:
+            check_isinstance(y, dict)
+            looks_basic = any([x in y for x in ['shape', 'format']])
+            if looks_basic:
+                return StreamSpec.from_yaml(y)
+            else:
+                return CompositeStreamSpec.from_yaml(y)
+        except ValueError as e:
+            msg = 'Could not parse input as XStreamSpec:\n'
+            msg += indent(pformat(y), ' ')
+            msg += '\nBecause of this error:\n'
+            msg += indent(str(e), '| ')
+            raise ValueError(msg)
+
+
+
+class CompositeStreamSpec(XStreamSpec):
+    """ The data is a dictionary, each field is a CompositeStreamSpec. """
+    
+    @contract(components='dict(str:isinstance(XStreamSpec))')
+    def __init__(self, components):
+        self.components = components
+
+    def __repr__(self):
+        return 'CompositeStreamSpec(%r)' % self.components
+
+    def __eq__(self, other):
+        return self.components == other.components
+
+    def get_default_value(self):
+        it = [(name, ss.get_default_value())
+              for name, ss in self.components.items()]
+        return dict(it)
+
+    def check_valid_value(self, x):
+        if not isinstance(x, dict):
+            msg = ('Expected a dict, got %s.' % describe_type(x))
+            raise BootInvalidValue()
+            
+        fields = set(x.keys())
+        exp = set(self.components.keys())
+        if not fields == exp:
+            msg = 'Expected: %s  obtained: %s' % (exp, fields)
+            bail(msg)
+            
+        for name, ss in self.components.items():
+            try:
+                ss.check_valid_value(x[name])
+            except BootInvalidValue as e:
+                msg = 'Spec not satisfied for field %r.' % name
+                msg += '\n' + indent(e, '| ')
+                raise  BootInvalidValue(msg)
+
+    def to_yaml(self):
+        return dict([name, x.to_yaml()] for name, x in self.components.items())
+
+    @staticmethod
+    def from_yaml(y):
+        try:
+            check_isinstance(y, dict)
+            components = {}
+            for name, x in y.items():
+                try:
+                    components[name] = XStreamSpec.from_yaml(x)
+                except ValueError as e:
+                    msg = 'Could not parse component %r:\n' % name
+                    msg += indent(pformat(x), ' ')
+                    msg += '\nBecause of this error:\n'
+                    msg += indent(str(e), '| ')
+                    raise ValueError(msg)
+
+            return CompositeStreamSpec(components)
+        except ValueError as e:
+            msg = 'Could not parse input as CompositeStreamSpec:\n'
+            msg += indent(pformat(y), ' ')
+            msg += '\nBecause of this error:\n'
+            msg += indent(str(e), '| ')
+            raise ValueError(msg)
+
+
+
+class StreamSpec(XStreamSpec):
     """ 
     
         The simplest way to describe this is by using the ``from_yaml`` 
@@ -78,15 +192,6 @@ class StreamSpec(object):
 
     @contract(returns='array')
     def get_default_value(self):
-        ''' 
-            Returns a "default value" for this stream. 
-            
-            For commands streams, this has the semantics of being
-            a "at rest" value. 
-            
-            For observations, this is an "example"
-            value, used for visualization. 
-        '''
         return self.streamels['default']
 
     @contract(returns='array')
@@ -115,12 +220,7 @@ class StreamSpec(object):
             x.flat[i] = val
         return x
 
-    @contract(x='array')
     def check_valid_value(self, x):
-        ''' 
-            Checks if the value x is valid according to this spec
-            and raises BootInvalidValue (derived from ValueError) if it is not.
-         '''
 
         def bail(msg):
             msg += '\n  stream: %s' % self

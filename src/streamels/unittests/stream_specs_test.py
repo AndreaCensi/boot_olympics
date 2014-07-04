@@ -14,6 +14,7 @@ def check_parsing(x):
 
 
 def check_parsing_invalid(x):
+    print('Checking: %s' % x)
     assert_raises((ValueError, ContractNotRespected), StreamSpec.from_yaml, x)
 
 
