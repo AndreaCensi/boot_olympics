@@ -11,3 +11,4 @@ coverage_information
 test.png
 out-*
 *.pgc
+.compmake_history.txt

@@ -1,5 +1,5 @@
 """ Functions for reading/writing ROS logs. """
-from .. import np, contract, getLogger
+from .. import  getLogger
 import traceback
 import os
 

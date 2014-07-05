@@ -4,13 +4,9 @@ from contracts import contract, describe_value
 from contracts.utils import check_isinstance
 
 from blocks import Sink
-from blocks import series
-from blocks.library import Collect
-from blocks.library import Identity
-from blocks.library import Route
-from blocks.library import WithQueue
 from bootstrapping_olympics import (AgentInterface, PassiveAgentInterface,
                                     get_conftools_agents, RepresentationNuisanceCausal)
+from .nuisance_agent_actions import wrap_agent_learner
 
 
 __all__ = [
@@ -134,7 +130,7 @@ class TwoLevelAgent(MultiLevelBase):
         check_isinstance(self.second, MultiLevelBase)
         t1 = self.first.get_transform()
         t2 = self.second.get_transform()
-        from bootstrapping_olympics.library.nuisances_causal.rnc_comb import series_rnc
+        from bootstrapping_olympics.library.nuisances_causal import series_rnc
         return series_rnc(t1, t2)
 
 
@@ -150,53 +146,12 @@ class MultiLevelAgentLearner(Sink):
             assert isinstance(transform, RepresentationNuisanceCausal)
             self.boot_spec2 = transform.transform_spec(self.boot_spec)
             self.ma.second.init(self.boot_spec2)
-            
-            # G = transform.get_G()
-            Gc = transform.get_G_conj()
-            H = transform.get_H()
-            # Hc = transform.get_H_conj()
-            # self.info('G: %s' % G)
-            self.info('H: %s' % H)
-            self.info('Gc: %s' % Gc)
-            # self.info('Hc: %s' % Hc)
-            
             learner = self.ma.second.get_learner_as_sink()
+            return wrap_agent_learner(learner, transform)
             
-            #   
-            # bd -> |expand| -> commands, observations
-            #
-            # cmd --> |G*| --> cmd' ---------------> |collect| -> learner
-            #                   |                |
-            #                   v                |
-            # obs -----------> |H| ----obs'-------                      
-            
-            r1 = Route([({'commands':'commands'}, Gc, {'commands':'commands'}),
-                  ({'observations':'observations'}, Identity(), {'observations':'observations'})])
-            
-            r2 = Route([({'observations':'observations',
-                    'commands':'commands'}, H, {'observations':'observations'}),
-                  ({'commands':'commands'}, Identity(), {'commands': 'commands'})])
-            
-            sys = series(BootExpand(), r1, r2, Collect(), BootPutTimestamp(), learner)
-            self.sink = sys 
-
     def put(self, value, block=True, timeout=None):
         try:
             self.sink.put(value, block, timeout)
         except AgentInterface.LearningConverged:
             self.info('learning converged')
             raise
-
-
-class BootExpand(WithQueue):
-    def put_noblock(self, value):
-        t, bd = value
-        self.append((t, ('commands', bd['commands'])))
-        self.append((t, ('observations', bd['observations'])))
-
-class BootPutTimestamp(WithQueue):
-    def put_noblock(self, value):
-        t, bd = value
-        bd['timestamp'] = t
-        self.append((t, bd))
-

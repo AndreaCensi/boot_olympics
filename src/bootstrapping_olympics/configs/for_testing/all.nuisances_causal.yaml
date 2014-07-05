@@ -1,0 +1,8 @@
+
+- id: "test_rnc_simple_${nuisance}"
+  desc: A causal nuisance obtained from a simple nuisance
+  code:
+  - bootstrapping_olympics.library.nuisances_causal.SimpleRNCObs
+  - nuisance: "${nuisance}"
+
+- id: test_rnc_simple_rpermA

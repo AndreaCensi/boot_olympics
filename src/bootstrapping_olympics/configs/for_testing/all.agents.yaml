@@ -4,3 +4,24 @@
       - bootstrapping_olympics.library.agents.RandomAgent
       - {}
           
+- id: test_obs_normalize_max
+  desc: normalizes the commands so that the max is +1
+  code:
+  - bootstrapping_olympics.library.agents.ObsNormalizeMax
+  - {}
+
+- id: test_nuisance_agent_1
+  desc: Simple test with normal nuisance
+  code:
+  - bootstrapping_olympics.library.agents.NuisanceAgent
+  - agent: random_agent
+    nuisances: 
+    - rpermA
+
+- id: test_nuisance_agent_2
+  desc: Simple test with causal nuisance
+  code:
+  - bootstrapping_olympics.library.agents.NuisanceAgent
+  - agent: random_agent
+    nuisances: 
+    - test_rnc_simple_rpermA

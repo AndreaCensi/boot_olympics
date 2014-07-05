@@ -1,9 +1,9 @@
 from contracts import contract
+from contracts.utils import check_isinstance
 
 from blocks import SimpleBlackBox
 from blocks.library import Identity, InstantaneousF, WrapTimedNamed, Route
-from bootstrapping_olympics import RepresentationNuisance
-from bootstrapping_olympics import RepresentationNuisanceCausal
+from bootstrapping_olympics import RepresentationNuisance, RepresentationNuisanceCausal, get_conftools_nuisances
 from streamels import BootSpec
 
 
@@ -13,10 +13,12 @@ __all__ = ['SimpleRNCObs']
 class SimpleRNCObs(RepresentationNuisanceCausal):
     """ A nuisance where there is only a transformation of y defined. """
 
-    @contract(T=RepresentationNuisance)
-    def __init__(self, t):
-        assert isinstance(t, RepresentationNuisance)
-        self.t = t
+    @contract(nuisance='str|code_spec|isinstance(RepresentationNuisance)')
+    def __init__(self, nuisance):
+
+        _, self.t = get_conftools_nuisances().instance_smarter(nuisance)
+
+        check_isinstance(self.t, RepresentationNuisance)
 
     def inverse(self):
         return SimpleRNCObs(self.t.inverse())

@@ -1,6 +1,6 @@
 ''' Miscellaneous utilities not specific to the project. '''
 
-from .. import getLogger, np, contract
+from .. import getLogger
 
 logger = getLogger(__name__)
 

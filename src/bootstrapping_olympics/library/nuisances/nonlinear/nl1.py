@@ -2,9 +2,10 @@
 """ 
     A bunch of diffeomorphisms of the real line.
 """
-import numpy as np
 from contracts import contract
-from .. import GenericScalar
+
+from bootstrapping_olympics.library.nuisances import GenericScalar
+import numpy as np
 
 
 @contract(x='array', alpha='>0')

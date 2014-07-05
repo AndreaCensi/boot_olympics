@@ -1,9 +1,11 @@
-from ..manager_tests import create_tmp_dir
-from ..tests_generation import for_all_pairs
+import os
+
 from bootstrapping_olympics import LogsFormat, logger, UnsupportedSpec
 from bootstrapping_olympics.programs.manager import DataCentral, simulate
 from bootstrapping_olympics.utils import assert_allclose, safe_makedirs
-import os
+
+from ..manager_tests import create_tmp_dir
+from ..tests_generation import for_all_pairs
 
 
 @for_all_pairs

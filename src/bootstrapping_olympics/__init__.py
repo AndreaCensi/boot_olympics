@@ -2,6 +2,7 @@ __version__ = '1.3'
 
 import numpy as np
 from contracts import contract
+from comptests.registrar import jobs_registrar
 
 __docformat__ = 'restructuredtext'
 
@@ -45,17 +46,19 @@ from .misc import *
 from . import extra
 
 from .programs.manager.batch.batch_learn import batch_jobs1
+#
+# def get_comptests():
+#     # load unittests
+#     from . import unittests
+#     from comptests import get_comptests_app
+#     # Get the Quickapp for the boot_config
+#     app = get_comptests_app(get_boot_config())
+#     return [app]
 
-def get_comptests():
-    # load unittests
+
+def jobs_comptests(context):
     from . import unittests
-    from comptests import get_comptests_app
-    # Get the Quickapp for the boot_config
-    app = get_comptests_app(get_boot_config())
-    return [app]
-
-
-
+    return jobs_registrar(context, get_boot_config())
 
 
 

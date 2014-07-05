@@ -1,8 +1,8 @@
 from contracts import contract
+from contracts.utils import check_isinstance
 
 from blocks.composition import series
-from blocks.library import Identity
-from blocks.library import Route
+from blocks.library import Identity, Route
 from bootstrapping_olympics import RepresentationNuisanceCausal
 from streamels import BootSpec
 
@@ -12,14 +12,26 @@ __all__ = [
     'series_rnc',
 ]
 
-@contract(r1=RepresentationNuisanceCausal,
-          r2=RepresentationNuisanceCausal)
-def series_rnc(r1, r2):
-    """ Returns the composition of two nuisances. """
-    return RepNuisanceCausalComb(r1, r2)
+
+@contract(returns='isinstance(RepresentationNuisanceCausal)',
+          rs='seq(isinstance(RepresentationNuisanceCausal))')
+def series_rnc(*rs):
+    """ Returns the composition nuisances. """
+    print('series: %s' % str(rs))
+    if len(rs) == 1:
+        one = rs[0]
+        check_isinstance(one, RepresentationNuisanceCausal)
+        return one
+    else:
+        first = rs[0]
+        check_isinstance(rs[0], RepresentationNuisanceCausal)
+        rest = tuple(rs[1:])
+        print('rest: %s' % rest)
+        return RepNuisanceCausalComb(first, series_rnc(*rest))
 
 
 class RepNuisanceCausalComb(RepresentationNuisanceCausal):
+
     @contract(r1=RepresentationNuisanceCausal,
               r2=RepresentationNuisanceCausal)
     def __init__(self, r1, r2):

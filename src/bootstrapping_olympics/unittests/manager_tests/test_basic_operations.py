@@ -1,10 +1,11 @@
-from .utils import create_tmp_dir
-from bootstrapping_olympics import LogsFormat
+import os
+
+from bootstrapping_olympics import LogsFormat, UnsupportedSpec
 from bootstrapping_olympics.programs.manager.meat import (DataCentral, learn_log,
     simulate, task_predict, task_servo)
 from bootstrapping_olympics.unittests import for_all_pairs
-import os
-from bootstrapping_olympics import UnsupportedSpec
+
+from .utils import create_tmp_dir
 
 
 @for_all_pairs
