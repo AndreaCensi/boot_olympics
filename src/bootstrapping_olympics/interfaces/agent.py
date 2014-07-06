@@ -5,6 +5,7 @@ from contracts import ContractsMeta, contract
 from blocks import Sink
 from decent_logs import WithInternalLog
 from reprep import Report, ReportInterface
+import warnings
 
 
 __all__ = [
@@ -24,7 +25,6 @@ class PassiveAgentInterface(WithInternalLog):
             to signal that they do not need more data to converge. 
         """
         pass
-
     
     @abstractmethod
     def process_observations(self, bd):
@@ -111,8 +111,14 @@ class LearnerAsSystem(Sink):
     def __init__(self, agent):
         self.agent = agent
 
+    def reset(self):
+        warnings.warn('should do something here')
+
     def put(self, value, block=True, timeout=None):  # @UnusedVariable
         timestamp, bd = value  # @UnusedVariable
+        if not 'observations' in bd and 'commands' in bd:
+            msg = 'Expected obs/commands, got: %s' % bd
+            raise ValueError(msg)
         try:
             self.agent.process_observations(bd)
         except PassiveAgentInterface.LearningConverged:
@@ -234,7 +240,6 @@ class AgentInterface(PassiveAgentInterface):
     def get_servo(self):
         msg = 'Capability get_servo() not implemented for %s.' % (type(self))
         raise NotImplementedError(msg)
-
  
     # Serialization stuff
     

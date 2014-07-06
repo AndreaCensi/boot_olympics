@@ -25,3 +25,11 @@
   - agent: random_agent
     nuisances: 
     - test_rnc_simple_rpermA
+
+- id: test_nuisance_agent_3
+  desc: Simple test with causal nuisance (derivative)
+  code:
+  - bootstrapping_olympics.library.agents.NuisanceAgent
+  - agent: random_agent
+    nuisances: 
+    - dderivative

@@ -9,6 +9,7 @@ __all__ = [
     'Instantaneous',
     'InstantaneousF',
     'WrapTimedNamed',
+    'WrapTMfromT',
 ]
 
 class Instantaneous(WithQueue):
@@ -40,6 +41,8 @@ class InstantaneousF(Instantaneous):
 
 
 class WrapTimedNamed(WithQueue):
+    """ Converts a block that does not use time or signal name
+        to one that uses time and signal. """
 
     def __init__(self, inside):
         WithQueue.__init__(self)
@@ -51,6 +54,9 @@ class WrapTimedNamed(WithQueue):
         self.inside.end_input()
         if self.last_t is not None:
             self._pump()
+
+    def reset(self):
+        self.inside.reset()
 
     def put_noblock(self, value):
         self.last_t, (self.last_name, ob) = value
@@ -67,6 +73,75 @@ class WrapTimedNamed(WithQueue):
                 break
             except Finished:  # XXX
                 self._finished = True
+#
+#
+# class WrapTimed(WithQueue):
+#     """ Converts a block that does not use time or signal name
+#         to one that uses time and signal. """
+#
+#     def __init__(self, inside):
+#         WithQueue.__init__(self)
+#         self.inside = inside
+#         self.last_t = None
+#         self.last_name = None
+#
+#     def end_input(self):
+#         self.inside.end_input()
+#         if self.last_t is not None:
+#             self._pump()
+#
+#     def reset(self):
+#         self.inside.reset()
+#
+#     def put_noblock(self, value):
+#         self.last_t, (self.last_name, ob) = value
+#         self.inside.put(ob)
+#         self._pump()
+#
+#     def _pump(self):
+#         while True:
+#             try:
+#                 ob2 = self.inside.get(block=False)
+#                 value2 = self.last_t, (self.last_name, ob2)
+#                 self.append(value2)
+#             except NotReady:
+#                 break
+#             except Finished:  # XXX
+#                 self._finished = True
 
+class WrapTMfromT(WithQueue):
+    """ 
+        from  BB((time, B);(time, A)) 
+        to    BB((time, (name, B));(time, (name, A)))
+    """
+
+    def __init__(self, inside):
+        WithQueue.__init__(self)
+        self.inside = inside
+        self.last_name = None
+
+    def reset(self):
+        self.inside.reset()
+
+    def end_input(self):
+        self.inside.end_input()
+        if self.last_name is not None:
+            self._pump()
+
+    def put_noblock(self, value):
+        t, (self.last_name, ob) = value
+        self.inside.put((t, ob))
+        self._pump()
+
+    def _pump(self):
+        while True:
+            try:
+                t, ob = self.inside.get(block=False)
+                value2 = t, (self.last_name, ob)
+                self.append(value2)
+            except NotReady:
+                break
+            except Finished:  # XXX
+                self._finished = True
 
         

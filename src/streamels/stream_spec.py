@@ -78,6 +78,9 @@ class CompositeStreamSpec(XStreamSpec):
     def __eq__(self, other):
         return self.components == other.components
 
+    def get_components(self):
+        return self.components
+
     def get_default_value(self):
         it = [(name, ss.get_default_value())
               for name, ss in self.components.items()]
@@ -561,4 +564,4 @@ def streamels_from_spec(shape, format, range, default):  # @ReservedAssignment
     return streamels
 
 
-
+SimpleStreamSpec = StreamSpec

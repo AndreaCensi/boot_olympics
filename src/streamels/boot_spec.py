@@ -1,8 +1,9 @@
 from pprint import pformat
 
-from contracts import describe_type, new_contract, contract
+from contracts import  new_contract, contract
+from contracts.utils import check_isinstance
 
-from streamels import StreamSpec, logger
+from streamels import XStreamSpec, logger
 
 
 __all__ = ['BootSpec']
@@ -13,31 +14,26 @@ class BootSpec(object):
         This class describes input/output of a sensorimotor cascade.
     '''
 
+    @contract(obs_spec=XStreamSpec, cmd_spec=XStreamSpec)
     def __init__(self, obs_spec, cmd_spec, id_robot=None,
                  desc=None, extra=None):
         self.id_robot = id_robot
         self.desc = desc
         self.extra = extra
-        if not isinstance(obs_spec, StreamSpec):
-            msg = ('Expected StreamSpec for observations, not %s.' % 
-                   describe_type(obs_spec))
-            raise ValueError(msg)
-        if not isinstance(cmd_spec, StreamSpec):
-            msg = ('Expected StreamSpec for commands, not %s.' % 
-                   describe_type(cmd_spec))
-            raise ValueError(msg)
+        check_isinstance(obs_spec, XStreamSpec)
+        check_isinstance(cmd_spec, XStreamSpec)
         self._observations = obs_spec
         self._commands = cmd_spec
 
     def __repr__(self):
         return 'BootSpec(%r,%r)' % (self._observations, self._commands)
     
-    @contract(returns=StreamSpec)
+    @contract(returns=XStreamSpec)
     def get_commands(self):
         ''' Returns a StreamSpec instance representing the commands. '''
         return self._commands
 
-    @contract(returns=StreamSpec)
+    @contract(returns=XStreamSpec)
     def get_observations(self):
         ''' Returns a StreamSpec instance representing the observations. '''
         return self._observations
@@ -68,8 +64,8 @@ class BootSpec(object):
 
             check_contained('observations', x)
             check_contained('commands', x)
-            observations = StreamSpec.from_yaml(x.pop('observations'))
-            commands = StreamSpec.from_yaml(x.pop('commands'))
+            observations = XStreamSpec.from_yaml(x.pop('observations'))
+            commands = XStreamSpec.from_yaml(x.pop('commands'))
             extra = x.pop('extra', None)
             desc = x.pop('desc', None)
             id_robot = x.pop('id', None)

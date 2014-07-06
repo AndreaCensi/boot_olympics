@@ -3,7 +3,8 @@ from contracts.utils import check_isinstance
 
 from blocks import SimpleBlackBox
 from blocks.library import Identity, InstantaneousF, WrapTimedNamed, Route
-from bootstrapping_olympics import RepresentationNuisance, RepresentationNuisanceCausal, get_conftools_nuisances
+from bootstrapping_olympics import (RepresentationNuisance,
+     RepresentationNuisanceCausal, get_conftools_nuisances)
 from streamels import BootSpec
 
 
@@ -41,18 +42,26 @@ class SimpleRNCObs(RepresentationNuisanceCausal):
     @contract(returns=SimpleBlackBox)
     def get_H(self):
         w = wrap_nuisance(self.t)
-        r = Route([({'observations':'observations'}, w, {'observations':'observations'})])
+        # ignore the "commands" signal
+        r = Route([({'observations':'observations'},
+                    w,
+                    {'observations':'observations'})])
         return r
 
     @contract(returns=SimpleBlackBox)
     def get_H_conj(self):
         t_inv = self.t.left_inverse()
         w = wrap_nuisance(t_inv)
-        r = Route([({'observations':'observations'}, w, {'observations':'observations'})])
+        # ignore the "commands" signal
+        r = Route([({'observations':'observations'},
+                    w,
+                    {'observations':'observations'})])
         return r
 
 
+@contract(t=RepresentationNuisance, returns=SimpleBlackBox)
 def wrap_nuisance(t):
+    """ converts a RepresentationNuisance into a black box that use timed, named data. """
     f = t.transform_value
     return WrapTimedNamed(InstantaneousF(f))
 

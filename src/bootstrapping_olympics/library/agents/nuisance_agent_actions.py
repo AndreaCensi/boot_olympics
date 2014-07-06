@@ -30,18 +30,40 @@ def wrap_agent_learner(learner, rnc):
             'commands':'commands'}, H, {'observations':'observations'}),
           ({'commands':'commands'}, Identity(), {'commands': 'commands'})])
 
-    sys = series(BootExpand(), r1, r2, Collect(), BootPutTimestamp(), learner)
+    ignore_incomplete = True
+    sys = series(BootExpand(), r1, r2,
+                 Collect(), BootPutTimestamp(ignore_incomplete),
+                 learner)
     return sys
 
 class BootExpand(WithQueue):
+    def reset(self):
+        pass
     def put_noblock(self, value):
         t, bd = value
         self.append((t, ('commands', bd['commands'])))
         self.append((t, ('observations', bd['observations'])))
 
 class BootPutTimestamp(WithQueue):
+    @contract(ignore_incomplete='bool')
+    def __init__(self, ignore_incomplete):
+        """
+            :param ignore_incomplete: just ignore packets that don't have
+             both commands and observations
+        """
+        self.ignore_incomplete = ignore_incomplete
+        WithQueue.__init__(self)
+    def reset(self):
+        pass
     def put_noblock(self, value):
         t, bd = value
+        if (not 'observations' in bd) or (not 'commands' in bd):
+            msg = 'BootPutTimestamp: Expected obs/cmd fields in bd: %s' % bd
+            if self.ignore_incomplete:
+                self.warn(msg)
+                return
+            else:
+                raise ValueError(msg)
         bd['timestamp'] = t
         self.append((t, bd))
 

@@ -6,3 +6,11 @@
   - nuisance: "${nuisance}"
 
 - id: test_rnc_simple_rpermA
+
+
+
+- id: "dderivative"
+  desc: Computes the derivative of the observations.
+  code:
+  - bootstrapping_olympics.library.nuisances_causal.DDerivative
+  - {}
