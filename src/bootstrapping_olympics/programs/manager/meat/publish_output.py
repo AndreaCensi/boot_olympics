@@ -3,6 +3,7 @@ import os
 from contracts import contract
 
 from bootstrapping_olympics import AgentInterface
+from bootstrapping_olympics import PassiveAgentInterface
 from bootstrapping_olympics.agent_states.learning_state import LearningState
 from bootstrapping_olympics.programs.manager.meat.data_central import (
     DataCentral)
@@ -49,7 +50,7 @@ def publish_agent_output(data_central, state, agent, progress, filename, rd=None
                 save_pickle=save_pickle) 
 
 @contract(returns=Report,
-          agent=AgentInterface, state=LearningState, progress='str')
+          agent=PassiveAgentInterface, state=LearningState, progress='str')
 def get_agent_report_from_state(agent, state, progress):
     rid = ('%s-%s-%s' % (state.id_agent, state.id_robot, progress))
 

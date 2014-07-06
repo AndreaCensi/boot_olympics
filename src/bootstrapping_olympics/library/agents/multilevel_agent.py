@@ -4,8 +4,9 @@ from contracts import contract, describe_value
 from contracts.utils import check_isinstance
 
 from blocks import Sink
-from bootstrapping_olympics import (AgentInterface, PassiveAgentInterface,
+from bootstrapping_olympics import (PassiveAgentInterface,
                                     get_conftools_agents, RepresentationNuisanceCausal)
+
 from .nuisance_agent_actions import wrap_agent_learner
 
 
@@ -109,7 +110,17 @@ class TwoLevelAgent(MultiLevelBase):
     def get_learner_as_sink(self):
         # something in which we push dict(commands=<>, observations=<>)
         self.info('get_learner_as_sink() for phase=%d' % self.phase)
-        return MultiLevelAgentLearner(self, self.boot_spec)
+
+
+        if self.phase == 0:
+            return  self.first.get_learner_as_sink()
+        elif self.phase == 1:
+            transform = self.first.get_transform()
+            assert isinstance(transform, RepresentationNuisanceCausal)
+            boot_spec2 = transform.transform_spec(self.boot_spec)
+            self.second.init(boot_spec2)
+            learner = self.second.get_learner_as_sink()
+            return wrap_agent_learner(learner, transform)
 
     def get_predictor(self):
         pass
@@ -132,26 +143,3 @@ class TwoLevelAgent(MultiLevelBase):
         t2 = self.second.get_transform()
         from bootstrapping_olympics.library.nuisances_causal import series_rnc
         return series_rnc(t1, t2)
-
-
-class MultiLevelAgentLearner(Sink):
-    def __init__(self, ma, boot_spec):
-        self.ma = ma
-        self.boot_spec = boot_spec
-        
-        if self.ma.phase == 0:
-            self.sink = ma.first.get_learner_as_sink()
-        elif self.ma.phase == 1:
-            transform = self.ma.first.get_transform()
-            assert isinstance(transform, RepresentationNuisanceCausal)
-            self.boot_spec2 = transform.transform_spec(self.boot_spec)
-            self.ma.second.init(self.boot_spec2)
-            learner = self.ma.second.get_learner_as_sink()
-            return wrap_agent_learner(learner, transform)
-            
-    def put(self, value, block=True, timeout=None):
-        try:
-            self.sink.put(value, block, timeout)
-        except AgentInterface.LearningConverged:
-            self.info('learning converged')
-            raise
