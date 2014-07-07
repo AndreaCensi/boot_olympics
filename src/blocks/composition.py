@@ -8,6 +8,8 @@ from blocks import SimpleBlackBox, Source, Sink
 from .exceptions import Full, NotReady, Finished
 from .pumps import bb_pump
 from blocks.utils import check_reset
+from contracts.interface import describe_value
+from blocks.exceptions import NeedInput
 
 
 __all__ = [
@@ -36,7 +38,7 @@ def series(*args):
 
 @contract(a='isinstance(SimpleBlackBox)|isinstance(Source)',
           b='isinstance(SimpleBlackBox)|isinstance(Sink)')
-def series_two(a, b, name1='a', name2='b'):
+def series_two(a, b, name1=None, name2=None):
     if isinstance(a, SimpleBlackBox) and isinstance(b, SimpleBlackBox):
         return BBBBSeries(a, b, name1, name2)
     if isinstance(a, Source) and isinstance(b, SimpleBlackBox):
@@ -55,11 +57,23 @@ class SourceBBSeries(Source):
     """ Implements series between a Source and a SimpleBlackBox """
 
     @contract(a=Source, b=SimpleBlackBox)
-    def __init__(self, a, b, name1='a', name2='b'):
+    def __init__(self, a, b, name1=None, name2=None):
         self.a = a
         self.b = b
         self.log_add_child(name1, a)
         self.log_add_child(name2, b)
+
+    def __str__(self):
+        return 'SourceBBSeries(%s,%s)' % (self.a, self.b)
+
+    @contract(names='list[>=2](str)')
+    def set_names(self, names):
+        if len(names) == 2:
+            self.log_add_child(names[0], self.a)
+            self.log_add_child(names[1], self.b)
+        else:
+            self.log_add_child(names[0], self.a)
+            self.b.set_names(names[1:])
 
     def reset(self):
         self.a.reset()
@@ -74,6 +88,19 @@ class SourceBBSeries(Source):
         # self.info('%s trying to get' % id(self))
         try:
             return self.b.get(block=block, timeout=timeout)
+        except NeedInput:
+            try:
+                # XXX: all of this is not really tested or thought out
+                r = self.a.get(block=block, timeout=timeout)
+                self.b.put(r, block=block, timeout=timeout)
+                return self.get(block=block, timeout=timeout)
+            except NeedInput:
+                # XXX does it make sense to call NeedInput on Source?
+                raise NeedInput()
+            except Finished:
+                # self.info('a finished: setting b.end_input()')
+                self.b.end_input()
+                return self.get(block=block, timeout=timeout)
         except NotReady:
             # self.info('b not ready (b: %s)' % describe_value(self.b))
             try:
@@ -102,6 +129,16 @@ class BBSinkSeries(Sink):
         self.b = b
         self.log_add_child(name1, a)
         self.log_add_child(name2, b)
+
+
+    @contract(names='list[>=2](str)')
+    def set_names(self, names):
+        if len(names) == 2:
+            self.log_add_child(names[0], self.a)
+            self.log_add_child(names[1], self.b)
+        else:
+            self.log_add_child(names[0], self.a)
+            self.b.set_names(names[1:])
 
     def reset(self):
         self.a.reset()
@@ -140,6 +177,18 @@ class BBBBSeries(SimpleBlackBox):
         self.log_add_child(name1, a)
         self.log_add_child(name2, b)
 
+    def __str__(self):
+        return 'BBBBSeries(%s, %s)' % (self.a, self.b)
+
+    @contract(names='list[>=2](str)')
+    def set_names(self, names):
+        if len(names) == 2:
+            self.log_add_child(names[0], self.a)
+            self.log_add_child(names[1], self.b)
+        else:
+            self.log_add_child(names[0], self.a)
+            self.b.set_names(names[1:])
+
     def reset(self):
         self.a.reset()
         self.b.reset()
@@ -164,12 +213,30 @@ class BBBBSeries(SimpleBlackBox):
         except Finished:
             self.b.end_input()
 
+    def _pump(self):        
+        try:
+            bb_pump(self.a, self.b)
+        except Finished:
+            self.b.end_input()
+
     def get(self, block=False, timeout=None):
         check_reset(self, 'reset_once')
-        # self.info('trying to get from b')
+        print('trying to get from b')
         try:
             return self.b.get(block=block, timeout=timeout)
+        except NeedInput:
+            assert block == True
+            try:
+                self._pump()
+                return self.b.get(block=block, timeout=timeout)
+            except NeedInput:
+                raise NeedInput()
         except NotReady:
+            assert block == False
+            if block:
+                msg = 'Bug, cannot get NotReady if block is true.'
+                msg += '\n %s' % describe_value(self.b)
+                raise Exception(msg)
             # self.info('b is not ready')
             raise
         except Finished:

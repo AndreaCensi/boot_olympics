@@ -6,6 +6,7 @@ from blocks import SimpleBlackBox
 from blocks import series
 from blocks.library import FromData
 from blocks.pumps import source_read_all_block
+from contracts.utils import indent
 
 
 __all__ = ['BlocksTest']
@@ -21,16 +22,36 @@ class BlocksTest(TestCase):
         self.assert_same_seq(res, expected)
 
     def assert_same_seq(self, a, b):
-        try:
-            self.assertEqual(a, b)
-        except:
+
+        def dl(a):
+            return '\n'.join([str(x) for x in a])
+
+        if not (a == b):
             print('result:')
             self.display_signal(a)
             print('expected:')
             self.display_signal(b)
-            raise
+#             self.assertEqual(a, b)
+            msg = 'sequences dont match'
+            msg += '\n obtained:\n' + indent(dl(a), '| ')
+            msg += '\n expected:\n' + indent(dl(b), '| ')
+            raise ValueError(msg)
+
+
+
+#         try:
+#             self.assertEqual(a, b)
+#         except:
+#             print('result:')
+#             self.display_signal(a)
+#             print('expected:')
+#             self.display_signal(b)
+#             raise
     
     def display_signal(self, x):
-        for (t, (name, obs)) in x:
-            print('%10s %10s %s' % (t,name, obs))
-        
+        for v in x:
+            print(str(v))
+#
+#         for (t, (name, obs)) in x:
+#             print('%10s %10s %s' % (t,name, obs))
+#

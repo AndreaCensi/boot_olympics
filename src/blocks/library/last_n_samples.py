@@ -21,6 +21,7 @@ class LastNSamples(WithQueue):
         self.send_partial = send_partial
 
     def reset(self):
+        WithQueue.reset(self)
         self.last = []
 
     def put_noblock(self, value):
@@ -39,5 +40,5 @@ class LastNSamples(WithQueue):
                 self.append(list(self.last))
                 self.last.pop(0)
 
-        WithQueue.end_input()
+        WithQueue.end_input(self)
 

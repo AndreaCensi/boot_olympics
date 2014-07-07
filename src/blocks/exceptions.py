@@ -14,3 +14,10 @@ class NotReady(Queue.Empty):
 
 class Finished(Exception):
     pass
+
+
+class NeedInput(Queue.Empty):
+    """ Thrown when get() with block=True but there is no output available
+        and what is needed is to get some input(). """
+    pass
+

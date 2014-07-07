@@ -10,7 +10,11 @@ class Collect(WithQueue):
     def __init__(self):
         WithQueue.__init__(self)
 
+    def __str__(self):
+        return 'Collect()'
+
     def reset(self):
+        WithQueue.reset(self)
         self.last = {}
         self.last_t = None
 

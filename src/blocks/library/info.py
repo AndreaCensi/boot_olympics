@@ -11,11 +11,11 @@ class Info(WithQueue):
         WithQueue.__init__(self)
         self.prefix = prefix
 
-    def reset(self):
-        pass
+    def __str__(self):
+        return 'Info(%s)' % self.prefix
 
     def put_noblock(self, value):
         t, ob = value
         self.info('%s: %s %s' % (self.prefix, t, describe_value(ob, 200)))
-        self.append(value)
+        self.append((t, value))
 

@@ -16,6 +16,7 @@ class SuperSample(WithQueue):
         self.min_interval = min_interval
 
     def reset(self):
+        WithQueue.reset(self)
         self.last = None
 
     def put_noblock(self, value):
@@ -31,6 +32,7 @@ class SuperSample(WithQueue):
                     t = t1 + (i) * self.min_interval
                     v = v1
                     self.append((t, v))
+
         self.last = value
 
     def end_input(self):
@@ -38,6 +40,7 @@ class SuperSample(WithQueue):
 
         if self.last is not None:
             self.append(self.last)
+
         WithQueue.end_input(self)
 
 
@@ -59,13 +62,12 @@ class ConnectionTests(BlocksTest):
         expected = data
         self.check_bbox_results(bbox, data, expected)
 
-
     def series_test_2(self):
         """  Series(FromDatA, SuperSample) """
         data = [(0.0, 'A'), (1.0, 'B'), (2.0, 'C')]
         expected = [(0.0, 'A'), (0.25, 'A'), (0.5, 'A'), (0.75, 'A'),
-               (1.0, 'B'), (1.25, 'B'), (1.5, 'B'), (1.75, 'B'),
-               (2.0, 'C')]
+                    (1.0, 'B'), (1.25, 'B'), (1.5, 'B'), (1.75, 'B'),
+                    (2.0, 'C')]
         bbox = SuperSample(0.25)
         self.check_bbox_results(bbox, data, expected)
 

@@ -63,6 +63,7 @@ class Source(WithInternalLog):
             
             :raise: NotReady
             :raise: Finished
+            
         """
         pass
     
@@ -71,6 +72,9 @@ class Source(WithInternalLog):
 class SimpleBlackBox(Sink, Source):
     """ 
         A first try to make a generic interface for dynamical systems. 
+        
+       
+        The get() method can raise NeedInput.
         
         
         Interaction: ::

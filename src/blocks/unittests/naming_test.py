@@ -14,6 +14,7 @@ class HTest(WithQueue):
         WithQueue.__init__(self)
 
     def reset(self):
+        WithQueue.reset(self)
         self.sign = +1
 
     def put_noblock(self, value):

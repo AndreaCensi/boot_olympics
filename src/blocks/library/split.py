@@ -21,6 +21,7 @@ class Split(WithQueue):
         self.log_add_child(name2, b)
 
     def reset(self):
+        WithQueue.reset(self)
         self.a.reset()
         self.b.reset()
         self.a_finished = False

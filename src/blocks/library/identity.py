@@ -6,9 +6,9 @@ __all__ = ['Identity']
     
 class Identity(WithQueue):
 
-    def reset(self):
-        pass
-
     def put_noblock(self, value):
         self.append(value)
         
+
+    def __str__(self):
+        return 'Identity()'

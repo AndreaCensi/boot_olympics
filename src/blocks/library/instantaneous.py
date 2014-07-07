@@ -25,10 +25,6 @@ class Instantaneous(WithQueue):
         value2 = self.transform_value(value)
         self.append(value2)
 
-    def reset(self):
-        pass
-
-
 class InstantaneousF(Instantaneous):
     """ Instantaneous transform with given function. """
 
@@ -44,6 +40,9 @@ class WrapTimedNamed(WithQueue):
     """ Converts a block that does not use time or signal name
         to one that uses time and signal. """
 
+    def __str__(self):
+        return 'WrapTimedNamed()'
+    
     def __init__(self, inside):
         WithQueue.__init__(self)
         self.inside = inside
@@ -56,6 +55,7 @@ class WrapTimedNamed(WithQueue):
             self._pump()
 
     def reset(self):
+        WithQueue.reset(self)
         self.inside.reset()
 
     def put_noblock(self, value):
@@ -114,6 +114,10 @@ class WrapTMfromT(WithQueue):
         from  BB((time, B);(time, A)) 
         to    BB((time, (name, B));(time, (name, A)))
     """
+    
+    def __str__(self):
+        return 'WrapTMfromT()'
+
 
     def __init__(self, inside):
         WithQueue.__init__(self)
@@ -121,6 +125,7 @@ class WrapTMfromT(WithQueue):
         self.last_name = None
 
     def reset(self):
+        WithQueue.reset(self)
         self.inside.reset()
 
     def end_input(self):

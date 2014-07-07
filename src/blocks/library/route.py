@@ -26,8 +26,17 @@ class Route(WithQueue):
         for i, b in enumerate(self.boxes):
             self.log_add_child('%d' % i, b)
 
+    def __str__(self):
+        cont = '|'.join([str(b)for b in self.boxes])
+        return 'Route(%s)' % cont
+    def set_names(self, names):
+        assert len(names) == len(self.boxes)
+        for i, b in enumerate(self.boxes):
+            self.log_add_child(names[i], b)
+
 
     def reset(self):
+        WithQueue.reset(self)
         for b in self.boxes:
             b.reset()
 

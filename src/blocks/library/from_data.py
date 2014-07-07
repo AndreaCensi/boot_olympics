@@ -11,12 +11,16 @@ class FromData(Source):
     def __init__(self, data):
         self.data = data
 
+    def __str__(self):
+        return 'FromData(%d)' % len(self.data)
+
     def reset(self):
         self.k = 0
 
     def get(self, block=False, timeout=None):  # @UnusedVariable
         if self.k >= len(self.data):
             msg = 'finished length %d' % self.k
+            self.info(msg)
             raise Finished(msg)
         res = self.data[self.k]
         self.k += 1

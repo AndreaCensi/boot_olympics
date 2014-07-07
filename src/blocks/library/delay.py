@@ -10,8 +10,6 @@ class Delay(WithQueue):
         WithQueue.__init__(self)
         self.delay = delay
 
-    def reset(self):
-        pass
 
     def put_noblock(self, value):
         t, x = value
