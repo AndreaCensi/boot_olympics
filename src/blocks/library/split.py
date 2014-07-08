@@ -4,6 +4,7 @@ from blocks import NotReady, Finished, SimpleBlackBox
 
 from .with_queue import WithQueue
 from blocks.utils import check_reset
+from blocks.exceptions import NeedInput
 
 
 __all__ = ['Split']
@@ -30,8 +31,8 @@ class Split(WithQueue):
     def put_noblock(self, value):
         check_reset(self, 'a_finished')
         # TODO: does not consider Full as a special case
-        self.a.put(value, block=False, timeout=None)
-        self.b.put(value, block=False, timeout=None)
+        self.a.put(value, block=True, timeout=None)
+        self.b.put(value, block=True, timeout=None)
 
         self._pump()
 
@@ -40,7 +41,7 @@ class Split(WithQueue):
         if not self.a_finished:
             while True:
                 try:
-                    x = self.a.get(block=False)
+                    x = self.a.get(block=True)
                     new_obs.append(x)
                 except NotReady:
                     self.info('First is not ready')
@@ -49,10 +50,12 @@ class Split(WithQueue):
                     self.info('Now first is finished')
                     self.a_finished = True
                     break
+                except NeedInput:
+                    break
         if not self.b_finished:
             while True:
                 try:
-                    x = self.b.get(block=False)
+                    x = self.b.get(block=True)
                     new_obs.append(x)
                 except NotReady:
                     self.info('First is not ready')
@@ -60,6 +63,8 @@ class Split(WithQueue):
                 except Finished:
                     self.info('Now second is finished')
                     self.b_finished = True
+                    break
+                except NeedInput:
                     break
         # Sort by timestamp
         s = sorted(new_obs, key=lambda x: x[0])

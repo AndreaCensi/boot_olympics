@@ -1,8 +1,15 @@
+from abc import abstractmethod
+import string
+import traceback
+from types import GeneratorType
 import warnings
 
-from contracts import contract
+from contracts import contract, describe_type
+from contracts.utils import indent
 
-from bootstrapping_olympics import PassiveAgentInterface, logger
+from blocks import Finished, Source
+from blocks.pumps import bb_pump_block_yields
+from bootstrapping_olympics import AgentInterface, PassiveAgentInterface, logger
 
 from .load_agent_state import load_agent_state
 
@@ -36,16 +43,20 @@ def learn_log(data_central, id_agent, id_robot,
     
     warnings.warn('add publish_interval plugins')
     
-    agent0, state0 = load_agent_state(data_central, id_agent=id_agent,
-                                    id_robot=id_robot, reset_state=reset)
+    agent0, state0 = load_agent_state(data_central,
+                                      id_agent=id_agent,
+                                      id_robot=id_robot,
+                                      reset_state=reset)
     
     if parallel_hint is not None:
         logger.info('setting parallel hint: %r' % str(parallel_hint))
         agent0.parallel_process_hint(*parallel_hint)
     
-    agent, state = learn_log_base(data_central=data_central, id_agent=id_agent,
+    agent, state = learn_log_base(data_central=data_central,
+                                  id_agent=id_agent,
                                   agent_state=(agent0, state0),
-                                  id_robot=id_robot, episodes=episodes, live_plugins=live_plugins)
+                                  id_robot=id_robot, episodes=episodes,
+                                  live_plugins=live_plugins)
 
     # Saving agent state
     if save_state:
@@ -72,12 +83,18 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
                                               episodes_to_learn=episodes,
                                               episodes_learned=episodes_learned)
 
-    logger.info('Progress for %r %r:\n%s' % (id_robot, id_agent, progress.summary()))
+    logger.info('Progress for %r %r:\n%s' %
+                (id_robot, id_agent, progress.summary()))
  
     # Initialize plugins
     init = dict(data_central=data_central, id_agent=id_agent, id_robot=id_robot)
     for plugin in live_plugins:
         plugin.init(init)
+
+    learner = agent.get_learner_as_sink()
+    learner.reset()
+
+    print('learner: %s' % learner)
 
     for stream, to_learn in remain:
         
@@ -85,21 +102,28 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
         for plugin in live_plugins:
             plugin.starting_stream(stream)
         
-        for obs in stream.read(only_episodes=to_learn):
-            state.num_observations += 1
-            progress.obs.done += 1
+        source = BootStreamAsSource(stream, to_learn)
+        source.reset()
+        try:
+            for obs in bb_pump_block_yields(source, learner):
+                state.num_observations += 1
+                progress.obs.done += 1
 
-            try:
-                agent.process_observations(obs)
-            except PassiveAgentInterface.LearningConverged as e:
-                logger.info('Learning converged: %s' % e)
-                break
-            
-            # Update plugins
-            up = dict(agent=agent, robot=None, obs=obs, progress=progress,
-                      state=state, stream=stream)
-            for plugin in live_plugins:
-                plugin.update(up)
+                try:
+                    agent.process_observations(obs)
+                except PassiveAgentInterface.LearningConverged as e:
+                    logger.info('Learning converged: %s' % e)
+                    break
+
+                # Update plugins
+                up = dict(agent=agent, robot=None, obs=obs,
+                          progress=progress,
+                          state=state, stream=stream)
+                for plugin in live_plugins:
+                    plugin.update(up)
+                
+        except AgentInterface.LearningConverged as e:
+            print('Obtained learning converged: %s' % e)
 
         state.id_episodes.update(to_learn)
         progress.eps.done += len(to_learn)
@@ -108,6 +132,43 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
         plugin.finish()
         
     return agent, state 
+
+
+class IteratorSource(Source):
+
+    def reset(self):
+        self.iterator = self.get_iterator()
+
+    @abstractmethod
+    @contract(returns=GeneratorType)
+    def get_iterator(self):
+        """ Returns iterator to use. """
+        pass
+
+    def get(self, block=True, timeout=None):  # @UnusedVariable
+        try:
+            res = self.iterator.next()
+            return res
+        except StopIteration:
+            raise Finished
+        except Exception as e:
+            msg = 'Could not call next() on user-given iterator.\n'
+            msg += '   iterator: %s\n' % str(self.iterator)
+            msg += '    of type: %s\n' % describe_type(self.iterator)
+            msg += 'because of this error:\n'
+            msg += indent(string.strip('%s\n%s' % (e, traceback.format_exc(e))), '| ')
+            self.info(msg)
+            raise
+
+
+class BootStreamAsSource(IteratorSource):
+    
+    def __init__(self, stream, to_learn):
+        self.stream = stream
+        self.to_learn = to_learn
+
+    def get_iterator(self):
+        return self.stream.read(only_episodes=self.to_learn)
 
 
 class ProgressSingle(object):

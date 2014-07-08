@@ -1,12 +1,12 @@
 from contracts import contract
 from contracts.utils import check_isinstance
 
-from blocks import Sink
+from blocks import Sink, SimpleBlackBox
 from bootstrapping_olympics import (get_conftools_nuisances_causal,
-    get_conftools_agents, AgentInterface)
-from bootstrapping_olympics import RepresentationNuisance, RepresentationNuisanceCausal, get_conftools_nuisances
+    get_conftools_agents, AgentInterface, RepresentationNuisance,
+    RepresentationNuisanceCausal, get_conftools_nuisances)
 
-from .nuisance_agent_actions import wrap_agent_learner
+from .nuisance_agent_actions import wrap_agent_learner, wrap_agent_explorer
 
 
 __all__ = ['NuisanceAgent']
@@ -15,7 +15,8 @@ __all__ = ['NuisanceAgent']
 class NuisanceAgent(AgentInterface):
     """ An agent that sees the data filtered through the given nuisances."""
     
-    @contract(nuisances='list(str|code_spec|isinstance(RepresentationNuisanceCausal)|isinstance(RepresentationNuisance))',
+    @contract(nuisances='list(str|code_spec|isinstance(RepresentationNuisanceCausal)'
+                        '|isinstance(RepresentationNuisance))',
               agent='str|code_spec|isinstance(AgentInterface)')
     def __init__(self, nuisances, agent):
         self.ns = []
@@ -77,6 +78,11 @@ class NuisanceAgent(AgentInterface):
         learner = self.agent.get_learner_as_sink()
         return wrap_agent_learner(learner, self.nuisance)
 
+    @contract(returns=SimpleBlackBox)
+    def get_explorer(self):
+        explorer = self.agent.get_explorer()
+        return wrap_agent_explorer(explorer, self.nuisance)
+
     def merge(self, other):  # @UnusedVariable
         assert isinstance(other, NuisanceAgent)
         self.agent.merge(other.agent)
@@ -95,5 +101,8 @@ class NuisanceAgent(AgentInterface):
 
     def process_observations(self, obs):
         raise Exception('Using old API with process_observations().')
+
+
+
 
 

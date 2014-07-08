@@ -4,15 +4,12 @@ from contracts import contract
 
 from blocks import SimpleBlackBox
 from blocks.composition import series
-from blocks.library import Identity, WrapTimedNamed, Route
-from blocks.library import SampledDeriv
-from blocks.library import WrapTMfromT, Instantaneous
+from blocks.library import (Identity, WrapTimedNamed, Route, SampledDeriv,
+                            WrapTMfromT, Instantaneous)
 from bootstrapping_olympics import (
      RepresentationNuisanceCausal)
-from streamels import BootSpec
-from streamels import StreamSpec, CompositeStreamSpec
-from streamels import UnsupportedSpec
-from streamels import check_streamels_continuous
+from streamels import (BootSpec, StreamSpec, CompositeStreamSpec,
+    UnsupportedSpec, check_streamels_continuous)
 
 
 __all__ = ['DDerivative', 'DDerivativeConj']

@@ -1,7 +1,9 @@
 from .with_queue import WithQueue
+from contracts import contract
+from blocks.utils import check_reset
 
 
-__all__ = ['Collect']
+__all__ = ['Collect', 'CollectSignals']
 
 
 class Collect(WithQueue):
@@ -19,8 +21,9 @@ class Collect(WithQueue):
         self.last_t = None
 
     def put_noblock(self, value):
+        check_reset(self, 'last')
         t, (s, x) = value
-        # self.info('seeing %s %s' % (t, s))
+        self.info('seeing %s %s' % (t, s))
 
         if self.last_t is not None:
             if t > self.last_t:
@@ -35,12 +38,70 @@ class Collect(WithQueue):
 
     def _flush(self):
         if self.last:
+            self.info('sending %s %s' % (self.last_t, set(self.last)))
             self.append((self.last_t, self.last))
             self.last = {}
 
     def end_input(self):
-        if self.last:
+        self._flush()
+        self._finished = True
+
+
+
+
+
+class CollectSignals(WithQueue):
+    """ 
+        Collects all the signals with the same timestamp.
+        
+        Note that Collect() waits for the next timestamp t_{k+1} to
+        release the signals at t_{k}. 
+        
+        CollectSignals is given the set of signals to wait for 
+        so it will trigger at t_{k}.
+    
+    """
+
+    @contract(signals='set(str)')
+    def __init__(self, signals):
+        WithQueue.__init__(self)
+        self.signals = signals
+
+    def __str__(self):
+        return 'CollectSignals()'
+
+    def reset(self):
+        WithQueue.reset(self)
+        self.last = {}
+        self.last_t = None
+
+    def put_noblock(self, value):
+        check_reset(self, 'last')
+        t, (s, x) = value
+        self.info('seeing %s %s' % (t, s))
+
+        if self.last_t is not None:
+            if t > self.last_t:
+                self.warn('Flushing incomplete')
+                self._flush()
+
+        assert not s in self.last
+        self.last[s] = x
+
+        self.last_t = t
+
+        if set(self.last.keys()) == self.signals:
             self._flush()
+
+        # self.info('cur: %s %s ' % (self.last_t, self.last))
+
+    def _flush(self):
+        if self.last:
+            self.info('sending %s %s' % (self.last_t, set(self.last)))
+            self.append((self.last_t, self.last))
             self.last = {}
+
+    def end_input(self):
+        self._flush()
         self._finished = True
 

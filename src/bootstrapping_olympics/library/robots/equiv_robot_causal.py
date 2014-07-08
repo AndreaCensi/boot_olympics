@@ -5,11 +5,10 @@ from contracts import contract
 from blocks import SimpleBlackBox, bb_get_block_poll_sleep, bb_pump
 from bootstrapping_olympics import (RepresentationNuisanceCausal, RobotInterface,
     RobotObservations, get_boot_config)
-from decent_logs import WithInternalLog
-
+from decent_logs.withinternallog import WithInternalLog
 
 class RobotAsBlackBox(WithInternalLog):
-    
+    # TODO: remove in favor of RobotAsBlackBox2
     @contract(robot=RobotInterface)
     def __init__(self, robot, sleep=0.1):
         self.log_add_child('robot', robot)
@@ -49,6 +48,8 @@ class RobotAsBlackBox(WithInternalLog):
         cmd_source = obs.commands_source
         return (obs.timestamp, ((cmd, cmd_source), obs))
 
+
+# TODO: remove this one
 
 class EquivRobotCausal(RobotInterface):
      

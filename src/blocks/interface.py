@@ -26,7 +26,7 @@ class Sink(WithInternalLog):
 
     @abstractmethod
     @contract(block='bool', value='*', timeout='None|>=0')
-    def put(self, value, block=False, timeout=None):
+    def put(self, value, block=True, timeout=None):
         """ 
             Raises Full if the object cannot take it
             and block is False.

@@ -40,7 +40,8 @@ def bb_pump(a, b):
 
 @contract(a=Source, b=Sink)
 def bb_pump_block(a, b):
-    """ Pumps from a to b until it is finished; returns number of iterations """
+    """ Pumps from a to b until it is finished; returns number of iterations.
+        Raise NeedInput """
     num = 0
     while True:
         try:

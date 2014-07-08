@@ -13,9 +13,13 @@ from .load_agent_state import load_agent_state
 from .report_utils import save_report
 
 
-__all__ = ['publish_once', 'publish_agent_output', 'get_agent_report',
-           'get_agentstate_report',
-           'get_agent_report_from_state']
+__all__ = [
+   'publish_once',
+   'publish_agent_output',
+   'get_agent_report',
+   'get_agentstate_report',
+   'get_agent_report_from_state',
+]
 
 
 def publish_once(data_central, id_agent, id_robot,

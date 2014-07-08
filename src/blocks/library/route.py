@@ -6,6 +6,7 @@ from blocks import NotReady, Finished
 
 from .with_queue import WithQueue
 from blocks.utils import check_reset
+from blocks.exceptions import NeedInput
 
 
 __all__ = ['Route']
@@ -29,6 +30,7 @@ class Route(WithQueue):
     def __str__(self):
         cont = '|'.join([str(b)for b in self.boxes])
         return 'Route(%s)' % cont
+
     def set_names(self, names):
         assert len(names) == len(self.boxes)
         for i, b in enumerate(self.boxes):
@@ -54,7 +56,7 @@ class Route(WithQueue):
             name2 = translate[name]
             x = t, (name2, ob)
             warnings.warn('check this')
-            b.put(x, block=False)
+            b.put(x, block=True)
             n += 1
         # if n == 0:
             # self.info('no route for %s' % name)
@@ -90,7 +92,7 @@ class Route(WithQueue):
         new_obs = []
         while True:
             try:
-                x = b.get(block=False)
+                x = b.get(block=True)
                 t, (name, value) = explode_signal(x)
                 name2 = translate[name]
                 x2 = t, (name2, value)
@@ -99,6 +101,8 @@ class Route(WithQueue):
                 break
             except Finished:
                 self.finished[i] = True
+                break
+            except NeedInput:
                 break
         return new_obs
 

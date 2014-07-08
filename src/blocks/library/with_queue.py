@@ -28,7 +28,8 @@ class WithQueue(SimpleBlackBox):
 
     def get(self, block=True, timeout=None):  # @UnusedVariable
         check_reset(self, '_queue')
-        self.info('trying to get(): qlen: %d finished: %d' % (len(self._queue), self._finished))
+        self.info('trying to get(block=%s): qlen: %d finished: %d' %
+                  (block, len(self._queue), self._finished))
         if not self._queue:
             if self._finished:
                 self.info('finished')
@@ -53,7 +54,7 @@ class WithQueue(SimpleBlackBox):
         print('end_input() called for %s' % self)
         self._finished = True
 
-    def put(self, value, block=False, timeout=None):  # @UnusedVariable
+    def put(self, value, block=True, timeout=None):  # @UnusedVariable
         # XXX
         self.info('put(%s)' % str(value))
         self.put_noblock(value)

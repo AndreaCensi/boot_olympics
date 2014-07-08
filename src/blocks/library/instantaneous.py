@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from blocks import NotReady, Finished
+from blocks import NotReady, Finished, NeedInput
 
 from .with_queue import WithQueue
 
@@ -66,10 +66,12 @@ class WrapTimedNamed(WithQueue):
     def _pump(self):
         while True:
             try:
-                ob2 = self.inside.get(block=False)
+                ob2 = self.inside.get(block=True)
                 value2 = self.last_t, (self.last_name, ob2)
                 self.append(value2)
             except NotReady:
+                assert False  # block == True
+            except NeedInput:
                 break
             except Finished:  # XXX
                 self._finished = True
@@ -141,12 +143,15 @@ class WrapTMfromT(WithQueue):
     def _pump(self):
         while True:
             try:
-                t, ob = self.inside.get(block=False)
+                t, ob = self.inside.get(block=True)
                 value2 = t, (self.last_name, ob)
                 self.append(value2)
             except NotReady:
                 break
             except Finished:  # XXX
                 self._finished = True
+            except NeedInput:
+                # XXX
+                break
 
         

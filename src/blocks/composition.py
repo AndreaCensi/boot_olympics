@@ -1,15 +1,15 @@
 import warnings
 
-from contracts import contract, describe_type
+from contracts import contract, describe_type, describe_value
 from contracts.utils import deprecated
 
 from blocks import SimpleBlackBox, Source, Sink
+from blocks.exceptions import NeedInput
+from blocks.utils import check_reset
 
 from .exceptions import Full, NotReady, Finished
 from .pumps import bb_pump
-from blocks.utils import check_reset
-from contracts.interface import describe_value
-from blocks.exceptions import NeedInput
+from blocks.pumps import bb_pump_block
 
 
 __all__ = [
@@ -146,7 +146,7 @@ class BBSinkSeries(Sink):
         self.reset_once = True
 
     @contract(block='bool', timeout='None|>=0', returns='None')
-    def put(self, value, block=False, timeout=None):
+    def put(self, value, block=True, timeout=None):
         check_reset(self, 'reset_once')
         try:
             self.a.put(value, block=block, timeout=timeout)
@@ -187,50 +187,99 @@ class BBBBSeries(SimpleBlackBox):
             self.log_add_child(names[1], self.b)
         else:
             self.log_add_child(names[0], self.a)
+            self.log_add_child('s:' + '+'.join(names[1:]), self.b)
             self.b.set_names(names[1:])
 
     def reset(self):
-        self.a.reset()
-        self.b.reset()
         self.reset_once = True
 
+        self.status_a_finished = False
+        self.status_a_need_input = False
+        self.status_b_finished = False
+        self.status_b_need_input = False
+
+        self.a.reset()
+        self.b.reset()
+
     def end_input(self):
-        # self.info('Signaled end of input. Telling a (%s)' % type(self.a))
+        self.info('end_input()')
         check_reset(self, 'reset_once')
         self.a.end_input()
-        try:
-            bb_pump(self.a, self.b)
-        except Finished:
-            self.b.end_input()
+        self._pump()
 
-    def put(self, value, block=False, timeout=None):
+    def put(self, value, block=True, timeout=None):
         check_reset(self, 'reset_once')
+        self.info('put(): %s' % str(value))
+
+        assert not self.status_a_finished
 
         # XXX: not sure this is corect
         self.a.put(value, block=block, timeout=timeout)
-        try:
-            bb_pump(self.a, self.b)
-        except Finished:
-            self.b.end_input()
+        self.status_a_need_input = False
+        self.status_a_finished = False
+
+
+        self._pump()
+#         try:
+#             bb_pump(self.a, self.b)
+#         except Finished:
+#             self.b.end_input()
 
     def _pump(self):        
-        try:
-            bb_pump(self.a, self.b)
-        except Finished:
-            self.b.end_input()
+        self.info('_pump()')
+        
+        num = 0
+        while True:
+            try:
+                x = self.a.get(block=True)
+            except NotReady:
+                assert False
+            except NeedInput:
+                self.status_a_need_input = True
+                break
+            except Finished:
+                self.status_a_finished = True
+                self.b.end_input()
+                break
 
-    def get(self, block=False, timeout=None):
+            self.b.put(x, block=True)
+            self.status_b_need_input = True
+            num += 1
+
+    def log_get_short_status(self):
+        if not 'reset_once' in self.__dict__:
+            return 'no reset'
+        return '%s:%s%s; %s:%s%s' % (self.log_child_name(self.a),
+                                         ' ni' if self.status_a_need_input else '',
+                                       ' f' if self.status_a_finished else '',
+                                       self.log_child_name(self.b),
+                                        ' ni' if self.status_b_need_input else '',
+                                       ' f' if self.status_b_finished else '')
+#
+#         try:
+#             bb_pump(self.a, self.b)
+# #             bb_pump_block(self.a, self.b)
+#         except Finished:
+#             self.b.end_input()
+#         except NotReady:
+#             assert False
+#         except NeedInput:
+#             self.info('bb_pump_block: NeedInput')
+#             raise
+
+    def get(self, block=True, timeout=None):
         check_reset(self, 'reset_once')
-        print('trying to get from b')
+        self.info('trying to get() from %s' % self.log_child_name(self.b))
         try:
             return self.b.get(block=block, timeout=timeout)
         except NeedInput:
             assert block == True
-            try:
-                self._pump()
-                return self.b.get(block=block, timeout=timeout)
-            except NeedInput:
+            self.status_b_need_input = True
+            if self.status_a_need_input:
                 raise NeedInput()
+            else:
+                self._pump()
+                return self.get(block=block, timeout=timeout)
         except NotReady:
             assert block == False
             if block:
@@ -240,5 +289,6 @@ class BBBBSeries(SimpleBlackBox):
             # self.info('b is not ready')
             raise
         except Finished:
+            self.status_b_finished = True
             # self.info('b is finished')
             raise

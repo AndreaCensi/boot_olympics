@@ -4,6 +4,7 @@ __all__ = [
    'Full',
    'NotReady',
    'Finished',
+   'NeedInput',
 ]
 
 class Full(Queue.Full):

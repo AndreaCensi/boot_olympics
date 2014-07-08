@@ -1,10 +1,10 @@
 from abc import abstractmethod
+import warnings
 
 from contracts import contract, ContractsMeta, new_contract
 
 from decent_logs import WithInternalLog
 from streamels import StreamSpec
-import warnings
 
 
 __all__ = [

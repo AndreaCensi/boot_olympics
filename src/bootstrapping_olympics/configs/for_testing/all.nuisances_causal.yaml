@@ -14,3 +14,11 @@
   code:
   - bootstrapping_olympics.library.nuisances_causal.DDerivative
   - {}
+
+- id: "rnc_identity"
+  desc: The identity for RNCs.
+  code:
+  - bootstrapping_olympics.library.nuisances_causal.RNCIdentity
+  - {}
+
+  

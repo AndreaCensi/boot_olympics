@@ -5,14 +5,15 @@ try:
     from ..ros_script_utils import RospyLogger
 except:  # allow to run nose even if ros is not installed
     pass
-from .. import np
-from bootstrapping_olympics import ObsKeeper
-# from bootstrapping_olympics.configuration import check_valid_robot_config
-from bootstrapping_olympics.programs.manager.meat import DataCentral
-from bootstrapping_olympics.utils import check_parameters
 import time
 
+from bootstrapping_olympics import ObsKeeper
+from bootstrapping_olympics.programs.manager.meat import DataCentral
+from bootstrapping_olympics.utils import check_parameters
+import numpy as np
 
+
+# from bootstrapping_olympics.configuration import check_valid_robot_config
 class BootRobotAdapter:
     def __init__(self, id_robot, robot, maximum_interval=2, sleep=0.1,
                  check_valid_values=True):

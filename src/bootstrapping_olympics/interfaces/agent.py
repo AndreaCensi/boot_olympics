@@ -1,16 +1,18 @@
 from abc import abstractmethod
+import warnings
 
 from contracts import ContractsMeta, contract
 
-from blocks import Sink
+from blocks import SimpleBlackBox, Sink
 from decent_logs import WithInternalLog
 from reprep import Report, ReportInterface
-import warnings
+from blocks.library.with_queue import WithQueue
 
 
 __all__ = [
     'PassiveAgentInterface',
     'AgentInterface',
+    'ActiveAgentInterface',
     'ServoAgentInterface',
     'PredictorAgentInterface',
 ]
@@ -107,7 +109,7 @@ class PassiveAgentInterface(WithInternalLog):
 
 
 class LearnerAsSystem(Sink):
-    """ Implements the push interface for agents """
+    """ Sink of bd (two fields 'observations','commands','timestamp'. """
     def __init__(self, agent):
         self.agent = agent
 
@@ -125,6 +127,45 @@ class LearnerAsSystem(Sink):
             raise
 
 
+class ExplorerAsSystem(WithQueue):
+    """ 
+        Sink of bd (two fields 'observations','commands','timestamp')
+        and source of array vector of commands. 
+    """
+
+    def __str__(self):
+        return 'ExplorerAsSystem(%s)' % self.agent
+        
+    def __init__(self, agent):
+        self.log_add_child('agent', agent)
+        self.agent = agent
+
+    def reset(self):
+        WithQueue.reset(self)
+        warnings.warn('should do something here')
+
+#     def get(self, block=True, timeout=None):  # @UnusedVariable
+#         self.info('calling choose_commands() block = %s' % block)
+#         res = self.agent.choose_commands()
+#         self.info('result is %s' % str(res))
+#         return res
+
+    def put_noblock(self, value):  # @UnusedVariable
+        timestamp, bd = value  # @UnusedVariable
+        if not 'observations' in bd and 'commands' in bd:
+            msg = 'Expected obs/commands, got: %s' % bd
+            raise ValueError(msg)
+
+        self.info('explorer received bd at %s' % timestamp)
+        try:
+            self.agent.process_observations(bd)
+        except PassiveAgentInterface.LearningConverged:
+            raise
+
+        res = self.agent.choose_commands()
+        self.append(res)
+
+
 class ActiveAgentInterface(PassiveAgentInterface):
     
     @abstractmethod
@@ -134,6 +175,11 @@ class ActiveAgentInterface(PassiveAgentInterface):
             Chooses commands to be generated; must return an 
             array that conforms to the specs.
         '''
+
+    @contract(returns=SimpleBlackBox)
+    def get_explorer(self):
+        return ExplorerAsSystem(agent=self)
+
 
 class ServoAgentInterface(ActiveAgentInterface):
     

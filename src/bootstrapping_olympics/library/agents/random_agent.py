@@ -1,10 +1,12 @@
 from bootstrapping_olympics import (PredictorAgentInterface, ServoAgentInterface,
     AgentInterface)
+from bootstrapping_olympics import ActiveAgentInterface
+
 
 __all__ = ['RandomAgent', 'RandomAgentPredictor', 'RandomAgentServo']
 
 
-class RandomAgent(AgentInterface):
+class RandomAgent(AgentInterface, ActiveAgentInterface):
     ''' A dummy agent that gives random commands. '''
 
     def __init__(self):

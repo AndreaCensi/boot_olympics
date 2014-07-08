@@ -10,6 +10,14 @@
   - bootstrapping_olympics.library.agents.ObsNormalizeMax
   - {}
 
+- id: test_nuisance_agent_0
+  desc: Simple test with identity nuisance
+  code:
+  - bootstrapping_olympics.library.agents.NuisanceAgent
+  - agent: random_agent
+    nuisances: 
+    - rnc_identity
+
 - id: test_nuisance_agent_1
   desc: Simple test with normal nuisance
   code:

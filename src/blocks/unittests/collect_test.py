@@ -2,6 +2,8 @@
 from blocks.library import Collect
 
 from .blocks_testing_utils import BlocksTest
+from blocks.exceptions import NeedInput
+from blocks.library.collect import CollectSignals
 
 
 class CollectTest(BlocksTest):
@@ -26,3 +28,20 @@ class CollectTest(BlocksTest):
         self.check_bbox_results(bbox, data, expected)
         
 
+
+    def collect_test2(self):
+        collect = Collect()
+        collect.reset()
+        collect.put((0, ('a', 'A0')))
+        collect.put((0, ('b', 'B0')))
+        self.assertRaises(NeedInput, collect.get)
+        collect.put((1, ('a', 'Aa')))
+        self.assertEqual(collect.get(), (0, dict(a='A0', b='B0')))
+        self.assertRaises(NeedInput, collect.get)
+
+    def collect_test3(self):
+        collect = CollectSignals(signals=set(['a', 'b']))
+        collect.reset()
+        collect.put((0, ('a', 'A0')))
+        collect.put((0, ('b', 'B0')))
+        self.assertEqual(collect.get(), (0, dict(a='A0', b='B0')))

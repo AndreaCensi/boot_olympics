@@ -17,7 +17,7 @@ class FromData(Source):
     def reset(self):
         self.k = 0
 
-    def get(self, block=False, timeout=None):  # @UnusedVariable
+    def get(self, block=True, timeout=None):  # @UnusedVariable
         if self.k >= len(self.data):
             msg = 'finished length %d' % self.k
             self.info(msg)
