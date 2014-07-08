@@ -6,6 +6,9 @@ from blocks import NotReady, Finished, SimpleBlackBox, NeedInput
 from blocks.pumps import bb_get_block_poll_sleep
 from bootstrapping_olympics import (RobotInterface, RobotObservations,
     ObsKeeper, logger, ActiveAgentInterface)
+from blocks.composition import series
+from blocks.library.timed.check_sequence import CheckSequence
+from blocks.library.with_queue import WithQueue
 
 
 __all__ = ['run_simulation']
@@ -28,17 +31,20 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
     logger.info('run_simulation(max_time=%s; max_observations=%s)'
                 % (max_time, max_observations))
     
-    robot_sys = RobotAsBlackBox2(id_robot, robot)
+    robot_sys = RobotAsBlackBox3(id_robot, robot)
 
     logger.info('max_observations: %s' % max_observations)
     logger.info('max_time: %s' % max_time)
 
 #     from bootstrapping_olympics.library.agents.nuisance_agent_actions import CheckBootSpec
     cmd_spec = robot.get_spec().get_commands()
-#     robot_sys = series(robot_sys,  # CheckBootSpec(robot.get_spec()),
-#                        Info())
-#     robot_sys.set_names(['robot_sys', 'Info'])
-    robot_sys.set_name_for_log('robot_sys')
+
+    if True:
+        robot_sys = series(robot_sys,  # CheckBootSpec(robot.get_spec()),
+                            CheckSequence())
+
+        robot_sys.set_names(['robot_sys', 'CheckSeq'])
+        robot_sys.set_name_for_log('robot_sys')
     robot_sys.reset()  # = new_episode
     
 
@@ -92,9 +98,80 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
         robot_sys.put((timestamp, (commands, id_agent)), block=True)
 
         counter += 1
+#
+#
+# class RobotAsBlackBox2(SimpleBlackBox):
+#
+#     # TODO: remove in favor of RobotAsBlackBox
+#     @contract(robot=RobotInterface)
+#     def __init__(self, id_robot, robot, sleep=0.1):
+#         self.log_add_child('robot', robot)
+#
+#         self.sleep = sleep
+#         self.robot = robot
+#         self.last_obs = None
+#         self.id_robot = id_robot
+#
+#     def reset(self):
+#         self.info('resetting')
+#         self.keeper = ObsKeeper(boot_spec=self.robot.get_spec(),
+#                                 id_robot=self.id_robot,
+#                                 check_valid_values=False)
+#
+#         self.episode = self.robot.new_episode()
+#
+#     def __repr__(self):
+#         return 'RobotAsBlackBox(%r)' % self.robot
+#
+#     @contract(value='tuple(float,*)')
+#     def put(self, value, block=True, timeout=None):
+#         _, cmds = value
+#         self.robot.set_commands(*cmds)
+#
+#     def get(self, block=True, timeout=None):
+#         if block:
+#             res = bb_get_block_poll_sleep(self,
+#                                            timeout=timeout,
+#                                            sleep=self.sleep)
+# #             self.info('returning from blocking get(): %s' % str(res))
+#             return res
+#         else:
+#             return self._get_notblock()
+#
+#     def _get_notblock(self):
+#         self.info('getting')
+#         try:
+#             obs = self.robot.get_observations()
+#         except RobotObservations.NotReady as e:
+#             raise NotReady('robot not ready: %d' % e)
+#
+#         if self.last_obs is not None:
+#             if self.last_obs.timestamp == obs.timestamp:
+#                 raise NotReady('got same obs')
+#
+#         self.last_obs = obs
+#
+#         boot_observations = self.keeper.push(timestamp=obs.timestamp,
+#                                              observations=obs.observations,
+#                                              commands=obs.commands,
+#                                              commands_source=obs.commands_source,
+#                                              id_episode=self.episode.id_episode,
+#                                              id_world=self.episode.id_environment)
+#         res = boot_observations
+#
+# #         self.info('returning %s' % res)
+#
+#         return obs.timestamp, res
+#
+#
+#
     
+class RobotAsBlackBox3(WithQueue):
+    """ This one does not look at handling NotReady correctly. 
     
-class RobotAsBlackBox2(SimpleBlackBox):
+        One observations is put in the queue when reset() is claled.
+        Then every time we got new_commands using put, we put new observations.
+    """
 
     # TODO: remove in favor of RobotAsBlackBox
     @contract(robot=RobotInterface)
@@ -107,41 +184,26 @@ class RobotAsBlackBox2(SimpleBlackBox):
         self.id_robot = id_robot
 
     def reset(self):
-        self.info('resetting')
+        WithQueue.reset(self)
         self.keeper = ObsKeeper(boot_spec=self.robot.get_spec(),
                                 id_robot=self.id_robot,
                                 check_valid_values=False)
 
         self.episode = self.robot.new_episode()
 
-    def __repr__(self):
-        return 'RobotAsBlackBox(%r)' % self.robot
+        self._enqueue()
 
-    @contract(value='tuple(float,*)')
-    def put(self, value, block=True, timeout=None):
-        _, cmds = value
-        self.robot.set_commands(*cmds)
-
-    def get(self, block=True, timeout=None):
-        if block:
-            res = bb_get_block_poll_sleep(self,
-                                           timeout=timeout,
-                                           sleep=self.sleep)
-#             self.info('returning from blocking get(): %s' % str(res))
-            return res
-        else:
-            return self._get_notblock()
-
-    def _get_notblock(self):
-        self.info('getting')
+    def _enqueue(self):
         try:
             obs = self.robot.get_observations()
-        except RobotObservations.NotReady:
-            raise NotReady()
+        except RobotObservations.NotReady as e:
+            msg = 'Sorry, RobotAsBlackBox3 does not handle NotReady.'
+            msg += '\n Not ready: %s' % e
+            raise NotReady(msg)
 
         if self.last_obs is not None:
             if self.last_obs.timestamp == obs.timestamp:
-                raise NotReady()
+                raise NotReady('got same obs')
 
         self.last_obs = obs
 
@@ -155,12 +217,17 @@ class RobotAsBlackBox2(SimpleBlackBox):
 
 #         self.info('returning %s' % res)
 
-        return obs.timestamp, res
+        self.append((obs.timestamp, res))
 
-    
-    
-    
-    
-    
+
+
+    def __repr__(self):
+        return 'RobotAsBlackBox(%r)' % self.robot
+
+    @contract(value='tuple(float,*)')
+    def put_noblock(self, value):
+        _, cmds = value
+        self.robot.set_commands(*cmds)
+        self._enqueue()
 
 

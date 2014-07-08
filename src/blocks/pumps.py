@@ -78,18 +78,17 @@ def bb_get_block_poll_sleep(bb, timeout, sleep):
         t1 = time.time()
         delta = t1 - t0
         if timeout is not None and delta > timeout:
-            msg = 'timeout: %s > %s' % (delta, timeout)
+            msg = 'bb_get_block_poll_sleep: timeout: %s > %s' % (delta, timeout)
             raise SimpleBlackBox.NotReady(msg)
         try:
             value = bb.get(block=False)
             assert not isinstance(value, NoneType)
             return value
-        except SimpleBlackBox.NotReady:
-            print('not ready, waiting')
+        except SimpleBlackBox.NotReady as e:
+            bb.info('bb_get_block_poll_sleep: not ready, waiting: %s' % e)
             pass
 
         time.sleep(sleep)
-
 
 
 @contract(source=Source, returns='list(tuple(float, *))')

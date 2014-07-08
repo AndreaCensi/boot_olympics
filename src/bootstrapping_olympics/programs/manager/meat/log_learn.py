@@ -1,15 +1,12 @@
-from abc import abstractmethod
-import string
-import traceback
-from types import GeneratorType
 import warnings
 
-from contracts import contract, describe_type
-from contracts.utils import indent
+from contracts import contract
 
-from blocks import Finished, Source
+from blocks.composition import series
+from blocks.library import CheckSequence
+from blocks.library import IteratorSource
 from blocks.pumps import bb_pump_block_yields
-from bootstrapping_olympics import AgentInterface, PassiveAgentInterface, logger
+from bootstrapping_olympics import AgentInterface, logger
 
 from .load_agent_state import load_agent_state
 
@@ -67,6 +64,8 @@ def learn_log(data_central, id_agent, id_robot,
           
     return agent, state
 
+
+
 @contract(episodes='None|list(str)',
           returns='tuple(*,*)')    
 def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
@@ -91,69 +90,45 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
     for plugin in live_plugins:
         plugin.init(init)
 
-    learner = agent.get_learner_as_sink()
-    learner.reset()
-
-    print('learner: %s' % learner)
 
     for stream, to_learn in remain:
+
         
         # plugins
         for plugin in live_plugins:
             plugin.starting_stream(stream)
         
-        source = BootStreamAsSource(stream, to_learn)
-        source.reset()
-        try:
-            for obs in bb_pump_block_yields(source, learner):
-                state.num_observations += 1
-                progress.obs.done += 1
+        for id_episode in to_learn:
+            # Let's reset the learner every time we start a new episode
+            learner = agent.get_learner_as_sink()
+            learner.reset()
 
+            source = BootStreamAsSource(stream, set(id_episode))
+            source = series(source, CheckSequence())
+            source.reset()
+            try:
+                for obs in bb_pump_block_yields(source, learner):
+                    state.num_observations += 1
+                    progress.obs.done += 1
 
-                # Update plugins
-                up = dict(agent=agent, robot=None, obs=obs,
-                          progress=progress,
-                          state=state, stream=stream)
-                for plugin in live_plugins:
-                    plugin.update(up)
-                
-        except AgentInterface.LearningConverged as e:
-            print('Obtained learning converged: %s' % e)
+                    # Update plugins
+                    up = dict(agent=agent, robot=None, obs=obs,
+                              progress=progress,
+                              state=state, stream=stream)
+                    for plugin in live_plugins:
+                        plugin.update(up)
 
-        state.id_episodes.update(to_learn)
-        progress.eps.done += len(to_learn)
+            except AgentInterface.LearningConverged as e:
+                print('Obtained learning converged: %s' % e)
+
+            state.id_episodes.update(set(id_episode))
+            progress.eps.done += 1
 
     for plugin in live_plugins:
         plugin.finish()
         
     return agent, state 
 
-
-class IteratorSource(Source):
-
-    def reset(self):
-        self.iterator = self.get_iterator()
-
-    @abstractmethod
-    @contract(returns=GeneratorType)
-    def get_iterator(self):
-        """ Returns iterator to use. """
-        pass
-
-    def get(self, block=True, timeout=None):  # @UnusedVariable
-        try:
-            res = self.iterator.next()
-            return res
-        except StopIteration:
-            raise Finished
-        except Exception as e:
-            msg = 'Could not call next() on user-given iterator.\n'
-            msg += '   iterator: %s\n' % str(self.iterator)
-            msg += '    of type: %s\n' % describe_type(self.iterator)
-            msg += 'because of this error:\n'
-            msg += indent(string.strip('%s\n%s' % (e, traceback.format_exc(e))), '| ')
-            self.info(msg)
-            raise
 
 
 class BootStreamAsSource(IteratorSource):

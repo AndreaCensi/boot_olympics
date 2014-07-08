@@ -1,5 +1,5 @@
 
-from blocks.exceptions import NeedInput
+from blocks import NeedInput
 from blocks.library import Collect, CollectSignals
 
 from .blocks_testing_utils import BlocksTest
