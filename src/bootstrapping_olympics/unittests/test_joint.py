@@ -4,6 +4,7 @@ from bootstrapping_olympics import UnsupportedSpec
 from bootstrapping_olympics.programs.manager import run_simulation
 from bootstrapping_olympics.unittests import for_all_pairs
 import cPickle as pickle
+from bootstrapping_olympics.interfaces.agent import ActiveAgentInterface
 
 
 @for_all_pairs
@@ -17,6 +18,9 @@ def check_agent_init(id_agent, agent, id_robot, robot):  # @UnusedVariable
 
 @for_all_pairs
 def check_small_simulation(id_agent, agent, id_robot, robot):
+    if not isinstance(agent, ActiveAgentInterface):
+        print('skipping because agent is not active')
+        return dict(result='skip')
     try:
         agent.init(robot.get_spec())
     except UnsupportedSpec:
@@ -50,6 +54,9 @@ def check_pickable(x, desc):
 
 @for_all_pairs
 def check_publish(id_agent, agent, id_robot, robot):
+    if not isinstance(agent, ActiveAgentInterface):
+        print('skipping because agent is not active')
+        return dict(result='skip')
     try:
         agent.init(robot.get_spec())
     except UnsupportedSpec:

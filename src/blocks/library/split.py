@@ -44,10 +44,10 @@ class Split(WithQueue):
                     x = self.a.get(block=True)
                     new_obs.append(x)
                 except NotReady:
-                    self.info('First is not ready')
+#                     self.info('First is not ready')
                     break
                 except Finished:
-                    self.info('Now first is finished')
+#                     self.info('Now first is finished')
                     self.a_finished = True
                     break
                 except NeedInput:
@@ -58,10 +58,10 @@ class Split(WithQueue):
                     x = self.b.get(block=True)
                     new_obs.append(x)
                 except NotReady:
-                    self.info('First is not ready')
+#                     self.info('First is not ready')
                     break
                 except Finished:
-                    self.info('Now second is finished')
+#                     self.info('Now second is finished')
                     self.b_finished = True
                     break
                 except NeedInput:

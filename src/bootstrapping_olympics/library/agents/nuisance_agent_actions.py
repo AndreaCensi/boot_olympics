@@ -97,9 +97,14 @@ def get_bd_transform(rnc, ignore_incomplete):
 
 class BootExpand(WithQueue):
 
+    @contract(value='tuple(float, *)')
     def put_noblock(self, value):
+        if not isinstance(value, tuple) or len(value) != 2:
+            msg = 'Expected a tuple'
+            raise ValueError(msg)
+
         t, bd = value
-        self.info('expanding bd in "commands" and "observations"')
+#         self.info('expanding bd in "commands" and "observations"')
         self.append((t, ('commands', bd['commands'])))
         self.append((t, ('observations', bd['observations'])))
 
@@ -116,7 +121,12 @@ class BootPutTimestamp(WithQueue):
         self.ignore_incomplete = ignore_incomplete
         WithQueue.__init__(self)
 
+    @contract(value='tuple(float, *)')
     def put_noblock(self, value):
+        if not isinstance(value, tuple) or len(value) != 2:
+            msg = 'Expected a tuple'
+            raise ValueError(msg)
+
         t, bd = value
         if (not 'observations' in bd) or (not 'commands' in bd):
             msg = 'BootPutTimestamp: Expected obs/cmd fields in bd: %s' % bd

@@ -17,7 +17,6 @@ __all__ = [
           rs='seq(isinstance(RepresentationNuisanceCausal))')
 def series_rnc(*rs):
     """ Returns the composition nuisances. """
-    print('series: %s' % str(rs))
     if len(rs) == 1:
         one = rs[0]
         check_isinstance(one, RepresentationNuisanceCausal)
@@ -26,7 +25,6 @@ def series_rnc(*rs):
         first = rs[0]
         check_isinstance(rs[0], RepresentationNuisanceCausal)
         rest = tuple(rs[1:])
-        print('rest: %s' % rest)
         return RepNuisanceCausalComb(first, series_rnc(*rest))
 
 

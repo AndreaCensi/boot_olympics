@@ -6,10 +6,10 @@ from blocks import SimpleBlackBox
 from blocks.composition import series
 from blocks.library import (Identity, WrapTimedNamed, Route, SampledDeriv,
                             WrapTMfromT, Instantaneous)
-from bootstrapping_olympics import (
-     RepresentationNuisanceCausal)
+from bootstrapping_olympics import RepresentationNuisanceCausal
 from streamels import (BootSpec, StreamSpec, CompositeStreamSpec,
     UnsupportedSpec, check_streamels_continuous)
+from blocks.library.sampled_deriv import SampledDerivPartial
 
 
 __all__ = ['DDerivative', 'DDerivativeConj']
@@ -52,6 +52,7 @@ class DDerivative(RepresentationNuisanceCausal):
     @contract(returns=SimpleBlackBox)
     def get_H(self):
         w = WrapTMfromT(series(SampledDeriv(), (MakeDict())))
+
         # ignore the "commands" signal
         r = Route([({'observations':'observations'},
                     w,

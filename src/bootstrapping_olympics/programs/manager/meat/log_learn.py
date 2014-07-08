@@ -109,11 +109,6 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
                 state.num_observations += 1
                 progress.obs.done += 1
 
-                try:
-                    agent.process_observations(obs)
-                except PassiveAgentInterface.LearningConverged as e:
-                    logger.info('Learning converged: %s' % e)
-                    break
 
                 # Update plugins
                 up = dict(agent=agent, robot=None, obs=obs,
@@ -168,7 +163,8 @@ class BootStreamAsSource(IteratorSource):
         self.to_learn = to_learn
 
     def get_iterator(self):
-        return self.stream.read(only_episodes=self.to_learn)
+        for obs in self.stream.read(only_episodes=self.to_learn):
+            yield obs['timestamp'], obs
 
 
 class ProgressSingle(object):

@@ -5,12 +5,17 @@ from bootstrapping_olympics.programs.manager import (boot_olympics_manager,
 from bootstrapping_olympics.unittests import for_all_pairs
 from bootstrapping_olympics.utils import assert_allclose
 import os
+from bootstrapping_olympics.interfaces.agent import ActiveAgentInterface
 
 # TODO: check that the robot generates different episodes strings
 
 
 @for_all_pairs
 def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
+    if not isinstance(agent, ActiveAgentInterface):
+        print('skipping because agent is not active')
+        return dict(result='skip')
+
     try:
         agent.init(robot.get_spec())
     except UnsupportedSpec:

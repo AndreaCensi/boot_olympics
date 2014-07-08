@@ -202,14 +202,14 @@ class BBBBSeries(SimpleBlackBox):
         self.b.reset()
 
     def end_input(self):
-        self.info('end_input()')
+#         self.info('end_input()')
         check_reset(self, 'reset_once')
         self.a.end_input()
         self._pump()
 
     def put(self, value, block=True, timeout=None):
         check_reset(self, 'reset_once')
-        self.info('put(): %s' % str(value))
+#         self.info('put(): %s' % str(value))
 
         assert not self.status_a_finished
 
@@ -226,7 +226,7 @@ class BBBBSeries(SimpleBlackBox):
 #             self.b.end_input()
 
     def _pump(self):        
-        self.info('_pump()')
+#         self.info('_pump()')
         
         num = 0
         while True:
@@ -269,7 +269,7 @@ class BBBBSeries(SimpleBlackBox):
 
     def get(self, block=True, timeout=None):
         check_reset(self, 'reset_once')
-        self.info('trying to get() from %s' % self.log_child_name(self.b))
+#         self.info('trying to get() from %s' % self.log_child_name(self.b))
         try:
             return self.b.get(block=block, timeout=timeout)
         except NeedInput:

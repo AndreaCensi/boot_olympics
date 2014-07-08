@@ -4,9 +4,9 @@ import warnings
 from contracts import ContractsMeta, contract
 
 from blocks import SimpleBlackBox, Sink
+from blocks.library import WithQueue
 from decent_logs import WithInternalLog
 from reprep import Report, ReportInterface
-from blocks.library.with_queue import WithQueue
 
 
 __all__ = [

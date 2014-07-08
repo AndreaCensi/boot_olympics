@@ -19,7 +19,6 @@ class ObsNormalizeMax(MultiLevelBase):
         Learns the bounds and normalizes the values
         between [-1,+1]. 
     """
-
     def __init__(self):
         MultiLevelBase.__init__(self)
         self._was_inited = False

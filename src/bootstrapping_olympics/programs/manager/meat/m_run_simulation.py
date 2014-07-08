@@ -1,21 +1,17 @@
-import time
 import warnings
 
 from contracts import contract
 
-from blocks import NotReady, Finished
-from blocks import SimpleBlackBox
-from blocks.composition import series
-from blocks.library import Info
+from blocks import NotReady, Finished, SimpleBlackBox, NeedInput
 from blocks.pumps import bb_get_block_poll_sleep
 from bootstrapping_olympics import (RobotInterface, RobotObservations,
-    AgentInterface, ObsKeeper, logger)
+    ObsKeeper, logger, ActiveAgentInterface)
 
 
 __all__ = ['run_simulation']
 
 @contract(id_robot='str', id_agent='str',
-          robot=RobotInterface, agent=AgentInterface, max_observations='>=1',
+          robot=RobotInterface, agent=ActiveAgentInterface, max_observations='>=1',
           max_time='>0')
 def run_simulation(id_robot, robot, id_agent, agent, max_observations,
                    max_time,
@@ -24,18 +20,20 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
         Runs an episode of the simulation. The agent should already been
         init()ed. 
     '''
-    logger.info('run_simulation(max_time=%s; max_observations=%s)'
-                % (max_time, max_observations))
-#     episode = robot.new_episode()
-    
-    robot_sys = RobotAsBlackBox2(id_robot, robot)
+    assert isinstance(agent, ActiveAgentInterface)
 
     warnings.warn('we are not honoring id_episode')
+
+
+    logger.info('run_simulation(max_time=%s; max_observations=%s)'
+                % (max_time, max_observations))
+    
+    robot_sys = RobotAsBlackBox2(id_robot, robot)
 
     logger.info('max_observations: %s' % max_observations)
     logger.info('max_time: %s' % max_time)
 
-    from bootstrapping_olympics.library.agents.nuisance_agent_actions import CheckBootSpec
+#     from bootstrapping_olympics.library.agents.nuisance_agent_actions import CheckBootSpec
     cmd_spec = robot.get_spec().get_commands()
 #     robot_sys = series(robot_sys,  # CheckBootSpec(robot.get_spec()),
 #                        Info())
@@ -55,10 +53,10 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
             t, bd = robot_sys.get(block=True)
         except NotReady:
             raise Exception('Hey, cannot obtain NotReady when block is True')
-            warnings.warn('remove')
-            logger.info('not ready')
-            time.sleep(0.001)
-            continue
+#             warnings.warn('remove')
+#             logger.info('not ready')
+#             time.sleep(0.001)
+#             continue
         except Finished:
             logger.info('Episode ended at %s due to obs.episode_end.'
                          % counter)
@@ -76,8 +74,15 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
         agent_sys.put((t, bd), block=True)
 
         logger.info('getting commands')
-        print agent_sys
-        commands = agent_sys.get(block=True)
+        try:
+            commands = agent_sys.get(block=True)
+        except NeedInput:
+            if counter > 3:
+                msg = 'Agent raises NeedInput after %s steps.' % counter
+                raise Exception(msg)
+            else:
+                logger.warn('after %d steps, using default commands because Agent not ready.' % counter)
+            commands = cmd_spec.get_default_value()
 
         if check_valid_values:
             cmd_spec.check_valid_value(commands)
@@ -122,7 +127,7 @@ class RobotAsBlackBox2(SimpleBlackBox):
             res = bb_get_block_poll_sleep(self,
                                            timeout=timeout,
                                            sleep=self.sleep)
-            self.info('returning from blocking get(): %s' % str(res))
+#             self.info('returning from blocking get(): %s' % str(res))
             return res
         else:
             return self._get_notblock()
@@ -148,7 +153,7 @@ class RobotAsBlackBox2(SimpleBlackBox):
                                              id_world=self.episode.id_environment)
         res = boot_observations
 
-        self.info('returning %s' % res)
+#         self.info('returning %s' % res)
 
         return obs.timestamp, res
 
