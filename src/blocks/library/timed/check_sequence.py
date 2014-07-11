@@ -20,7 +20,7 @@ class CheckSequence(WithQueue):
         check_timed_format(self, value)
         t, _ = value
 
-        self.info('found timestamp %s' % t)
+        # self.info('found timestamp %s' % t)
 
         if self.last_t is not None:
             if t < self.last_t:

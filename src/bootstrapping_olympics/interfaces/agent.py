@@ -156,7 +156,7 @@ class ExplorerAsSystem(WithQueue):
             msg = 'Expected obs/commands, got: %s' % bd
             raise ValueError(msg)
 
-        self.info('explorer received bd at %s' % timestamp)
+        # self.info('explorer received bd at %s' % timestamp)
         try:
             self.agent.process_observations(bd)
         except PassiveAgentInterface.LearningConverged:

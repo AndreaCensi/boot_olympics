@@ -1,15 +1,17 @@
-from .utils import create_tmp_dir
+import os
+
+from bootstrapping_olympics import ActiveAgentInterface
 from bootstrapping_olympics import LogsFormat, UnsupportedSpec
-from bootstrapping_olympics.programs.manager import (boot_olympics_manager,
+from bootstrapping_olympics.programs.manager import (
     DataCentral)
+from bootstrapping_olympics.programs.manager.command_line.main import manager_main
 from bootstrapping_olympics.unittests import for_all_pairs
 from bootstrapping_olympics.utils import assert_allclose
-import os
-from bootstrapping_olympics.interfaces.agent import ActiveAgentInterface
+
+from .utils import create_tmp_dir
+
 
 # TODO: check that the robot generates different episodes strings
-
-
 @for_all_pairs
 def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
     if not isinstance(agent, ActiveAgentInterface):
@@ -28,7 +30,11 @@ def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
 
         def execute_command(*args):
             arguments = ['-d', root, '--contracts'] + list(args)
-            boot_olympics_manager(arguments)
+            res = manager_main(args=arguments, sys_exit=False)
+            print(res)
+            if res:
+                msg = 'manager failed\n args %s\n res: %s' % (arguments, res)
+                raise ValueError(msg)
 
         assert not log_index.has_streams_for_robot(id_robot)
         formats = LogsFormat.formats.keys()

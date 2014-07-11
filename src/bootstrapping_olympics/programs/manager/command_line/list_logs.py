@@ -1,34 +1,61 @@
-from . import check_no_spurious, OptionParser, declare_command
 from conf_tools.utils import friendly_path
+from .main import BOM
 
 
-@declare_command('list-logs', 'list-logs [-R] [-e] [-s] [-l]')
-def cmd_list_logs(data_central, argv):
+
+class CmdListLogs(BOM.get_sub()):
     '''Shows information about every log. '''
 
-    parser = OptionParser(prog='list-logs', usage=cmd_list_logs.short_usage)
-    parser.disable_interspersed_args()
-    parser.add_option("-R", dest='refresh', action='store_true',
-                      default=False,
-                      help="Ignores global cache.")
-    parser.add_option("-l", dest='display_logs', action='store_true',
-                      default=False,
-                      help="Displays all logs.")
-    parser.add_option("-s", dest='display_streams', action='store_true',
-                      default=False,
-                      help="Displays all streams.")
-    parser.add_option("-e", dest='display_episodes', action='store_true',
-                      default=False, help="Displays all episodes.")
-    (options, args) = parser.parse_args(argv)
+    cmd = 'list-logs'
 
-    check_no_spurious(args)
+    def define_program_options(self, params):
+        params.add_flag('refresh', short="-R", help="Ignores global cache.")
+        params.add_flag('display_logs', short="-l", help="Displays all logs.")
+        params.add_flag('display_streams', short="-s", help="Displays all streams.")
+        params.add_flag('display_episodes', short="e", help="Displays all episodes.")
 
-    index = data_central.get_log_index(ignore_cache=options.refresh)
-    display_logs = options.display_logs 
-    display_streams = options.display_streams
-    display_episodes = options.display_episodes 
-    
-    do_list_logs(index, display_logs, display_streams, display_episodes)
+    def go(self):
+
+        data_central = self.get_parent().get_data_central()
+        options = self.get_options()
+
+        index = data_central.get_log_index(ignore_cache=options.refresh)
+        display_logs = options.display_logs
+        display_streams = options.display_streams
+        display_episodes = options.display_episodes
+
+        do_list_logs(index, display_logs, display_streams, display_episodes)
+
+
+#
+#
+# @declare_command('list-logs', 'list-logs [-R] [-e] [-s] [-l]')
+# def cmd_list_logs(data_central, argv):
+#     '''Shows information about every log. '''
+#
+#     parser = OptionParser(prog='list-logs', usage=cmd_list_logs.short_usage)
+#     parser.disable_interspersed_args()
+#     parser.add_option("-R", dest='refresh', action='store_true',
+#                       default=False,
+#                       help="Ignores global cache.")
+#     parser.add_option("-l", dest='display_logs', action='store_true',
+#                       default=False,
+#                       help="Displays all logs.")
+#     parser.add_option("-s", dest='display_streams', action='store_true',
+#                       default=False,
+#                       help="Displays all streams.")
+#     parser.add_option("-e", dest='display_episodes', action='store_true',
+#                       default=False, help="Displays all episodes.")
+#     (options, args) = parser.parse_args(argv)
+#
+#     check_no_spurious(args)
+#
+#     index = data_central.get_log_index(ignore_cache=options.refresh)
+#     display_logs = options.display_logs
+#     display_streams = options.display_streams
+#     display_episodes = options.display_episodes
+#
+#     do_list_logs(index, display_logs, display_streams, display_episodes)
 
 def do_list_logs(index, display_logs=False, display_streams=False, display_episodes=False):
     print('Index contains %d bag files with boot data.' % 

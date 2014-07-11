@@ -1,25 +1,32 @@
 '''Some functions to help in writing experiments scripts'''
-from . import default_expl_videos, default_servo_videos, default_servonav_videos
-from .. import (create_video, servo_stats_report, simulate, task_predict,
-    learn_log, publish_once, task_servo, task_servonav, publish_report_robot,
-    servo_stats_summary, predict_report)
-from bootstrapping_olympics import UnsupportedSpec, logger
+import itertools
+
+from contracts import contract
+
+from bootstrapping_olympics import (UnsupportedSpec, logger, get_conftools_agents,
+    get_conftools_robots)
 from bootstrapping_olympics.library.robots import EquivRobot
 from bootstrapping_olympics.programs.manager.meat.nuislog import (
     nuislog_episodes)
+from bootstrapping_olympics.programs.manager.meat.report_robot import report_robot_create
 from conf_tools import SemanticMistake
-from contracts import contract
-import itertools
 import numpy as np
 
-def batch_jobs1(data_central, **kwargs):
-    tr = TaskRegister(data_central)
+from . import default_expl_videos, default_servo_videos, default_servonav_videos
+from .. import (create_video, servo_stats_report, simulate, task_predict,
+    learn_log, publish_once, task_servo, task_servonav,
+    servo_stats_summary, predict_report)
+
+
+def batch_jobs1(context, data_central, **kwargs):
+    tr = TaskRegister(context, data_central)
     tr.main(**kwargs)
 
 
 class TaskRegister(object):
 
-    def __init__(self, data_central):
+    def __init__(self, context, data_central):
+        self._context = context
         self.data_central = data_central
 
         self.deps = {}
@@ -29,15 +36,13 @@ class TaskRegister(object):
         
     def _get_agent_instance(self, id_agent):
         if not id_agent in self.agent_instances:
-            self.agent_instances[id_agent] = \
-                 self.data_central.get_bo_config().agents.instance(id_agent)
-        return  self.agent_instances[id_agent] 
+            self.agent_instances[id_agent] = get_conftools_agents().instance(id_agent)
+        return self.agent_instances[id_agent]
 
     def _get_robot_instance(self, id_robot):
         if not id_robot in self.robot_instances:
-            self.robot_instances[id_robot] = \
-                 self.data_central.get_bo_config().robots.instance(id_robot)
-        return  self.robot_instances[id_robot] 
+            self.robot_instances[id_robot] = get_conftools_robots().instance(id_robot)
+        return self.robot_instances[id_robot]
 
     @contract(id_agent='str', K='int')
     def episode_id_exploration(self, id_agent, K):
@@ -102,7 +107,9 @@ class TaskRegister(object):
 
     @contract(servo='None|dict',
               servonav='None|dict',
-              predict='None|dict')
+              predict='None|dict',
+              agents='list(str)',
+              robots='list(str)')
     def main(self, agents, robots,
                     explore=None,
                     explore_modulus=None,
@@ -120,6 +127,11 @@ class TaskRegister(object):
             raise SemanticMistake('Please specify at least one agent.')
 
         for id_robot in robots:
+            config_robots = get_conftools_robots()
+            config_robots.instance(id_robot)
+#             if not id_robot in config_robots:
+#                 msg = 'No '
+#                 raise SemanticMistake(msg)
             self.add_task_robot_report(id_robot=id_robot)
             
         if explore_modulus is not None:
@@ -159,17 +171,12 @@ class TaskRegister(object):
                                        **predict)
 
     def compmake_job(self, *args, **kwargs):
-        """ Calls compmake's self.compmake_job() function. """    
-        try:
-            from compmake import comp
-        except ImportError:
-            logger.error('Compmake not installed')
-        return comp(*args, **kwargs)
+        return self._context.comp_config(*args, **kwargs)
     
     def add_task_robot_report(self, id_robot):
-        self.compmake_job(publish_report_robot, data_central=self.data_central,
-              id_robot=id_robot, save_pickle=True,
-             job_id='report-robot-%s' % (id_robot))
+        context = self._context
+        r = context.comp_config(report_robot_create, id_robot)
+        context.add_report(r, 'robot', id_robot=id_robot)
         
     def add_tasks_predict(self, id_agent, id_robot, live_plugins=[],
                           save_pickle=True):
