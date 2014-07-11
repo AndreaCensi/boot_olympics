@@ -4,7 +4,7 @@ from .main import BOM
 
 
 class CmdServo(BOM.get_sub()):
-    '''Simulate the interaction of an agent and a robot. '''
+    ''' Runs a servo experiment. '''
 
     cmd = 'servo'
 
@@ -45,35 +45,3 @@ class CmdServo(BOM.get_sub()):
                  interval_print=options.interval_print,
                  num_episodes_with_robot_state=options.num_episodes) # xXX
     
-
-#
-#
-# @declare_command('servo', "servo  -a <agent> -r <robot>")
-# def cmd_task_servo(data_central, argv):
-#     '''Simulate the interaction of an agent and a robot. '''
-#     parser = OptionParser(prog='servo', usage=cmd_task_servo.__doc__)
-#     parser.disable_interspersed_args()
-#     parser.add_option("-a", "--agent", dest='agent', help="Agent ID")
-#     parser.add_option("-r", "--robot", dest='robot', help="Robot ID")
-#     parser.add_option("--num_episodes", type='int', default=10,
-#                       help="Number of episodes to simulate [%default]")
-#     parser.add_option("--cumulative", default=False, action='store_true',
-#                       help="Count already simulated episodes.")
-#                       help='Frequency of debug messages [%default]')
-#     (options, args) = parser.parse_args(argv)
-#
-#     check_no_spurious(args)
-#     check_mandatory(options, ['agent', 'robot'])
-#
-#     id_agent = options.agent
-#     id_robot = options.robot
-#     task_servo(data_central=data_central,
-#              id_agent=id_agent,
-#              id_robot=id_robot,
-#              displacement=options.displacement,
-#              max_episode_len=options.max_episode_len,
-#              num_episodes=options.num_episodes,
-#              cumulative=options.cumulative,
-#              interval_print=options.interval_print,
-#              num_episodes_with_robot_state=options.num_episodes) # xXX
-

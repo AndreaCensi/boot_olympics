@@ -5,7 +5,7 @@ from numpy.testing.utils import assert_equal
 
 from bootstrapping_olympics import (UnsupportedSpec, BootStream, LogIndex,
     LogsFormat)
-from bootstrapping_olympics import ActiveAgentInterface
+from bootstrapping_olympics import ExploringAgent
 from bootstrapping_olympics.programs.manager import (run_simulation,
     DirectoryStructure)  # XXX
 from bootstrapping_olympics.unittests import for_all_pairs
@@ -15,7 +15,7 @@ import numpy as np
 
 @for_all_pairs
 def check_logs_writing(id_agent, agent, id_robot, robot):
-    if not isinstance(agent, ActiveAgentInterface):
+    if not isinstance(agent, ExploringAgent):
         print('skipping because agent is not active')
         return dict(result='skip')
     

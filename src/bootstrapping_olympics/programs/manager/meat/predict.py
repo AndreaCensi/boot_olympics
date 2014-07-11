@@ -1,20 +1,27 @@
-from .load_agent_state import load_agent_state
-from .report_utils import save_report
+import warnings
+
+from contracts.utils import check_isinstance
+from numpy.ma.core import allclose
+
 from astatsa.prediction import PredictionStatsSampled
 from bootstrapping_olympics import PredictorAgentInterface
 from bootstrapping_olympics.utils import PredictionStats
-from contracts import describe_type
-from numpy.ma.core import allclose
-from reprep import Report
 import numpy as np
-import warnings
+from reprep import Report
+
+from .load_agent_state import load_agent_state
+from .report_utils import save_report
 
 
 __all__ = ['task_predict', 'predict_report']
 
 
 def task_predict(data_central, id_agent, id_robot,
-                 from_start_command=0.5, interval_min=0.10, interval_max=0.15, remove_invalid=True, live_plugins=[]):
+                 from_start_command=0.5,
+                 interval_min=0.10,
+                 interval_max=0.15,
+                 remove_invalid=True,
+                 live_plugins=[]):
     log_index = data_central.get_log_index()
     boot_spec = log_index.get_robot_spec(id_robot)
 
@@ -25,10 +32,7 @@ def task_predict(data_central, id_agent, id_robot,
     predictor = agent.get_predictor()
     predictor.init(boot_spec)
     
-    if not isinstance(predictor, PredictorAgentInterface):
-        msg = ('I expect predictor to be PredictorAgentInterface, got: %s'
-                 % describe_type(predictor))
-        raise Exception(msg)  # TODO: better exception
+    check_isinstance(predictor, PredictorAgentInterface)
 
     streams = log_index.get_streams_for_robot(id_robot)
     p0 = 0.005

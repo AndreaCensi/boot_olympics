@@ -1,15 +1,15 @@
+from bootstrapping_olympics import get_conftools_robots
 from bootstrapping_olympics.library.robots import EquivRobot
 from reprep import MIME_PDF, MIME_SVG, Report
-from .report_utils import save_report
+
+from .report_utils import save_report  # This creates a .pickle used by scripts
 from .servo.utils import get_vsim_from_robot
-from bootstrapping_olympics.configuration.master import get_conftools_robots
 
 
 # def publish_report_robot(data_central, id_robot, save_pickle=False):
 #     ds = data_central.get_dir_structure()
 #     filename, resources_dir = ds.get_report_robot_filename_rd(id_robot)
 #     save_report(data_central, report, filename, resources_dir, save_pickle=save_pickle)
-
 def report_robot_create(id_robot):
     report = Report()
     add_robot_info(report, id_robot)

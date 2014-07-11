@@ -6,12 +6,12 @@ from bootstrapping_olympics.utils import assert_allclose, safe_makedirs
 
 from ..manager_tests import create_tmp_dir
 from ..tests_generation import for_all_pairs
-from bootstrapping_olympics.interfaces.agent import ActiveAgentInterface
+from bootstrapping_olympics.interfaces.agent import ExploringAgent
 
 
 @for_all_pairs
 def check_logs_formats(id_agent, agent, id_robot, robot):  # @UnusedVariable
-    if not isinstance(agent, ActiveAgentInterface):
+    if not isinstance(agent, ExploringAgent):
         print('skipping because agent is not active')
         return dict(result='skip')
 

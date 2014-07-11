@@ -1,13 +1,13 @@
 '''A simple agent useful for testing.'''
 
-from bootstrapping_olympics import AgentInterface
 import numpy as np
 from contracts import contract
+from bootstrapping_olympics import ExploringAgent
 
 __all__ = ['FixedTrajectoryAgent']
 
 
-class FixedTrajectoryAgent(AgentInterface):
+class FixedTrajectoryAgent(ExploringAgent):
     '''
         An agent that executes a fixed pattern of commands for each episode.
                 

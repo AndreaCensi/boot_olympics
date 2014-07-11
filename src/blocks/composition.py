@@ -4,12 +4,10 @@ from contracts import contract, describe_type, describe_value
 from contracts.utils import deprecated
 
 from blocks import SimpleBlackBox, Source, Sink
-from blocks.exceptions import NeedInput
-from blocks.utils import check_reset
 
-from .exceptions import Full, NotReady, Finished
+from .exceptions import Full, NotReady, Finished, NeedInput
 from .pumps import bb_pump
-from blocks.pumps import bb_pump_block
+from .utils import check_reset
 
 
 __all__ = [

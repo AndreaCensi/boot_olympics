@@ -41,12 +41,12 @@ class BootConfigMaster(ConfigMaster):
         from bootstrapping_olympics import RepresentationNuisanceCausal
         from bootstrapping_olympics import RepresentationNuisance
         # from bootstrapping_olympics import AgentInterface
-        from bootstrapping_olympics import PassiveAgentInterface
+        from bootstrapping_olympics import BasicAgent
         from bootstrapping_olympics import LivePlugin
  
         self.robots = self.add_class_generic('robots', '*.robots.yaml', PassiveRobotInterface)
 
-        self.agents = self.add_class_generic('agents', '*.agents.yaml', PassiveAgentInterface)
+        self.agents = self.add_class_generic('agents', '*.agents.yaml', BasicAgent)
 
         self.nuisances = self.add_class_generic('nuisances', '*.nuisances.yaml', RepresentationNuisance)
         self.nuisances_causal = self.add_class_generic('nuisances_causal',

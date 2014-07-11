@@ -1,7 +1,5 @@
 
-from bootstrapping_olympics.programs.manager.meat.predict import predict_report
-
-from ..meat import task_predict
+from ..meat import task_predict, predict_report
 from .main import BOM
 
 

@@ -5,6 +5,7 @@ from .main import BOM
 
 
 class CmdBatch(QuickApp, BOM.get_sub()):
+    """ Batch learning experiments """
     cmd = 'batch'
     def define_options(self, params):
         params.accept_extra()  # remainder arguments

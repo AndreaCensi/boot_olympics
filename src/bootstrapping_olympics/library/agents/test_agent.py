@@ -1,13 +1,13 @@
 '''A simple agent useful for testing.'''
 
-from bootstrapping_olympics import AgentInterface
+from bootstrapping_olympics.interfaces.agent import ExploringAgent
 import numpy as np
 
 
 __all__ = ['TestAgent']
 
 
-class TestAgent(AgentInterface):
+class TestAgent(ExploringAgent):
     '''
         A simple agent useful for testing.
     

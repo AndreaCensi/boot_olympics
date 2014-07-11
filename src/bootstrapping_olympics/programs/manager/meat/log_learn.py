@@ -1,12 +1,14 @@
 import warnings
 
 from contracts import contract
+from contracts.utils import check_isinstance
 
 from blocks.composition import series
 from blocks.library import CheckSequence
 from blocks.library import IteratorSource
 from blocks.pumps import bb_pump_block_yields
-from bootstrapping_olympics import AgentInterface, logger
+from bootstrapping_olympics import  logger
+from bootstrapping_olympics import LearningAgent, LearningConverged
 
 from .load_agent_state import load_agent_state
 
@@ -44,6 +46,8 @@ def learn_log(data_central, id_agent, id_robot,
                                       id_agent=id_agent,
                                       id_robot=id_robot,
                                       reset_state=reset)
+    
+    check_isinstance(agent0, LearningAgent)
     
     if parallel_hint is not None:
         logger.info('setting parallel hint: %r' % str(parallel_hint))
@@ -118,7 +122,7 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
                     for plugin in live_plugins:
                         plugin.update(up)
 
-            except AgentInterface.LearningConverged as e:
+            except LearningConverged as e:
                 print('Obtained learning converged: %s' % e)
 
             state.id_episodes.update(set(id_episode))

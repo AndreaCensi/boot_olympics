@@ -4,8 +4,11 @@ from contracts import contract, describe_value
 from contracts.utils import check_isinstance
 
 from blocks import Sink
-from bootstrapping_olympics import (PassiveAgentInterface,
+from bootstrapping_olympics import (
                                     get_conftools_agents, RepresentationNuisanceCausal)
+from bootstrapping_olympics import BasicAgent
+from bootstrapping_olympics.interfaces.agent import ExploringAgent, \
+    LearningAgent, ServoingAgent
 
 from .nuisance_agent_actions import wrap_agent_learner
 
@@ -16,7 +19,7 @@ __all__ = [
        'MultiLevelAgent',
 ]
 
-class MultiLevelBase(PassiveAgentInterface):
+class MultiLevelBase(BasicAgent):
 
     @abstractmethod
     @contract(returns=RepresentationNuisanceCausal)
@@ -33,7 +36,7 @@ def MultiLevelAgent(agents):
         return TwoLevelAgent(first_levels, last)
 
 
-class TwoLevelAgent(MultiLevelBase):
+class TwoLevelAgent(MultiLevelBase, LearningAgent, ExploringAgent, ServoingAgent):
     ''' 
         This is an agent class that allows learning of multi-level
         representations.

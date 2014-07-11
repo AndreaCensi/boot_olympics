@@ -6,13 +6,14 @@ from blocks import NotReady, NeedInput
 from blocks.composition import series
 from blocks.library import CheckSequence, WithQueue
 from bootstrapping_olympics import (RobotInterface, RobotObservations,
-    ObsKeeper, logger, ActiveAgentInterface)
+    ObsKeeper, logger, ExploringAgent)
+from contracts.utils import check_isinstance
 
 
 __all__ = ['run_simulation']
 
 @contract(id_robot='str', id_agent='str',
-          robot=RobotInterface, agent=ActiveAgentInterface, max_observations='>=1',
+          robot=RobotInterface, agent=ExploringAgent, max_observations='>=1',
           max_time='>0')
 def run_simulation(id_robot, robot, id_agent, agent, max_observations,
                    max_time,
@@ -24,7 +25,7 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
         
         Yields the bd.
     '''
-    assert isinstance(agent, ActiveAgentInterface)
+    check_isinstance(agent, ExploringAgent)
 
     warnings.warn('we are not honoring id_episode')
 

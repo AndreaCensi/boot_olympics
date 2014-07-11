@@ -1,6 +1,6 @@
 import os
 
-from bootstrapping_olympics import ActiveAgentInterface
+
 from bootstrapping_olympics import LogsFormat, UnsupportedSpec
 from bootstrapping_olympics.programs.manager import (
     DataCentral)
@@ -9,12 +9,13 @@ from bootstrapping_olympics.unittests import for_all_pairs
 from bootstrapping_olympics.utils import assert_allclose
 
 from .utils import create_tmp_dir
+from bootstrapping_olympics.interfaces.agent import ExploringAgent
 
 
 # TODO: check that the robot generates different episodes strings
 @for_all_pairs
 def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
-    if not isinstance(agent, ActiveAgentInterface):
+    if not isinstance(agent, ExploringAgent):
         print('skipping because agent is not active')
         return dict(result='skip')
 

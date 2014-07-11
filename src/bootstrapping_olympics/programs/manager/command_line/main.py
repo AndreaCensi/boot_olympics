@@ -8,31 +8,15 @@ from ..meat import DataCentral, DirectoryStructure
 import os
 import contracts
 
-#
-# commands_list = "\n".join(['  %-15s  %s\n  %-15s  Usage: %s' %
-#                            (cmd, f.__doc__, '', f.short_usage)
-#                            for cmd, f in Storage.commands.items()])
-#
-# usage_pattern = """
-#
-#     ${cmd} [options]  <command>  [command options]
-#
-# Available commands:
-#
-# ${commands_list}
-#
-# Use: `${cmd}  <command> -h' to get more information about that command.
-# """
 
 class BOM(QuickMultiCmdApp):
+    """ Main program for running bootstrapping experiments. """
+
 
     def define_multicmd_options(self, params):
 
         params.add_string("boot_root", short="-d", default=None,
                           help="Root directory with logs, config, etc.")
-
-#         parser.add_option("-d", dest='boot_root', default=None,
-#                           help='Root directory with logs, config, etc. [%default]')
 
         params.add_string_list("extra_conf_dirs", short='-c', default=[],
                           help='Adds an extra config dir.')
