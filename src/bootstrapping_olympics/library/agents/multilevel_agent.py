@@ -1,16 +1,10 @@
-from abc import abstractmethod
-
-from contracts import contract, describe_value
-from contracts.utils import check_isinstance
-
-from blocks import Sink
-from bootstrapping_olympics import (
-                                    get_conftools_agents, RepresentationNuisanceCausal)
-from bootstrapping_olympics import BasicAgent
-from bootstrapping_olympics.interfaces.agent import ExploringAgent, \
-    LearningAgent, ServoingAgent
-
 from .nuisance_agent_actions import wrap_agent_learner
+from abc import abstractmethod
+from blocks import SimpleBlackBox, Sink
+from bootstrapping_olympics import (BasicAgent, ExploringAgent, LearningAgent, 
+    RepresentationNuisanceCausal, ServoingAgent, get_conftools_agents)
+from contracts import contract, describe_value
+from contracts.utils import check_isinstance, describe_type
 
 
 __all__ = [
@@ -111,13 +105,24 @@ class TwoLevelAgent(MultiLevelBase, LearningAgent, ExploringAgent, ServoingAgent
         
     @contract(returns=Sink)
     def get_learner_as_sink(self):
+        if not isinstance(self.first, LearningAgent):
+            msg = ('First agent is not a LearningAgent (%s).' % 
+                   describe_type(self.first))
+            raise NotImplementedError(msg)
+
         # something in which we push dict(commands=<>, observations=<>)
         self.info('get_learner_as_sink() for phase=%d' % self.phase)
 
-
         if self.phase == 0:
-            return  self.first.get_learner_as_sink()
+            return self.first.get_learner_as_sink()
         elif self.phase == 1:
+
+            if not isinstance(self.second, LearningAgent):
+                msg = ('second agent is not a LearningAgent (%s).' % 
+                       describe_type(self.second))
+                raise NotImplementedError(msg)
+            
+            
             transform = self.first.get_transform()
             assert isinstance(transform, RepresentationNuisanceCausal)
             boot_spec2 = transform.transform_spec(self.boot_spec)
@@ -125,11 +130,22 @@ class TwoLevelAgent(MultiLevelBase, LearningAgent, ExploringAgent, ServoingAgent
             learner = self.second.get_learner_as_sink()
             return wrap_agent_learner(learner, transform)
 
+    @contract(returns=SimpleBlackBox)
+    def get_explorer(self):
+        # TODO: different explorer for different phases?
+        if not isinstance(self.first, ExploringAgent):
+            msg = ('First agent is not an ExploringAgent (%s).' % 
+                   describe_type(self.first))
+            raise NotImplementedError(msg)
+        return self.first.get_explorer()
+
     def get_predictor(self):
-        pass
+        # TODO: implement
+        raise NotImplementedError(type(self))
 
     def get_servo(self):
-        pass
+        # TODO: implement
+        raise NotImplementedError(type(self))
 
     def merge(self, other):  # @UnusedVariable
         if self.phase == 0:

@@ -1,28 +1,27 @@
+from bootstrapping_olympics import (BootStream, ExploringAgent, LogIndex, 
+    LogsFormat, UnsupportedSpec)
+from bootstrapping_olympics.programs.manager import DirectoryStructure # XXX
+from bootstrapping_olympics.programs.manager import run_simulation
+from bootstrapping_olympics.unittests import for_all_pairs
+from bootstrapping_olympics.utils import unique_timestamp_string
+from comptests.results import Skipped
+from numpy.testing.utils import assert_equal
+import numpy as np
 import shutil
 import tempfile
 
-from numpy.testing.utils import assert_equal
 
-from bootstrapping_olympics import (UnsupportedSpec, BootStream, LogIndex,
-    LogsFormat)
-from bootstrapping_olympics import ExploringAgent
-from bootstrapping_olympics.programs.manager import (run_simulation,
-    DirectoryStructure)  # XXX
-from bootstrapping_olympics.unittests import for_all_pairs
-from bootstrapping_olympics.utils import unique_timestamp_string
-import numpy as np
 
 
 @for_all_pairs
 def check_logs_writing(id_agent, agent, id_robot, robot):
     if not isinstance(agent, ExploringAgent):
-        print('skipping because agent is not active')
-        return dict(result='skip')
-    
+        return Skipped('agent not ExploringAgent')
+
     try:
         agent.init(robot.get_spec())
     except UnsupportedSpec:
-        return
+        return Skipped('UnsupportedSpec')
 
     root = tempfile.mkdtemp()
     ds = DirectoryStructure(root)

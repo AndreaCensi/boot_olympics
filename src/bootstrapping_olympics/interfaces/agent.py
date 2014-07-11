@@ -152,6 +152,7 @@ class LearningAgent():
             The Sink's "put" command might result in LearningConverged
             to signal that the learning has converged and no more data is necessary. 
         """
+        self.info('Using default implementation of get_learner_as_sink(). (%s)' % type(self))
         from bootstrapping_olympics.interfaces.agent_misc import LearnerAsSystem
         return LearnerAsSystem(self)
 

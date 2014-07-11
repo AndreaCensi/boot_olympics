@@ -2,11 +2,13 @@ from blocks.library.with_queue import WithQueue
 import warnings
 from bootstrapping_olympics.interfaces.agent import LearningConverged
 from blocks.interface import Sink
+from contracts import contract
 
 
 __all__ = [
     'ExplorerAsSystem',
     'LearnerAsSystem',
+    'check_inited'
 ]
 
 class ExplorerAsSystem(WithQueue):
@@ -65,3 +67,16 @@ class LearnerAsSystem(Sink):
             self.agent.process_observations(bd)
         except LearningConverged:
             raise
+
+
+@contract(attrname='str')
+def check_inited(agent, attrname):
+    """ 
+        checks that init() has been called on the agent 
+        by making sure that there is the given attribute. 
+    """
+    if not hasattr(agent, attrname):
+        msg = 'You forgot to call init() on this agent.\n'
+        msg += '\nattribute not present: %r' % attrname
+        msg += '\nblock: %s' % agent
+        raise Exception(msg)

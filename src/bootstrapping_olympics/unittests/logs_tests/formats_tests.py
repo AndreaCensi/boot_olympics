@@ -1,19 +1,19 @@
-import os
-
-from bootstrapping_olympics import LogsFormat, logger, UnsupportedSpec
-from bootstrapping_olympics.programs.manager import DataCentral, simulate
-from bootstrapping_olympics.utils import assert_allclose, safe_makedirs
-
 from ..manager_tests import create_tmp_dir
 from ..tests_generation import for_all_pairs
-from bootstrapping_olympics.interfaces.agent import ExploringAgent
+from bootstrapping_olympics import (ExploringAgent, LogsFormat, UnsupportedSpec, 
+    logger)
+from bootstrapping_olympics.programs.manager import DataCentral, simulate
+from bootstrapping_olympics.utils import assert_allclose, safe_makedirs
+from comptests.results import Skipped
+import os
+
+
 
 
 @for_all_pairs
 def check_logs_formats(id_agent, agent, id_robot, robot):  # @UnusedVariable
     if not isinstance(agent, ExploringAgent):
-        print('skipping because agent is not active')
-        return dict(result='skip')
+        return Skipped('agent not ExploringAgent')
 
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config'))
@@ -33,7 +33,8 @@ def check_logs_formats(id_agent, agent, id_robot, robot):  # @UnusedVariable
                  interval_print=None,
                  write_extra=True)
         except UnsupportedSpec:
-            return
+            return Skipped('UnsupportedSpec')
+
 
         log_index = data_central.get_log_index()
         log_index.reindex()

@@ -1,20 +1,21 @@
+from .utils import create_tmp_dir
+from bootstrapping_olympics import LogsFormat, UnsupportedSpec, logger
+from bootstrapping_olympics.interfaces.agent import (ExploringAgent, 
+    PredictingAgent, ServoingAgent)
+from bootstrapping_olympics.programs.manager.meat import (
+    DataCentral, learn_log, simulate, task_predict, task_servo)
+from bootstrapping_olympics.unittests import for_all_pairs
+from comptests import PartiallySkipped, Skipped
 import os
 
-from bootstrapping_olympics import LogsFormat, UnsupportedSpec, logger
-from bootstrapping_olympics.interfaces.agent import ExploringAgent, \
-    PredictingAgent, ServoingAgent
-from bootstrapping_olympics.programs.manager.meat import (DataCentral, learn_log,
-    simulate, task_predict, task_servo)
-from bootstrapping_olympics.unittests import for_all_pairs
 
-from .utils import create_tmp_dir
 
 
 @for_all_pairs
 def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
     if not isinstance(agent, ExploringAgent):
-        logger.info('Skipping because agent not ExploringAgent')
-        return dict(result='skip')
+        return Skipped('Skipping because agent not ExploringAgent')
+    
 
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config'))
@@ -41,8 +42,9 @@ def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
                 ds.set_log_format(logs_format)
                 simulate_some(2)
                 simulate_some(2)
-        except UnsupportedSpec:
-            return
+        except UnsupportedSpec as e:
+            logger.warn(e)
+            return Skipped('UnsupportedSpec')
         
         assert not log_index.has_streams_for_robot(id_robot)
         log_index.reindex()
@@ -71,25 +73,38 @@ def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
 
         learn_log(data_central, id_robot=id_robot, id_agent=id_agent)
 
+        parts_skipped = []
+
         if isinstance(agent, ServoingAgent):
-            task_servo(data_central, id_agent, id_robot,
-                       max_episode_len=1,
-                       num_episodes=1,
-                       displacement=1,
-                       id_episodes=None,
-                       cumulative=False,
-                       interval_print=None,
-                       num_episodes_with_robot_state=0)
+            try:
+                task_servo(data_central, id_agent, id_robot,
+                           max_episode_len=1,
+                           num_episodes=1,
+                           displacement=1,
+                           id_episodes=None,
+                           cumulative=False,
+                           interval_print=None,
+                           num_episodes_with_robot_state=0)
+            except NotImplementedError as e:
+                logger.warn(e)
+                parts_skipped.append('servo')
         else:
             msg = 'Agent does not implement servo'
-            print(msg)
+            logger.warn(msg)
+            parts_skipped.append('servo')
 
-        if isinstance(agent, PredictingAgent):       
-            task_predict(data_central,
-                 id_agent=id_agent,
-                 id_robot=id_robot)
+        if isinstance(agent, PredictingAgent):
+            try:       
+                task_predict(data_central,
+                     id_agent=id_agent,
+                     id_robot=id_robot)
+            except NotImplementedError as e:
+                logger.warn(e)
+                parts_skipped.append('predict')
         else:
             msg = 'Agent does not implement predictor'
-            print(msg)
+            logger.warn(msg)
+            parts_skipped.append('predict')
     
-
+        if parts_skipped:
+            return PartiallySkipped(parts_skipped)

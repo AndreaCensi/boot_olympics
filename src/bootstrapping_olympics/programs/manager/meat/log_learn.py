@@ -1,16 +1,15 @@
-import warnings
-
+from .load_agent_state import load_agent_state
+from blocks.composition import series
+from blocks.library import CheckSequence, IteratorSource
+from blocks.pumps import bb_pump_block_yields
+from bootstrapping_olympics import LearningAgent, LearningConverged, logger
 from contracts import contract
 from contracts.utils import check_isinstance
+import warnings
 
-from blocks.composition import series
-from blocks.library import CheckSequence
-from blocks.library import IteratorSource
-from blocks.pumps import bb_pump_block_yields
-from bootstrapping_olympics import  logger
-from bootstrapping_olympics import LearningAgent, LearningConverged
 
-from .load_agent_state import load_agent_state
+
+
 
 
 __all__ = ['learn_log', 'learn_log_base']
@@ -77,6 +76,8 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
     log_index = data_central.get_log_index()
     agent, state = agent_state
     
+    check_isinstance(agent, LearningAgent)
+    
     if ignore_learned:
         episodes_learned = set()
     else:
@@ -93,8 +94,7 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
     init = dict(data_central=data_central, id_agent=id_agent, id_robot=id_robot)
     for plugin in live_plugins:
         plugin.init(init)
-
-
+ 
     for stream, to_learn in remain:
 
         

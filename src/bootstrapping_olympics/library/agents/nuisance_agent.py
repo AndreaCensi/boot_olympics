@@ -1,14 +1,12 @@
+from .nuisance_agent_actions import wrap_agent_explorer, wrap_agent_learner
+from blocks import SimpleBlackBox, Sink
+from bootstrapping_olympics import (BasicAgent, LearningAgent, PredictingAgent, 
+    RepresentationNuisance, RepresentationNuisanceCausal, ServoingAgent, 
+    get_conftools_agents, get_conftools_nuisances, 
+    get_conftools_nuisances_causal)
 from contracts import contract
 from contracts.utils import check_isinstance
 
-from blocks import Sink, SimpleBlackBox
-from bootstrapping_olympics import (get_conftools_nuisances_causal,
-    get_conftools_agents, RepresentationNuisance,
-    RepresentationNuisanceCausal, get_conftools_nuisances)
-from bootstrapping_olympics import BasicAgent, LearningAgent, \
-    PredictingAgent, ServoingAgent
-
-from .nuisance_agent_actions import wrap_agent_learner, wrap_agent_explorer
 
 
 __all__ = ['NuisanceAgent']

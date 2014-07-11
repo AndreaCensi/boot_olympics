@@ -1,28 +1,25 @@
-import os
-
-
-from bootstrapping_olympics import LogsFormat, UnsupportedSpec
-from bootstrapping_olympics.programs.manager import (
-    DataCentral)
-from bootstrapping_olympics.programs.manager.command_line.main import manager_main
+from .utils import create_tmp_dir
+from bootstrapping_olympics import (ExploringAgent, LogsFormat, PredictingAgent, 
+    ServoingAgent, UnsupportedSpec)
+from bootstrapping_olympics.programs.manager import DataCentral
+from bootstrapping_olympics.programs.manager.command_line.main import (
+    manager_main)
 from bootstrapping_olympics.unittests import for_all_pairs
 from bootstrapping_olympics.utils import assert_allclose
-
-from .utils import create_tmp_dir
-from bootstrapping_olympics.interfaces.agent import ExploringAgent
+from comptests import PartiallySkipped, Skipped
+import os
 
 
 # TODO: check that the robot generates different episodes strings
 @for_all_pairs
 def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
     if not isinstance(agent, ExploringAgent):
-        print('skipping because agent is not active')
-        return dict(result='skip')
-
+        return Skipped('agent not ExploringAgent')
+    
     try:
         agent.init(robot.get_spec())
     except UnsupportedSpec:
-        return
+        return Skipped('UnsupportedSpec')
     
     with create_tmp_dir() as root:
         os.mkdir(os.path.join(root, 'config'))  # XXX make it automatic
@@ -61,22 +58,35 @@ def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
 
         execute_command('learn-log', '-a', id_agent, '-r', id_robot)
 
-        
-        try:
-            agent.get_servo()
-        except NotImplementedError:
-            pass
-        else:         
-            execute_command('servo', '-a', id_agent, '-r', id_robot,
-                                '--num_episodes', '1',
-                                '--max_episode_len', '1')
+        skipped = []
 
-        try:
-            agent.get_predictor()
-        except NotImplementedError:
-            pass
-        else:         
-            execute_command('predict', '-a', id_agent, '-r', id_robot)
+        if isinstance(agent, ServoingAgent):
+            try: 
+                agent.get_servo()
+            except NotImplementedError:
+                skipped.append('servo')
+                pass  
+            else:  
+                execute_command('servo', '-a', id_agent, '-r', id_robot,
+                        '--num_episodes', '1',
+                        '--max_episode_len', '1')
+        else:
+            skipped.append('servo')
+            
+            
+
+        if isinstance(agent, PredictingAgent):
+            try: 
+                agent.get_predictor()
+            except NotImplementedError:
+                skipped.append('predict')
+                pass  
+            else:
+                execute_command('predict', '-a', id_agent, '-r', id_robot)
+                
+        else:
+            skipped.append('predict')
+    
     
         execute_command('list-logs')
         execute_command('list-logs', '-e')
@@ -94,3 +104,7 @@ def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
         execute_command('list-robots', '-v')
         execute_command('list-states')
         execute_command('list-states', '-v')
+
+        if skipped:
+            return PartiallySkipped(skipped)
+        
