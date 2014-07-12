@@ -3,6 +3,7 @@ from bootstrapping_olympics import (StreamSpec, UnsupportedSpec,
 from bootstrapping_olympics.unittests import (for_all_robot_nuisance_pairs,
     for_all_nuisances)
 from bootstrapping_olympics.utils import assert_allclose, indent
+from comptests.results import Skipped, PartiallySkipped
 
 
 
@@ -31,7 +32,7 @@ def check_conversions_upper_lower(stream_spec1, nuisance):
     except UnsupportedSpec as e:
         logger.info('Skipping %s/%s because incompatible: %s' % 
                     (stream_spec1, nuisance, e))
-        return
+        return Skipped('UnsupportedSpec')
     
     streamels = stream_spec1.get_streamels() 
     upper = streamels['upper']
@@ -53,7 +54,8 @@ def check_conversions(stream_spec1, nuisance):
         except UnsupportedSpec as e:
             logger.info('Skipping %s/%s because incompatible: %s' % 
                         (stream_spec1, nuisance, e))
-            return
+            return Skipped('UnsupportedSpec')
+
 
         value1 = stream_spec1.get_random_value()
         stream_spec1.check_valid_value(value1)
@@ -67,7 +69,7 @@ def check_conversions(stream_spec1, nuisance):
         except NuisanceNotInvertible as e:
             logger.info('Skipping some tests %s/%s because not invertible:'
                         ' %s' % (stream_spec1, nuisance, e))
-            return
+            return PartiallySkipped('notinvertible')
 
         try:
             stream_spec1b = nuisance_inv.transform_spec(stream_spec2)

@@ -35,7 +35,6 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
     with logs_format.write_stream(filename=filename,
                                   id_stream=id_stream,
                                   boot_spec=robot.get_spec()) as writer:
-        print run_simulation
         for observations in run_simulation(id_robot=id_robot,
                                            robot=robot,
                                            id_agent=id_agent,

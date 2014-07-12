@@ -5,6 +5,7 @@ from bootstrapping_olympics.interfaces.agent import (ExploringAgent,
 from bootstrapping_olympics.programs.manager.meat import (
     DataCentral, learn_log, simulate, task_predict, task_servo)
 from bootstrapping_olympics.unittests import for_all_pairs
+from contracts.utils import describe_type
 from comptests import PartiallySkipped, Skipped
 import os
 
@@ -14,7 +15,8 @@ import os
 @for_all_pairs
 def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
     if not isinstance(agent, ExploringAgent):
-        return Skipped('Skipping because agent not ExploringAgent')
+        print('%s not exploring agent: %s' % (id_agent, describe_type(agent)))
+        return Skipped('agent not ExploringAgent')
     
 
     with create_tmp_dir() as root:
@@ -108,3 +110,5 @@ def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
     
         if parts_skipped:
             return PartiallySkipped(parts_skipped)
+
+        print('All tests completed')

@@ -13,7 +13,7 @@ def check_agent_init(id_agent, agent, id_robot, robot):  # @UnusedVariable
     try:
         agent.init(spec)
     except UnsupportedSpec:
-        pass
+        return Skipped('UnsupportedSpec')
 
 
 @for_all_pairs

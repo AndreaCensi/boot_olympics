@@ -10,12 +10,13 @@ __all__ = [
 ]
 
 
-class RandomAgent(BasicAgent, LearningAgent, PredictingAgent, ExploringAgent, ServoingAgent):
+class RandomAgent(BasicAgent, LearningAgent, PredictingAgent, 
+                  ExploringAgent, ServoingAgent):
     ''' A dummy agent that gives random commands. '''
 
     def __init__(self):
         self.inited = False
-        self.process_called = True
+        self.process_called = False
 
     def init(self, boot_spec):
         self.boot_spec = boot_spec

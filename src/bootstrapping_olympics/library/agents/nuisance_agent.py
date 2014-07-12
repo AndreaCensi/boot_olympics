@@ -1,8 +1,8 @@
 from .nuisance_agent_actions import wrap_agent_explorer, wrap_agent_learner
 from blocks import SimpleBlackBox, Sink
-from bootstrapping_olympics import (BasicAgent, LearningAgent, PredictingAgent, 
-    RepresentationNuisance, RepresentationNuisanceCausal, ServoingAgent, 
-    get_conftools_agents, get_conftools_nuisances, 
+from bootstrapping_olympics import (BasicAgent, ExploringAgent, LearningAgent, 
+    PredictingAgent, RepresentationNuisance, RepresentationNuisanceCausal, 
+    ServoingAgent, get_conftools_agents, get_conftools_nuisances, 
     get_conftools_nuisances_causal)
 from contracts import contract
 from contracts.utils import check_isinstance
@@ -12,7 +12,9 @@ from contracts.utils import check_isinstance
 __all__ = ['NuisanceAgent']
 
 
-class NuisanceAgent(BasicAgent, LearningAgent, ServoingAgent, PredictingAgent):
+class NuisanceAgent(BasicAgent, 
+                    LearningAgent, ServoingAgent, PredictingAgent,
+                    ExploringAgent):
     """ An agent that sees the data filtered through the given nuisances."""
     
     @contract(nuisances='list(str|code_spec|isinstance(RepresentationNuisanceCausal)'
