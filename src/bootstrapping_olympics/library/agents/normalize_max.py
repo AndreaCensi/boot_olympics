@@ -1,20 +1,18 @@
+from .multilevel_agent import MultiLevelBase
+from blocks.library import Identity, Instantaneous, Route
+from bootstrapping_olympics import (LearningAgent, NuisanceNotInvertible, 
+    RepresentationNuisanceCausal, UnsupportedSpec)
+from contracts import contract
+from streamels import BootSpec, StreamSpec, make_streamels_float
+import numpy as np
 import warnings
 
-from contracts import contract
-
-from blocks.library import Identity, Instantaneous, Route
-from bootstrapping_olympics import (NuisanceNotInvertible,
-                                    RepresentationNuisanceCausal, UnsupportedSpec)
-import numpy as np
-from streamels import BootSpec, StreamSpec, make_streamels_float
-
-from .multilevel_agent import MultiLevelBase
 
 
 __all__ = ['ObsNormalizeMax']
 
 
-class ObsNormalizeMax(MultiLevelBase):
+class ObsNormalizeMax(LearningAgent, MultiLevelBase):
     """ 
         Learns the bounds and normalizes the values
         between [-1,+1]. 

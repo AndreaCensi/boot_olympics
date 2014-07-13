@@ -9,8 +9,9 @@ from yaml import load, dump
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
 except ImportError as e:
-    logger.warn('Could not load C YAML reader. '
-                 'I can continue but everything will be slow. (%s)' % e)
+    msg = ('Could not load C YAML reader. I can continue but '
+          'everything will be slow. (%s)' % e)
+    logger.warn(msg)
     from yaml import Loader, Dumper
 
 
