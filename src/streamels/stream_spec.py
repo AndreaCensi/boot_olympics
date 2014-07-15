@@ -183,7 +183,7 @@ class StreamSpec(XStreamSpec):
     def check_same_spec(spec1, spec2):
         s1 = spec1.get_streamels()
         s2 = spec2.get_streamels()
-        from bootstrapping_olympics.utils import (assert_allequal_verbose, assert_allclose_verbose)
+        from streamels.utils import (assert_allequal_verbose, assert_allclose_verbose)
 
         assert_allequal_verbose(s1['kind'], s2['kind'])
         assert_allclose_verbose(s1['lower'], s2['lower'])
@@ -252,7 +252,7 @@ class StreamSpec(XStreamSpec):
         xv = x[valid]
         xv_nan = np.isnan(xv)
 
-        from bootstrapping_olympics.utils import display_some, display_some_extended
+        from streamels.utils import display_some, display_some_extended
 
         if np.any(xv_nan):
             msg = ('Found NaNs in the valid values. %s' % 

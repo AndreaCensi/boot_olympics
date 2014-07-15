@@ -263,7 +263,7 @@ class ServoAgentInterface():
         
         e = y0 - y_goal
                
-        # from yc1304.s10_servo_field.plots import plot_style_sensels  # XXX
+        # from yc 13 04.s10_servo_field.plots import plot_style_sensels  # XXX
         
         with f.plot('y0_vs_y_goal') as pylab:
             pylab.plot(y0, '.', label='y0')

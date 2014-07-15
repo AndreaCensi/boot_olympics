@@ -49,7 +49,8 @@ def check_valid_streamels(streamels):
         # XXX: how about invalid values?
         def check(which, msg, a, b):
             if not np.all(which):
-                from bootstrapping_olympics.utils import show_differences
+                
+                from streamels.utils import show_differences
 
                 error = show_differences(a, b,
                                          is_failure=(~which), condition=msg)
