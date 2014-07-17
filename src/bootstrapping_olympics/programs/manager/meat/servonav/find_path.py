@@ -1,10 +1,9 @@
-from . import astar, node2children_grid
-from contracts import describe_type
-from geometry import SE3, SE2, angle_from_SE2, SE2_from_SE3
+from .astar_algo import astar, node2children_grid
+from contracts import contract, describe_type
+from geometry import SE2, SE2_from_SE3, SE3, angle_from_SE2
 import itertools
-
-from contracts import contract
 import numpy as np
+
 
 @contract(resolution='float,>0')
 def get_grid(robot, vsim, resolution, debug=False):

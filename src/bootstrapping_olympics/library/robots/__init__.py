@@ -7,3 +7,4 @@ from .dummy_robot import *
 
 from .equiv_robot import *
 from .equiv_robot_causal import *
+from .nuisance_robot import *

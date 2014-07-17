@@ -1,5 +1,5 @@
 from bootstrapping_olympics import (BootStream, ExploringAgent, LogIndex, 
-    LogsFormat, UnsupportedSpec)
+    LogsFormat, ObsKeeper, UnsupportedSpec)
 from bootstrapping_olympics.programs.manager import DirectoryStructure # XXX
 from bootstrapping_olympics.programs.manager import run_simulation
 from bootstrapping_olympics.unittests import for_all_pairs
@@ -9,6 +9,7 @@ from numpy.testing.utils import assert_equal
 import numpy as np
 import shutil
 import tempfile
+from contracts.utils import check_isinstance
 
 
 
@@ -35,16 +36,28 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
     with logs_format.write_stream(filename=filename,
                                   id_stream=id_stream,
                                   boot_spec=robot.get_spec()) as writer:
-        for observations in run_simulation(id_robot=id_robot,
+        
+        ok = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
+                    
+        for t, bd in run_simulation(id_robot=id_robot,
                                            robot=robot,
                                            id_agent=id_agent,
                                            agent=agent,
                                            max_observations=3, max_time=1000,
                                            check_valid_values=True):
-            extra = {'random_number': np.random.randint(1)}
-            writer.push_observations(observations, extra)
+            extra = {'random_number': np.random.randint(1)}            
+                            
+            bd_array = ok.push(timestamp=t, 
+                               observations=bd['observations'],
+                               commands=bd['commands'],
+                               commands_source=id_agent,
+                               id_episode='my_episode',
+                               id_world='unknown-world')
+                  
+            writer.push_observations(bd_array, extra)
+    
             written_extra.append(extra)
-            written.append(observations)
+            written.append(bd_array) # not sure
 
     logdirs = ds.get_log_directories()
     index = LogIndex()
@@ -77,6 +90,8 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
     for i in range(len(read_back)):
         a = written[i]
         b = read_back[i]
+        check_isinstance(a, np.ndarray)
+        check_isinstance(b, np.ndarray)
 
         fields = set(a.dtype.names) or set(b.dtype.names)
         fields.remove('extra')

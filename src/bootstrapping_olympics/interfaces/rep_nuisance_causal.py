@@ -25,7 +25,7 @@ class RepresentationNuisanceCausal(WithInternalLog):
     def inverse(self):
         ''' 
             Returns the inverse representation nuisance,
-            or raises NotInvertible 
+            or raises NuisanceNotInvertible 
         '''
         raise NotImplementedError(type(self))
 
@@ -50,8 +50,8 @@ class RepresentationNuisanceCausal(WithInternalLog):
     @abstractmethod
     @contract(returns=SimpleBlackBox)
     def get_G(self):
-        pass
-
+        """ Returns G """ 
+        
     @abstractmethod
     @contract(returns=SimpleBlackBox)
     def get_H(self):
@@ -63,14 +63,14 @@ class RepresentationNuisanceCausal(WithInternalLog):
                 H0w = WrapTimedNamed(H0)
                 H = Route([({'observations':'observations'}, H0w, {'observations':'observations'})])
         """
-        pass
+        
     
     @abstractmethod
     @contract(returns=SimpleBlackBox)
     def get_G_conj(self):
-        pass
+        """ Returns G* """
 
     @abstractmethod
     @contract(returns=SimpleBlackBox)
     def get_H_conj(self):
-        pass
+        """ Returns H* """

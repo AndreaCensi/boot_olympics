@@ -30,7 +30,8 @@ def check_small_simulation(id_agent, agent, id_robot, robot):
                             robot=robot,
                             id_agent=id_agent,
                             agent=agent,
-                            max_observations=3, max_time=100):
+                            max_observations=3, 
+                            max_time=100):
         pass
 
     state = agent.get_state()

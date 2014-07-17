@@ -1,9 +1,11 @@
-from . import BookkeepingServo, run_simulation_servo
 from .. import load_agent_state
-from bootstrapping_olympics import LogsFormat, BootOlympicsConstants, logger
+from .bookkeeping import BookkeepingServo
+from .m_run_simulation import run_simulation_servo
+from bootstrapping_olympics import (BootOlympicsConstants, LogsFormat, 
+    get_conftools_robots, logger)
 from bootstrapping_olympics.utils import unique_timestamp_string
 from contracts import contract
-from geometry import translation_from_SE2, angle_from_SE2, SE2_from_SE3
+from geometry import SE2_from_SE3, angle_from_SE2, translation_from_SE2
 import numpy as np
 
 __all__ = ['task_servo']
@@ -27,7 +29,7 @@ def task_servo(data_central, id_agent, id_robot,
             raise ValueError('Expected correct number of IDs.')
 
     # Instance robot object
-    robot = data_central.get_bo_config().robots.instance(id_robot)
+    robot = get_conftools_robots().instance(id_robot)
 
     # TODO: check that this is a Vehicles simulation
 

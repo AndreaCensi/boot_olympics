@@ -1,13 +1,12 @@
-import warnings
-
-from contracts import contract
-
-from blocks import NotReady, NeedInput
+from blocks import NeedInput, NotReady
 from blocks.composition import series
-from blocks.library import CheckSequence, WithQueue
-from bootstrapping_olympics import (RobotInterface, RobotObservations,
-    ObsKeeper, logger, ExploringAgent)
+from blocks.exceptions import Finished
+from blocks.library import CheckSequence
+from bootstrapping_olympics import (ExplorableRobot, ExploringAgent, 
+    RobotInterface, logger)
+from contracts import contract
 from contracts.utils import check_isinstance
+import warnings
 
 
 __all__ = ['run_simulation']
@@ -17,7 +16,7 @@ __all__ = ['run_simulation']
           max_time='>0')
 def run_simulation(id_robot, robot, id_agent, agent, max_observations,
                    max_time,
-                   check_valid_values=True, id_episode=None):
+                   check_valid_values=True):
     ''' 
         Runs one episode of the simulation until it ends. 
         
@@ -25,20 +24,27 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
         
         Yields the bd.
     '''
+#     
+#     if id_episode is None:
+#         msg = 'In the new system you have to pass explicit id_episode'
+#         raise Exception(msg)
+#     
     check_isinstance(agent, ExploringAgent)
+    check_isinstance(robot, ExplorableRobot)
 
     warnings.warn('we are not honoring id_episode')
 
 
     logger.info('run_simulation(max_time=%s; max_observations=%s)'
                 % (max_time, max_observations))
-    
-    robot_as_sys = RobotAsBlackBox3(id_robot, robot, id_episode=id_episode)
 
+    
+    robot_as_sys = robot.get_active_stream()
+    
+    
     logger.info('max_observations: %s' % max_observations)
     logger.info('max_time: %s' % max_time)
 
-#     from bootstrapping_olympics.library.agents.nuisance_agent_actions import CheckBootSpec
     cmd_spec = robot.get_spec().get_commands()
 
     if True:
@@ -57,29 +63,30 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
     agent_sys.reset()
 
     counter = 0
+    t0 = None
     while counter < max_observations:
-#         logger.info('looop %d' % counter)
         try:
             t, bd = robot_sys.get(block=True)
+            if t0 is None:
+                t0 = t
         except NotReady:
             raise Exception('Hey, cannot obtain NotReady when block is True')
-#             warnings.warn('remove')
-#             logger.info('not ready')
-#             time.sleep(0.001)
-#             continue
-
-        if robot_as_sys.has_ended():
+        except Finished:
             logger.info('Episode ended at %s due to obs.episode_end.'
                          % counter)
             break
-        
-        if bd['time_from_episode_start'] > max_time:
+            
+#         bd['id_robot'] = id_robot
+#         if id_episode is not None:
+#         bd['id_episode'] = id_episode
+            
+        time_from_episode_start = t-t0
+        if time_from_episode_start > max_time:
             logger.info('Episode ended at %s for time limit %s > %s ' % 
-                         (counter, bd['time_from_episode_start'],
-                          max_time))
+                         (counter, time_from_episode_start, max_time))
             break
 
-        yield bd
+        yield t, bd
 
         # logger.info('putting into agent')
         agent_sys.put((t, bd), block=True)
@@ -103,6 +110,9 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
         robot_sys.put((timestamp, (commands, id_agent)), block=True)
 
         counter += 1
+
+
+
 #
 #
 # class RobotAsBlackBox2(SimpleBlackBox):
@@ -170,79 +180,4 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
 #
 #
 #
-    
-class RobotAsBlackBox3(WithQueue):
-    """ This one does not look at handling NotReady correctly. 
-    
-        One observations is put in the queue when reset() is claled.
-        Then every time we got new_commands using put, we put new observations.
-    """
-
-    # TODO: remove in favor of RobotAsBlackBox
-    @contract(robot=RobotInterface)
-    def __init__(self, id_robot, robot, id_episode, sleep=0.1):
-        self.log_add_child('robot', robot)
-
-        self.sleep = sleep
-        self.robot = robot
-        self.last_obs = None
-        self.id_robot = id_robot
-        self.id_episode = id_episode
-
-    def reset(self):
-        WithQueue.reset(self)
-        self.keeper = ObsKeeper(boot_spec=self.robot.get_spec(),
-                                id_robot=self.id_robot,
-                                check_valid_values=False)
-
-        self.episode = self.robot.new_episode()
-        self.ended = False
-        self._enqueue()
-
-    def _enqueue(self):
-        try:
-            obs = self.robot.get_observations()
-        except RobotObservations.NotReady as e:
-            msg = 'Sorry, RobotAsBlackBox3 does not handle NotReady.'
-            msg += '\n Not ready: %s' % e
-            raise NotReady(msg)
-
-        if self.last_obs is not None:
-            if self.last_obs.timestamp == obs.timestamp:
-                raise NotReady('got same obs')
-
-        self.last_obs = obs
-
-        if self.id_episode is not None:
-            id_episode = self.id_episode
-        else:
-            id_episode = self.episode.id_episode
-
-        bd = self.keeper.push(timestamp=obs.timestamp,
-                                             observations=obs.observations,
-                                             commands=obs.commands,
-                                             commands_source=obs.commands_source,
-                                             id_episode=id_episode,
-                                             id_world=self.episode.id_environment)
-
-        self.append((obs.timestamp, bd))
-
-        self.ended = obs.episode_end
-
-    def has_ended(self):
-        return self.ended
-
-    def __repr__(self):
-        return 'RobotAsBlackBox(%r)' % self.robot
-
-    @contract(value='tuple(float,*)')
-    def put_noblock(self, value):
-        if self.has_ended():
-            msg = 'Calling put() after episode ended.'
-            raise ValueError(msg)
-            
-        _, cmds = value
-        self.robot.set_commands(*cmds)
-        self._enqueue()
-
 

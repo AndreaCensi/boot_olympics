@@ -8,6 +8,7 @@ from bootstrapping_olympics.unittests.manager_tests import default_explorer
 from comptests import PartiallySkipped, Skipped
 from contracts.utils import describe_type
 import os
+from bootstrapping_olympics.utils.dates import unique_timestamp_string
 
 
 @for_all_pairs
@@ -35,13 +36,14 @@ def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
         log_index = data_central.get_log_index()
 
         def simulate_some(n):
+        
+            id_episodes = [(unique_timestamp_string() +'-%s' % i) 
+                           for i in range(n)]
             simulate(data_central, id_agent=id_explorer, id_robot=id_robot,
              max_episode_len=2,
-             num_episodes=n,
              cumulative=False,
-             id_episodes=None,
+             id_episodes=id_episodes,
              stateful=False,
-             interval_print=None,
              write_extra=True)
 
         assert not log_index.has_streams_for_robot(id_robot)
@@ -50,7 +52,7 @@ def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
 
         try:
             for logs_format in formats:
-                ds.set_log_format(logs_format)
+                ds.set_log_format(logs_format) 
                 simulate_some(2)
                 simulate_some(2)
         except UnsupportedSpec as e:
@@ -106,7 +108,6 @@ def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
                                displacement=1,
                                id_episodes=None,
                                cumulative=False,
-                               interval_print=None,
                                num_episodes_with_robot_state=0)
                 except NotImplementedError as e:
                     logger.warn(e)

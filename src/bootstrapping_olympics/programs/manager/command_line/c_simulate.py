@@ -1,5 +1,6 @@
 from ..meat import simulate
 from .main import BOM
+from bootstrapping_olympics.utils import unique_timestamp_string
 
 
 class CmdSimulate(BOM.get_sub()):
@@ -19,8 +20,6 @@ class CmdSimulate(BOM.get_sub()):
         params.add_flag("extra", help="Writes extra information")
         params.add_float("episode_len", default=30,
                           help="Maximum len of episode (seconds)")
-        params.add_float("interval_print", default=5,
-                          help='Frequency of debug messages.')
 
 
     def go(self):
@@ -30,13 +29,14 @@ class CmdSimulate(BOM.get_sub()):
 
         id_agent = options.agent
         id_robot = options.robot
+        
+        id_episodes = [unique_timestamp_string()+'-%s' % i 
+                       for i in range(options.num_episodes)] 
         simulate(data_central,
                  id_agent=id_agent,
                  id_robot=id_robot,
                  max_episode_len=options.episode_len,
-                 num_episodes=options.num_episodes,
                  stateful=options.stateful,
-                 interval_print=options.interval_print,
                  cumulative=options.cumulative,
                  write_extra=options.extra,
-                 id_episodes=None)
+                 id_episodes=id_episodes)

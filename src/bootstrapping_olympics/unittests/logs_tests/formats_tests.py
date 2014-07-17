@@ -4,6 +4,7 @@ from bootstrapping_olympics import (ExploringAgent, LogsFormat, UnsupportedSpec,
     logger)
 from bootstrapping_olympics.programs.manager import DataCentral, simulate
 from bootstrapping_olympics.utils import assert_allclose, safe_makedirs
+from bootstrapping_olympics.utils.dates import unique_timestamp_string
 from comptests.results import Skipped
 import os
 
@@ -24,13 +25,15 @@ def check_logs_formats(id_agent, agent, id_robot, robot):  # @UnusedVariable
         # in timestamp order; and for now different episodes can
         # have overlapping timestamps
         try:
+            num_episodes=1 # changed from 2 (see above)
+            id_episodes = [(unique_timestamp_string() +'-%s' % i) 
+                           for i in range(num_episodes)]
+
             simulate(data_central, id_agent=id_agent, id_robot=id_robot,
                  max_episode_len=2,
-                 num_episodes=1,  # changed from 2 (see above)
                  cumulative=False,
-                 id_episodes=None,
+                 id_episodes=id_episodes,
                  stateful=False,
-                 interval_print=None,
                  write_extra=True)
         except UnsupportedSpec:
             return Skipped('UnsupportedSpec')

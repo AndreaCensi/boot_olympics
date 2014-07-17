@@ -13,6 +13,15 @@
         range: [-1,+1]
         default: [0]
 
+- id: test_nid_random_1_6
+  desc: random robot through an identity nuisance
+  code:
+  - bootstrapping_olympics.library.robots.NuisanceRobot
+  - robot: random_1_6
+    nuisances:
+    - rnc_identity
+    - rnc_identity
+
 - id: sinsystem2
   desc: A system which produces two sine signals.
   code:
@@ -134,3 +143,15 @@
     cmd_nuisance: []
     obs_nuisance: ["${nuisance}"]
           
+
+
+# - id: "test_${robot}-bits"
+#   desc: "Converts to bits"
+#   code:
+#   - bootstrapping_olympics.library.robots.EquivRobot
+#   - robot: "${robot}"
+#     cmd_nuisance: []
+#     obs_nuisance: [int2bits]
+
+
+

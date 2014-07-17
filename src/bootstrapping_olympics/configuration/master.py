@@ -37,14 +37,16 @@ class BootConfigMaster(ConfigMaster):
     def __init__(self):
         ConfigMaster.__init__(self, 'BootOlympics')
 
-        from bootstrapping_olympics import PassiveRobotInterface
+        
         from bootstrapping_olympics import RepresentationNuisanceCausal
         from bootstrapping_olympics import RepresentationNuisance
-        # from bootstrapping_olympics import AgentInterface
+        
         from bootstrapping_olympics import BasicAgent
+        from bootstrapping_olympics import BasicRobot
+
         from bootstrapping_olympics import LivePlugin
  
-        self.robots = self.add_class_generic('robots', '*.robots.yaml', PassiveRobotInterface)
+        self.robots = self.add_class_generic('robots', '*.robots.yaml', BasicRobot)
 
         self.agents = self.add_class_generic('agents', '*.agents.yaml', BasicAgent)
 
@@ -56,23 +58,6 @@ class BootConfigMaster(ConfigMaster):
 
         self.live_plugins = self.add_class_generic('live_plugins',
                                                    '*.live_plugins.yaml', LivePlugin)
-
-        
-#         v = Constants.TEST_ADDITIONAL_CONFIG_DIR_ENV
-#         if v in os.environ:
-#             logger.info('Loading configuration according to env var %s:' % v)
-# 
-#             for dirname in os.environ[v].split(':'):
-#                 if dirname == 'default':
-#                     logger.info('Loading default config.')
-#                     self.load()
-#                 else:
-#                     logger.info('Using additional dir %r' % dirname)
-#                     self.load(dirname)
-#         else:
-#             # logger.debug('You can use the environment variable %r to preload '
-#             #             'the configuration in that directory.' % v)
-#             pass
 
     def get_default_dir(self):
         from pkg_resources import resource_filename  # @UnresolvedImport

@@ -1,16 +1,20 @@
-from . import for_all_robots
-from bootstrapping_olympics import (BootSpec, RobotInterface, StreamSpec,
-    EpisodeDesc, RobotObservations)
+from .tests_generation import for_all_robots
+from blocks import SimpleBlackBox
+from blocks.library.timed.checks import check_timed
+from bootstrapping_olympics import (BasicRobot, BootSpec, EpisodeDesc, 
+    ExplorableRobot, RobotObservations, StreamSpec)
+from comptests.results import Skipped
 from contracts import describe_type
+from contracts.utils import check_isinstance
+from numpy.ma.testutils import assert_not_equal
 from types import NoneType
 import numpy as np
 import yaml
-from numpy.ma.testutils import assert_not_equal
 
 
 @for_all_robots
 def check_robot_type(id_robot, robot): #@UnusedVariable
-    assert isinstance(robot, RobotInterface)
+    assert isinstance(robot, BasicRobot)
 
 
 @for_all_robots
@@ -56,12 +60,33 @@ def check_robot_observations(id_robot, robot): #@UnusedVariable
 
 @for_all_robots
 def check_robot_observations_compliance(id_robot, robot): #@UnusedVariable
-    robot.new_episode() # always start an episode before getting observations
-    obs = robot.get_observations()
+    if not isinstance(robot, ExplorableRobot):
+        return Skipped('Robot not ExplorableRobot: %s' % describe_type(robot))
+    
+    try:
+        stream = robot.get_active_stream()
+    except NotImplementedError as e:
+        return Skipped('Not actually exploring: %s' %e)
+    
+    #robot.new_episode() # always start an episode before getting observations
+    check_isinstance(stream , SimpleBlackBox)
+    stream.reset()
+    
+    # TODO: check that is a simulation, not an actual robot
+    
+    res  = stream.get(block=True)
+    
+    check_timed(res)
+    t, bd = res  # @UnusedVariable
+    
+    observations = bd['observations']
+    commands = bd['commands']
+    
     obs_spec = robot.get_spec().get_observations()
-    obs_spec.check_valid_value(obs.observations)
+    obs_spec.check_valid_value(observations)
+    
     cmd_spec = robot.get_spec().get_commands()
-    cmd_spec.check_valid_value(obs.commands)
+    cmd_spec.check_valid_value(commands)
 
 
 @for_all_robots

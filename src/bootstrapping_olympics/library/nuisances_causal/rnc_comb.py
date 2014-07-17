@@ -1,10 +1,10 @@
-from contracts import contract
-from contracts.utils import check_isinstance
-
 from blocks.composition import series
 from blocks.library import Identity, Route
 from bootstrapping_olympics import RepresentationNuisanceCausal
+from contracts import contract
+from contracts.utils import check_isinstance
 from streamels import BootSpec
+import warnings
 
 
 __all__ = [
@@ -37,8 +37,9 @@ class RepNuisanceCausalComb(RepresentationNuisanceCausal):
         self.r2 = r2
 
     def inverse(self):
-        # TODO
-        raise NotImplementedError(type(self))
+        r1i = self.r1.get_inverse()
+        r2i = self.r2.get_inverse()
+        return RepNuisanceCausalComb(r1i,r2i)
 
     @contract(spec=BootSpec, returns=BootSpec)
     def transform_spec(self, spec):
@@ -47,7 +48,10 @@ class RepNuisanceCausalComb(RepresentationNuisanceCausal):
         return spec2
 
     def get_G(self):
-        raise NotImplementedError(type(self))
+        warnings.warn('check the order')
+        g1 = self.r1.get_G()
+        g2 = self.r2.get_G()
+        return series(g1, g2)
 
     def get_H(self):
         G2 = self.r2.get_G()

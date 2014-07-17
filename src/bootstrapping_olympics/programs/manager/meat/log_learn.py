@@ -8,11 +8,10 @@ from contracts.utils import check_isinstance
 import warnings
 
 
-
-
-
-
-__all__ = ['learn_log', 'learn_log_base']
+__all__ = [
+    'learn_log', 
+    'learn_log_base',
+]
 
 @contract(episodes='None|list(str)',
           parallel_hint='None|tuple(int,int)',

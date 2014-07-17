@@ -1,11 +1,14 @@
+from blocks import SimpleBlackBox, Sink, Source
+from blocks.composition import series
+from blocks.library import (CollectSignals, Identity, Instantaneous, Route, 
+    WithQueue)
+from bootstrapping_olympics import (RepresentationNuisance, 
+    RepresentationNuisanceCausal, get_conftools_nuisances, 
+    get_conftools_nuisances_causal)
+from contracts import contract
+from contracts.utils import check_isinstance
 import warnings
 
-from contracts import contract
-
-from blocks import SimpleBlackBox, Sink
-from blocks.composition import series
-from blocks.library import CollectSignals, Identity, Route, WithQueue, Instantaneous
-from bootstrapping_olympics import RepresentationNuisanceCausal
 
 
 __all__ = [
@@ -159,4 +162,60 @@ class CheckBootSpec(Instantaneous):
         self.cmd_spec.check_valid_value(value['commands'])
         return value
 
+@contract(nuisances='list(str|code_spec|isinstance(RepresentationNuisance)'
+                          '|isinstance(RepresentationNuisanceCausal))',
+        returns=RepresentationNuisanceCausal)
+def instance_nuisance_series(nuisances):
+    config_nuisances_causal = get_conftools_nuisances_causal()
+    config_nuisances = get_conftools_nuisances()
+    ns = []
+    for n in nuisances:
 
+        if isinstance(n, str):
+            c1 = n in config_nuisances
+            c2 = n in config_nuisances_causal
+            num = (1 if c1 else 0) + (1 if c2 else 0)
+            if num == 0:
+                msg = 'Could not find %r as either type of nuisance.' % n
+                raise ValueError(msg)
+            if num == 2:
+                msg = 'Ambiguous name %r.' % n
+                raise ValueError(msg)
+            if c1:
+                assert not c2
+                _, x = config_nuisances.instance_smarter(n)
+            else:
+                _, x = config_nuisances_causal.instance_smarter(n)
+                assert c2
+        else:
+            try:
+                _, x = config_nuisances_causal.instance_smarter(n)
+            except:
+                _, x = config_nuisances.instance_smarter(n)
+
+        if isinstance(x, RepresentationNuisance):
+            from bootstrapping_olympics.library.nuisances_causal import SimpleRNCObs
+            x = SimpleRNCObs(x)
+
+        check_isinstance(x, RepresentationNuisanceCausal)
+        ns.append(x)
+
+    from bootstrapping_olympics.library.nuisances_causal import series_rnc
+    nuisance = series_rnc(*tuple(ns))
+    return nuisance
+
+
+@contract(bb=SimpleBlackBox, nuisance=RepresentationNuisanceCausal,
+          returns=SimpleBlackBox)
+def wrap_robot_exploration(bb, nuisance):
+    G = nuisance.get_G()
+    bdt = get_bd_transform(nuisance, ignore_incomplete=True)
+    s = series(G, bb, bdt)
+    s.set_names(['G', 'R', 'bdt'])
+    return s
+
+@contract(source=Source, nuisance=RepresentationNuisanceCausal,
+          returns=Source)
+def wrap_robot_passive_stream(source, nuisance):
+    raise NotImplementedError()
+        

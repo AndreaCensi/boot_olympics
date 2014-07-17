@@ -1,11 +1,18 @@
-from streamels.boot_spec import BootSpec
 from abc import abstractmethod
-from contracts import ContractsMeta, new_contract, contract
+from blocks import SimpleBlackBox
+from contracts import ContractsMeta, contract, new_contract
 from decent_logs import WithInternalLog
-import geometry  # for geometry contracts @UnusedImport
+from streamels import BootSpec
+import geometry # for geometry contracts @UnusedImport
 
-__all__ = ['EpisodeDesc', 'RobotObservations', 'RobotInterface',
-           'PassiveRobotInterface']
+__all__ = [
+   'EpisodeDesc', 
+   'RobotObservations',
+   'BasicRobot',
+   'ExplorableRobot', 
+   'RobotInterface',
+   'PassiveRobotInterface',
+]
 
 
 class EpisodeDesc(object):
@@ -69,24 +76,14 @@ class RobotObservations(object):
 new_contract('RobotObservations', RobotObservations)
 
 
-class PassiveRobotInterface(WithInternalLog):
+class BasicRobot(WithInternalLog):
     __metaclass__ = ContractsMeta
     
     @abstractmethod
     @contract(returns=BootSpec)
     def get_spec(self):
-        ''' Returns the sensorimotor spec for this robot
-            (a BootSpec object). '''
-
-    # @abstractmethod
-    @contract(returns=RobotObservations)
-    def get_observations(self):
-        ''' 
-            Get observations. Must return an instance of RobotObservations,
-            or raise either:
-            - RobotObservations.Finished => no more observations
-            - RobotObservations.NotReady => not ready yet
-        '''
+        ''' Returns the sensorimotor spec for this robot (a BootSpec object). '''
+        
 
     @contract(returns='list[>=1]')
     def get_inner_components(self):
@@ -97,6 +94,7 @@ class PassiveRobotInterface(WithInternalLog):
          """ 
         return [self]
     
+    
     @contract(commands='array', returns='se3')
     def debug_get_vel_from_commands(self, commands):
         """ 
@@ -104,8 +102,31 @@ class PassiveRobotInterface(WithInternalLog):
             into an element of se3 corresponding to a velocity.
         """
         
+    
+class PassiveRobotInterface():
+    
+#     @contract(returns=Source)
+#     def get_passive_stream(self):
+#         """ 
+#             TO implement ... how to do logs?
+#             
+#             Returns a listening data stream for this robot as a Source block.
+#             
+#             The output is timestamped BootObservations instances.
+#         """
+        
+    # @abstractmethod
+    @contract(returns=RobotObservations)
+    def get_observations(self):
+        ''' 
+            Get observations. Must return an instance of RobotObservations,
+            or raise either:
+            - RobotObservations.Finished => no more observations
+            - RobotObservations.NotReady => not ready yet
+        '''
 
-class RobotInterface(PassiveRobotInterface):
+
+class ExplorableRobot():
     ''' 
         This is the basic class for robots. 
         
@@ -126,12 +147,24 @@ class RobotInterface(PassiveRobotInterface):
             Should return an instance of EpisodeDesc.
         '''
 
+    @contract(returns=SimpleBlackBox)
+    def get_active_stream(self):
+        """ 
+            TO implement ... how to do logs?
+            Returns a listening data stream for this robot as a Source block.
+        """
+        from bootstrapping_olympics.interfaces.robot_utils import RobotAsBlackBox3
+
+        return RobotAsBlackBox3(self)
+    
     @abstractmethod
     @contract(commands='array', commands_source='str', returns='None')
     def set_commands(self, commands, commands_source):  # @UnusedVariable
         ''' Send the given commands. '''
         assert False
 
+
+    # XXX: not sure
     @contract(returns='None|dict')
     def get_state(self):
         ''' 
@@ -141,8 +174,8 @@ class RobotInterface(PassiveRobotInterface):
         '''
         return None
 
-    @contract(state='dict')
-    def set_state(self, state):
-        ''' Load the given state (obtained by 'get_state'). '''
-        pass
+
+class RobotInterface(BasicRobot, PassiveRobotInterface, ExplorableRobot):
+    pass 
+
 

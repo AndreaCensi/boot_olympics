@@ -9,6 +9,7 @@ from contracts.utils import check_isinstance
 
 
 
+
 __all__ = ['NuisanceAgent']
 
 
@@ -22,42 +23,10 @@ class NuisanceAgent(BasicAgent,
               agent='str|code_spec|isinstance(AgentInterface)')
     def __init__(self, nuisances, agent):
         self.ns = []
-        config_nuisances_causal = get_conftools_nuisances_causal()
-        config_nuisances = get_conftools_nuisances()
-        for n in nuisances:
-
-            if isinstance(n, str):
-                c1 = n in config_nuisances
-                c2 = n in config_nuisances_causal
-                num = (1 if c1 else 0) + (1 if c2 else 0)
-                if num == 0:
-                    msg = 'Could not find %r as either type of nuisance.' % n
-                    raise ValueError(msg)
-                if num == 2:
-                    msg = 'Ambiguous name %r.' % n
-                    raise ValueError(msg)
-                if c1:
-                    assert not c2
-                    _, x = config_nuisances.instance_smarter(n)
-                else:
-                    _, x = config_nuisances_causal.instance_smarter(n)
-                    assert c2
-            else:
-                try:
-                    _, x = config_nuisances_causal.instance_smarter(n)
-                except:
-                    _, x = config_nuisances.instance_smarter(n)
-
-            if isinstance(x, RepresentationNuisance):
-                from bootstrapping_olympics.library.nuisances_causal import SimpleRNCObs
-                x = SimpleRNCObs(x)
-
-            check_isinstance(x, RepresentationNuisanceCausal)
-            self.ns.append(x)
-
-        from bootstrapping_olympics.library.nuisances_causal import series_rnc
-        self.nuisance = series_rnc(*tuple(self.ns))
-
+        from bootstrapping_olympics.library.agents.nuisance_agent_actions \
+            import instance_nuisance_series
+        self.nuisance = instance_nuisance_series(nuisances)
+        
         check_isinstance(self.nuisance, RepresentationNuisanceCausal)
 
         config_agents = get_conftools_agents()
