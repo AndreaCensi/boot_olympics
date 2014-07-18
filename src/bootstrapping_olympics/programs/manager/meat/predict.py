@@ -9,7 +9,7 @@ from bootstrapping_olympics.utils import PredictionStats
 import numpy as np
 from reprep import Report
 
-from .load_agent_state import load_agent_state
+from bootstrapping_olympics.programs.manager.meat import load_agent_state_imp
 from .report_utils import save_report
 
 
@@ -25,7 +25,7 @@ def task_predict(data_central, id_agent, id_robot,
     log_index = data_central.get_log_index()
     boot_spec = log_index.get_robot_spec(id_robot)
 
-    agent, state = load_agent_state(data_central, id_agent, id_robot,
+    agent, state = load_agent_state_imp(data_central, id_agent, id_robot,
                                     reset_state=False,
                                     raise_if_no_state=True)
 

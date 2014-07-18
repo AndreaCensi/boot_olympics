@@ -1,4 +1,4 @@
-from .load_agent_state import load_agent_state
+from bootstrapping_olympics.programs.manager.meat import load_agent_state_imp
 from blocks.composition import series
 from blocks.library import CheckSequence, IteratorSource
 from blocks.pumps import bb_pump_block_yields
@@ -40,7 +40,7 @@ def learn_log(data_central, id_agent, id_robot,
     
     warnings.warn('add publish_interval plugins')
     
-    agent0, state0 = load_agent_state(data_central,
+    agent0, state0 = load_agent_state_imp(data_central,
                                       id_agent=id_agent,
                                       id_robot=id_robot,
                                       reset_state=reset)

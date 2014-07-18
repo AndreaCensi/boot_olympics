@@ -7,7 +7,7 @@ from bootstrapping_olympics.programs.manager.meat.data_central import (
     DataCentral)
 from reprep import Report
 
-from .load_agent_state import load_agent_state
+from bootstrapping_olympics.programs.manager.meat import load_agent_state_imp
 from .report_utils import save_report
 from bootstrapping_olympics.interfaces.agent import BasicAgent
 
@@ -25,7 +25,7 @@ def publish_once(data_central, id_agent, id_robot,
                  phase='learn', progress='all',
                  save_pickle=False):  # TODO: 'learn' in constants
     # XXX: progress is not used so far
-    agent, state = load_agent_state(data_central,
+    agent, state = load_agent_state_imp(data_central,
                                     id_agent=id_agent,
                                     id_robot=id_robot,
                                     reset_state=False)
@@ -80,7 +80,7 @@ def get_agent_report(data_central, id_agent, id_robot, progress):
         The report name is ('%s-%s-%s' % (state.id_agent, state.id_robot, progress)),
         you might want to choose "progress" to not have conflicts.
     """
-    agent, state = load_agent_state(data_central,
+    agent, state = load_agent_state_imp(data_central,
                                     id_agent=id_agent,
                                     id_robot=id_robot,
                                     reset_state=False)

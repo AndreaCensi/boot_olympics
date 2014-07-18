@@ -1,4 +1,4 @@
-from .. import load_agent_state
+from bootstrapping_olympics.programs.manager.meat import load_agent_state_imp
 from .bookkeeping import BookkeepingServo
 from .m_run_simulation import run_simulation_servo
 from bootstrapping_olympics import (BootOlympicsConstants, LogsFormat, 
@@ -37,7 +37,7 @@ def task_servo(data_central, id_agent, id_robot,
 
     # Instance agent object    
 
-    agent, _ = load_agent_state(data_central, id_agent, id_robot,
+    agent, _ = load_agent_state_imp(data_central, id_agent, id_robot,
                              reset_state=False,
                              raise_if_no_state=True)
 

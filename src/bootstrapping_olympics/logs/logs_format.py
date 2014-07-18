@@ -7,7 +7,9 @@ from conf_tools.utils import friendly_path
 import os
 from contracts import ContractsMeta
 
-__all__ = ['LogsFormat']
+__all__ = [
+    'LogsFormat',
+]
 
 class LogsFormat(object):
     __metaclass__ = ContractsMeta
@@ -17,7 +19,10 @@ class LogsFormat(object):
 
     @abstractmethod
     def index_file(self, filename):
-        ''' Returns a list of BootStream objects. '''
+        ''' 
+            Returns a list of BootStream objects contained in the given
+            filename. 
+        '''
 
     # TODO: uniform mechanism for this
     # TODO: this is not really concurrent friendly

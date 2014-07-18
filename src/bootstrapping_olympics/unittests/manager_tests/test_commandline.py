@@ -11,6 +11,7 @@ from bootstrapping_olympics.utils import assert_allclose
 from comptests import PartiallySkipped, Skipped
 from contracts.utils import describe_type
 import os
+from bootstrapping_olympics.programs.manager.meat import load_agent_state_imp.load_agent_state
 
 
 # TODO: check that the robot generates different episodes strings
@@ -93,11 +94,16 @@ def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
         else: 
             execute_command('learn-log', '-a', id_agent, '-r', id_robot)
     
+    
+            agent2, _ =  load_agent_state_imp(data_central, id_agent, id_robot,
+                     reset_state=False,
+                     raise_if_no_state=True)
+            
             skipped = []
     
-            if isinstance(agent, ServoingAgent):
+            if isinstance(agent2, ServoingAgent):
                 try: 
-                    agent.get_servo()
+                    agent2.get_servo()
                 except NotImplementedError:
                     skipped.append('servo')
                     pass  
@@ -110,9 +116,9 @@ def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
                 
                 
     
-            if isinstance(agent, PredictingAgent):
+            if isinstance(agent2, PredictingAgent):
                 try: 
-                    agent.get_predictor()
+                    agent2.get_predictor()
                 except NotImplementedError:
                     skipped.append('predict')
                     pass  

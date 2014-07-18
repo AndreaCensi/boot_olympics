@@ -5,6 +5,7 @@ __all__ = [
    'NotReady',
    'Finished',
    'NeedInput',
+   'NeedComputation',
 ]
 
 class Full(Queue.Full):
@@ -22,3 +23,7 @@ class NeedInput(Queue.Empty):
         and what is needed is to get some input(). """
     pass
 
+class NeedComputation(Queue.Empty):
+    """ Thrown when get() says that a bit more computation is needed.
+        Jusrt try get() again if you can spare the cycle. """
+    pass

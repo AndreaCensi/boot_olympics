@@ -1,10 +1,11 @@
+from .exceptions import Finished, Full, NeedComputation, NeedInput, NotReady
+from .interface import SimpleBlackBox, Sink, Source
+from contracts import contract
+from types import NoneType
 import time
 import warnings
 
-from contracts import  contract
 
-from blocks import Finished, SimpleBlackBox, Source, Sink
-from types import NoneType
 
 
 __all__ = [
@@ -26,13 +27,13 @@ def bb_pump(a, b):
             # print('%s: reading' % num)
             x = a.get(block=False)
             # print('%s: read %s' % (num, describe_value(x)))
-        except SimpleBlackBox.NotReady:
+        except NotReady:
             # print('not ready')
             break
 
         try:
             b.put(x, block=False, timeout=None)
-        except SimpleBlackBox.Full:
+        except Full:
             warnings.warn('Not sure what to do')
             break
         num += 1
@@ -48,9 +49,9 @@ def bb_pump_block(a, b):
             # print('%s: reading' % num)
             x = a.get(block=True)
             # print('%s: read %s' % (num, describe_value(x)))
-        except SimpleBlackBox.NotReady:
+        except NotReady:
             continue
-        except SimpleBlackBox.Finished:
+        except Finished:
             break
         b.put(x, block=True)
         num += 1
@@ -65,9 +66,9 @@ def bb_pump_block_yields(a, b):
             # print('%s: reading' % num)
             x = a.get(block=True)
             # print('%s: read %s' % (num, describe_value(x)))
-        except SimpleBlackBox.NotReady:
+        except  NotReady:
             continue
-        except SimpleBlackBox.Finished:
+        except  Finished:
             break
         yield x
         b.put(x, block=True)
@@ -79,12 +80,12 @@ def bb_get_block_poll_sleep(bb, timeout, sleep):
         delta = t1 - t0
         if timeout is not None and delta > timeout:
             msg = 'bb_get_block_poll_sleep: timeout: %s > %s' % (delta, timeout)
-            raise SimpleBlackBox.NotReady(msg)
+            raise  NotReady(msg)
         try:
             value = bb.get(block=False)
             assert not isinstance(value, NoneType)
             return value
-        except SimpleBlackBox.NotReady as e:
+        except  NotReady as e:
             bb.info('bb_get_block_poll_sleep: not ready, waiting: %s' % e)
             pass
 
@@ -98,13 +99,119 @@ def source_read_all_block(source):
     res = []
     while True:
         try:
-#             print('%d: source_read_all_block: %s' % (len(res), source))
             value = source.get(block=True)
-#             print('value: %s' % value)
             res.append(value)
         except Finished:
             break
+        except NeedComputation:
+            continue
+        except NeedInput:
+            assert isinstance(source, SimpleBlackBox)
+            msg = 'source_read_all_blocks() can only read from a simple Source.'
+            raise ValueError(msg)
+            continue
     return res
+
+
+@contract(input_sequence='list', bb=SimpleBlackBox, returns='list')
+def bb_simple_interaction_blocking(bb, input_sequence):
+    """ 
+        Resets the SimpleBlackBox, puts the input sequence, returns the result. 
+        Everything is blocking. 
+    """ 
+    assert isinstance(bb, SimpleBlackBox)
+    bb.reset()
+    
+    # we are going to write this sequence
+    obs = list(input_sequence)
+
+    # and this collects the output
+    out = []
+    
+    while True:
+        # Put something -- always succeeds
+        if obs:
+            ob = obs.pop(0)
+            bb.put(ob, block=True)
+        else:
+            # at the end, call obs.pop()
+            bb.end_input()
+        
+        # Get all the output
+        try: 
+            while True:
+                try:
+                    o = bb.get(block=True)
+                    # Do something with o
+                    out.append(o)
+                except Finished:
+                    raise
+                except NotReady:
+                    assert(False) # block is True
+                except NeedComputation:
+                    continue
+        except Finished:
+            # probably finished only after we called end_input()
+            assert not obs
+            break
+
+    return out
+
+
+@contract(input_sequence='list', bb=SimpleBlackBox, returns='list')
+def bb_simple_interaction_nonblocking(bb, input_sequence, timeout, timewait):
+    """ 
+        Resets the SimpleBlackBox, puts the input sequence, returns the result. 
+        Everything is nonblocking.
+        
+        :param timeout: Timeout for calling get().
+        :param timewait: How long to wait before re-calling get() if timeout.
+         
+    """ 
+    assert isinstance(bb, SimpleBlackBox)
+    bb.reset()
+    
+    # we are going to write this sequence
+    obs = list(input_sequence)
+
+    # and this collects the output
+    out = []
+    
+    def wait_a_little():
+        time.sleep(timewait)
+            
+    while True:
+        if obs:
+            ob = obs.pop(0)
+            try:
+                bb.put(ob, block=False, timeout=timeout)
+            except Full:
+                wait_a_little()
+                continue
+        else:
+            # at the end, call obs.pop()
+            bb.end_input()
+        
+        # Get all the output
+        try: 
+            while True:
+                try:
+                    o = bb.get(block=False, timeout=timeout)
+                    # Do something with o
+                    out.append(o)
+                except Finished:
+                    raise
+                except NotReady:
+                    wait_a_little()
+                    continue
+                except NeedComputation:
+                    continue
+        except Finished:
+            # probably finished only after we called end_input()
+            assert not obs
+            break
+    return out
+
 
 
 
