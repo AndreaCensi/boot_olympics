@@ -19,25 +19,36 @@ class SimpleRNCObs(RepresentationNuisanceCausalSimpleInst):
 
         check_isinstance(self.t, RepresentationNuisance)
 
+        self.spec = None
+        
     def inverse(self):
         return SimpleRNCObs(self.t.inverse())
 
     @contract(spec=BootSpec, returns=BootSpec)
     def transform_spec(self, spec):
+        self.spec = spec
         cmd = spec.get_commands()
         obs = spec.get_observations()
         obs2 = self.t.transform_spec(obs)
         return BootSpec(obs2, cmd)
 
     def get_h(self):
+        self._check_inited()
         return self.t.transform_value
 
     def get_h_conj(self):
+        self._check_inited()
         return self.t.left_inverse().transform_value
 
     def get_g(self):
+        self._check_inited()
         return lambda x: x
     
     def get_g_conj(self):
+        self._check_inited()
         return lambda x: x
 
+    def _check_inited(self):
+        if self.spec is None:
+            msg = 'transform_spec() not called yet.'
+            raise ValueError(msg)

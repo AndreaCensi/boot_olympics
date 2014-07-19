@@ -129,18 +129,18 @@ class RepresentationNuisanceCausalSimpleInst(RepresentationNuisanceCausalSimple)
         
     @contract(returns=SimpleBlackBoxT)
     def get_H(self):
-        return (InstantaneousTF(self.get_h()))
+        return InstantaneousTF(self.get_h())
     
     @contract(returns=SimpleBlackBoxT)
     def get_H_conj(self):
-        return (InstantaneousTF(self.get_h_conj()))
+        return InstantaneousTF(self.get_h_conj())
     
     @contract(returns=SimpleBlackBoxT)
     def get_G(self):
-        return (InstantaneousTF(self.get_g()))
+        return InstantaneousTF(self.get_g())
     
     @contract(returns=SimpleBlackBoxT)
     def get_G_conj(self):
-        return (InstantaneousTF(self.get_g_conj()))
+        return InstantaneousTF(self.get_g_conj())
     
     
