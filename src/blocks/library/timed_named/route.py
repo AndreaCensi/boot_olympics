@@ -1,15 +1,12 @@
+from blocks import Finished, NeedInput, NotReady, SimpleBlackBoxTN
+from blocks.library import WithQueue
+from blocks.library.timed.checks import check_timed_named
+from blocks.utils import check_reset
+from contracts import contract, describe_type, describe_value
 import warnings
 
-from contracts import contract
 
-from blocks import NotReady, Finished
 
-from blocks.library import WithQueue
-from blocks.utils import check_reset
-from blocks.exceptions import NeedInput
-from blocks.library.timed.checks import check_timed_named
-from contracts.interface import describe_value, describe_type
-from blocks.interface import SimpleBlackBoxTN
 
 
 __all__ = ['Route']
@@ -20,8 +17,13 @@ class Route(WithQueue, SimpleBlackBoxTN):
         Routes signals among children according to user-defined rules.
          
     """
-    @contract(routing='list(tuple(dict, isinstance(SimpleBlackBox), dict))')
-    def __init__(self, routing):
+    @contract(routing='list(tuple(dict, isinstance(SimpleBlackBox), dict))',
+              suppress='seq(str)')
+    def __init__(self, routing, suppress=[]):
+        """
+        
+            :param suppress: Ignore these commands without warning.
+        """
         WithQueue.__init__(self)
         self.routing = routing
 
@@ -29,6 +31,8 @@ class Route(WithQueue, SimpleBlackBoxTN):
 
         for i, b in enumerate(self.boxes):
             self.log_add_child('%d' % i, b)
+            
+        self.suppress = suppress
 
     def __repr__(self):
         cont = '|'.join([str(b)for b in self.boxes])
@@ -39,13 +43,14 @@ class Route(WithQueue, SimpleBlackBoxTN):
         for i, b in enumerate(self.boxes):
             self.log_add_child(names[i], b)
 
-
     def reset(self):
         WithQueue.reset(self)
         for b in self.boxes:
             b.reset()
 
         self.finished = [False for _ in range(len(self.boxes))]
+        
+        self.warned_strange_input = set()
 
     def put_noblock(self, value):
         check_reset(self, 'finished')
@@ -54,6 +59,7 @@ class Route(WithQueue, SimpleBlackBoxTN):
         t, (name, ob) = value
         # self.info('routing %s, %s' % (t, name))
         n = 0
+        
         for (translate, b, _) in self.routing:
             if not name in translate:
                 continue
@@ -72,8 +78,11 @@ class Route(WithQueue, SimpleBlackBoxTN):
                 self.error(msg)
                 raise
             n += 1
-        # if n == 0:
-            # self.info('no route for %s' % name)
+            
+        if n == 0 and not name in self.suppress and not name in self.warned_strange_input:
+            msg = ('No route found for signal %r.' % name)
+            self.error(msg)
+            self.warned_strange_input.add(name)
             
         self._pump()
 

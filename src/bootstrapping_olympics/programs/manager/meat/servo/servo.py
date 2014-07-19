@@ -1,18 +1,18 @@
 
 from .bookkeeping import BookkeepingServo
+from blocks.library.simple.instantaneous import Instantaneous
 from blocks.library.timed.checks import check_timed_named
-from bootstrapping_olympics import (BootOlympicsConstants, LogsFormat, 
-    get_conftools_robots, logger)
+from bootstrapping_olympics import LogsFormat, get_conftools_robots, logger
+from bootstrapping_olympics.interfaces.agent import ServoingAgent
 from bootstrapping_olympics.programs.manager.meat import load_agent_state
+from bootstrapping_olympics.programs.manager.meat.m_run_simulation import (
+    run_simulation_systems)
+from bootstrapping_olympics.programs.manager.meat.servonav.find_path import (
+    mean_observations)
 from bootstrapping_olympics.utils import unique_timestamp_string
 from contracts import contract
 from geometry import SE2_from_SE3, angle_from_SE2, translation_from_SE2
 import numpy as np
-from bootstrapping_olympics.programs.manager.meat.m_run_simulation import run_simulation,\
-    run_simulation_systems
-from bootstrapping_olympics.programs.manager.meat.servonav.find_path import mean_observations
-from blocks.library.simple.instantaneous import Instantaneous
-from bootstrapping_olympics.interfaces.agent import ServoingAgent
 import warnings
 
 __all__ = ['task_servo']
@@ -88,8 +88,7 @@ def task_servo(data_central, id_agent, id_robot,
 
                 save_robot_state = counter < num_episodes_with_robot_state
 
-                servoing_episode(id_robot=id_robot, robot=robot,
-                     id_servo_agent=id_agent_servo, agent=agent,
+                servoing_episode( robot=robot,  agent=agent,
                      writer=writer, id_episode=id_episode,
                      displacement=displacement,
                      max_episode_len=max_episode_len,
@@ -100,8 +99,8 @@ def task_servo(data_central, id_agent, id_robot,
                 counter += 1
 
 @contract(agent=ServoingAgent)
-def servoing_episode(id_robot, robot,
-                     id_servo_agent, agent,
+def servoing_episode(robot,
+                     agent,
                      writer, id_episode,
                      displacement,
                      max_episode_len,
@@ -147,7 +146,8 @@ def servoing_episode(id_robot, robot,
     agent_sys = agent.get_servo_system()
     agent_sys.reset()
     agent_sys.put((0.0, ('goal_observations', obs0)))
-
+    agent_sys.info('did you receive it?')
+    
     simstream = run_simulation_systems(robot_sys=robot_sys, 
                                     agent_sys=agent_sys, 
                                     boot_spec=robot.get_spec(), 
@@ -169,7 +169,6 @@ def servoing_episode(id_robot, robot,
             sensels_list = observations.tolist()
             extra['servoing_base'] = dict(goal=obs0.tolist(), current=sensels_list)
     
-            
             has_pose = current_pose is not None
         
             if has_pose:

@@ -62,12 +62,20 @@
         range: [-1,+1]
         default: [0]
 
-- id: random_nuis
+- id: random_nuis1
   desc: "A perturbed version of the random robot."
   code:
   - bootstrapping_olympics.library.robots.EquivRobot
   - robot: random_1_6
     cmd_nuisance: [rpermB, rscaleA]
+    obs_nuisance: []
+
+- id: random_nuis2
+  desc: "A perturbed version of the random robot."
+  code:
+  - bootstrapping_olympics.library.robots.EquivRobot
+  - robot: random_1_6
+    cmd_nuisance: [rpermB]
     obs_nuisance: []
 
 - id: random_bits2

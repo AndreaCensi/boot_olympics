@@ -1,17 +1,17 @@
 from blocks.library.timed.checks import check_timed_named
 from bootstrapping_olympics import (BootStream, ExploringAgent, LogIndex, 
-    LogsFormat, ObsKeeper, UnsupportedSpec)
+    LogsFormat, UnsupportedSpec)
 from bootstrapping_olympics.programs.manager import DirectoryStructure # XXX
 from bootstrapping_olympics.programs.manager import run_simulation
 from bootstrapping_olympics.unittests import for_all_pairs
 from bootstrapping_olympics.utils import unique_timestamp_string
 from bootstrapping_olympics.utils.numpy_backported import assert_allclose
 from comptests.results import Skipped
-from contracts.utils import check_isinstance
 from numpy.testing.utils import assert_equal
 import numpy as np
 import shutil
 import tempfile
+from contracts.interface import describe_value
 
 
 
@@ -30,7 +30,7 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
     ds = DirectoryStructure(root)
     id_stream = unique_timestamp_string()
     filename = ds.get_simlog_filename(id_agent, id_robot, id_stream)
-
+    id_episode = id_stream
     written = []
     written_extra = []
 
@@ -40,9 +40,8 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
                                   boot_spec=robot.get_spec(),
                                   id_agent=id_agent,
                                   id_robot=id_robot) as writer:
-        
-#         ok = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
-                    
+
+        writer.reset()                    
         for x in run_simulation(id_robot=id_robot,
                                            robot=robot,
                                            id_agent=id_agent,
@@ -53,24 +52,23 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
             check_timed_named(x)
             timestamp, (signal, value) = x
             
-            writer.put((timestamp, (signal, value)))
+            writer.put(x)
+            
+            if signal == 'observations':
+                written.append(x)
             
             if signal == 'observations':
                 extra = {'random_number': np.random.randint(1)}
-                writer.put((timestamp, ('extra', extra)))
+                
+                m = (timestamp, ('extra', extra))
+                writer.put(m)
+                
+                m = (timestamp, ('id_episode', id_episode))
+                writer.put(m)
+#                 written.append(m)
                         
-                            
-#             bd_array = ok.push(timestamp=t, 
-#                                observations=bd['observations'],
-#                                commands=bd['commands'],
-#                                commands_source=id_agent,
-#                                id_episode='my_episode',
-#                                id_world='unknown-world')
-                  
-#             writer.push_observations(bd_array, extra)
-    
             written_extra.append(extra)
-            written.append((timestamp, (signal, value))) # not sure
+            
 
     logdirs = ds.get_log_directories()
     index = LogIndex()
@@ -90,6 +88,7 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
 
     assert stream.get_spec() == robot.get_spec()
 
+    # only read back observations
     read_back = []
     read_back_extra = []
     for x in stream.read(read_extra=True):
@@ -97,8 +96,10 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
         (timestamp, (signal, value))  = x
         if signal == 'extra':
             read_back_extra.append(value)
-        else:
+        elif signal == 'observations':
             read_back.append(x)
+        else:
+            pass
 
     if len(read_back) != len(written):
         raise Exception('Written %d, read back %d.' % 
@@ -107,14 +108,19 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
     for i in range(len(read_back)):
         a = written[i]
         b = read_back[i]
-        assert a[0] == b[0]
-        assert a[1][0] == b[1][0] # signal
-        assert_allclose(a[1][1], b[1][1])
-
-        fields = set(a.dtype.names) or set(b.dtype.names)
-        fields.remove('extra')
-        for field in fields:
-            assert_equal(a[field], b[field])
+        try:
+            assert a[0] == b[0]
+            assert a[1][0] == b[1][0] # signal
+            assert_allclose(a[1][1], b[1][1])
+        except:
+            print('found mismatch at i = %d' % i)
+            print('written = %s' % describe_value(a))
+            print('read = %s' % describe_value(b))
+            raise
+#         fields = set(a.dtype.names) or set(b.dtype.names)
+#         fields.remove('extra')
+#         for field in fields:
+#             assert_equal(a[field], b[field])
 
     for i in range(len(read_back)):
         a = written_extra[i]

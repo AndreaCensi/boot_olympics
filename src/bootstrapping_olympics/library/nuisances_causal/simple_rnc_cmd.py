@@ -1,10 +1,8 @@
-from blocks import SimpleBlackBox
 from bootstrapping_olympics import (RepresentationNuisance, 
     RepresentationNuisanceCausalSimpleInst, get_conftools_nuisances)
 from contracts import contract
 from contracts.utils import check_isinstance
 from streamels import BootSpec
-
 
 
 __all__ = [
@@ -13,11 +11,10 @@ __all__ = [
 
 
 class SimpleRNCCmd(RepresentationNuisanceCausalSimpleInst):
-    """ A nuisance where there is only a transformation of y=u defined. """
+    """ A nuisance where there is only a transformation of commands defined. """
 
     @contract(nuisance='str|code_spec|isinstance(RepresentationNuisance)')
     def __init__(self, nuisance):
-
         _, self.t = get_conftools_nuisances().instance_smarter(nuisance)
 
         check_isinstance(self.t, RepresentationNuisance)

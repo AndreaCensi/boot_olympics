@@ -1,14 +1,15 @@
-import warnings
-
-from contracts import contract
-
 from blocks import SimpleBlackBox
 from blocks.composition import series
-from blocks.library import (Identity, WrapTimedNamed, Route, SampledDeriv,
-                            WrapTMfromT, Instantaneous)
+from blocks.library import (Instantaneous, Route, SampledDeriv, WrapTMfromT, 
+    WrapTimedNamed)
+from blocks.library.timed.identityt import IdentityTimed
 from bootstrapping_olympics import RepresentationNuisanceCausal
-from streamels import (BootSpec, StreamSpec, CompositeStreamSpec,
-    UnsupportedSpec, check_streamels_continuous)
+from contracts import contract
+from streamels import (
+    BootSpec, CompositeStreamSpec, StreamSpec, UnsupportedSpec, check_streamels_continuous)
+import warnings
+
+
 
 
 __all__ = ['DDerivative', 'DDerivativeConj']
@@ -42,11 +43,11 @@ class DDerivative(RepresentationNuisanceCausal):
 
     @contract(returns=SimpleBlackBox)
     def get_G(self):
-        return Identity()
+        return IdentityTimed()
 
     @contract(returns=SimpleBlackBox)
     def get_G_conj(self):
-        return Identity()
+        return IdentityTimed()
 
     @contract(returns=SimpleBlackBox)
     def get_L(self):
@@ -55,7 +56,7 @@ class DDerivative(RepresentationNuisanceCausal):
         # ignore the "commands" signal
         r = Route([({'observations':'observations'},
                     w,
-                    {'observations':'observations'})])
+                    {'observations':'observations'})], suppress=['commands'])
         return r
 
     @contract(returns=SimpleBlackBox)
@@ -66,7 +67,7 @@ class DDerivative(RepresentationNuisanceCausal):
         # ignore the "commands" signal
         r = Route([({'observations':'observations'},
                     w,
-                    {'observations':'observations'})])
+                    {'observations':'observations'})], suppress=['commands'])
         return r
 
 

@@ -60,6 +60,8 @@ class ObsNormalizeMax(LearningAgent, MultiLevelBase):
         class NormalizeLearner(Sink):
             def __init__(self, agent):
                 self.agent = agent
+            def reset(self):
+                pass
             def put(self, value, block=True, timeout=None):  # @UnusedVariable
                 check_timed_named(value)
                 _, (signal, x) = value

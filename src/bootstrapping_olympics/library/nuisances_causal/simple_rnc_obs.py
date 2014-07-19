@@ -1,10 +1,8 @@
-from blocks import SimpleBlackBox
 from bootstrapping_olympics import (RepresentationNuisance, 
     RepresentationNuisanceCausalSimpleInst, get_conftools_nuisances)
 from contracts import contract
 from contracts.utils import check_isinstance
 from streamels import BootSpec
-
 
 
 __all__ = [
@@ -17,7 +15,6 @@ class SimpleRNCObs(RepresentationNuisanceCausalSimpleInst):
 
     @contract(nuisance='str|code_spec|isinstance(RepresentationNuisance)')
     def __init__(self, nuisance):
-
         _, self.t = get_conftools_nuisances().instance_smarter(nuisance)
 
         check_isinstance(self.t, RepresentationNuisance)
@@ -31,8 +28,6 @@ class SimpleRNCObs(RepresentationNuisanceCausalSimpleInst):
         obs = spec.get_observations()
         obs2 = self.t.transform_spec(obs)
         return BootSpec(obs2, cmd)
-
-
 
     def get_h(self):
         return self.t.transform_value

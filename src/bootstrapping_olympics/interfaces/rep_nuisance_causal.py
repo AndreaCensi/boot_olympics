@@ -43,7 +43,7 @@ class RepresentationNuisanceCausal(WithInternalLog):
         '''
 
     @abstractmethod
-    @contract(returns=SimpleBlackBox)
+    @contract(returns=SimpleBlackBoxT)
     def get_G(self):
         """ Returns G -- must take inputs of the kind (time, value) """ 
         
@@ -91,7 +91,8 @@ class RepresentationNuisanceCausalSimple(RepresentationNuisanceCausal):
         H = WrapTMfromT(H0)
         r = Route([({'observations':'observations'},
                     H,
-                    {'observations':'observations'})])
+                    {'observations':'observations'})],
+                  suppress=['commands'])
         return r
     
     @contract(returns=SimpleBlackBoxTN)
@@ -102,7 +103,8 @@ class RepresentationNuisanceCausalSimple(RepresentationNuisanceCausal):
         H_conj = WrapTMfromT(H0_conj)
         r = Route([({'observations': 'observations'},
                     H_conj, 
-                    {'observations': 'observations'})])
+                    {'observations': 'observations'})],
+                  suppress=['commands'])
         return r
     
 class RepresentationNuisanceCausalSimpleInst(RepresentationNuisanceCausalSimple):

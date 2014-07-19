@@ -5,6 +5,7 @@ from bootstrapping_olympics import (BasicAgent, ExploringAgent, LearningAgent,
     get_conftools_agents)
 from contracts import contract
 from contracts.utils import check_isinstance
+from bootstrapping_olympics.library.agents.nuisance_agent_actions import wrap_agent_servo
 
 
 
@@ -28,9 +29,11 @@ class NuisanceAgent(BasicAgent,
         
         check_isinstance(self.nuisance, RepresentationNuisanceCausal)
 
+        self.info('my nuisance is %r' % self.nuisance)
         config_agents = get_conftools_agents()
         _, self.agent = config_agents.instance_smarter(agent)
-
+        self.spec2 = None
+        
     def init(self, boot_spec):
         self.spec2 = self.nuisance.transform_spec(boot_spec)
         self.agent.init(self.spec2)
@@ -45,20 +48,30 @@ class NuisanceAgent(BasicAgent,
 
     @contract(returns=Sink)
     def get_learner_as_sink(self):
+        if self.spec2 is None:
+            msg = 'Forgot to call init() before get_learner_as_sink().'
+            raise ValueError(msg)
         learner = self.agent.get_learner_as_sink()
         return wrap_agent_learner(learner, self.nuisance)
 
     @contract(returns=SimpleBlackBox)
     def get_explorer(self):
+        if self.spec2 is None:
+            msg = 'Forgot to call init() before get_explorer().'
+            raise ValueError(msg)
         explorer = self.agent.get_explorer()
         return wrap_agent_explorer(explorer, self.nuisance)
 
     @contract(returns=SimpleBlackBox)
     def get_servo_system(self):
+        if self.spec2 is None:
+            msg = 'Forgot to call init() before get_servo_system().'
+            raise ValueError(msg)
         servo_system = self.agent.get_servo_system()
-        return wrap_agent_explorer(servo_system, self.nuisance)
+        return wrap_agent_servo(servo_system, self.nuisance)
 
     def get_predictor(self):
+        # TODO:
         raise NotImplementedError('todo')
 
     def merge(self, other):  # @UnusedVariable

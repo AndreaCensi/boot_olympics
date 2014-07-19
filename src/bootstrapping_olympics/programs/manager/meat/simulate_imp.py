@@ -1,4 +1,6 @@
 from .m_run_simulation import run_simulation
+from blocks import Sink
+from blocks.library.timed.checks import check_timed_named
 from bootstrapping_olympics import (LogsFormat, get_conftools_agents, 
     get_conftools_robots, logger)
 from bootstrapping_olympics.programs.manager.meat.data_central import (
@@ -6,8 +8,6 @@ from bootstrapping_olympics.programs.manager.meat.data_central import (
 from bootstrapping_olympics.utils import unique_timestamp_string
 from contracts import contract
 import numpy as np
-from blocks import Sink
-from blocks.library.timed.checks import check_timed_named
 
 
 __all__ = [
@@ -94,6 +94,7 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
                 check_timed_named(x)
                 timestamp, (signal, value) = x
 
+#                 print('run_simulation gave %.4f: %s' % (timestamp, signal))
                 if (delta is None) and (last_episode_timestamp is not None):
                     
                     if timestamp < last_episode_timestamp:

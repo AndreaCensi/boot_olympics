@@ -40,6 +40,7 @@ def series(*args):
 def series_two(a, b, name1=None, name2=None):
     if isinstance(a, SimpleBlackBoxTN) and isinstance(b, SimpleBlackBox):
         return BBBBSeriesTN(a, b, name1, name2)
+    
     if isinstance(a, SimpleBlackBoxT) and isinstance(b, SimpleBlackBox):
         return BBBBSeriesT(a, b, name1, name2)
     
@@ -216,7 +217,11 @@ class BBBBSeries(SimpleBlackBox):
 
         assert not self.status_a_finished
 
-        # XXX: not sure this is corect
+        
+        #msg = 'putting into %r value = %s.' % (self.log_child_name(self.a), describe_value(value))
+        #self.debug(msg)
+        
+        # XXX: not sure this is correct (block behavior)
         try:
             self.a.put(value, block=block, timeout=timeout)
         # TODO: other exceptions

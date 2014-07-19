@@ -1,10 +1,11 @@
 from blocks import SimpleBlackBox
 from blocks.library import Route
-from blocks.library.timed.identityt import IdentityTimed
-from blocks.library.timed_named.identitytn import IdentityTimedNamed
+from blocks.library import IdentityTimed
+from blocks.library import IdentityTimedNamed
 from bootstrapping_olympics import RepresentationNuisanceCausal
 from contracts import contract
 from streamels import BootSpec
+from blocks.interface import SimpleBlackBoxT
 
 
 
@@ -24,11 +25,11 @@ class RNCIdentity(RepresentationNuisanceCausal):
     def transform_spec(self, spec):
         return spec
 
-    @contract(returns=SimpleBlackBox)
+    @contract(returns=SimpleBlackBoxT)
     def get_G(self):
         return IdentityTimed()
 
-    @contract(returns=SimpleBlackBox)
+    @contract(returns=SimpleBlackBoxT)
     def get_G_conj(self):
         return IdentityTimed()
 
@@ -37,7 +38,7 @@ class RNCIdentity(RepresentationNuisanceCausal):
         # ignore the "commands" signal
         r = Route([({'observations':'observations'},
                     IdentityTimedNamed(),
-                    {'observations':'observations'})])
+                    {'observations':'observations'})], suppress=['commands'])
         return r
 
     @contract(returns=SimpleBlackBox)
@@ -45,5 +46,5 @@ class RNCIdentity(RepresentationNuisanceCausal):
         # ignore the "commands" signal
         r = Route([({'observations':'observations'},
                     IdentityTimedNamed(),
-                    {'observations':'observations'})])
+                    {'observations':'observations'})], suppress=['commands'])
         return r

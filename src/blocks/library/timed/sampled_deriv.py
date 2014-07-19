@@ -1,22 +1,22 @@
-from blocks.composition import BBBBSeries
-from blocks.library.simple import Instantaneous, LastNSamplesT
+from blocks.composition import BBBBSeriesT
+from blocks.library import Instantaneous, LastNSamplesT
 import numpy as np
 
 
 __all__ = ['SampledDeriv']
 
 
-class SampledDeriv(BBBBSeries):
+class SampledDeriv(BBBBSeriesT):
     """ Warning: not instantaneous --- see SampledDerivPartial. """
     def __init__(self):
-        BBBBSeries.__init__(self, LastNSamplesT(3, send_partial=False),
+        BBBBSeriesT.__init__(self, LastNSamplesT(3, send_partial=False),
                             ForwardDiff(partial=False), 'last3', 'fdiff')
 
 
-class SampledDerivPartial(BBBBSeries):
+class SampledDerivPartial(BBBBSeriesT):
     """ This one gives one output for each timestamp. The first one is (x, 0). """
     def __init__(self):
-        BBBBSeries.__init__(self, LastNSamplesT(3, send_partial=True),
+        BBBBSeriesT.__init__(self, LastNSamplesT(3, send_partial=True),
                             ForwardDiff(partial=True), 'last3', 'fdiff')
 
 
@@ -71,33 +71,14 @@ class ForwardDiff(Instantaneous):
         if not t1 < t2 < t3:
             msg = 'Invalid timestamps t1 %s t2 %s t3 %s' % (t1, t2, t3)
             raise ValueError(msg)
-
-#         v1 = np.asarray(v1)
-#         v2 = np.asarray(v2)
-#         v3 = np.asarray(v3)
-
-        # self.info('x1: %s' % str(x1))
-        # self.info('x2: %s' % str(x2))
-        # self.info('x3: %s' % str(x3))
+ 
 
         x_dot = self.make_difference(t1, v1, t3, v3)
 
-
-#
-#         delta = t3 - t1
-#         if delta <= 0:
-#             msg = 'Invalid delta %r.' % delta
-#             raise ValueError(msg)
-#
-#         if v1.dtype == np.dtype('uint8'):
-#             diff = v3.astype('float32') - v1.astype('float32')
-#         else:
-#             diff = v3 - v1
+ 
 
         timestamp = t2
-        x = v2
-#         x_dot = diff / np.float32(delta)
-        
+        x = v2 
         return (timestamp, (x, x_dot))
         
     def make_difference(self, tA, vA, tB, vB):

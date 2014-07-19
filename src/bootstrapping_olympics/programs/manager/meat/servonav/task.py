@@ -1,7 +1,7 @@
 from . import get_grid
-from bootstrapping_olympics.programs.manager.meat import load_agent_state
 from ..servo import BookkeepingServo, get_vsim_from_robot
-from bootstrapping_olympics import RobotInterface, ObsKeeper, LogsFormat, logger
+from bootstrapping_olympics import LogsFormat, RobotInterface, logger
+from bootstrapping_olympics.programs.manager.meat import load_agent_state
 from bootstrapping_olympics.utils import InAWhile, unique_timestamp_string
 from contracts import contract
 import numpy as np

@@ -1,5 +1,7 @@
+from blocks import SimpleBlackBoxT, SimpleBlackBoxTN
 from blocks.composition import series
 from blocks.library import Identity, Route
+from blocks.library.timed_named.wrappers import WrapTMfromT
 from bootstrapping_olympics import RepresentationNuisanceCausal
 from contracts import contract
 from contracts.utils import check_isinstance
@@ -54,7 +56,8 @@ class RepNuisanceCausalComb(RepresentationNuisanceCausal):
         return series(g1, g2)
 
     def get_L(self):
-        G2 = self.r2.get_G()
+        G2 = self.r2.get_G() 
+        assert isinstance(G2, SimpleBlackBoxT) and not isinstance(G2, SimpleBlackBoxTN)
         L1 = self.r1.get_L()
         L2 = self.r2.get_L()
         #                 commands
@@ -76,7 +79,7 @@ class RepNuisanceCausalComb(RepresentationNuisanceCausal):
 
         r1 = Route([({'commands':'commands'}, Identity(), {'commands':'commands'}),
                     ({'observations':'observations'}, Identity(), {'observations':'observations'}),
-                    ({'commands':'commands'}, G2, {'commands': 'cmd1'})])
+                    ({'commands':'commands'}, WrapTMfromT(G2), {'commands': 'cmd1'})])
 
 
         #   --> commands        --> cmd1:commands -> |H1| --> obs1
@@ -92,7 +95,8 @@ class RepNuisanceCausalComb(RepresentationNuisanceCausal):
         #   --> obs1:observations   --> |H2|
         #   -->   commands:commands -->
 
-        r3 = Route([({'obs1':'observations', 'commands':'commands'}, L2, {'observations':'observations'})])
+        r3 = Route([({'obs1':'observations', 'commands':'commands'}, 
+                     L2, {'observations':'observations'})])
 
         return series(r1, r2, r3)
 
