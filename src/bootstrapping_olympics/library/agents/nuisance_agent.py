@@ -1,9 +1,8 @@
 from .nuisance_agent_actions import wrap_agent_explorer, wrap_agent_learner
 from blocks import SimpleBlackBox, Sink
 from bootstrapping_olympics import (BasicAgent, ExploringAgent, LearningAgent, 
-    PredictingAgent, RepresentationNuisance, RepresentationNuisanceCausal, 
-    ServoingAgent, get_conftools_agents, get_conftools_nuisances, 
-    get_conftools_nuisances_causal)
+    PredictingAgent, RepresentationNuisanceCausal, ServoingAgent, 
+    get_conftools_agents)
 from contracts import contract
 from contracts.utils import check_isinstance
 
@@ -53,6 +52,14 @@ class NuisanceAgent(BasicAgent,
     def get_explorer(self):
         explorer = self.agent.get_explorer()
         return wrap_agent_explorer(explorer, self.nuisance)
+
+    @contract(returns=SimpleBlackBox)
+    def get_servo_system(self):
+        servo_system = self.agent.get_servo_system()
+        return wrap_agent_explorer(servo_system, self.nuisance)
+
+    def get_predictor(self):
+        raise NotImplementedError('todo')
 
     def merge(self, other):  # @UnusedVariable
         assert isinstance(other, NuisanceAgent)

@@ -1,8 +1,6 @@
 from blocks.composition import BBBBSeries
+from blocks.library.simple import Instantaneous, LastNSamplesT
 import numpy as np
-
-from .instantaneous import Instantaneous
-from .last_n_samples import LastNSamples
 
 
 __all__ = ['SampledDeriv']
@@ -11,14 +9,14 @@ __all__ = ['SampledDeriv']
 class SampledDeriv(BBBBSeries):
     """ Warning: not instantaneous --- see SampledDerivPartial. """
     def __init__(self):
-        BBBBSeries.__init__(self, LastNSamples(3, send_partial=False),
+        BBBBSeries.__init__(self, LastNSamplesT(3, send_partial=False),
                             ForwardDiff(partial=False), 'last3', 'fdiff')
 
 
 class SampledDerivPartial(BBBBSeries):
     """ This one gives one output for each timestamp. The first one is (x, 0). """
     def __init__(self):
-        BBBBSeries.__init__(self, LastNSamples(3, send_partial=True),
+        BBBBSeries.__init__(self, LastNSamplesT(3, send_partial=True),
                             ForwardDiff(partial=True), 'last3', 'fdiff')
 
 

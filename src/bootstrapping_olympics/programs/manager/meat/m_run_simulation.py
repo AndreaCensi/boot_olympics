@@ -1,19 +1,19 @@
 from blocks import NeedInput, NotReady
 from blocks.composition import series
-from blocks.exceptions import Finished
+from blocks import Finished
 from blocks.library import CheckSequence
-from bootstrapping_olympics import (ExplorableRobot, ExploringAgent, 
-    RobotInterface, logger)
+from blocks.library.timed.checks import check_timed_named
+from bootstrapping_olympics import (ExplorableRobot, ExploringAgent, logger)
 from contracts import contract
 from contracts.utils import check_isinstance
+import time
 import warnings
-from blocks.library.timed.checks import check_timed
-import numpy as np
 
 __all__ = ['run_simulation']
 
+
 @contract(id_robot='str', id_agent='str',
-          robot=RobotInterface, agent=ExploringAgent, max_observations='>=1',
+          robot=ExplorableRobot, agent=ExploringAgent, max_observations='>=1',
           max_time='>0')
 def run_simulation(id_robot, robot, id_agent, agent, max_observations,
                    max_time,
@@ -28,11 +28,7 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
         and
              (timestamp, ('commands', cmd))
     '''
-#     
-#     if id_episode is None:
-#         msg = 'In the new system you have to pass explicit id_episode'
-#         raise Exception(msg)
-#     
+
     check_isinstance(agent, ExploringAgent)
     check_isinstance(robot, ExplorableRobot)
 
@@ -49,8 +45,7 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
     logger.info('max_observations: %s' % max_observations)
     logger.info('max_time: %s' % max_time)
 
-    cmd_spec = robot.get_spec().get_commands()
-
+    
     if True:
         robot_sys = series(robot_as_sys,  # CheckBootSpec(robot.get_spec()),
                             CheckSequence())
@@ -61,49 +56,76 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
         robot_sys = robot_as_sys
     robot_sys.reset()  # = new_episode
     
-
     agent_sys = agent.get_explorer()
     agent_sys.set_name_for_log('agent_sys')
     agent_sys.reset()
+    
+    for x in run_simulation_systems(robot_sys=robot_sys, 
+                                    agent_sys=agent_sys, 
+                                    boot_spec=robot.get_spec(), 
+                                    max_observations=max_observations, 
+                                    max_time=max_time,
+                                    check_valid_values=check_valid_values):
+        yield x
+
+def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, max_time,
+                           check_valid_values):
+    cmd_spec = boot_spec.get_commands()
+    obs_spec = boot_spec.get_observations()
 
     counter = 0
     t0 = None
     while counter < max_observations:
         try:
             x = robot_sys.get(block=True)
-            check_timed(x)
-            t, obs = x
+            check_timed_named(x)
+            t, (signal, v) = x
             check_isinstance(t, float)
-            check_isinstance(obs, np.ndarray)
-            
+            if signal == 'observations':
+                obs = v
+                if check_valid_values:
+                    obs_spec.check_valid_value(obs)
+            else:
+                msg = 'Invalid signal %r from robot.' % (signal)
+                raise ValueError(msg)
             if t0 is None:
                 t0 = t
-                
+        
+        except NeedInput:
+            if counter == 0:
+                logger.info('Adding input to robot')
+                cmd0 = cmd_spec.get_default_value()
+                robot_sys.put((time.time(), ('commands', cmd0)))
+                continue
+            else:
+                raise
         except NotReady:
-            raise Exception('Hey, cannot obtain NotReady when block is True')
+            assert False, 'Hey, cannot obtain NotReady when block is True'
         except Finished:
             logger.info('Episode ended at %s due to obs.episode_end.'
                          % counter)
             break
             
-#         bd['id_robot'] = id_robot
-#         if id_episode is not None:
-#         bd['id_episode'] = id_episode
-
         yield t, ('observations', obs)
             
-        time_from_episode_start = t-t0
+        time_from_episode_start = t - t0
         if time_from_episode_start > max_time:
             logger.info('Episode ended at %s for time limit %s > %s ' % 
                          (counter, time_from_episode_start, max_time))
             break
 
         # logger.info('putting into agent')
-        agent_sys.put((t, obs), block=True)
+        agent_sys.put((t, ('observations', obs)), block=True)
 
         # logger.info('getting commands')
         try:
-            commands = agent_sys.get(block=True)
+            x = agent_sys.get(block=True)
+            check_timed_named(x)
+            t, (signal, commands) = x
+            if signal != 'commands':
+                msg = 'Invalid signal %r from robot.' % signal
+                raise ValueError(msg)
+            cmd_spec.check_valid_value(commands)
         except NeedInput:
             if counter > 3:
                 msg = 'Agent raises NeedInput after %s steps.' % counter
@@ -118,77 +140,8 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
         # logger.info('putting into robots')
         tu = t
         yield tu, ('commands', commands)
-        robot_sys.put((tu, (commands, id_agent)), block=True)
+        robot_sys.put((tu, ('commands', commands)), block=True)
 
         counter += 1
 
-
-
-#
-#
-# class RobotAsBlackBox2(SimpleBlackBox):
-#
-#     # TODO: remove in favor of RobotAsBlackBox
-#     @contract(robot=RobotInterface)
-#     def __init__(self, id_robot, robot, sleep=0.1):
-#         self.log_add_child('robot', robot)
-#
-#         self.sleep = sleep
-#         self.robot = robot
-#         self.last_obs = None
-#         self.id_robot = id_robot
-#
-#     def reset(self):
-#         self.info('resetting')
-#         self.keeper = ObsKeeper(boot_spec=self.robot.get_spec(),
-#                                 id_robot=self.id_robot,
-#                                 check_valid_values=False)
-#
-#         self.episode = self.robot.new_episode()
-#
-#     def __repr__(self):
-#         return 'RobotAsBlackBox(%r)' % self.robot
-#
-#     @contract(value='tuple(float,*)')
-#     def put(self, value, block=True, timeout=None):
-#         _, cmds = value
-#         self.robot.set_commands(*cmds)
-#
-#     def get(self, block=True, timeout=None):
-#         if block:
-#             res = bb_get_block_poll_sleep(self,
-#                                            timeout=timeout,
-#                                            sleep=self.sleep)
-# #             self.info('returning from blocking get(): %s' % str(res))
-#             return res
-#         else:
-#             return self._get_notblock()
-#
-#     def _get_notblock(self):
-#         self.info('getting')
-#         try:
-#             obs = self.robot.get_observations()
-#         except RobotObservations.NotReady as e:
-#             raise NotReady('robot not ready: %d' % e)
-#
-#         if self.last_obs is not None:
-#             if self.last_obs.timestamp == obs.timestamp:
-#                 raise NotReady('got same obs')
-#
-#         self.last_obs = obs
-#
-#         boot_observations = self.keeper.push(timestamp=obs.timestamp,
-#                                              observations=obs.observations,
-#                                              commands=obs.commands,
-#                                              commands_source=obs.commands_source,
-#                                              id_episode=self.episode.id_episode,
-#                                              id_world=self.episode.id_environment)
-#         res = boot_observations
-#
-# #         self.info('returning %s' % res)
-#
-#         return obs.timestamp, res
-#
-#
-#
-
+ 

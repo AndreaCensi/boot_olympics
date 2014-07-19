@@ -6,6 +6,8 @@ from contracts import contract
 from streamels import BootSpec, StreamSpec, make_streamels_float
 import numpy as np
 import warnings
+from blocks.interface import Sink
+from blocks.library.timed.checks import check_timed_named
 
 
 
@@ -44,9 +46,8 @@ class ObsNormalizeMax(LearningAgent, MultiLevelBase):
                 self.num = other.num
                 self.y_max_abs = other.y_max_abs
 
-    def process_observations(self, bd):
-        y = bd['observations']
-
+    @contract(y='array')
+    def process_y(self, y):
         y_abs = np.abs(y)
         if self.y_max_abs is None:
             self.y_max_abs = y_abs
@@ -54,6 +55,19 @@ class ObsNormalizeMax(LearningAgent, MultiLevelBase):
             self.y_max_abs = np.maximum(self.y_max_abs, y_abs)
 
         self.num += 1
+        
+    def get_learner_as_sink(self):
+        class NormalizeLearner(Sink):
+            def __init__(self, agent):
+                self.agent = agent
+            def put(self, value, block=True, timeout=None):  # @UnusedVariable
+                check_timed_named(value)
+                _, (signal, x) = value
+                if signal == 'observations':
+                    y = x
+                    self.agent.process_y(y)
+        return NormalizeLearner(self)
+                
 
     def get_transform(self):
         if not self._inited():

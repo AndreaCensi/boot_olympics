@@ -13,9 +13,10 @@ from conf_tools import SemanticMistake
 import numpy as np
 
 from . import default_expl_videos, default_servo_videos, default_servonav_videos
-from .. import (create_video, servo_stats_report, simulate, task_predict,
+from .. import (create_video, servo_stats_report, task_predict,
     learn_log, publish_once, task_servo, task_servonav,
     servo_stats_summary, predict_report)
+from bootstrapping_olympics.programs.manager.meat.simulate_imp import simulate_agent_robot
 
 
 def batch_jobs1(context, data_central, **kwargs):
@@ -375,14 +376,12 @@ class TaskRegister(object):
             write_extra = len(set(id_episodes) & 
                               set(id_episodes_with_extra)) > 0
 
-            tranche = self.compmake_job(simulate,
+            tranche = self.compmake_job(simulate_agent_robot,
                             data_central=self.data_central,
                              id_agent=explorer,
                              id_robot=id_robot,
                              max_episode_len=max_episode_len,
                              stateful=False,
-                             interval_print=5,
-                             num_episodes=len(id_episodes),
                              id_episodes=id_episodes,
                              cumulative=False,
                              write_extra=write_extra,

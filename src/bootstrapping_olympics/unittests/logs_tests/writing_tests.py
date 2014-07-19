@@ -1,15 +1,17 @@
+from blocks.library.timed.checks import check_timed_named
 from bootstrapping_olympics import (BootStream, ExploringAgent, LogIndex, 
     LogsFormat, ObsKeeper, UnsupportedSpec)
 from bootstrapping_olympics.programs.manager import DirectoryStructure # XXX
 from bootstrapping_olympics.programs.manager import run_simulation
 from bootstrapping_olympics.unittests import for_all_pairs
 from bootstrapping_olympics.utils import unique_timestamp_string
+from bootstrapping_olympics.utils.numpy_backported import assert_allclose
 from comptests.results import Skipped
+from contracts.utils import check_isinstance
 from numpy.testing.utils import assert_equal
 import numpy as np
 import shutil
 import tempfile
-from contracts.utils import check_isinstance
 
 
 
@@ -35,29 +37,40 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
     logs_format = LogsFormat.get_reader_for(filename)
     with logs_format.write_stream(filename=filename,
                                   id_stream=id_stream,
-                                  boot_spec=robot.get_spec()) as writer:
+                                  boot_spec=robot.get_spec(),
+                                  id_agent=id_agent,
+                                  id_robot=id_robot) as writer:
         
-        ok = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
+#         ok = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
                     
-        for t, bd in run_simulation(id_robot=id_robot,
+        for x in run_simulation(id_robot=id_robot,
                                            robot=robot,
                                            id_agent=id_agent,
                                            agent=agent,
                                            max_observations=3, max_time=1000,
                                            check_valid_values=True):
-            extra = {'random_number': np.random.randint(1)}            
+            
+            check_timed_named(x)
+            timestamp, (signal, value) = x
+            
+            writer.put((timestamp, (signal, value)))
+            
+            if signal == 'observations':
+                extra = {'random_number': np.random.randint(1)}
+                writer.put((timestamp, ('extra', extra)))
+                        
                             
-            bd_array = ok.push(timestamp=t, 
-                               observations=bd['observations'],
-                               commands=bd['commands'],
-                               commands_source=id_agent,
-                               id_episode='my_episode',
-                               id_world='unknown-world')
+#             bd_array = ok.push(timestamp=t, 
+#                                observations=bd['observations'],
+#                                commands=bd['commands'],
+#                                commands_source=id_agent,
+#                                id_episode='my_episode',
+#                                id_world='unknown-world')
                   
-            writer.push_observations(bd_array, extra)
+#             writer.push_observations(bd_array, extra)
     
             written_extra.append(extra)
-            written.append(bd_array) # not sure
+            written.append((timestamp, (signal, value))) # not sure
 
     logdirs = ds.get_log_directories()
     index = LogIndex()
@@ -79,9 +92,13 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
 
     read_back = []
     read_back_extra = []
-    for observations2 in stream.read(read_extra=True):
-        read_back_extra.append(observations2['extra'])
-        read_back.append(observations2)
+    for x in stream.read(read_extra=True):
+        check_timed_named(x)
+        (timestamp, (signal, value))  = x
+        if signal == 'extra':
+            read_back_extra.append(value)
+        else:
+            read_back.append(x)
 
     if len(read_back) != len(written):
         raise Exception('Written %d, read back %d.' % 
@@ -90,8 +107,9 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
     for i in range(len(read_back)):
         a = written[i]
         b = read_back[i]
-        check_isinstance(a, np.ndarray)
-        check_isinstance(b, np.ndarray)
+        assert a[0] == b[0]
+        assert a[1][0] == b[1][0] # signal
+        assert_allclose(a[1][1], b[1][1])
 
         fields = set(a.dtype.names) or set(b.dtype.names)
         fields.remove('extra')

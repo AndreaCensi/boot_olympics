@@ -1,11 +1,11 @@
+from .blocks_testing_utils import BlocksTest
+from blocks.composition import series, series_multi, series_two
+from blocks.library import (Collect, Delay, Identity, NameSignal, Route, Split, 
+    WithQueue)
+from blocks.utils import check_reset
 from contracts import contract
 
-from blocks.composition import series, series_multi, series_two
-from blocks.library import (Delay, Identity, NameSignal, Split,
-                            WithQueue, Collect, Route)
-from blocks.utils import check_reset
 
-from .blocks_testing_utils import BlocksTest
 
 
 class HTest(WithQueue):

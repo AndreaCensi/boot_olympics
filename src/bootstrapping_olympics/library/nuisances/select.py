@@ -4,6 +4,7 @@ from bootstrapping_olympics import (UnsupportedSpec, RepresentationNuisance,
     NuisanceNotInvertible)
 import numpy as np
 from streamels import check_streamels_1D
+from contracts.utils import check_isinstance
 
 
 __all__ = ['Select']
@@ -48,6 +49,7 @@ class Select(RepresentationNuisance):
         return streamels2
 
     def transform_value(self, value):
+        check_isinstance(value, np.ndarray)
         if value.size != self.expect_size:
             msg = 'Expected size %d, got shape %s.' % (self.expect_size, value.shape)
             raise ValueError(msg)

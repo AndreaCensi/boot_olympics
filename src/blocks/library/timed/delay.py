@@ -1,4 +1,4 @@
-from .with_queue import WithQueue
+from blocks.library.simple.with_queue import WithQueue
 
 
 __all__ = ['Delay']

@@ -1,11 +1,19 @@
 
-- id: "test_rnc_simple_${nuisance}"
+- id: "test_rnc_simple_obs_${nuisance}"
   desc: A causal nuisance obtained from a simple nuisance
   code:
   - bootstrapping_olympics.library.nuisances_causal.SimpleRNCObs
   - nuisance: "${nuisance}"
 
-- id: test_rnc_simple_rpermA
+
+- id: "test_rnc_simple_cmd_${nuisance}"
+  desc: A causal nuisance obtained from a simple nuisance
+  code:
+  - bootstrapping_olympics.library.nuisances_causal.SimpleRNCCmd
+  - nuisance: "${nuisance}"
+
+- id: test_rnc_simple_cmd_rpermA
+- id: test_rnc_simple_obs_rpermA
 
 
 - id: "dderivative"
@@ -19,5 +27,3 @@
   code:
   - bootstrapping_olympics.library.nuisances_causal.RNCIdentity
   - {}
-
-  

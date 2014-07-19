@@ -9,7 +9,6 @@ from blocks.library import (Identity, WrapTimedNamed, Route, SampledDeriv,
 from bootstrapping_olympics import RepresentationNuisanceCausal
 from streamels import (BootSpec, StreamSpec, CompositeStreamSpec,
     UnsupportedSpec, check_streamels_continuous)
-from blocks.library.sampled_deriv import SampledDerivPartial
 
 
 __all__ = ['DDerivative', 'DDerivativeConj']
@@ -50,7 +49,7 @@ class DDerivative(RepresentationNuisanceCausal):
         return Identity()
 
     @contract(returns=SimpleBlackBox)
-    def get_H(self):
+    def get_L(self):
         w = WrapTMfromT(series(SampledDeriv(), (MakeDict())))
 
         # ignore the "commands" signal
@@ -60,7 +59,7 @@ class DDerivative(RepresentationNuisanceCausal):
         return r
 
     @contract(returns=SimpleBlackBox)
-    def get_H_conj(self):
+    def get_L_conj(self):
         # XXX:
         warnings.warn(' this is not correct')
         w = WrapTMfromT(WrapTimedNamed(ExtractField('signal')))

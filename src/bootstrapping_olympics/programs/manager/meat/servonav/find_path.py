@@ -1,8 +1,11 @@
 from .astar_algo import astar, node2children_grid
+from blocks.interface import SimpleBlackBox
+from blocks.library.timed.checks import check_timed_named
 from contracts import contract, describe_type
 from geometry import SE2, SE2_from_SE3, SE3, angle_from_SE2
 import itertools
 import numpy as np
+from blocks.exceptions import NeedInput
 
 
 @contract(resolution='float,>0')
@@ -149,9 +152,13 @@ def get_grid(robot, vsim, resolution, debug=False):
     locations = [dict(pose=pose) for pose in poses]
     for loc in locations:
         pose = loc['pose']
+        robot_sys = robot.get_explorer()
+        robot_sys.reset()
         vehicle.set_pose(pose)
         if not debug:
-            loc['observations'] = mean_observations(robot, n=10)
+            rest = robot.get_spec().get_commands().get_default_value()
+            
+            loc['observations'] = mean_observations(robot_sys, rest=rest, n=10)
 
     return locations
 
@@ -200,16 +207,29 @@ def interpolate_sequence(poses, max_theta_diff_deg):
     return inter
 
 
-def mean_observations(robot, n):
+@contract(robot_sys=SimpleBlackBox, n='int,>=1', returns='tuple(array|None, array)')
+def mean_observations(robot_sys, n, rest):
     """ Averages the robot's observations at the given place. """
     # XXX: only works for 1D?
     obss = []
-    for _ in range(n):  # XXX: fixed threshold
-        obss.append(robot.get_observations().observations)
-
+    robot_pose = None
+    
+    robot_sys.put((0.0, ('commands', rest)))
+    while len(obss) < n:
+        x = robot_sys.get(block=True)
+        check_timed_named(x)
+        (_, (signal, value)) = x
+        if signal == 'observations':
+            obss.append(value)
+        if signal == 'robot_pose':
+            robot_pose = value
+        robot_sys.put((0.0, ('commands', rest)))
+                
     mean = np.mean(obss, axis=0)
-
-    return mean
+#     if robot_pose is None:
+#         raise ValueError('No robot_pose signal found.')
+    
+    return robot_pose, mean
 
 
 @contract(poses='list[>=3](array[KxK])')

@@ -1,4 +1,4 @@
-from .with_queue import WithQueue
+from blocks.library.simple import WithQueue
 from contracts import contract
 from blocks.utils import check_reset
 

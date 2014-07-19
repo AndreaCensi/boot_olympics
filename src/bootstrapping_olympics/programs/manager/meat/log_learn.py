@@ -6,6 +6,7 @@ from bootstrapping_olympics import LearningAgent, LearningConverged, logger
 from contracts import contract
 from contracts.utils import check_isinstance
 import warnings
+from blocks.library.timed.checks import check_timed_named
 
 
 __all__ = [
@@ -111,6 +112,9 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
             source.reset()
             try:
                 for obs in bb_pump_block_yields(source, learner):
+                    check_timed_named(obs)
+                    (t, (_, _)) = obs
+                    
                     state.num_observations += 1
                     progress.obs.done += 1
 
@@ -141,8 +145,12 @@ class BootStreamAsSource(IteratorSource):
         self.to_learn = to_learn
 
     def get_iterator(self):
-        for obs in self.stream.read(only_episodes=self.to_learn):
-            yield obs['timestamp'], obs
+        for x in self.stream.read(only_episodes=self.to_learn):
+            check_timed_named(x)
+            (_, (signal, _)) = x
+            if signal in ['extra', 'id_episode']:
+                continue
+            yield x #obs['timestamp'], obs
 
 
 class ProgressSingle(object):

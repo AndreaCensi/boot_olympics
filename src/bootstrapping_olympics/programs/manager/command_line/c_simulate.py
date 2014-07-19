@@ -1,4 +1,4 @@
-from ..meat import simulate
+from ..meat import simulate_agent_robot
 from .main import BOM
 from bootstrapping_olympics.utils import unique_timestamp_string
 
@@ -32,7 +32,7 @@ class CmdSimulate(BOM.get_sub()):
         
         id_episodes = [unique_timestamp_string()+'-%s' % i 
                        for i in range(options.num_episodes)] 
-        simulate(data_central,
+        simulate_agent_robot(data_central,
                  id_agent=id_agent,
                  id_robot=id_robot,
                  max_episode_len=options.episode_len,

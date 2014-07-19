@@ -1,4 +1,4 @@
- from bootstrapping_olympics.utils import yaml_load
+from bootstrapping_olympics.utils import yaml_load
 from contracts import contract, describe_type
 import zlib
 

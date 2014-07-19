@@ -11,11 +11,11 @@ __all__ = [
 
 
 class NuisanceRobot(RobotInterface):
-    """ An agent that sees the data filtered through the given nuisances."""
+    """ A robot filtered through the nuisance. """
     
     @contract(nuisances='list(str|code_spec|isinstance(RepresentationNuisanceCausal)'
                         '|isinstance(RepresentationNuisance))',
-              robot='str|code_spec|isinstance(Basicrobot)')
+              robot='str|code_spec|isinstance(BasicRobot)')
     def __init__(self, nuisances, robot):
         from bootstrapping_olympics.library.agents.nuisance_agent_actions \
             import instance_nuisance_series
@@ -42,14 +42,7 @@ class NuisanceRobot(RobotInterface):
         from bootstrapping_olympics.library.agents.nuisance_agent_actions \
             import wrap_robot_exploration
         return wrap_robot_exploration(stream, self.nuisance)
-    
-#     @contract(returns=Source)
-#     def get_passive_stream(self): 
-#         source = self.robot.get_passive_stream()
-#         from bootstrapping_olympics.library.agents.nuisance_agent_actions \
-#             import wrap_robot_passive_stream
-#         return wrap_robot_passive_stream(source, self.nuisance)
-#     
+     
     # deprecated    
     def get_observations(self):
         raise Exception('Using old API with set_commands().')

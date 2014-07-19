@@ -7,13 +7,9 @@ from bootstrapping_olympics.utils import (make_sure_dir_exists,
     warn_good_filename, warn_good_identifier, yaml_dump)
 from collections import defaultdict
 from contracts.utils import check_isinstance
-from hdflog.hdflogwriter import PGHDFLogWriter
+from hdflog import PGHDFLogWriter
 import numpy as np
 import warnings
-import zlib
-
-
-
 
 
 
@@ -48,7 +44,7 @@ class HDFLogWriter2(Sink):
         check_timed_named(value)
         timestamp, (signal, ob) = value
         
-        self.info('received %s %s' % (timestamp, signal))
+        #self.info('received %s %s' % (timestamp, signal))
         
         self.num_put[signal] += 1
         
@@ -70,17 +66,13 @@ class HDFLogWriter2(Sink):
 
         self.close()
 
-    def write_info(self):
-#         group = self.writer.get_group()
+    def write_info(self): 
         structure = self.boot_spec.to_yaml()
         
         info = dict(id_robot=self.id_robot,
                     id_agent=self.id_agent,
                     id_stream=self.id_stream,
-                    boot_spec=structure)
-#         group._v_attrs['id_robot'] = self.id_robot
-#         group._v_attrs['id_agent'] = self.id_agent
-#         group._v_attrs['id_stream'] = self.id_stream
+                    boot_spec=structure) 
 
         yaml_spec = yaml_dump(info)
         self.writer.log_large_string(0.0, 'boot_info', yaml_spec)
@@ -89,7 +81,7 @@ class HDFLogWriter2(Sink):
     def close(self):
         check_reset(self, 'writer')
         
-        self.info('Messages seen: %s' % self.num_put)
+        self.info('Messages seen: %s' % dict(**self.num_put))
         if not self.num_put:
             msg = 'No messages seen.'
             raise Exception(msg)
@@ -102,24 +94,4 @@ class HDFLogWriter2(Sink):
     def cleanup(self):
         check_reset(self, 'writer')
         self.writer.finish()
-#         
-# 
-# def remove_fields(dt, fields_to_remove):
-#     dt2 = []
-#     for name in dt.names:
-#         if not name in fields_to_remove:
-#             dt2.append((name, dt[name]))
-#     return np.dtype(dt2)
-# 
-# 
-def compress(s):
-    ''' Compresses using only one thread. '''
-    encoder = zlib.compressobj()
-    data = encoder.compress(s)
-    data = data + encoder.flush()
-    return data
-# 
-# 
-# def compress_multi(s):
-#     ''' Compresses using possibly multiple threads. '''
-#     return zlib.compress(s)
+

@@ -1,11 +1,13 @@
-from contracts import contract
-
-from bootstrapping_olympics import (RepresentationNuisance, NuisanceNotInvertible)
+from bootstrapping_olympics import NuisanceNotInvertible, RepresentationNuisance
 from bootstrapping_olympics.library.nuisances import (
     find_polytope_bounds_after_linear)
+from contracts import contract
+from contracts.utils import check_isinstance
+from streamels import (BOOT_OLYMPICS_SENSEL_RESOLUTION, ValueFormats, 
+    check_streamels_1D, check_streamels_1D_size, check_streamels_continuous, 
+    streamel_dtype)
 import numpy as np
-from streamels import (ValueFormats, streamel_dtype, check_streamels_1D_size,
-    BOOT_OLYMPICS_SENSEL_RESOLUTION, check_streamels_1D, check_streamels_continuous)
+
 
 
 __all__ = ['GenericLinear']
@@ -75,25 +77,11 @@ class GenericLinear(RepresentationNuisance):
         return streamels2
 
     def transform_value(self, value):
+        check_isinstance(value, np.ndarray)
         value2 = np.dot(self.A, value)
         # enforce upper/lower bounds, to account for numerical errors
-        value2 = value2.astype(BOOT_OLYMPICS_SENSEL_RESOLUTION)
-#        n = 5
-#        print('---') 
-#        which = [30, 130, 131, 132]
-#        print 'showing indices %s' % which
-#        print 'value', value[which]
-#        print 'scale', self.A.diagonal()[which]
-#        print 'value2', value2[which]
+        value2 = value2.astype(BOOT_OLYMPICS_SENSEL_RESOLUTION) 
         value2 = np.clip(value2, self.lower, self.upper)
-#        
-#        print 'value2clipped', value2[which]
-#        print 'lower', self.lower[which]
-#        print 'upper', self.upper[which]
-#        
-#        print value2.dtype, self.lower.dtype
-#        print ('value2< upper', (value2 < self.upper)[which])
-#        print ('value2<=upper', (value2 <= self.upper)[which])
         return value2
 
     def inverse(self):

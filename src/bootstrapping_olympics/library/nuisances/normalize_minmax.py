@@ -3,6 +3,7 @@ import numpy as np
 from streamels import  (streamel_dtype,
      ValueFormats, check_streamels_1D,
     check_streamels_continuous)
+from contracts.utils import check_isinstance
 
 
 __all__ = ['NormalizeMinMax']
@@ -49,6 +50,7 @@ class NormalizeMinMax(RepresentationNuisance):
         return streamels2
 
     def transform_value(self, value):
+        check_isinstance(value, np.ndarray)
         mean = np.mean(value)
         spread = np.max(value) - np.min(value)
 

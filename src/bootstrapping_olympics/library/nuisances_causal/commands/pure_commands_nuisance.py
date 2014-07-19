@@ -60,7 +60,7 @@ class PureCommandsPostFilter(WithQueue):
     def __repr__(self):
         return 'PureCommandsPostFilter(%s)' % (self.delta)
         
-    @contract(value='tuple(float, tuple( (None|tuple(*,str)), RobotObservations))')
+#     @contract(value='tuple(float, tuple( (None|tuple(*,str)), RobotObservations))')
     def put_noblock(self, value):
         t, (cmds, obs) = value
         if cmds is None:

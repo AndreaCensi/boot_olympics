@@ -9,6 +9,8 @@ __all__ = [
     'Sink',
     'Source',
     'SimpleBlackBox',
+    'SimpleBlackBoxT',
+    'SimpleBlackBoxTN',
 ]
 
 
@@ -161,4 +163,10 @@ class SimpleBlackBox(Sink, Source):
                     
     """
 
+class SimpleBlackBoxT(SimpleBlackBox):
+    """ Data are of the form (t, value) """
+    
 
+class SimpleBlackBoxTN(SimpleBlackBoxT):
+    """ Data are of the form (t, (signal, value)) """
+    

@@ -1,19 +1,18 @@
-import warnings
-
+from .report_utils import save_report
+from astatsa.prediction import PredictionStatsSampled
+from bootstrapping_olympics import PredictorAgentInterface, logger
+from bootstrapping_olympics.programs.manager.meat import load_agent_state
+from bootstrapping_olympics.utils import PredictionStats
 from contracts.utils import check_isinstance
 from numpy.ma.core import allclose
-
-from astatsa.prediction import PredictionStatsSampled
-from bootstrapping_olympics import PredictorAgentInterface
-from bootstrapping_olympics.utils import PredictionStats
-import numpy as np
 from reprep import Report
+import numpy as np
+import warnings
 
-from bootstrapping_olympics.programs.manager.meat import load_agent_state
-from .report_utils import save_report
-
-
-__all__ = ['task_predict', 'predict_report']
+__all__ = [
+    'task_predict', 
+    'predict_report',
+]
 
 
 def task_predict(data_central, id_agent, id_robot,

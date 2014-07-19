@@ -2,7 +2,7 @@ from contracts import contract
 
 from blocks import NotReady, Finished, SimpleBlackBox
 
-from .with_queue import WithQueue
+from blocks.library.simple.with_queue import WithQueue
 from blocks.utils import check_reset
 from blocks.exceptions import NeedInput
 

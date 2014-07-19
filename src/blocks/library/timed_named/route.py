@@ -1,18 +1,21 @@
 import warnings
 
-from contracts import contract, describe_value
+from contracts import contract
 
 from blocks import NotReady, Finished
 
-from .with_queue import WithQueue
+from blocks.library import WithQueue
 from blocks.utils import check_reset
 from blocks.exceptions import NeedInput
+from blocks.library.timed.checks import check_timed_named
+from contracts.interface import describe_value, describe_type
+from blocks.interface import SimpleBlackBoxTN
 
 
 __all__ = ['Route']
 
 
-class Route(WithQueue):
+class Route(WithQueue, SimpleBlackBoxTN):
     """
         Routes signals among children according to user-defined rules.
          
@@ -27,7 +30,7 @@ class Route(WithQueue):
         for i, b in enumerate(self.boxes):
             self.log_add_child('%d' % i, b)
 
-    def __str__(self):
+    def __repr__(self):
         cont = '|'.join([str(b)for b in self.boxes])
         return 'Route(%s)' % cont
 
@@ -47,7 +50,8 @@ class Route(WithQueue):
     def put_noblock(self, value):
         check_reset(self, 'finished')
 
-        t, (name, ob) = explode_signal(value)
+        check_timed_named(value, self)
+        t, (name, ob) = value
         # self.info('routing %s, %s' % (t, name))
         n = 0
         for (translate, b, _) in self.routing:
@@ -56,7 +60,17 @@ class Route(WithQueue):
             name2 = translate[name]
             x = t, (name2, ob)
             warnings.warn('check this')
-            b.put(x, block=True)
+            try:
+                b.put(x, block=True)
+            except NotReady:
+                raise
+            except BaseException:
+                msg = 'Error while trying to put into %r.' % self.log_child_name(b)
+                msg += '\n   child: %s' %  describe_value(b)
+                msg += '\n  of type %s' %  describe_type(b)
+                msg += '\n x = %s' % describe_value(x)
+                self.error(msg)
+                raise
             n += 1
         # if n == 0:
             # self.info('no route for %s' % name)
@@ -87,13 +101,23 @@ class Route(WithQueue):
             self._finished = True
 
     def _pump_one(self, i, b):
-        if self.finished[i]: return
+        if self.finished[i]: 
+            return
         translate = self.routing[i][2]
         new_obs = []
         while True:
             try:
                 x = b.get(block=True)
-                t, (name, value) = explode_signal(x)
+                check_timed_named(x, self)
+                t, (name, value) = x
+                if not name in translate:
+                    msg = 'A block originated an unknown signal.'
+                    msg +='\n b = %s' % describe_value(b)
+                    msg +='\n signal = %s' % name
+                    msg +='\n routing  in = %s' % self.routing[i][0]
+                    msg +='\n routing out = %s' % self.routing[i][2]
+                    self.info(msg)
+                    raise ValueError(msg)
                 name2 = translate[name]
                 x2 = t, (name2, value)
                 new_obs.append(x2)
@@ -105,13 +129,6 @@ class Route(WithQueue):
             except NeedInput:
                 break
         return new_obs
-
-
-def explode_signal(value):
-    if not (isinstance(value, tuple) and len(value) == 2 and isinstance(value[1], tuple) and len(value[1]) == 2):
-        msg = 'Expected (time, (signal, value)), got %s' % describe_value(value)
-        raise ValueError(msg)
-    return value
 
 
 

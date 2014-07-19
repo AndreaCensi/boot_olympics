@@ -1,7 +1,10 @@
 '''A simple robot useful for testing.'''
 
-from bootstrapping_olympics import (BootSpec, Constants, RobotInterface,
-    RobotObservations, EpisodeDesc)
+from blocks import SimpleBlackBoxTN
+from blocks.library.simple import WithQueue
+from blocks.library.timed.checks import check_timed_named
+from bootstrapping_olympics import (
+    BasicRobot, BootSpec, Constants, EpisodeDesc, ExplorableRobot)
 from bootstrapping_olympics.utils import unique_timestamp_string
 from contracts import contract
 import numpy as np
@@ -11,7 +14,7 @@ import time
 __all__ = ['TestRobot']
 
 
-class TestRobot(RobotInterface):
+class TestRobot(BasicRobot, ExplorableRobot):
     '''
         A simple robot useful for testing.
     
@@ -28,34 +31,53 @@ class TestRobot(RobotInterface):
     @contract(value='str', dt='>0')
     def __init__(self, boot_spec, value,
                  dt=Constants.DEFAULT_SIMULATION_DT):
-        self.timestamp = time.time()
         self.dt = dt
         self.value = value
         self.spec = BootSpec.from_yaml(boot_spec)
-        self.commands = self.spec.get_commands().get_default_value()
-        self.commands_source = Constants.CMD_SOURCE_REST
 
     @contract(returns='array')
-    def compute_observations(self):
+    def compute_observations(self, t, u):  # @UnusedVariable
         """ Computes the observations from the user string. """
-        t = self.timestamp  # @UnusedVariable
-        u = self.commands  # @UnusedVariable
         value = eval(self.value)
         value = np.array(value)
-        # print('%s -> %s' % (self.value, value))
         return value
 
     def get_spec(self):
         return self.spec
 
-    def get_observations(self):
-        obs = self.compute_observations()
-        return RobotObservations(timestamp=self.timestamp,
-                                 observations=obs,
-                                 commands=self.commands,
-                                 commands_source=self.commands_source,
-                                 episode_end=False,
-                                 robot_pose=None)
+    def get_active_stream(self):
+          
+        class TestRobotStream(WithQueue, SimpleBlackBoxTN):
+            def __init__(self, robot):
+                WithQueue.__init__(self)
+                self.robot = robot
+                
+            def reset(self):
+                WithQueue.reset(self)
+                episode = self.robot.new_episode()  # @UnusedVariable
+                
+                self.t0 = None
+                     
+            @contract(value='tuple(float,*)')
+            def put_noblock(self, value):
+                check_timed_named(value, self)
+                
+                (timestamp, (sname, x)) = value
+                if self.t0 is None:
+                    self.t0 = timestamp
+                if not sname in ['commands']:
+                    msg = 'Unexpected signal %r.' % sname
+                    raise ValueError(msg)
+                 
+                if sname == 'commands':
+                    u = x
+                    t1 = timestamp + self.robot.dt
+                    obs = self.robot.compute_observations(t1 - self.t0, u=u)
+                    
+                    x = (t1, ('observations', obs))
+                    self.append(x)
+                
+        return TestRobotStream(self)
 
     def __str__(self):
         return 'TestRobot'

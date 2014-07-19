@@ -53,10 +53,10 @@ class RepNuisanceCausalComb(RepresentationNuisanceCausal):
         g2 = self.r2.get_G()
         return series(g1, g2)
 
-    def get_H(self):
+    def get_L(self):
         G2 = self.r2.get_G()
-        H1 = self.r1.get_H()
-        H2 = self.r2.get_H()
+        L1 = self.r1.get_L()
+        L2 = self.r2.get_L()
         #                 commands
         #                    v     |
         #                   G2     |
@@ -87,12 +87,12 @@ class RepNuisanceCausalComb(RepresentationNuisanceCausal):
         r2 = Route([({'observations':'observations'}, Identity(), {'observations': 'observations'}),
                     ({'cmd1':'cmd1'}, Identity(), {'cmd1': 'cmd1'}),
                     ({'cmd1':'commands',
-                      'observations':'observations'}, H1, {'observations':'obs1'})])
+                      'observations':'observations'}, L1, {'observations':'obs1'})])
 
         #   --> obs1:observations   --> |H2|
         #   -->   commands:commands -->
 
-        r3 = Route([({'obs1':'observations', 'commands':'commands'}, H2, {'observations':'observations'})])
+        r3 = Route([({'obs1':'observations', 'commands':'commands'}, L2, {'observations':'observations'})])
 
         return series(r1, r2, r3)
 
@@ -101,6 +101,6 @@ class RepNuisanceCausalComb(RepresentationNuisanceCausal):
         g2c = self.r2.get_G_conj()
         return series(g2c, g1c)
 
-    def get_H_conj(self):
+    def get_L_conj(self):
         raise NotImplementedError(type(self))
 

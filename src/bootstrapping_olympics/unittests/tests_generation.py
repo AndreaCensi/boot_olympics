@@ -16,6 +16,8 @@ for_all_nuisances_causal = comptests_for_all(library_nuisances_causal)
 for_all_pairs = comptests_for_all_pairs(library_agents, library_robots)
 for_all_robot_nuisance_pairs = comptests_for_all_pairs(library_robots, library_nuisances)
 
+for_all_robot_rnc_pairs = comptests_for_all_pairs(library_robots, library_nuisances_causal)
+
 
 
 # 

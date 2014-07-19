@@ -1,9 +1,13 @@
+from .with_queue import WithQueue
+from blocks import SimpleBlackBoxT
 from contracts import contract
 
-from .with_queue import WithQueue
 
 
-__all__ = ['LastNSamples']
+__all__ = [
+    'LastNSamples',
+    'LastNSamplesT',
+]
 
 
 class LastNSamples(WithQueue):
@@ -42,3 +46,6 @@ class LastNSamples(WithQueue):
 
         WithQueue.end_input(self)
 
+
+class LastNSamplesT(LastNSamples, SimpleBlackBoxT):
+    pass

@@ -2,7 +2,7 @@ from ..manager_tests import create_tmp_dir
 from ..tests_generation import for_all_pairs
 from bootstrapping_olympics import (ExploringAgent, LogsFormat, UnsupportedSpec, 
     logger)
-from bootstrapping_olympics.programs.manager import DataCentral, simulate
+from bootstrapping_olympics.programs.manager import DataCentral, simulate_agent_robot
 from bootstrapping_olympics.utils import assert_allclose, safe_makedirs
 from bootstrapping_olympics.utils.dates import unique_timestamp_string
 from comptests.results import Skipped
@@ -30,7 +30,7 @@ def check_logs_formats(id_agent, agent, id_robot, robot):  # @UnusedVariable
             id_episodes = [(unique_timestamp_string() +'-%s' % i) 
                            for i in range(num_episodes)]
 
-            simulate(data_central, id_agent=id_agent, id_robot=id_robot,
+            simulate_agent_robot(data_central, id_agent=id_agent, id_robot=id_robot,
                  max_episode_len=2,
                  cumulative=False,
                  id_episodes=id_episodes,

@@ -1,10 +1,8 @@
+from bootstrapping_olympics import NuisanceNotInvertible, RepresentationNuisance
 from contracts import contract
-
-from bootstrapping_olympics import (RepresentationNuisance,
-    NuisanceNotInvertible)
+from streamels import ValueFormats, check_streamels_continuous
 import numpy as np
-from streamels import ValueFormats
-from streamels import check_streamels_continuous
+
 
 
 __all__ = ['Discretize']
@@ -15,7 +13,7 @@ class Discretize(RepresentationNuisance):
         This nuisance discretizes a float stream into 
         an integer representation.  
         
-        There is an inverse, but it is imprecise. 
+        There is only an approximated inverse. 
     '''
 
     @contract(levels='int,>=2')
@@ -36,7 +34,10 @@ class Discretize(RepresentationNuisance):
         streamels2['default'] = self.transform_value(streamels['default'])
         return streamels2
 
+    @contract(value='array')
     def transform_value(self, value):
+        assert isinstance(value, np.ndarray), value
+        assert value.shape == self.lower.shape, value
         # Value normalized in [0,1]
         v01 = (value - self.lower) / (self.upper - self.lower)
         v01 = np.clip(v01, 0, +1)

@@ -21,6 +21,9 @@ class WithQueue(SimpleBlackBox):
 
     def __init__(self):
         pass
+    
+    def __repr__(self):
+        return '%s()' % type(self).__name__ 
 
     def reset(self):
         self._queue = []
@@ -28,21 +31,15 @@ class WithQueue(SimpleBlackBox):
 
     def get(self, block=True, timeout=None):  # @UnusedVariable
         check_reset(self, '_queue')
-#         self.info('trying to get(block=%s): qlen: %d finished: %d' %
-#                   (block, len(self._queue), self._finished))
         if not self._queue:
             if self._finished:
-#                 self.info('finished')
                 raise Finished()
             else:
                 if block:
-#                     self.info('NeedInput')
                     raise NeedInput()
                 else:
-#                     self.info('not ready')
                     raise NotReady()
         res = self._queue.pop(0)
-#         self.info('returned %s' % str(res))
         return res
 
     def append(self, value):
@@ -51,11 +48,8 @@ class WithQueue(SimpleBlackBox):
         self._queue.append(value)
 
     def end_input(self):
-#         print('end_input() called for %s' % self)
         self._finished = True
 
     def put(self, value, block=True, timeout=None):  # @UnusedVariable
-        # XXX
-#         self.info('put(%s)' % str(value))
         self.put_noblock(value)
     

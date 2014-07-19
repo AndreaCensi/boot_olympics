@@ -1,14 +1,13 @@
 from .tests_generation import for_all_robots
-from blocks import SimpleBlackBox
-from blocks.library.timed.checks import check_timed
+from blocks import NeedInput, SimpleBlackBox
+from blocks.library.timed.checks import check_timed_named
 from bootstrapping_olympics import (BasicRobot, BootSpec, EpisodeDesc, 
-    ExplorableRobot, RobotObservations, StreamSpec)
+    ExplorableRobot, StreamSpec)
 from comptests.results import Skipped
 from contracts import describe_type
 from contracts.utils import check_isinstance
 from numpy.ma.testutils import assert_not_equal
 from types import NoneType
-import numpy as np
 import yaml
 
 
@@ -46,49 +45,52 @@ def check_robot_new_episode_id(id_robot, robot): #@UnusedVariable
     ep2 = robot.new_episode()
     assert_not_equal(ep1.id_episode, ep2.id_episode)
 
-
-@for_all_robots
-def check_robot_observations(id_robot, robot): #@UnusedVariable
-    robot.new_episode() # always start an episode before getting observations
-    obs = robot.get_observations()
-    assert isinstance(obs, RobotObservations)
-    assert isinstance(obs.timestamp, float)
-    assert isinstance(obs.observations, np.ndarray)
-    assert isinstance(obs.commands, np.ndarray)
-    assert isinstance(obs.commands_source, str)
-
-
 @for_all_robots
 def check_robot_observations_compliance(id_robot, robot): #@UnusedVariable
     if not isinstance(robot, ExplorableRobot):
-        return Skipped('Robot not ExplorableRobot: %s' % describe_type(robot))
+        msg = 'Robot not ExplorableRobot: %s' % describe_type(robot)
+        print(msg)
+        return Skipped(msg)
     
     try:
         stream = robot.get_active_stream()
     except NotImplementedError as e:
-        return Skipped('Not actually exploring: %s' %e)
+        msg = 'Not actually exploring: %s' %e
+        print(msg)
+        return Skipped(msg)
     
-    #robot.new_episode() # always start an episode before getting observations
-    check_isinstance(stream , SimpleBlackBox)
+    check_isinstance(stream, SimpleBlackBox)
     stream.reset()
+    stream.set_name_for_log('stream')
     
     # TODO: check that is a simulation, not an actual robot
     
-    res  = stream.get(block=True)
+    try:
+        res_ = stream.get(block=True)
+    except NeedInput:
+        pass
+    else:
+        msg = 'Expected it would raise NeedInput without any commands.'
+        msg += ' Actually got %r. ' % str(res_)
+        raise Exception(msg)
     
-    check_timed(res)
-    t, bd = res  # @UnusedVariable
+    rest = robot.get_spec().get_commands().get_default_value()
+    print(stream)
+    stream.put((3.0, ('commands', rest)))
     
-    observations = bd['observations']
-    commands = bd['commands']
+    res = stream.get(block=True)
+    
+    check_timed_named(res)
+    t, (signal, obs) = res  # @UnusedVariable
+    
+    if not signal == 'observations':
+        msg = 'Expected "observations", got %r.' % signal
+        raise Exception(msg)
     
     obs_spec = robot.get_spec().get_observations()
-    obs_spec.check_valid_value(observations)
+    obs_spec.check_valid_value(obs)
     
-    cmd_spec = robot.get_spec().get_commands()
-    cmd_spec.check_valid_value(commands)
-
-
+    
 @for_all_robots
 def check_robot_state(id_robot, robot): #@UnusedVariable
     robot.new_episode() # always start an episode before getting observations

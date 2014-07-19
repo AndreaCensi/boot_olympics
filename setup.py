@@ -26,18 +26,20 @@ setup(name='BootOlympics',
       package_dir={'':'src'},
       packages=find_packages('src'),
       install_requires=[
-	                   'nose',
+	    'nose',
         'PyYAML',
         'PyContracts>=1.2,<2',
         'ConfTools>=1.0,<2',
         'RepRep>=1.0,<3',
         'compmake>=2,<3',
-        'SystemCmd'
+        'SystemCmd',
+        'hdflog',
       ],
       extras_require={},
 
       setup_requires=['nose>=1.0'],
-      tests_require=['nose>=1.0', 'rudolf', 'nose-progressive', 'nose-cov'],
+      tests_require=['nose>=1.0', 'rudolf', 'nose-progressive', 'nose-cov',
+                     'comptests'],
 
       entry_points={
          'console_scripts': [

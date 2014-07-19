@@ -8,6 +8,7 @@ from blocks import SimpleBlackBox, Source, Sink
 from .exceptions import Full, NotReady, Finished, NeedInput
 from .pumps import bb_pump
 from .utils import check_reset
+from blocks.interface import SimpleBlackBoxTN, SimpleBlackBoxT
 
 
 __all__ = [
@@ -37,8 +38,14 @@ def series(*args):
 @contract(a='isinstance(SimpleBlackBox)|isinstance(Source)',
           b='isinstance(SimpleBlackBox)|isinstance(Sink)')
 def series_two(a, b, name1=None, name2=None):
+    if isinstance(a, SimpleBlackBoxTN) and isinstance(b, SimpleBlackBox):
+        return BBBBSeriesTN(a, b, name1, name2)
+    if isinstance(a, SimpleBlackBoxT) and isinstance(b, SimpleBlackBox):
+        return BBBBSeriesT(a, b, name1, name2)
+    
     if isinstance(a, SimpleBlackBox) and isinstance(b, SimpleBlackBox):
         return BBBBSeries(a, b, name1, name2)
+    
     if isinstance(a, Source) and isinstance(b, SimpleBlackBox):
         return SourceBBSeries(a, b, name1, name2)
     if isinstance(a, SimpleBlackBox) and isinstance(b, Sink):
@@ -175,8 +182,8 @@ class BBBBSeries(SimpleBlackBox):
         self.log_add_child(name1, a)
         self.log_add_child(name2, b)
 
-    def __str__(self):
-        return 'BBBBSeries(%s, %s)' % (self.a, self.b)
+    def __repr__(self):
+        return 'BBBBSeries(%r, %r)' % (self.a, self.b)
 
     @contract(names='list[>=2](str)')
     def set_names(self, names):
@@ -200,32 +207,35 @@ class BBBBSeries(SimpleBlackBox):
         self.b.reset()
 
     def end_input(self):
-#         self.info('end_input()')
         check_reset(self, 'reset_once')
         self.a.end_input()
         self._pump()
 
     def put(self, value, block=True, timeout=None):
         check_reset(self, 'reset_once')
-#         self.info('put(): %s' % str(value))
 
         assert not self.status_a_finished
 
         # XXX: not sure this is corect
-        self.a.put(value, block=block, timeout=timeout)
+        try:
+            self.a.put(value, block=block, timeout=timeout)
+        # TODO: other exceptions
+        except NotReady:
+            raise
+        except BaseException:
+            msg = 'Error while trying to put() into %r.' % self.log_child_name(self.a)
+            msg += '\n a = %s' % describe_value(self.a)
+            msg += '\n of type %s' % describe_type(self.a)
+            msg += '\n value = %s' % describe_value(value)
+            self.error(msg)
+            raise
+            
         self.status_a_need_input = False
         self.status_a_finished = False
 
-
         self._pump()
-#         try:
-#             bb_pump(self.a, self.b)
-#         except Finished:
-#             self.b.end_input()
 
     def _pump(self):        
-#         self.info('_pump()')
-        
         num = 0
         while True:
             try:
@@ -239,35 +249,39 @@ class BBBBSeries(SimpleBlackBox):
                 self.status_a_finished = True
                 self.b.end_input()
                 break
+            except BaseException:
+                msg = 'Error while trying to get() from %r.' % self.log_child_name(self.a)
+                msg += '\n a = %s' % describe_value(self.a)
+                msg += '\n of type %s' % describe_type(self.a)
+                self.error(msg)
+                raise
 
-            self.b.put(x, block=True)
+            try:
+                self.b.put(x, block=True)
+            except BaseException:
+                msg = 'Error while trying to put() into %r.' % self.log_child_name(self.b)
+                msg += '\n a = %s' % describe_value(self.b)
+                msg += '\n of type %s' % describe_type(self.b)
+                msg += '\n value = %s' % describe_value(x)
+
+                self.error(msg)
+                raise
+
             self.status_b_need_input = True
             num += 1
 
-    def log_get_short_status(self):
-        if not 'reset_once' in self.__dict__:
-            return 'no reset'
-        return '%s:%s%s; %s:%s%s' % (self.log_child_name(self.a),
-                                         ' ni' if self.status_a_need_input else '',
-                                       ' f' if self.status_a_finished else '',
-                                       self.log_child_name(self.b),
-                                        ' ni' if self.status_b_need_input else '',
-                                       ' f' if self.status_b_finished else '')
-#
-#         try:
-#             bb_pump(self.a, self.b)
-# #             bb_pump_block(self.a, self.b)
-#         except Finished:
-#             self.b.end_input()
-#         except NotReady:
-#             assert False
-#         except NeedInput:
-#             self.info('bb_pump_block: NeedInput')
-#             raise
+#     def log_get_short_status(self):
+#         if not 'reset_once' in self.__dict__:
+#             return 'no reset'
+#         return '%s:%s%s; %s:%s%s' % (self.log_child_name(self.a),
+#                                          ' ni' if self.status_a_need_input else '',
+#                                        ' f' if self.status_a_finished else '',
+#                                        self.log_child_name(self.b),
+#                                         ' ni' if self.status_b_need_input else '',
+#                                        ' f' if self.status_b_finished else '')
 
     def get(self, block=True, timeout=None):
         check_reset(self, 'reset_once')
-#         self.info('trying to get() from %s' % self.log_child_name(self.b))
         try:
             return self.b.get(block=block, timeout=timeout)
         except NeedInput:
@@ -290,3 +304,12 @@ class BBBBSeries(SimpleBlackBox):
             self.status_b_finished = True
             # self.info('b is finished')
             raise
+        
+class BBBBSeriesT(BBBBSeries, SimpleBlackBoxT):
+    pass
+class BBBBSeriesTN(BBBBSeries, SimpleBlackBoxTN):
+    pass
+
+
+
+    

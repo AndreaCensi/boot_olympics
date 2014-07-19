@@ -13,8 +13,16 @@
         range: [-1,+1]
         default: [0]
 
-- id: test_nid_random_1_6
+- id: test_nid1_random_1_6
   desc: random robot through an identity nuisance
+  code:
+  - bootstrapping_olympics.library.robots.NuisanceRobot
+  - robot: random_1_6
+    nuisances:
+    - rnc_identity 
+
+- id: test_nid2_random_1_6
+  desc: random robot through two identity nuisances
   code:
   - bootstrapping_olympics.library.robots.NuisanceRobot
   - robot: random_1_6
@@ -60,8 +68,7 @@
   - bootstrapping_olympics.library.robots.EquivRobot
   - robot: random_1_6
     cmd_nuisance: [rpermB, rscaleA]
-    obs_nuisance: [rscaleA, rpermA]
-
+    obs_nuisance: []
 
 - id: random_bits2
   desc: "A perturbed version of the random robot that uses discretization to give bits."

@@ -1,13 +1,19 @@
 
 from .bookkeeping import BookkeepingServo
-from .m_run_simulation import run_simulation_servo
+from blocks.library.timed.checks import check_timed_named
 from bootstrapping_olympics import (BootOlympicsConstants, LogsFormat, 
     get_conftools_robots, logger)
+from bootstrapping_olympics.programs.manager.meat import load_agent_state
 from bootstrapping_olympics.utils import unique_timestamp_string
 from contracts import contract
 from geometry import SE2_from_SE3, angle_from_SE2, translation_from_SE2
 import numpy as np
-from bootstrapping_olympics.programs.manager.meat import load_agent_state
+from bootstrapping_olympics.programs.manager.meat.m_run_simulation import run_simulation,\
+    run_simulation_systems
+from bootstrapping_olympics.programs.manager.meat.servonav.find_path import mean_observations
+from blocks.library.simple.instantaneous import Instantaneous
+from bootstrapping_olympics.interfaces.agent import ServoingAgent
+import warnings
 
 __all__ = ['task_servo']
 
@@ -42,8 +48,8 @@ def task_servo(data_central, id_agent, id_robot,
                              reset_state=False,
                              raise_if_no_state=True)
 
-    servo_agent = agent.get_servo()
-    servo_agent.init(boot_spec)
+#     servo_agent = agent.get_servo()
+#     servo_agent.init(boot_spec)
 
     id_agent_servo = '%s_servo' % id_agent
 
@@ -67,7 +73,10 @@ def task_servo(data_central, id_agent, id_robot,
     if bk.another_episode_todo():
         with logs_format.write_stream(filename=filename,
                                       id_stream=id_stream,
-                                      boot_spec=boot_spec) as writer:
+                                      boot_spec=boot_spec,
+                                      id_agent=id_agent_servo,
+                                      id_robot=id_robot) as writer:
+            writer.reset()
             counter = 0
             while bk.another_episode_todo():
                 episode = robot.new_episode()
@@ -80,7 +89,7 @@ def task_servo(data_central, id_agent, id_robot,
                 save_robot_state = counter < num_episodes_with_robot_state
 
                 servoing_episode(id_robot=id_robot, robot=robot,
-                     id_servo_agent=id_agent_servo, servo_agent=servo_agent,
+                     id_servo_agent=id_agent_servo, agent=agent,
                      writer=writer, id_episode=id_episode,
                      displacement=displacement,
                      max_episode_len=max_episode_len,
@@ -90,9 +99,9 @@ def task_servo(data_central, id_agent, id_robot,
                 bk.episode_done()
                 counter += 1
 
-
+@contract(agent=ServoingAgent)
 def servoing_episode(id_robot, robot,
-                     id_servo_agent, servo_agent,
+                     id_servo_agent, agent,
                      writer, id_episode,
                      displacement,
                      max_episode_len,
@@ -106,100 +115,90 @@ def servoing_episode(id_robot, robot,
     '''
     from geometry import SE3
 
-    def mean_observations(n=10):
-        obss = []
-        for _ in range(n):  # XXX: fixed threshold
-            obss.append(robot.get_observations().observations)
-        return np.mean(obss, axis=0)
-
-    def robot_pose():
-        return robot.get_observations().robot_pose
-
-    def timestamp():
-        return robot.get_observations().timestamp
-
-    def episode_ended():
-        return robot.get_observations().episode_end
-
-    def simulate_hold(cmd0, displacement):
-        t0 = timestamp()
-        nsteps = 0
-        while timestamp() < t0 + displacement:
-            nsteps += 1
-            source = BootOlympicsConstants.CMD_SOURCE_SERVO_DISPLACEMENT
-            robot.set_commands(cmd0, source)
-            if episode_ended():
-                logger.debug('Collision after %d steps' % ntries)
-                return False
-
-        logger.debug('%d steps of simulation to displace by %s' % 
-                    (nsteps, displacement))
-        return True
 
     for ntries in xrange(max_tries):
         # iterate until we can do this correctly
-        episode = robot.new_episode()
-        obs0 = mean_observations()
+        robot_sys = robot.get_active_stream()
+        robot_sys.reset()
+        
+        rest = robot.get_spec().get_commands().get_default_value()
+        pose0, obs0 = mean_observations(robot_sys, rest=rest, n=10)
+
         cmd0 = robot.get_spec().get_commands().get_random_value()
-        pose0 = robot_pose()
-        ok = simulate_hold(cmd0, displacement)
+        
+        ok = simulate_hold(cmd0, robot_sys, robot.get_spec(), displacement)
         if ok:
-            pose1 = robot_pose()
+            pose1, _ = mean_observations(robot_sys, rest=rest, n=1)
             logger.info('Displacement after %s tries.' % ntries)
             break
     else:
         msg = 'Could not do the displacement (%d tries).' % max_tries
         raise Exception(msg)
 
-    servo_agent.set_goal_observations(obs0)
+    current_pose = None
+    
+#     simstream = run_simulation(id_robot=id_robot, 
+#                    robot=robot, 
+#                    id_agent=id_servo_agent, 
+#                    agent=servo_agent, max_observations=100000,
+#                    max_time=max_episode_len)
+#     
 
-    for robot_observations, boot_observations in \
-        run_simulation_servo(id_robot, robot,
-                           id_servo_agent, servo_agent,
-                           100000, max_episode_len,
-                           id_episode=id_episode,
-                           id_environment=episode.id_environment):
+    agent_sys = agent.get_servo_system()
+    agent_sys.reset()
+    agent_sys.put((0.0, ('goal_observations', obs0)))
 
-        def pose_to_yaml(x):
-            ''' Converts to yaml, or sets None. '''
-            if x is None:
-                return None
-            else:
-                return SE3.to_yaml(x)
+    simstream = run_simulation_systems(robot_sys=robot_sys, 
+                                    agent_sys=agent_sys, 
+                                    boot_spec=robot.get_spec(), 
+                                    max_observations=100000, 
+                                    max_time=max_episode_len,
+                                    check_valid_values=True)
+    for x in simstream: 
+        check_timed_named(x)
+        timestamp, (signal, value) = x
 
-        extra = {}
+        if signal == 'robot_pose':
+            current_pose = value
+        elif signal == 'commands':
+            writer.put((timestamp, ('commands', value)))
+        elif signal == 'observations':
+            observations = value
+            extra = {}
+    
+            sensels_list = observations.tolist()
+            extra['servoing_base'] = dict(goal=obs0.tolist(), current=sensels_list)
+    
+            
+            has_pose = current_pose is not None
+        
+            if has_pose:
+                # Add extra pose information
+    
+                extra['servoing_poses'] = dict(goal=pose_to_yaml(pose0),
+                                               current=pose_to_yaml(current_pose))
+    
+                delta = SE2_from_SE3(SE3.multiply(SE3.inverse(current_pose),
+                                                  pose0))
+                dist_t_m = np.linalg.norm(translation_from_SE2(delta))
+                dist_th_deg = np.abs(angle_from_SE2(delta))
+    
+                # TODO: make it not overlapping
+                extra['servoing'] = dict(obs0=obs0.tolist(),
+                                        pose0=pose_to_yaml(pose0),
+                                        poseK=pose_to_yaml(current_pose),
+                                        obsK=sensels_list,
+                                        displacement=displacement,
+                                        cmd0=cmd0.tolist(),
+                                        pose1=pose_to_yaml(pose1))
+    
+            if save_robot_state:
+                extra['robot_state'] = robot.get_state()
+                
+            writer.put((timestamp, ('id_episode', id_episode)))
+            writer.put((timestamp, ('observations', observations)))
+            writer.put((timestamp, ('extra', extra)))
 
-        sensels_list = boot_observations['observations'].tolist()
-        extra['servoing_base'] = dict(goal=obs0.tolist(), current=sensels_list)
-
-        current_pose = robot_observations.robot_pose
-        has_pose = current_pose is not None
-
-        if has_pose:
-            # Add extra pose information
-
-            extra['servoing_poses'] = dict(goal=pose_to_yaml(pose0),
-                                           current=pose_to_yaml(current_pose))
-
-            delta = SE2_from_SE3(SE3.multiply(SE3.inverse(current_pose),
-                                              pose0))
-            dist_t_m = np.linalg.norm(translation_from_SE2(delta))
-            dist_th_deg = np.abs(angle_from_SE2(delta))
-
-            # TODO: make it not overlapping
-            extra['servoing'] = dict(obs0=obs0.tolist(),
-                                    pose0=pose_to_yaml(pose0),
-                                    poseK=pose_to_yaml(current_pose),
-                                    obsK=sensels_list,
-                                    displacement=displacement,
-                                    cmd0=cmd0.tolist(),
-                                    pose1=pose_to_yaml(pose1))
-
-        if save_robot_state:
-            extra['robot_state'] = robot.get_state()
-
-        writer.push_observations(observations=boot_observations,
-                                 extra=extra)
 
         if has_pose:
             if ((dist_t_m <= converged_dist_t_m) and
@@ -207,6 +206,64 @@ def servoing_episode(id_robot, robot,
                 print('Converged!')
                 break
         else:
-            # TODO: write convergence criterion
-            # without pose information
+            warnings.warn('TODO: write convergence criterion without pose information')
             pass
+
+def pose_to_yaml(x):
+    ''' Converts to yaml, or sets None. '''
+    from geometry import SE3
+    
+    if x is None:
+        return None
+    else:
+        return SE3.to_yaml(x)
+
+
+@contract(returns='bool')
+def simulate_hold(cmd0, robot_sys, boot_spec, displacement):
+    """ Returns True if we can hold the command for the given amount of time. """
+    
+    class ConstantOutput(Instantaneous):
+        def __init__(self, cmd0):
+            self.cmd0 = cmd0
+        def transform_value(self, value):
+            check_timed_named(value)
+            (t, (signal, _)) = value
+            assert signal == 'observations'
+            return (t, ('commands', self.cmd0))
+            
+    agent_sys = ConstantOutput(cmd0)
+    agent_sys.reset()
+    t0 = None
+    for x in run_simulation_systems(robot_sys=robot_sys, 
+                                agent_sys=agent_sys, 
+                                boot_spec=boot_spec, 
+                                max_observations=100000, 
+                                max_time=displacement * 2,
+                                check_valid_values=True):
+        timestamp, (signal, value) = x
+        if t0 is None:
+            t0 = timestamp
+
+    length = timestamp - t0
+    
+    success = length > displacement * 0.99
+    
+    return success 
+#     
+#     t0 = timestamp()
+#     nsteps = 0
+#     while timestamp() < t0 + displacement:
+#         nsteps += 1
+#         source = BootOlympicsConstants.CMD_SOURCE_SERVO_DISPLACEMENT
+#         robot.set_commands(cmd0, source)
+#         if episode_ended():
+#             logger.debug('Collision after %d steps' % ntries)
+#             return False
+# 
+#     logger.debug('%d steps of simulation to displace by %s' % 
+#                 (nsteps, displacement))
+#     return True
+
+
+

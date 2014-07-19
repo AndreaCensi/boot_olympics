@@ -1,10 +1,10 @@
 from abc import abstractmethod
-
-from contracts import ContractsMeta, contract
-
 from blocks import SimpleBlackBox, Sink
+from contracts import ContractsMeta, contract
 from decent_logs import WithInternalLog
 from reprep import Report, ReportInterface
+
+
 
 
 __all__ = [
@@ -142,7 +142,9 @@ class LearningConverged(Exception):
 
 class LearningAgent():
 
+    __metaclass__ = ContractsMeta
 
+    @abstractmethod
     @contract(returns=Sink)
     def get_learner_as_sink(self):
         """ 
@@ -152,21 +154,24 @@ class LearningAgent():
             The Sink's "put" command might result in LearningConverged
             to signal that the learning has converged and no more data is necessary. 
         """
-        self.info('Using default implementation of get_learner_as_sink(). (%s)' % type(self))
-        from bootstrapping_olympics.interfaces.agent_misc import LearnerAsSystem
-        return LearnerAsSystem(self)
+#         self.info('Using default implementation of get_learner_as_sink(). (%s)' % type(self))
+#         from bootstrapping_olympics.interfaces.agent_misc import LearnerAsSystem
+#         return LearnerAsSystem(self)
+
+
+
 
     # partially deprecated
-    @abstractmethod
-    def process_observations(self, bd):
-        '''
-            Process new observations.
-            
-            :param bd: a numpy array with field 'observations' and 'commands'
-           
-            For learning agents, it might raise LearningConverged to signal that 
-            the learning has converged and no more data is necessary. 
-        '''
+#     @abstractmethod
+#     def process_observations(self, bd):
+#         '''
+#             Process new observations.
+#             
+#             :param bd: a numpy array with field 'observations' and 'commands'
+#            
+#             For learning agents, it might raise LearningConverged to signal that 
+#             the learning has converged and no more data is necessary. 
+#         '''
 
     # Parallel
 
@@ -208,24 +213,30 @@ class LearningAgent():
 
 class ExploringAgent():
     """ ActiveAgent: implements exploration method. """
-
-    @contract(returns=SimpleBlackBox)
-    def get_explorer(self):
-        from bootstrapping_olympics.interfaces.agent_misc import ExplorerAsSystem
-        return ExplorerAsSystem(agent=self)
+    __metaclass__ = ContractsMeta
 
     @abstractmethod
-    @contract(returns='array,finite')
-    def choose_commands(self):
-        ''' 
-            Chooses commands to be generated; must return an 
-            array that conforms to the specs.
-        '''
+    @contract(returns=SimpleBlackBox)
+    def get_explorer(self):
+        """ Returns the explorer.
+         (input: (t, ('observations', obs)), out = (t, ('commands', cmd))) """
+#         from bootstrapping_olympics.interfaces.agent_misc import ExplorerAsSystem
+#         return ExplorerAsSystem(agent=self)
+
+#     @abstractmethod
+#     @contract(returns='array,finite')
+#     def choose_commands(self):
+#         ''' 
+#             Chooses commands to be generated; must return an 
+#             array that conforms to the specs.
+#         '''
 
 
 
 class PredictorAgentInterface():
-
+    
+    __metaclass__ = ContractsMeta
+    
     @abstractmethod
     @contract(returns='array')
     def predict_y(self, dt):
@@ -239,6 +250,9 @@ class PredictorAgentInterface():
 
 class PredictingAgent():
 
+    __metaclass__ = ContractsMeta
+    
+    @abstractmethod
     @contract(returns=PredictorAgentInterface)
     def get_predictor(self):
         msg = 'Capability get_predictor() not implemented for %s.' % (type(self))
@@ -246,6 +260,7 @@ class PredictingAgent():
 
 
 class ServoAgentInterface():
+    __metaclass__ = ContractsMeta
     
     @abstractmethod
     @contract(goal='array')
@@ -262,9 +277,7 @@ class ServoAgentInterface():
         y_goal = goal
         
         e = y0 - y_goal
-               
-        # from yc 13 04.s10_servo_field.plots import plot_style_sensels  # XXX
-        
+                       
         with f.plot('y0_vs_y_goal') as pylab:
             pylab.plot(y0, '.', label='y0')
             pylab.plot(y_goal, '.', label='ygoal')
@@ -280,7 +293,14 @@ class ServoAgentInterface():
     
 
 class ServoingAgent():
-
+    __metaclass__ = ContractsMeta
+    
+    @abstractmethod
+    @contract(returns=SimpleBlackBox)
+    def get_servo_system(self):
+        """ Two signals: "observations" and "goal". """ 
+        
+    # OLD, deprecated
     @contract(returns=ServoAgentInterface)
     def get_servo(self):
         msg = 'Capability get_servo() not implemented for %s.' % (type(self))

@@ -26,13 +26,21 @@
     nuisances: 
     - rpermA
 
-- id: test_nuisance_agent_2
-  desc: Simple test with causal nuisance
+- id: test_nuisance_agent_2obs
+  desc: Simple test with causal nuisance on observations
   code:
   - bootstrapping_olympics.library.agents.NuisanceAgent
   - agent: random_agent
     nuisances: 
-    - test_rnc_simple_rpermA
+    - test_rnc_simple_obs_rpermA
+
+- id: test_nuisance_agent_2cmd
+  desc: Simple test with causal nuisance on observations
+  code:
+  - bootstrapping_olympics.library.agents.NuisanceAgent
+  - agent: random_agent
+    nuisances: 
+    - test_rnc_simple_cmd_rpermA
 
 - id: test_nuisance_agent_3
   desc: Simple test with causal nuisance (derivative)

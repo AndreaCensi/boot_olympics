@@ -1,13 +1,16 @@
-from bootstrapping_olympics import (Constants, RobotObservations, BootSpec,
-    RobotInterface, EpisodeDesc)
+from blocks import SimpleBlackBox, SimpleBlackBoxTN
+from bootstrapping_olympics import BootSpec, Constants, EpisodeDesc
+from bootstrapping_olympics import BasicRobot, ExplorableRobot
 from bootstrapping_olympics.utils import unique_timestamp_string
 from contracts import contract
 import time
+from blocks.library import WithQueue
+from blocks.library.timed.checks import check_timed_named
 
 __all__ = ['RandomRobot']
 
 
-class RandomRobot(RobotInterface):
+class RandomRobot(BasicRobot, ExplorableRobot):
     ''' 
         This "Robot" generates uniform noise,
         and ignores any command given.
@@ -33,30 +36,44 @@ class RandomRobot(RobotInterface):
         return 'RandomRobot(%r)' % self.spec
         
     def get_spec(self):
-        return self.spec
+        return self.spec 
 
-    def get_observations(self):
-        if self.y0 is None:
-            obs = self.spec.get_observations().get_random_value()
-        else:
-            obs = self.y0
-        return RobotObservations(timestamp=self.timestamp,
-                                 observations=obs,
-                                 commands=self.commands,
-                                 commands_source=self.commands_source,
-                                 episode_end=False,
-                                 robot_pose=None)
-
+    @contract(returns=SimpleBlackBox)
+    def get_active_stream(self):
+        
+        class RandomRobotStream(WithQueue, SimpleBlackBoxTN):
+            def __init__(self, random_robot):
+                WithQueue.__init__(self)
+                self.random_robot = random_robot
+                
+            def reset(self):
+                WithQueue.reset(self)
+                self.episode = self.random_robot.new_episode()
+                self.ended = False
+                     
+            @contract(value='tuple(float,*)')
+            def put_noblock(self, value):
+                check_timed_named(value, self)
+                
+                (timestamp, (sname, _)) = value
+                if not sname in ['commands']:
+                    msg = 'Unexpected signal %r.' % sname
+                    raise ValueError(msg)
+                
+                if self.random_robot.y0 is None:
+                    obs = self.random_robot.spec.get_observations().get_random_value()
+                else:
+                    obs = self.y0
+                    
+                x = (timestamp + self.random_robot.dt, ('observations', obs))
+                self.append(x)
+                
+        return RandomRobotStream(self)
+                
+                 
     def __str__(self):
         return 'RandomRobot(%s;%s)' % (self.spec.get_observations(),
                                        self.spec.get_commands())
-
-    @contract(commands='array')
-    def set_commands(self, commands, commands_source):
-        # print('set_commands %s at %s' % (commands, self.timestamp))
-        self.commands = commands
-        self.commands_source = commands_source
-        self.timestamp += self.dt
 
     def new_episode(self):
         self.timestamp = time.time()

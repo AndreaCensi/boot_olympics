@@ -1,17 +1,18 @@
 from .m_run_simulation import run_simulation
 from bootstrapping_olympics import (LogsFormat, get_conftools_agents, 
     get_conftools_robots, logger)
-from bootstrapping_olympics.interfaces.observations import ObsKeeper
 from bootstrapping_olympics.programs.manager.meat.data_central import (
     DataCentral)
 from bootstrapping_olympics.utils import unique_timestamp_string
 from contracts import contract
 import numpy as np
-from blocks.interface import Sink
+from blocks import Sink
 from blocks.library.timed.checks import check_timed_named
 
 
-__all__ = ['simulate', 'simulate_agent_robot']
+__all__ = [
+    'simulate_agent_robot',
+]
 
 
 @contract(data_central=DataCentral,
@@ -80,19 +81,32 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
         assert isinstance(writer, Sink)
 
         writer.reset()
+        last_episode_timestamp = None
         for id_episode in id_episodes:
             logger.info('Simulating episode %s' % id_episode)
             
-#             ok = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
-                
+            delta = None
+            if last_episode_timestamp is None:
+                delta = 0.0
             for x in run_simulation(id_robot, robot, id_agent,
-                                        agent, 100000, max_episode_len):
+                                    agent, 100000, max_episode_len):
+                
                 check_timed_named(x)
                 timestamp, (signal, value) = x
-                print('simulate: %.5g %s' % (timestamp, signal))
-                
+
+                if (delta is None) and (last_episode_timestamp is not None):
+                    
+                    if timestamp < last_episode_timestamp:
+                        delta = last_episode_timestamp - timestamp + 10.0
+                        msg = 'Due to simulation, sometimes episodes have overlapping timestamps.'
+                        msg += 'I will add a delta of at least 10 seconds (delta = %.4f)' % delta
+                        logger.warn(msg)
+                    else:
+                        delta = 0
+                    
+                timestamp = timestamp + delta
+                                
                 if signal == 'observations':
-#                     writer.put((timestamp, ('id_episode', '%s-%.5f' % (id_episode, timestamp))))
                     writer.put((timestamp, ('id_episode', id_episode)))
                 
                 if signal in ['observations', 'commands']:
@@ -106,17 +120,10 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
                         extra = dict(robot_state=robot.get_state())
                     else:
                         extra = {}
-                    print('simulate: putting extra %.6g' % timestamp)
                     writer.put((timestamp, ('extra', extra)))
-                    
-#                 bd_array = ok.push(timestamp=t, 
-#                                    observations=bd['observations'],
-#                                    commands=bd['commands'],
-#                                    commands_source=id_agent,
-#                                    id_episode=id_episode,
-#                                    id_world='unknown-world')
-                      
-#                 writer.push_observations(bd_array, extra)
+        
+            last_episode_timestamp = timestamp
+                     
         writer.end_input()
         logger.info('Peacefully done all episodes')
 
@@ -211,4 +218,4 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
 #         return self.num_episodes_done < self.num_episodes_todo
 
 
-simulate = simulate_agent_robot
+# simulate = simulate_agent_robot

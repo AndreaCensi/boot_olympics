@@ -3,9 +3,12 @@ from contracts import contract
 from bootstrapping_olympics import (RepresentationNuisance)
 import numpy as np
 from streamels import new_streamels, check_streamels_1D
+from contracts.utils import check_isinstance
 
 
-__all__ = ['RandomPermutation']
+__all__ = [
+    'RandomPermutation',
+]
 
 
 class RandomPermutation(RepresentationNuisance):
@@ -36,6 +39,7 @@ class RandomPermutation(RepresentationNuisance):
         return streamels2
 
     def transform_value(self, values):
+        check_isinstance(values, np.ndarray)
         if self.perm is None:
             raise ValueError('Please call transform_spec() first.')
 
