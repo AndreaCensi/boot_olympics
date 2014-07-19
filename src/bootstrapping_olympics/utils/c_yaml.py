@@ -26,12 +26,13 @@ def yaml_load(yaml_string):
         dump_emergency_string(yaml_string)
         raise
 
-
+@contract(s=str)
 def dump_emergency_string(s):
-    emergency = '/home/andrea/yaml_load.yaml'  # XXX FIXME
+    emergency = 'yaml_load-emergency.yaml'  # XXX FIXME
+    logger.error('dumping on %r' % emergency)
     with open(emergency, 'w') as f:
         f.write(s)
-    logger.error('String written to %r.' % emergency)
+    logger.error('String written to %r.' % str(emergency))
 
 
 @contract(returns='str')

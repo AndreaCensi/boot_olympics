@@ -1,6 +1,8 @@
+from .read import hdf_read
+from .write import HDFLogWriter2
 from bootstrapping_olympics import LogsFormat, logger
 from contextlib import contextmanager
-from .write import HDFLogWriter2
+from index import hdf_list_streams
 
 __all__ = ['HDFLogsFormat2']
 
@@ -37,8 +39,8 @@ class HDFLogsFormat2(LogsFormat):
             yield x
 
     @contextmanager
-    def write_stream(self, filename, id_stream, boot_spec):
-        writer = HDFLogWriter2(filename, id_stream, boot_spec)
+    def write_stream(self, filename, id_stream, boot_spec, id_agent, id_robot):
+        writer = HDFLogWriter2(filename, id_stream, boot_spec, id_agent, id_robot)
         try:
             yield writer
         except:
@@ -48,4 +50,4 @@ class HDFLogsFormat2(LogsFormat):
         else:
             writer.close()
 
-LogsFormat.formats['boot.h5'] = HDFLogsFormat2()
+LogsFormat.formats['h5'] = HDFLogsFormat2()

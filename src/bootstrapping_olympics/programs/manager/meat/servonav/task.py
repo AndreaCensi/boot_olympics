@@ -1,5 +1,5 @@
 from . import get_grid
-from bootstrapping_olympics.programs.manager.meat import load_agent_state_imp
+from bootstrapping_olympics.programs.manager.meat import load_agent_state
 from ..servo import BookkeepingServo, get_vsim_from_robot
 from bootstrapping_olympics import RobotInterface, ObsKeeper, LogsFormat, logger
 from bootstrapping_olympics.utils import InAWhile, unique_timestamp_string
@@ -37,7 +37,7 @@ def task_servonav(data_central, id_agent, id_robot,
     boot_spec = robot.get_spec()
 
     # Instance agent object    
-    agent, _ = load_agent_state_imp(data_central, id_agent, id_robot,
+    agent, _ = load_agent_state(data_central, id_agent, id_robot,
                                 reset_state=False,
                                 raise_if_no_state=True)
     # TODO: check servo

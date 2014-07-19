@@ -44,8 +44,10 @@ class EpisodeSummary(object):
 class BootStream(object):
     ''' This class represents the structure used in the .bag index. '''
 
-    @contract(summaries='list')
+    @contract(summaries='list[>=1]')
     def __init__(self, id_robot, filename, topic, spec, summaries):
+        if len(summaries) == 0:
+            raise ValueError('No episodes given')
         self._id_robot = id_robot
         self._spec = spec
         self._episodes = summaries

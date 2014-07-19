@@ -2,7 +2,7 @@ from .robot import BasicRobot
 from blocks import NotReady
 from blocks.library import WithQueue
 from bootstrapping_olympics import RobotObservations
-from bootstrapping_olympics.interfaces.observations import ObsKeeper
+# from bootstrapping_olympics.interfaces.observations import ObsKeeper
 from contracts import contract
 
 __all__ = [
@@ -28,9 +28,9 @@ class RobotAsBlackBox3(WithQueue):
 
     def reset(self):
         WithQueue.reset(self)
-        self.keeper = ObsKeeper(boot_spec=self.robot.get_spec(),
-                                id_robot=self.id_robot,
-                                check_valid_values=False)
+#         self.keeper = ObsKeeper(boot_spec=self.robot.get_spec(),
+#                                 id_robot=self.id_robot,
+#                                 check_valid_values=False)
 
         self.episode = self.robot.new_episode()
         self.ended = False
@@ -50,19 +50,19 @@ class RobotAsBlackBox3(WithQueue):
 
         self.last_obs = obs
 
-        if self.id_episode is not None:
-            id_episode = self.id_episode
-        else:
-            id_episode = self.episode.id_episode
+#         if self.id_episode is not None:
+#             id_episode = self.id_episode
+#         else:
+#             id_episode = self.episode.id_episode
 
-        bd = self.keeper.push(timestamp=obs.timestamp,
-                             observations=obs.observations,
-                             commands=obs.commands,
-                             commands_source=obs.commands_source,
-                             id_episode=id_episode,
-                             id_world=self.episode.id_environment)
+#         bd = self.keeper.push(timestamp=obs.timestamp,
+#                              observations=obs.observations,
+#                              commands=obs.commands,
+#                              commands_source=obs.commands_source,
+#                              id_episode=id_episode,
+#                              id_world=self.episode.id_environment)
 
-        self.append((obs.timestamp, bd))
+        self.append((obs.timestamp, obs.observations))
 
         self.ended = obs.episode_end
     

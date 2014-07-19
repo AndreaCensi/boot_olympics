@@ -1,12 +1,14 @@
 from .m_run_simulation import run_simulation
 from bootstrapping_olympics import (LogsFormat, get_conftools_agents, 
     get_conftools_robots, logger)
-from bootstrapping_olympics.utils import (InAWhile, natsorted, 
-    unique_timestamp_string)
-import numpy as np
-from contracts import contract
-from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
 from bootstrapping_olympics.interfaces.observations import ObsKeeper
+from bootstrapping_olympics.programs.manager.meat.data_central import (
+    DataCentral)
+from bootstrapping_olympics.utils import unique_timestamp_string
+from contracts import contract
+import numpy as np
+from blocks.interface import Sink
+from blocks.library.timed.checks import check_timed_named
 
 
 __all__ = ['simulate', 'simulate_agent_robot']
@@ -65,41 +67,57 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
     logger.info('Creating stream %r\n in file %r' % (id_stream, filename))
 
     logs_format = LogsFormat.get_reader_for(filename)
-# 
-#     bk = Bookkeeping(data_central=data_central,
-#                      id_robot=id_robot,
-#                      num_episodes=len(id_episodes),
-#                      cumulative=cumulative,
-#                      interval_print=interval_print)
-#   
+
     if cumulative:
         raise NotImplementedError('cumulative not implemented')
       
     with logs_format.write_stream(filename=filename,
                                   id_stream=id_stream,
-                                  boot_spec=boot_spec) as writer:
+                                  boot_spec=boot_spec,
+                                  id_agent=id_agent,
+                                  id_robot=id_robot) as writer:
+        
+        assert isinstance(writer, Sink)
 
+        writer.reset()
         for id_episode in id_episodes:
             logger.info('Simulating episode %s' % id_episode)
             
-            ok = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
+#             ok = ObsKeeper(boot_spec=robot.get_spec(), id_robot=id_robot)
                 
-            for t, bd in run_simulation(id_robot, robot, id_agent,
+            for x in run_simulation(id_robot, robot, id_agent,
                                         agent, 100000, max_episode_len):
-                if write_extra:
-                    extra = dict(robot_state=robot.get_state())
+                check_timed_named(x)
+                timestamp, (signal, value) = x
+                print('simulate: %.5g %s' % (timestamp, signal))
+                
+                if signal == 'observations':
+#                     writer.put((timestamp, ('id_episode', '%s-%.5f' % (id_episode, timestamp))))
+                    writer.put((timestamp, ('id_episode', id_episode)))
+                
+                if signal in ['observations', 'commands']:
+                    writer.put((timestamp, (signal, value)))
                 else:
-                    extra = {}
+                    msg = 'Unknown signal %r.' % signal
+                    raise ValueError(msg)
+                
+                if signal == 'observations':
+                    if write_extra:
+                        extra = dict(robot_state=robot.get_state())
+                    else:
+                        extra = {}
+                    print('simulate: putting extra %.6g' % timestamp)
+                    writer.put((timestamp, ('extra', extra)))
                     
-                bd_array = ok.push(timestamp=t, 
-                                   observations=bd['observations'],
-                                   commands=bd['commands'],
-                                   commands_source=id_agent,
-                                   id_episode=id_episode,
-                                   id_world='unknown-world')
+#                 bd_array = ok.push(timestamp=t, 
+#                                    observations=bd['observations'],
+#                                    commands=bd['commands'],
+#                                    commands_source=id_agent,
+#                                    id_episode=id_episode,
+#                                    id_world='unknown-world')
                       
-                writer.push_observations(bd_array, extra)
-        
+#                 writer.push_observations(bd_array, extra)
+        writer.end_input()
         logger.info('Peacefully done all episodes')
 
     return id_episodes

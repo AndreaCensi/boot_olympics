@@ -7,7 +7,8 @@ from bootstrapping_olympics import (ExplorableRobot, ExploringAgent,
 from contracts import contract
 from contracts.utils import check_isinstance
 import warnings
-
+from blocks.library.timed.checks import check_timed
+import numpy as np
 
 __all__ = ['run_simulation']
 
@@ -22,7 +23,10 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
         
         The agent should already been init()ed. 
         
-        Yields the bd.
+        Yields:
+            (timestamp, ('observations', obs))
+        and
+             (timestamp, ('commands', cmd))
     '''
 #     
 #     if id_episode is None:
@@ -66,9 +70,15 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
     t0 = None
     while counter < max_observations:
         try:
-            t, bd = robot_sys.get(block=True)
+            x = robot_sys.get(block=True)
+            check_timed(x)
+            t, obs = x
+            check_isinstance(t, float)
+            check_isinstance(obs, np.ndarray)
+            
             if t0 is None:
                 t0 = t
+                
         except NotReady:
             raise Exception('Hey, cannot obtain NotReady when block is True')
         except Finished:
@@ -79,6 +89,8 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
 #         bd['id_robot'] = id_robot
 #         if id_episode is not None:
 #         bd['id_episode'] = id_episode
+
+        yield t, ('observations', obs)
             
         time_from_episode_start = t-t0
         if time_from_episode_start > max_time:
@@ -86,10 +98,8 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
                          (counter, time_from_episode_start, max_time))
             break
 
-        yield t, bd
-
         # logger.info('putting into agent')
-        agent_sys.put((t, bd), block=True)
+        agent_sys.put((t, obs), block=True)
 
         # logger.info('getting commands')
         try:
@@ -106,8 +116,9 @@ def run_simulation(id_robot, robot, id_agent, agent, max_observations,
             cmd_spec.check_valid_value(commands)
 
         # logger.info('putting into robots')
-        timestamp = t
-        robot_sys.put((timestamp, (commands, id_agent)), block=True)
+        tu = t
+        yield tu, ('commands', commands)
+        robot_sys.put((tu, (commands, id_agent)), block=True)
 
         counter += 1
 

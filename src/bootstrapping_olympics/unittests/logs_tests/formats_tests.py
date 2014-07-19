@@ -7,6 +7,7 @@ from bootstrapping_olympics.utils import assert_allclose, safe_makedirs
 from bootstrapping_olympics.utils.dates import unique_timestamp_string
 from comptests.results import Skipped
 import os
+from blocks.library.timed.checks import check_timed_named
 
 
 
@@ -57,45 +58,35 @@ def check_logs_formats(id_agent, agent, id_robot, robot):  # @UnusedVariable
                 written = []
                 id_stream = 'example'
                 with interface.write_stream(filename, id_stream,
-                                            robot.get_spec()) as writer:
-                    for observations in stream_orig.read():
-                        logger.info('Writing %s:%s (%s)' % 
-                              (observations['id_episode'],
-                               observations['counter'],
-                               observations['timestamp']))
-                        writer.push_observations(observations)
-                        written.append(observations)
+                                            robot.get_spec(), id_robot=id_robot,
+                                            id_agent=id_agent) as writer:
+                    writer.reset()
+                    for x in stream_orig.read():
+                        check_timed_named(x)
+                        t, (s, v) = x
+                        writer.put((t, (s,v)))
+
+                        written.append((t, (s,v)))
 
                 count = 0
-                for obs_read in interface.read_from_stream(filename,
-                                                           id_stream):
-                    logger.info('Reading %s:%s (%s)' % 
-                          (obs_read['id_episode'],
-                           obs_read['counter'],
-                           obs_read['timestamp']))
-
+                for x in interface.read_from_stream(filename, id_stream):
+                    check_timed_named(x)
+                    t, (s, v) = x
                     original = written[count]
 
                     try:
-                        if obs_read['counter'] != original['counter']:
-                            msg = ('Not even the counter is the same!'
-                                   ' %s vs %s' % 
-                                   (obs_read['counter'], original['counter']))
-                            raise Exception(msg)
-
-                        assert_allclose(obs_read['timestamp'],
-                                        original['timestamp'])
-                        assert_allclose(obs_read['observations'],
-                                        original['observations'])
-                        assert_allclose(obs_read['commands'],
-                                        original['commands'])
+                        assert x[0] == original[0]
+                        assert x[1][0] == original[1][0]
+                        if isinstance(x[1][1], np.ndarray):
+                            assert_allclose(x[1][1],original[1][1])
+                        else:
+                            assert x[1][1] == original[1][1]
                     except:
                         logger.error('Error at count = %d' % count)
-                        logger.error('  original: %s' % original)
-                        logger.error('  obs_read: %s' % obs_read)
+                        logger.error('  original: %s' % str(original))
+                        logger.error('  obs_read: %s' % str(x))
                         raise
                     count += 1
-
                 if count != len(written):
                     msg = ('I wrote %d entries, but obtained %d.' % 
                            (len(written), count))
@@ -108,6 +99,6 @@ def check_logs_formats(id_agent, agent, id_robot, robot):  # @UnusedVariable
 
         # Write in every format
 
-
+import numpy as np
 
 

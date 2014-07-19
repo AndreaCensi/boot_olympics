@@ -11,7 +11,8 @@ from bootstrapping_olympics.utils import assert_allclose
 from comptests import PartiallySkipped, Skipped
 from contracts.utils import describe_type
 import os
-from bootstrapping_olympics.programs.manager.meat import load_agent_state_imp.load_agent_state
+from bootstrapping_olympics.programs.manager.meat import load_agent_state
+
 
 
 # TODO: check that the robot generates different episodes strings
@@ -95,7 +96,7 @@ def check_cmdline(id_agent, agent, id_robot, robot):  # @UnusedVariable
             execute_command('learn-log', '-a', id_agent, '-r', id_robot)
     
     
-            agent2, _ =  load_agent_state_imp(data_central, id_agent, id_robot,
+            agent2, _ =  load_agent_state(data_central, id_agent, id_robot,
                      reset_state=False,
                      raise_if_no_state=True)
             
