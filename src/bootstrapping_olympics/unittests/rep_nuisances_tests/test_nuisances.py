@@ -5,6 +5,7 @@ from bootstrapping_olympics.unittests import (for_all_nuisances,
     for_all_robot_nuisance_pairs)
 from bootstrapping_olympics.utils import assert_allclose, indent
 from comptests.results import Skipped
+from contracts.interface import describe_value
 
 
 
@@ -187,7 +188,13 @@ def check_left_inverse(stream_spec1, nuisance):
     # However value2b == value2
     
         value2b = nuisance.transform_value(value1b)
-        assert_allclose(value2, value2b)
+        try:
+            assert_allclose(value2, value2b)
+        except AssertionError:
+            logger.error('value2 = %s' % describe_value(value2))
+            logger.error('value2b = %s' % describe_value(value2b))
+            logger.error('difference: %s' % (value2-value2b))
+            raise
         
     except:
         logger.error('Error while testing:')

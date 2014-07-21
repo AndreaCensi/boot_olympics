@@ -23,7 +23,7 @@ class Normalize(RepresentationNuisance):
         self.ymax = ymax
 
     def inverse(self):
-        raise NotImplementedError()
+        raise NuisanceNotInvertible()
 
     def left_inverse(self):
         raise NotImplementedError()

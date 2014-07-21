@@ -7,7 +7,8 @@ import numpy as np
 __all__ = ['ValueFormats', 'streamel_dtype',
            'streamel_array', 'check_valid_streamels', 'BOOT_OLYMPICS_SENSEL_RESOLUTION']
 
-BOOT_OLYMPICS_SENSEL_RESOLUTION = 'float32'
+# BOOT_OLYMPICS_SENSEL_RESOLUTION = 'float32'
+BOOT_OLYMPICS_SENSEL_RESOLUTION = 'float64'
 
 
 class ValueFormats(object):

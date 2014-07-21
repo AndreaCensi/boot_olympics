@@ -24,11 +24,13 @@ class Subsample(RepresentationNuisance):
         raise NuisanceNotInvertible()
 
     def left_inverse(self):
-        raise NotImplementedError()
-
+        which = self.select
+        from bootstrapping_olympics.library.nuisances.select import SelectLeftInverse
+        return SelectLeftInverse(orig_streamels=self.orig_streamels, which=which)
+    
     def transform_streamels(self, streamels):
         check_streamels_1D(streamels)
-        
+        self.orig_streamels = streamels.copy()
         n = streamels.size
         self.select = range(0, n, self.every)
         streamels2 = streamels[self.select]

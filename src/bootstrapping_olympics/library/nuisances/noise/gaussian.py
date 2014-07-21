@@ -20,7 +20,7 @@ class Gaussian(GenericScalar):
         raise NuisanceNotInvertible(msg)
 
     def left_inverse(self):
-        raise NotImplementedError()
+        raise NotImplementedError() 
 
     def transform01(self, values01):
         noise = np.random.randn(*values01.shape) * self.sigma

@@ -5,6 +5,8 @@ from contracts.utils import indent
 from decent_logs import WithInternalLog
 from streamels import StreamSpec
 from streamels.base import check_valid_streamels
+from streamels.exceptions import UnsupportedSpec
+import traceback
 
 
 __all__ = [
@@ -57,23 +59,26 @@ class RepresentationNuisance(WithInternalLog):
 
         try:
             streamels2 = self.transform_streamels(streamels)
+        except UnsupportedSpec:
+            raise
         except BaseException as e:
             msg = 'Error while calling user-defined transform_streamels().'
             msg += '\n self: %s' % describe_value(self)
             msg += '\n of type %s' % describe_type(self)
-            msg += '\n' + indent(e, '| ')
+            msg += '\n' + indent(traceback.format_exc(e), '| ')
             raise Exception(msg)
             
 
         try:
             check_valid_streamels(streamels2)
+        except UnsupportedSpec:
+            raise
         except ValueError as e:
             msg = 'User-defined transform_streamels() created invalid streamels.'
             msg += '\n self: %s' % describe_value(self)
             msg += '\n of type %s' % describe_type(self)
-            msg += '\n' + indent(e, '| ')
+            msg += '\n' + indent(traceback.format_exc(e), '| ')
             raise Exception(msg)
-
             
         
         stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
