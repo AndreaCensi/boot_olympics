@@ -23,6 +23,9 @@ class RandomPermutation(RepresentationNuisance):
     def inverse(self):
         return RandomPermutation(self.seed, not self.inverted)
 
+    def left_inverse(self):
+        return self.inverse()
+
     def transform_streamels(self, streamels):
         check_streamels_1D(streamels)
 
@@ -41,7 +44,9 @@ class RandomPermutation(RepresentationNuisance):
     def transform_value(self, values):
         check_isinstance(values, np.ndarray)
         if self.perm is None:
-            raise ValueError('Please call transform_spec() first.')
+            msg = 'Please call transform_spec() first.'
+            self.debug(msg)
+            raise ValueError(msg)
 
         other = np.empty_like(values)
         other.flat[:] = values.flat[self.perm]

@@ -1,8 +1,8 @@
-from blocks import SimpleBlackBox, Source
+from blocks import SimpleBlackBox
 from bootstrapping_olympics import (EpisodeDesc, RobotInterface, 
     get_conftools_robots)
 from contracts import contract
-from streamels.boot_spec import BootSpec
+from streamels import BootSpec
 
 
 __all__ = [
@@ -24,12 +24,14 @@ class NuisanceRobot(RobotInterface):
         config_robots = get_conftools_robots()
         _, self.robot = config_robots.instance_smarter(robot)
     
-    @contract(returns=BootSpec)
-    def get_spec(self):
         spec = self.robot.get_spec()
         spec2 = self.nuisance.transform_spec(spec)
-        return spec2
-
+        
+        self.spec = spec2 
+    
+    @contract(returns=BootSpec)
+    def get_spec(self):
+        return self.spec
 
     # exploration
     @contract(returns=EpisodeDesc)
@@ -38,6 +40,7 @@ class NuisanceRobot(RobotInterface):
     
     @contract(returns=SimpleBlackBox)
     def get_active_stream(self):
+        
         stream = self.robot.get_active_stream()
         from bootstrapping_olympics.library.agents.nuisance_agent_actions \
             import wrap_robot_exploration

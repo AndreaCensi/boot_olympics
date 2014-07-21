@@ -1,13 +1,11 @@
-from .nuisance_agent_actions import wrap_agent_explorer, wrap_agent_learner
-from blocks import SimpleBlackBox, Sink
+from .nuisance_agent_actions import (wrap_agent_explorer, wrap_agent_learner, 
+    wrap_agent_servo)
+from blocks import SimpleBlackBoxTN, Sink
 from bootstrapping_olympics import (BasicAgent, ExploringAgent, LearningAgent, 
     PredictingAgent, RepresentationNuisanceCausal, ServoingAgent, 
     get_conftools_agents)
 from contracts import contract
 from contracts.utils import check_isinstance
-from bootstrapping_olympics.library.agents.nuisance_agent_actions import wrap_agent_servo
-
-
 
 
 __all__ = ['NuisanceAgent']
@@ -29,10 +27,12 @@ class NuisanceAgent(BasicAgent,
         
         check_isinstance(self.nuisance, RepresentationNuisanceCausal)
 
-        self.info('my nuisance is %r' % self.nuisance)
         config_agents = get_conftools_agents()
         _, self.agent = config_agents.instance_smarter(agent)
         self.spec2 = None
+
+        self.log_add_child('nuisance', self.nuisance)
+        self.log_add_child('agent', self.agent)
         
     def init(self, boot_spec):
         self.spec2 = self.nuisance.transform_spec(boot_spec)
@@ -46,15 +46,7 @@ class NuisanceAgent(BasicAgent,
 
         self.agent.display(report)
 
-    @contract(returns=Sink)
-    def get_learner_as_sink(self):
-        if self.spec2 is None:
-            msg = 'Forgot to call init() before get_learner_as_sink().'
-            raise ValueError(msg)
-        learner = self.agent.get_learner_as_sink()
-        return wrap_agent_learner(learner, self.nuisance)
-
-    @contract(returns=SimpleBlackBox)
+    @contract(returns=SimpleBlackBoxTN)
     def get_explorer(self):
         if self.spec2 is None:
             msg = 'Forgot to call init() before get_explorer().'
@@ -62,7 +54,7 @@ class NuisanceAgent(BasicAgent,
         explorer = self.agent.get_explorer()
         return wrap_agent_explorer(explorer, self.nuisance)
 
-    @contract(returns=SimpleBlackBox)
+    @contract(returns=SimpleBlackBoxTN)
     def get_servo_system(self):
         if self.spec2 is None:
             msg = 'Forgot to call init() before get_servo_system().'
@@ -70,10 +62,25 @@ class NuisanceAgent(BasicAgent,
         servo_system = self.agent.get_servo_system()
         return wrap_agent_servo(servo_system, self.nuisance)
 
+    @contract(returns=SimpleBlackBoxTN)
     def get_predictor(self):
+        if self.spec2 is None:
+            msg = 'Forgot to call init() before get_predictor().'
+            raise ValueError(msg)
         # TODO:
         raise NotImplementedError('todo')
 
+    # Learner
+  
+    @contract(returns=Sink)
+    def get_learner_as_sink(self):
+        if self.spec2 is None:
+            msg = 'Forgot to call init() before get_learner_as_sink().'
+            raise ValueError(msg)
+        learner = self.agent.get_learner_as_sink()
+        
+        return wrap_agent_learner(learner, self.nuisance)
+  
     def merge(self, other):  # @UnusedVariable
         assert isinstance(other, NuisanceAgent)
         self.agent.merge(other.agent)
@@ -81,19 +88,11 @@ class NuisanceAgent(BasicAgent,
     def parallel_process_hint(self, i, n):  # @UnusedVariable
         self.agent.parallel_process_hint(i, n)
 
+    # multilevel
     def need_another_phase(self):
         return self.agent.need_another_phase()
 
     def start_next_phase(self):
         self.agent.start_next_phase()
-
-    def choose_commands(self):
-        raise Exception('Using old API with choose_commands().')
-
-    def process_observations(self, obs):
-        raise Exception('Using old API with process_observations().')
-
-
-
-
-
+        
+        

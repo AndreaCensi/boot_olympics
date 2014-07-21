@@ -21,7 +21,10 @@ class PopCode(RepresentationNuisance):
 
     def inverse(self):
         return PopCodeInv()
-
+    
+    def left_inverse(self):
+        return self.inverse()
+    
     def transform_streamels(self, streamels):
         check_streamels_1D(streamels)
         check_streamels_continuous(streamels)
@@ -55,6 +58,9 @@ class PopCodeInv(RepresentationNuisance):
 
     def inverse(self):
         return PopCode()  # XXX: cannot pass resolution
+    
+    def left_inverse(self):
+        return PopCode()
 
     def transform_streamels(self, streamels):
         check_streamels_2D(streamels)

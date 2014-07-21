@@ -158,9 +158,6 @@ class LearningAgent():
 #         from bootstrapping_olympics.interfaces.agent_misc import LearnerAsSystem
 #         return LearnerAsSystem(self)
 
-
-
-
     # partially deprecated
 #     @abstractmethod
 #     def process_observations(self, bd):

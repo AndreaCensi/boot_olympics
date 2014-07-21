@@ -19,6 +19,9 @@ class Gaussian(GenericScalar):
         msg = "Gaussian noise is not invertible"
         raise NuisanceNotInvertible(msg)
 
+    def left_inverse(self):
+        raise NotImplementedError()
+
     def transform01(self, values01):
         noise = np.random.randn(*values01.shape) * self.sigma
         y = values01 + noise

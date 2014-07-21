@@ -1,14 +1,9 @@
 from abc import abstractmethod
-from blocks import SimpleBlackBox
-from blocks.library import InstantaneousF, WrapT
+from blocks import SimpleBlackBoxT, SimpleBlackBoxTN
+from blocks.library import InstantaneousTF, WrapTMfromT
 from contracts import ContractsMeta, contract
 from decent_logs import WithInternalLog
 from streamels import BootSpec
-from blocks.library.timed_named.wrappers import WrapTimedNamed, WrapTMfromT
-from blocks.interface import SimpleBlackBoxT, SimpleBlackBoxTN
-from blocks.library.simple.instantaneous import InstantaneousTF
-
-
 
 
 __all__ = [

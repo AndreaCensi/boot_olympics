@@ -23,6 +23,9 @@ class Identity(RepresentationNuisance):
             raise ValueError(msg)
         return Identity()
 
+    def left_inverse(self):
+        return Identity()
+
     def transform_value(self, values):
         if not self.transform_spec_called:
             msg = 'Calling transform_value() before transform_spec().'

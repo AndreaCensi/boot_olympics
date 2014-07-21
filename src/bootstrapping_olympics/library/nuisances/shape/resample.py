@@ -26,6 +26,9 @@ class Resample(RepresentationNuisance):
     def inverse(self):
         raise NuisanceNotInvertible()
 
+    def left_inverse(self):
+        return Resample(self.shape_from, be_liberal=False)
+
     def transform_streamels(self, streamels):
         # Check that it is a 2D float image
         check_streamels_2D(streamels)

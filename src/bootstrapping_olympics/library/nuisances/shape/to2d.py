@@ -16,6 +16,9 @@ class To2D(RepresentationNuisance):
     def inverse(self):
         ''' The inverse is the :py:class:`Flatten` nuisance. '''
         return Flatten()
+    
+    def left_inverse(self):
+        return self.inverse()
 
     def transform_streamels(self, streamels):
         check_streamels_1D(streamels)

@@ -19,7 +19,11 @@ class NormalizeMinMax(RepresentationNuisance):
     '''
 
     def inverse(self):
-        raise NuisanceNotInvertible('Not implemented')
+        raise NotImplementedError('Not implemented')
+
+    def left_inverse(self):
+        raise NotImplementedError('Not implemented')
+
 
     def transform_streamels(self, streamels):
         check_streamels_1D(streamels)

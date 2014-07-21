@@ -6,7 +6,8 @@ from blocks import SimpleBlackBoxT
 
 __all__ = [
     'Instantaneous',
-    'InstantaneousF', 
+    'InstantaneousF',
+    'InstantaneousTF',  
 ]
 
 class Instantaneous(WithQueue):

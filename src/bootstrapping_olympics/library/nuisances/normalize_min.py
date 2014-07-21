@@ -22,9 +22,6 @@ class NormalizeMin(RepresentationNuisance):
         To make this invertible, the streamels must have range in [0,1].
     '''
 
-    def inverse(self):
-        return NormalizeMinInverse()
-
     def transform_streamels(self, streamels):
         check_streamels_1D(streamels)
         check_streamels_continuous(streamels)
@@ -54,6 +51,12 @@ class NormalizeMin(RepresentationNuisance):
 
         return streamels2
 
+    def inverse(self):
+        return NormalizeMinInverse()
+    
+    def left_inverse(self):
+        return self.inverse()
+    
     def transform_value(self, value):
         vmin = np.min(value)
         vmax = np.max(value)
@@ -87,7 +90,10 @@ class NormalizeMinInverse(RepresentationNuisance):
         pass
 
     def inverse(self):
-        raise NuisanceNotInvertible('Not implemented')
+        return NormalizeMin() # XXX:?
+    
+    def left_inverse(self):
+        return NormalizeMin() # XXX:?
 
     def transform_streamels(self, streamels):
         check_streamels_1D(streamels)

@@ -39,6 +39,9 @@ class Encrypt(RepresentationNuisance):
     def inverse(self):
         return Decrypt(self.password, self.nbits)
 
+    def left_inverse(self):
+        return self.inverse()
+
     @contract(value='array[N](=0|=1)',
               returns='array[X](=0|=1),X>=N,X<=N+64')  # XXX
     def transform_value(self, value):
@@ -70,6 +73,9 @@ class Decrypt(RepresentationNuisance):
 
     def inverse(self):
         return Encrypt(self.password)
+    
+    def left_inverse(self):
+        return self.inverse()
 
     @contract(value='array[N](=0|=1)',
               returns='array[X](=0|=1),X<=N,X>=N-64')  # XXX

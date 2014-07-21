@@ -5,8 +5,6 @@ __all__ = ['Chain']
 
 
 class Chain(RepresentationNuisance):
-    ''' Encapsulates the idea of a representation nuisance,
-        either on the observations or the commands. '''
 
     @contract(nuisances='list[>=2](RepresentationNuisance)')
     def __init__(self, nuisances):
@@ -14,6 +12,10 @@ class Chain(RepresentationNuisance):
         
     def inverse(self):
         nuisances_inv = map(RepresentationNuisance.inverse, self.nuisances)
+        return Chain(nuisances_inv[::-1])
+    
+    def left_inverse(self):
+        nuisances_inv = map(RepresentationNuisance.left_inverse, self.nuisances)
         return Chain(nuisances_inv[::-1])
                                                     
     def transform_spec(self, stream_spec):

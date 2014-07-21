@@ -6,6 +6,7 @@ from streamels import streamels_all_of_kind, ValueFormats, streamel_dtype, check
 
 from .bits_utils import value2bits
 from .graycode import gray
+import warnings
 
 
 __all__ = ['Int2bits', 'Bits2int']
@@ -23,8 +24,8 @@ def format_code(code):
 def base2code(max_value):
     nbits = int(np.ceil(np.log2(max_value)))
     nbits = max(1, nbits)  # max_value=1
-#    print('computing %d bits base2 code for max_value = %s' %
-#          (nbits, max_value))
+    #    print('computing %d bits base2 code for max_value = %s' %
+    #          (nbits, max_value))
     max_value = 2 ** nbits
     code = [value2bits(i, nbits) for i in range(max_value)]
     return format_code(code)
@@ -34,8 +35,8 @@ def base2code(max_value):
 def graycode(max_value):
     nbits = int(np.ceil(np.log2(max_value)))
     nbits = max(1, nbits)  # max_value=1
-#    print('computing %d bits gray code for max_value = %s' %
-#          (nbits, max_value))
+    #    print('computing %d bits gray code for max_value = %s' %
+    #          (nbits, max_value))
     code = gray(nbits)
     return format_code(code)
 
@@ -104,9 +105,14 @@ class Int2bits(RepresentationNuisance):
         return value2
 
     def inverse(self):
-        # XXX: we cannot really recover lower and upper
+        warnings.warn(' we cannot really recover lower and upper') # XXX:
         # if lower !=0 or upper is not a power of 2 (and all the same)
         return Bits2int(self.code)
+
+    def left_inverse(self):
+        return self.inverse()
+
+
 
     def __repr__(self):
         return 'Int2bits(%r)' % self.code
@@ -168,6 +174,9 @@ class Bits2int(RepresentationNuisance):
 
     def inverse(self):
         return Int2bits(self.code)
+
+    def left_inverse(self):
+        return self.inverse()
 
     def __repr__(self):
         return 'Bits2int(%r)' % self.code

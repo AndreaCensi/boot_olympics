@@ -1,10 +1,10 @@
 from abc import abstractmethod
-import warnings
-
-from contracts import contract, ContractsMeta, new_contract
-
+from contracts import (ContractsMeta, contract, describe_type, describe_value, 
+    new_contract)
+from contracts.utils import indent
 from decent_logs import WithInternalLog
 from streamels import StreamSpec
+from streamels.base import check_valid_streamels
 
 
 __all__ = [
@@ -26,12 +26,23 @@ class RepresentationNuisance(WithInternalLog):
     def inverse(self):
         ''' 
             Returns the inverse representation nuisance,
-            or raises NuisanceNotInvertible 
+            or raises NuisanceNotInvertible.
+            
+            Note that this needs to be called after transform_spec().
+            
+            :raise NuisanceNotInvertible: The nuisance is not invertible.
         '''
 
+    @abstractmethod
     def left_inverse(self):
-        warnings.warn('not sure of the name')
-        return self.inverse()
+        """ 
+            Returns the left inverse representation nuisance.
+            It should always return something -- cannot 
+            raise NuisanceNotInvertible.
+            
+            Note that this needs to be called after transform_spec().
+            Defaults to calling left_inverse().
+        """
 
     @contract(stream_spec=StreamSpec, returns=StreamSpec)
     def transform_spec(self, stream_spec):
@@ -44,13 +55,33 @@ class RepresentationNuisance(WithInternalLog):
 
         streamels = stream_spec.get_streamels()
 
-        streamels2 = self.transform_streamels(streamels)
+        try:
+            streamels2 = self.transform_streamels(streamels)
+        except BaseException as e:
+            msg = 'Error while calling user-defined transform_streamels().'
+            msg += '\n self: %s' % describe_value(self)
+            msg += '\n of type %s' % describe_type(self)
+            msg += '\n' + indent(e, '| ')
+            raise Exception(msg)
+            
 
+        try:
+            check_valid_streamels(streamels2)
+        except ValueError as e:
+            msg = 'User-defined transform_streamels() created invalid streamels.'
+            msg += '\n self: %s' % describe_value(self)
+            msg += '\n of type %s' % describe_type(self)
+            msg += '\n' + indent(e, '| ')
+            raise Exception(msg)
+
+            
+        
         stream_spec2 = StreamSpec(id_stream=stream_spec.id_stream,
-                                  streamels=streamels2,
-                                  extra={},  # TODO: annotate
-                                  filtered={},
-                                  desc=stream_spec.desc)
+                              streamels=streamels2,
+                              extra={},  # TODO: annotate
+                              filtered={},
+                              desc=stream_spec.desc)
+        
         return stream_spec2
 
     @contract(streamels='streamel_array', returns='streamel_array')

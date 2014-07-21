@@ -18,10 +18,14 @@ class SimpleRNCObs(RepresentationNuisanceCausalSimpleInst):
         _, self.t = get_conftools_nuisances().instance_smarter(nuisance)
 
         check_isinstance(self.t, RepresentationNuisance)
-
+        self.log_add_child('t', self.t)
         self.spec = None
-        
+        self.t_inv = None
+
     def inverse(self):
+        if self.t_inv is None:
+            msg = 'transform_spec() called before inverse().'
+            raise ValueError(msg)
         return SimpleRNCObs(self.t.inverse())
 
     @contract(spec=BootSpec, returns=BootSpec)
@@ -30,6 +34,10 @@ class SimpleRNCObs(RepresentationNuisanceCausalSimpleInst):
         cmd = spec.get_commands()
         obs = spec.get_observations()
         obs2 = self.t.transform_spec(obs)
+        self.t_inv = self.t.left_inverse()
+        self.log_add_child('t_inv', self.t_inv)
+        obsb = self.t_inv.transform_spec(obs2)
+        assert obs == obsb
         return BootSpec(obs2, cmd)
 
     def get_h(self):
@@ -38,7 +46,7 @@ class SimpleRNCObs(RepresentationNuisanceCausalSimpleInst):
 
     def get_h_conj(self):
         self._check_inited()
-        return self.t.left_inverse().transform_value
+        return self.t_inv.transform_value
 
     def get_g(self):
         self._check_inited()

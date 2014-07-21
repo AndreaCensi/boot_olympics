@@ -32,6 +32,9 @@ class Select(RepresentationNuisance):
 
     def inverse(self):
         raise NuisanceNotInvertible()
+    
+    def left_inverse(self):
+        raise NotImplementedError()
 
     def transform_streamels(self, streamels):
         check_streamels_1D(streamels)

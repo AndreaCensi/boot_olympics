@@ -23,8 +23,11 @@ class Normalize(RepresentationNuisance):
         self.ymax = ymax
 
     def inverse(self):
-        raise NuisanceNotInvertible('Not implemented')
+        raise NotImplementedError()
 
+    def left_inverse(self):
+        raise NotImplementedError()
+    
     def transform_streamels(self, streamels):
         # check_streamels_1D(streamels)
         check_streamels_continuous(streamels)

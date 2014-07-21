@@ -1,13 +1,13 @@
-from blocks import Finished, NeedInput, NotReady, SimpleBlackBox, Sink, Source
+from blocks import   SimpleBlackBox, Sink, Source
 from blocks.composition import series
-from blocks.library import Identity, Route, WithQueue, WrapTMfromT
-from blocks.library.timed.checks import check_timed_named
+from blocks.library import Identity, Route, WrapTMfromT
 from bootstrapping_olympics import (RepresentationNuisance, 
     RepresentationNuisanceCausal, get_conftools_nuisances, 
     get_conftools_nuisances_causal)
 from contracts import contract
 from contracts.utils import check_isinstance
 from blocks import SimpleBlackBoxT, SimpleBlackBoxTN
+from blocks.library.loops import loopit
 
 
 
@@ -17,47 +17,7 @@ __all__ = [
     'wrap_agent_servo',
 ]
 
-class Loopit(WithQueue):
-    """ Note: this might create an infinite loop..."""
-    def __init__(self, B, outsignal, reinput_as):
-        self.a = B
-        self.outsignal = outsignal
-        self.reinput_as = reinput_as
-        
-    def reset(self):
-        WithQueue.reset(self)
-        self.a.reset()
-        
-    def put_noblock(self, value):
-        check_timed_named(value)
-        # We put it to the internal box
-        self.a.put(value, block=True)
-        self._pump() 
-        
-    def end_input(self):
-        self.a.end_input()
-        self._pump()
-        
-    def _pump(self):
-        num = 0
-        while True:
-            try:
-                x = self.a.get(block=True)
-            except NotReady:
-                assert False
-            except NeedInput:
-                break
-            except Finished:
-                WithQueue.end_input(self)
-                break
-            self.append(x)
-            num += 1
-            
-            check_timed_named(x)
-            t, (signal, value) = x
-            if signal == self.outsignal:
-                self.put((t, (self.reinput_as, value))) 
-    
+
 
 @contract(explorer=SimpleBlackBox,
           rnc=RepresentationNuisanceCausal,
@@ -74,7 +34,7 @@ def wrap_agent_explorer(explorer, rnc):
     # LA has input "observations" and "commands" and output "commands"
     # Loop it on itself 
     
-    loopLA = Loopit(LA, 'commands', 'commands')
+    loopLA = loopit(LA, 'commands', 'commands')
     res = series(loopLA, WrapTMfromT(G))
     res.set_names(['loopLA','G'])
     return res
@@ -105,7 +65,7 @@ def wrap_agent_servo(servo, rnc):
     LL.set_names(['LL', 'servo'])
     # LLA has input "observations", "goal_observations" and "commands" and output "commands"
     # Loop it on itself 
-    loopLLA = Loopit(LLA, 'commands', 'commands')
+    loopLLA = loopit(LLA, 'commands', 'commands')
     res = series(loopLLA, WrapTMfromT(G))
     res.set_names(['loopLLA','G'])
     return res

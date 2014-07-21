@@ -24,6 +24,9 @@ class Reshape(RepresentationNuisance):
     def inverse(self):
         return Reshape(self.shape_to, self.shape_from)
 
+    def left_inverse(self):
+        return self.inverse()
+    
     def transform_streamels(self, streamels):
         cur_shape = streamels.shape
         if cur_shape != self.shape_from:

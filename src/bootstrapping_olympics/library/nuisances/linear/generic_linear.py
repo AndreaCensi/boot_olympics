@@ -95,9 +95,16 @@ class GenericLinear(RepresentationNuisance):
         # TODO: check for numerical errors
         Ainv = np.linalg.inv(self.A)
 
-        # return GenericLinear(Ainv)
         return GenericLinearInverse(Ainv, self.old_streamels)
 
+    def left_inverse(self):
+        try: 
+            return self.inverse()
+        except:
+            Apinv = np.linalg.pinv(self.A)
+            return GenericLinearInverse(Apinv, self.old_streamels)
+            
+            
     def __str__(self):
         if self.A is None:
             s = '<unset>'

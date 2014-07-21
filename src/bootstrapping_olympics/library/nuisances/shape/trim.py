@@ -21,6 +21,9 @@ class Trim(RepresentationNuisance):
         
     def inverse(self):
         raise NuisanceNotInvertible()
+    
+    def left_inverse(self):
+        raise NotImplementedError()
 
     def transform_value(self, value):
         return self._crop(value)

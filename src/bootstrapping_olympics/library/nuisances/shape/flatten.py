@@ -27,6 +27,9 @@ class Flatten(RepresentationNuisance):
         from . import Reshape
         return Reshape((self.cur_size,), self.cur_shape)
 
+    def left_inverse(self):
+        return self.inverse()
+
     @contract(value='array', returns='array[N]')
     def transform_value(self, value):
         ''' Flattens the given value. '''

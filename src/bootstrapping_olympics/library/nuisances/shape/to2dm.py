@@ -1,11 +1,13 @@
+from bootstrapping_olympics import NuisanceNotInvertible, RepresentationNuisance
 from contracts import contract
-
-from bootstrapping_olympics import  RepresentationNuisance, NuisanceNotInvertible
+from streamels import check_streamels_1D, new_streamels
 import numpy as np
-from streamels import new_streamels, check_streamels_1D
 
 
-__all__ = ['ReplicateRows', 'ExtractRow']
+__all__ = [
+    'ReplicateRows', 
+    'ExtractRow',
+]
 
 
 class ReplicateRows(RepresentationNuisance):
@@ -19,8 +21,11 @@ class ReplicateRows(RepresentationNuisance):
         self.rows = rows
 
     def inverse(self):
-        ''' The inverse is the :py:class:`Flatten` nuisance. '''
-        return ExtractRow()
+        ''' The inverse is the :py:class:`ExtractRow` nuisance. '''
+        return ExtractRow(self.rows)
+    
+    def left_inverse(self):
+        return self.inverse()
 
     def transform_streamels(self, streamels):
         check_streamels_1D(streamels)
@@ -44,8 +49,15 @@ class ReplicateRows(RepresentationNuisance):
 class ExtractRow(RepresentationNuisance):
     """ Only useful as the inverse of To2Dm. """
     
+    @contract(rows='int,>=1')
+    def __init__(self, rows):
+        self.rows = rows
+        
     def inverse(self):
         raise NuisanceNotInvertible()
+    
+    def left_inverse(self):
+        return ReplicateRows(self.rows)
 
     def transform_streamels(self, streamels):
         # TODO: check all the same 
