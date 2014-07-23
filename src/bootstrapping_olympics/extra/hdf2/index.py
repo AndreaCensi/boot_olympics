@@ -35,18 +35,18 @@ def hdf_list_streams(filename):
     else:
         raise ValueError()
     
-    timestamps =[]
-    episodes =[]
+    timestamps = []
+    episodes = []
     for time, (s, value) in reader.read_signal('id_episode'):
         assert s == 'id_episode'
         timestamps.append(time) 
         episodes.append(value)
-        
+    
     warnings.warn('reimplement')
     extras = []
     
     summaries = []
-    for id_episode in episodes:
+    for id_episode in sorted(set(episodes)):
         summary = episode_summary(id_episode=id_episode,
                                   episodes=episodes,
                                   timestamps=timestamps, 
@@ -82,7 +82,8 @@ def episode_summary(id_episode,
     
     num_observations = len(stream)
     if num_observations == 1:
-        raise Exception('Episode %r is too short' % id_episode)
+        msg = 'Episode %r is too short.' % id_episode
+        raise Exception(msg)
     
     assert len(stream) >= 2
     t0 = stream[0]
