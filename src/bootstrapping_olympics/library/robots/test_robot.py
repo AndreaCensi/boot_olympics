@@ -1,7 +1,7 @@
 '''A simple robot useful for testing.'''
 
 from blocks import SimpleBlackBoxTN
-from blocks.library.simple import WithQueue
+from blocks.library import WithQueue
 from blocks.library.timed.checks import check_timed_named
 from bootstrapping_olympics import (
     BasicRobot, BootSpec, Constants, EpisodeDesc, ExplorableRobot)

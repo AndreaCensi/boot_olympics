@@ -89,6 +89,8 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
 
     logger.info('Progress for %r %r:\n%s' %
                 (id_robot, id_agent, progress.summary()))
+
+    print('remain: %r' % remain)
  
     # Initialize plugins
     init = dict(data_central=data_central, id_agent=id_agent, id_robot=id_robot)
@@ -185,11 +187,12 @@ class Progress(object):
         s += "    episodes: %s" % self.eps.summary('eps', '%8d')
         return s
 
+@contract(returns='tuple(list(tuple(*,*)),*)')
 def find_episodes_to_learn(log_index, id_robot, episodes_to_learn=None, episodes_learned=None):
     """ 
         Returns tuples of the kind:
         
-            (id_stream,  episodes_to_learn), progress
+            [(id_stream,  episodes_to_learn)], progress
     
     """
     logger.info('Finding episodes for %s' % id_robot)

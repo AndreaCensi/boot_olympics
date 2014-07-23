@@ -47,3 +47,5 @@ class Power(GenericScalar):
     def inverse(self):
         return Power(1.0 / self.alpha)
     
+    def left_inverse(self):
+        return self.inverse()

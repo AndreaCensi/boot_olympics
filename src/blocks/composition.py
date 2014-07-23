@@ -1,12 +1,11 @@
-from contracts import contract, describe_type, describe_value
-from contracts.utils import deprecated, raise_wrapped, indent
-
-from blocks import SimpleBlackBox, Source, Sink
-
-from .exceptions import Full, NotReady, Finished, NeedInput
+from .exceptions import Finished, Full, NeedInput, NotReady
+from .interface import (SimpleBlackBox, SimpleBlackBoxT, SimpleBlackBoxTN, Sink, 
+    Source)
 from .pumps import bb_pump
 from .utils import check_reset
-from blocks.interface import SimpleBlackBoxTN, SimpleBlackBoxT
+from contracts import contract, describe_type, describe_value
+from contracts.utils import deprecated, indent, raise_wrapped
+import warnings
 
 
 __all__ = [

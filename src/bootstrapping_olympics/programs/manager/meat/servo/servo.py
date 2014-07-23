@@ -143,10 +143,13 @@ def servoing_episode(robot,
 #                    max_time=max_episode_len)
 #     
 
+
     agent_sys = agent.get_servo_system()
     agent_sys.reset()
+    print('Putting goal_observations')
     agent_sys.put((t, ('goal_observations', obs0)))
-#     agent_sys.info('did you receive it?')
+    print('put goal_observations')
+    agent_sys.info('did you receive it?')
     
     simstream = run_simulation_systems(robot_sys=robot_sys, 
                                     agent_sys=agent_sys, 

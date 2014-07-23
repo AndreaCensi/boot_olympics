@@ -5,3 +5,4 @@ from .utils import *
 from .composition import *
 from .library import *
 
+from .library.timed.checks import *

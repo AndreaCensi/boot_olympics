@@ -160,3 +160,4 @@
   - bootstrapping_olympics.library.nuisances.Subsample
   - every: 4
   
+#  class Power(GenericScalar):

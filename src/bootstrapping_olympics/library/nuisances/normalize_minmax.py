@@ -1,10 +1,8 @@
 from bootstrapping_olympics import RepresentationNuisance
-from contracts import contract
 from contracts.utils import check_isinstance
-from streamels import (ValueFormats, check_streamels_1D, 
-    check_streamels_continuous, streamel_dtype)
+from streamels import (BOOT_OLYMPICS_SENSEL_RESOLUTION, ValueFormats, 
+    check_streamels_1D, check_streamels_continuous, streamel_dtype)
 import numpy as np
-from streamels.base import BOOT_OLYMPICS_SENSEL_RESOLUTION
 
 
 __all__ = ['NormalizeMinMax']
@@ -111,17 +109,7 @@ class NormalizeMinMaxInverse(RepresentationNuisance):
         assert streamels.shape == self.streamels2.shape # XXX: and everything else
         check_streamels_1D(streamels)
         check_streamels_continuous(streamels)
-
         return self.streamels_orig
-#         nz = streamels.size
-#         n = nz - 2
-#         assert n == self.lower.size
-#         streamels2 = np.zeros(n, streamel_dtype)
-#         streamels2['kind'][:] = ValueFormats.Continuous
-#         streamels2['lower'][:] = self.lower
-#         streamels2['upper'][:] = self.upper
-#         streamels2['default'][:] = self.default
-#         return streamels2
     
     def transform_value(self, value):
         n = self.streamels_orig.size

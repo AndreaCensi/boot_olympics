@@ -1,10 +1,10 @@
 from blocks import SimpleBlackBox, SimpleBlackBoxTN
-from bootstrapping_olympics import BootSpec, Constants, EpisodeDesc
-from bootstrapping_olympics import BasicRobot, ExplorableRobot
-from bootstrapping_olympics.utils import unique_timestamp_string
-from contracts import contract
 from blocks.library import WithQueue
 from blocks.library.timed.checks import check_timed_named
+from bootstrapping_olympics import (
+    BasicRobot, BootSpec, Constants, EpisodeDesc, ExplorableRobot)
+from bootstrapping_olympics.utils import unique_timestamp_string
+from contracts import contract
 import time
 
 __all__ = ['RandomRobot']
@@ -27,8 +27,7 @@ class RandomRobot(BasicRobot, ExplorableRobot):
         self.spec = boot_spec
         
         self.y0 = y0
-
-        
+ 
 
     def __repr__(self):
         return 'RandomRobot(%r)' % self.spec

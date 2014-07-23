@@ -1,24 +1,31 @@
 from blocks import SimpleBlackBox
 from blocks.composition import series
-from blocks.library import (Instantaneous, Route, SampledDeriv, WrapTMfromT, 
-    WrapTimedNamed)
+from blocks.library import Instantaneous, SampledDeriv
 from blocks.library.timed.identityt import IdentityTimed
+from blocks.library.timed.sampled_deriv import SampledDerivInst
 from bootstrapping_olympics import RepresentationNuisanceCausal
+from bootstrapping_olympics.interfaces.rep_nuisance_causal import (
+    RepresentationNuisanceCausalSimple)
 from contracts import contract
 from streamels import (
     BootSpec, CompositeStreamSpec, StreamSpec, UnsupportedSpec, check_streamels_continuous)
-import warnings
+
+__all__ = [
+    'DDerivative', 
+    'DDerivativeConj',
+]
 
 
-
-
-__all__ = ['DDerivative', 'DDerivativeConj']
-
-
-class DDerivative(RepresentationNuisanceCausal):
+class DDerivative(RepresentationNuisanceCausalSimple):
     """ A nuisance where there is only a transformation of y defined. """
 
-    def __init__(self):
+    @contract(instantaneous=bool)
+    def __init__(self, instantaneous):
+        """
+            
+        """
+        self.instantaneous = instantaneous
+        
         pass
 
     def inverse(self):
@@ -50,25 +57,34 @@ class DDerivative(RepresentationNuisanceCausal):
         return IdentityTimed()
 
     @contract(returns=SimpleBlackBox)
-    def get_L(self):
-        w = WrapTMfromT(series(SampledDeriv(), (MakeDict())))
-
-        # ignore the "commands" signal
-        r = Route([({'observations':'observations'},
-                    w,
-                    {'observations':'observations'})], suppress=['commands'])
-        return r
+    def get_H(self):
+        if self.instantaneous:
+            s = SampledDerivInst()
+        else:
+            s = SampledDeriv()
+        H = series(s, (MakeDict()))
+        return H
+    
+#         w = WrapTMfromT()
+# 
+#         # ignore the "commands" signal
+#         r = Route([({'observations':'observations'},
+#                     w,
+#                     {'observations':'observations'})], suppress=['commands'])
+#         return r
 
     @contract(returns=SimpleBlackBox)
-    def get_L_conj(self):
-        # XXX:
-        warnings.warn(' this is not correct')
-        w = WrapTMfromT(WrapTimedNamed(ExtractField('signal')))
-        # ignore the "commands" signal
-        r = Route([({'observations':'observations'},
-                    w,
-                    {'observations':'observations'})], suppress=['commands'])
-        return r
+    def get_H_conj(self):
+        H_conj =ExtractField('signal')
+        return H_conj  
+#         # XXX:
+#         warnings.warn(' this is not correct')
+#         w = WrapTMfromT(WrapTimedNamed(ExtractField('signal')))
+#         # ignore the "commands" signal
+#         r = Route([({'observations':'observations'},
+#                     w,
+#                     {'observations':'observations'})], suppress=['commands'])
+#         return r
 
 
 class MakeDict(Instantaneous):

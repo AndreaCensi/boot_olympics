@@ -66,7 +66,7 @@ class RepNuisanceCausalComb(RepresentationNuisanceCausal):
         #                    |     |
         #                   cmd1             |
         #                    v               v
-        # observations ->  |H| --> obs1 --> |H2| --> observations
+        # observations ->  |L1| --> obs1 --> |L2| --> observations
         #
 
         # This can be written with 3 Route blocks
@@ -82,13 +82,12 @@ class RepNuisanceCausalComb(RepresentationNuisanceCausal):
                     ({'commands':'commands'}, WrapTMfromT(G2), {'commands': 'cmd1'})])
 
 
-        #   --> commands        --> cmd1:commands -> |H1| --> obs1
+        #   --> commands        --> cmd1:commands -> |L1| --> obs1
         #                           observations
         #       observations    --> Identity ----------> observations
         #       cmd1            --> Identity ----------> cmd1
 
         r2 = Route([({'observations':'observations'}, Identity(), {'observations': 'observations'}),
-                    ({'cmd1':'cmd1'}, Identity(), {'cmd1': 'cmd1'}),
                     ({'cmd1':'commands',
                       'observations':'observations'}, L1, {'observations':'obs1'})])
 

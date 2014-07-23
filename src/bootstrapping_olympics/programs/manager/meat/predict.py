@@ -1,6 +1,5 @@
 from .report_utils import save_report
-from astatsa.prediction import PredictionStatsSampled
-from bootstrapping_olympics import PredictorAgentInterface, logger
+from bootstrapping_olympics import PredictorAgentInterface
 from bootstrapping_olympics.programs.manager.meat import load_agent_state
 from bootstrapping_olympics.utils import PredictionStats
 from contracts.utils import check_isinstance
@@ -36,6 +35,8 @@ def task_predict(data_central, id_agent, id_robot,
     streams = log_index.get_streams_for_robot(id_robot)
     p0 = 0.005
     
+    from astatsa.prediction import PredictionStatsSampled
+
     y_dot_stats = PredictionStats('y_dot', 'y_dot_pred')
     y_dot_stats2 = PredictionStatsSampled(p0, 'y_dot', 'y_dot_pred')
     y_delta_stats2 = PredictionStatsSampled(p0, 'y_delta', 'y_delta_pred')

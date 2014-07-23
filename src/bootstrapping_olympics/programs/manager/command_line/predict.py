@@ -31,3 +31,4 @@ class CmdPredict(BOM.get_sub()):
              live_plugins=options.plugin)
 
         predict_report(data_central, id_agent, id_robot, stats)
+

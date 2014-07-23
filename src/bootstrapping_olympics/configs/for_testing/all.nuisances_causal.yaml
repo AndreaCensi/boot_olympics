@@ -20,7 +20,14 @@
   desc: Computes the derivative of the observations.
   code:
   - bootstrapping_olympics.library.nuisances_causal.DDerivative
-  - {}
+  - instantaneous: true
+
+
+- id: "dderivativelag"
+  desc: Computes the derivative of the observations.
+  code:
+  - bootstrapping_olympics.library.nuisances_causal.DDerivative
+  - instantaneous: false
 
 - id: "rnc_identity"
   desc: The identity for RNCs.

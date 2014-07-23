@@ -1,17 +1,25 @@
+from blocks import SimpleBlackBoxT
 from blocks.composition import BBBBSeriesT
-from blocks.library import Instantaneous, LastNSamplesT
+from blocks.library.simple import InfoT, Instantaneous, LastNSamplesT
 import numpy as np
 
 
 __all__ = ['SampledDeriv']
 
 
-class SampledDeriv(BBBBSeriesT):
+def SampledDeriv():
     """ Warning: not instantaneous --- see SampledDerivPartial. """
-    def __init__(self):
-        BBBBSeriesT.__init__(self, LastNSamplesT(3, send_partial=False),
-                            ForwardDiff(partial=False), 'last3', 'fdiff')
+    from blocks.composition import series
+    S = series(InfoT('sampledinfo'), LastNSamplesT(3, send_partial=False), ForwardDiff(partial=False),
+               InfoT('afterfdiff'))
+    S.set_names(['info', 'last3', 'fdiff', 'afterfdiff'])
+    return S
 
+def SampledDerivInst():
+    from blocks.composition import series
+    S = series(LastNSamplesT(2, send_partial=True), ForwardDiff(partial=True))
+    return S
+    
 
 class SampledDerivPartial(BBBBSeriesT):
     """ This one gives one output for each timestamp. The first one is (x, 0). """
@@ -21,7 +29,7 @@ class SampledDerivPartial(BBBBSeriesT):
 
 
     
-class ForwardDiff(Instantaneous):
+class ForwardDiff(Instantaneous, SimpleBlackBoxT):
     """ 
         Implements 1-tap derivative.
         
@@ -30,6 +38,10 @@ class ForwardDiff(Instantaneous):
     def __init__(self, partial):
         self.partial = partial
         Instantaneous.__init__(self)
+        
+    def reset(self):
+        Instantaneous.reset(self)
+        
 
     def transform_value(self, value):
         assert len(value) in [1,2,3]
@@ -46,18 +58,26 @@ class ForwardDiff(Instantaneous):
         
     def deriv1(self, value):
         # TODO
-        raise NotImplementedError()
+        t, x = value[0]
+        x_dot = x*0.0
+        return (t, (x, x_dot))
 
     def deriv2(self, value):
-#         assert len(value)
-#         x1 = value[0]
-#         t1, v1 = x1
-#         v1 = np.asarray(v1)
-#
-#         # TODO
-        raise NotImplementedError()
-            
-#         x_dot = self.make_difference()
+        x1, x2 = value
+        assert len(x1) == 2
+        assert len(x2) == 2
+        t1, v1 = x1
+        t2, v2 = x2
+        
+        if not t1 < t2: 
+            msg = 'Invalid timestamps t1 %s t2 %s  ' % (t1, t2)
+            raise ValueError(msg)
+ 
+        x_dot = self.make_difference(t1, v1, t2, v2)
+
+        timestamp = t2
+        x = v2 
+        return (timestamp, (x, x_dot))
             
     def deriv3(self, value):
         x1, x2, x3 = value
@@ -74,8 +94,6 @@ class ForwardDiff(Instantaneous):
  
 
         x_dot = self.make_difference(t1, v1, t3, v3)
-
- 
 
         timestamp = t2
         x = v2 

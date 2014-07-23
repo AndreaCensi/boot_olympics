@@ -9,6 +9,7 @@ from comptests import PartiallySkipped, Skipped
 from contracts.utils import describe_type
 import os
 from bootstrapping_olympics.utils.dates import unique_timestamp_string
+from bootstrapping_olympics.programs.manager.meat.log_learn import find_episodes_to_learn
 
 
 @for_all_pairs
@@ -30,6 +31,7 @@ def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
         return Skipped('UnsupportedSpec')
     
     with create_tmp_dir() as root:
+        print('Using root %r' % root)
         os.mkdir(os.path.join(root, 'config'))
         data_central = DataCentral(root)
         ds = data_central.get_dir_structure()
@@ -85,6 +87,15 @@ def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
                         4 * len(formats))
 
         parts_skipped = []
+        
+        etl = find_episodes_to_learn(log_index, id_robot,
+                                                 episodes_to_learn=None,
+                                                 episodes_learned=None)
+        tot = 0
+        for  (_,  episodes_to_learn) in etl[0]:
+            tot += len(episodes_to_learn)
+        assert tot == 4
+
         
         if not isinstance(agent, LearningAgent):
             if not isinstance(agent, ExploringAgent):
