@@ -1,5 +1,3 @@
-src/blocks/unittests/ready_test.pyimport warnings
-
 from contracts import contract, describe_type, describe_value
 from contracts.utils import deprecated, raise_wrapped, indent
 

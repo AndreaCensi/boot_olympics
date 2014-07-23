@@ -158,7 +158,8 @@ def get_grid(robot, vsim, resolution, debug=False):
         if not debug:
             rest = robot.get_spec().get_commands().get_default_value()
             
-            loc['observations'] = mean_observations(robot_sys, rest=rest, n=10)
+            _, mean_obs, _ = mean_observations(robot_sys, rest=rest, n=10)
+            loc['observations'] = mean_obs
 
     return locations
 

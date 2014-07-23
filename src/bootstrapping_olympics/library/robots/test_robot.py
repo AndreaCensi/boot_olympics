@@ -56,26 +56,37 @@ class TestRobot(BasicRobot, ExplorableRobot):
                 WithQueue.reset(self)
                 episode = self.robot.new_episode()  # @UnusedVariable
                 
-                self.t0 = None
+                self.t0 = time.time()
+                self.timestamp = self.t0
+                self.last_u = None
+                # enqueue one observation
+                self._enqueue()
                      
+            def _enqueue(self):
+                u = self.last_u
+                self.timestamp += self.robot.dt
+                t = self.timestamp-self.t0
+                obs = self.robot.compute_observations(t=t, u=u)
+                x = (self.timestamp, ('observations', obs))
+                self.append(x)
+                
             @contract(value='tuple(float,*)')
             def put_noblock(self, value):
                 check_timed_named(value, self)
                 
                 (timestamp, (sname, x)) = value
-                if self.t0 is None:
-                    self.t0 = timestamp
+                
                 if not sname in ['commands']:
                     msg = 'Unexpected signal %r.' % sname
                     raise ValueError(msg)
                  
                 if sname == 'commands':
-                    u = x
-                    t1 = timestamp + self.robot.dt
-                    obs = self.robot.compute_observations(t1 - self.t0, u=u)
+                    if timestamp <  self.timestamp:
+                        msg = 'Commands with invalid timestamp %.5f < %.5f' %(timestamp, self.timestamp)
+                        raise ValueError(msg)
                     
-                    x = (t1, ('observations', obs))
-                    self.append(x)
+                    self.last_u = x
+                    self._enqueue()
                 
         return TestRobotStream(self)
 

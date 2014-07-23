@@ -127,7 +127,7 @@ def servoing_episode(robot,
         
         ok = simulate_hold(cmd0, robot_sys, robot.get_spec(), displacement)
         if ok:
-            pose1, _ = mean_observations(robot_sys, rest=rest, n=1)
+            _, pose1, _ = mean_observations(robot_sys, rest=rest, n=1)
             logger.info('Displacement after %s tries.' % ntries)
             break
     else:

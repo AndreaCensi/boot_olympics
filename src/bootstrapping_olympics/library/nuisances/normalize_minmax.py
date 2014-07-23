@@ -45,11 +45,13 @@ class NormalizeMinMax(RepresentationNuisance):
 
         streamels2['default'] = self.transform_value(streamels['default'])
 
+        self.streamels_orig = streamels.copy()
+        self.streamels2 = streamels2.copy()
         return streamels2
 
     def inverse(self):
-        return NormalizeMinMaxInverse(lower=self.lower, upper=self.upper, 
-                                      default=self.default)
+        return NormalizeMinMaxInverse(streamels_orig=self.streamels_orig.copy(),
+                                      streamels2=self.streamels2.copy())
 
     def left_inverse(self):
         return self.inverse()
@@ -93,11 +95,10 @@ class NormalizeMinMaxInverse(RepresentationNuisance):
             y[:n] = z[:n] * amp + mean
     '''
         
-    @contract(lower='array[N]',upper='array[N]',default='array[N]')
-    def __init__(self, lower, upper, default):
-        self.lower = lower
-        self.upper = upper
-        self.default = default
+#     @contract(lower='array[N]',upper='array[N]',default='array[N]')
+    def __init__(self, streamels_orig, streamels2):
+        self.streamels_orig = streamels_orig
+        self.streamels2 = streamels2
         
     def inverse(self):
         # XXX:
@@ -107,22 +108,24 @@ class NormalizeMinMaxInverse(RepresentationNuisance):
         return self.inverse()
  
     def transform_streamels(self, streamels):
+        assert streamels.shape == self.streamels2.shape # XXX: and everything else
         check_streamels_1D(streamels)
         check_streamels_continuous(streamels)
 
-        nz = streamels.size
-        n = nz - 2
-        assert n == self.lower.size
-        streamels2 = np.zeros(n, streamel_dtype)
-        streamels2['kind'][:] = ValueFormats.Continuous
-        streamels2['lower'][:] = self.lower
-        streamels2['upper'][:] = self.upper
-        streamels2['default'][:] = self.default
-        return streamels2
+        return self.streamels_orig
+#         nz = streamels.size
+#         n = nz - 2
+#         assert n == self.lower.size
+#         streamels2 = np.zeros(n, streamel_dtype)
+#         streamels2['kind'][:] = ValueFormats.Continuous
+#         streamels2['lower'][:] = self.lower
+#         streamels2['upper'][:] = self.upper
+#         streamels2['default'][:] = self.default
+#         return streamels2
     
     def transform_value(self, value):
-        n = self.lower.size
-        assert value.size == n
+        n = self.streamels_orig.size
+        assert value.size == n + 2
         amp = value[-1]
         mean = value[-2]
         z  = value[:n]
