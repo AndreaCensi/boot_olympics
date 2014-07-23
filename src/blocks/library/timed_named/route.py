@@ -4,6 +4,8 @@ from blocks.library.timed.checks import check_timed_named
 from blocks.utils import check_reset
 from contracts import contract, describe_type, describe_value
 import warnings
+from contracts.interface import describe_value_multiline
+from contracts.utils import indent
 
 
 
@@ -34,9 +36,29 @@ class Route(WithQueue, SimpleBlackBoxTN):
             
         self.suppress = suppress
 
+#     def __repr__(self):
+#         cont = '|'.join([str(b)for b in self.boxes])
+#         return 'Route(%s)' % cont
+
+
     def __repr__(self):
-        cont = '|'.join([str(b)for b in self.boxes])
-        return 'Route(%s)' % cont
+        
+        s = 'Route'
+        for i , (f, b, t) in enumerate(self.routing):
+            si = 'Inside: %s' % f
+            si += '\nOutside: %s' % t
+            si += '\n'+ describe_value_multiline(b)
+            s += '\n'+ indent(si, ' |', first='%d|' % i)
+            
+        return s
+#         s = _format_multiline(type(self).__name__, 
+#                               self.log_child_name(self.a), self.a, 
+#                               self.log_child_name(self.b), self.b)
+#         children = dict([(str(i), b) for b in self.boxes]}
+#         format_obs 
+#         
+#         return s
+
 
     def set_names(self, names):
         assert len(names) == len(self.boxes)
@@ -51,6 +73,11 @@ class Route(WithQueue, SimpleBlackBoxTN):
         self.finished = [False for _ in range(len(self.boxes))]
         
         self.warned_strange_input = set()
+        
+        # Make sure we pump objects that are already available
+        # Actually we should do it on demande --- see BBBBSeries
+        # though that becomes complicated for multiple child blackboxes. 
+        self._pump()
 
     def put_noblock(self, value):
         check_reset(self, 'finished')

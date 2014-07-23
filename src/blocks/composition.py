@@ -1,7 +1,7 @@
-import warnings
+src/blocks/unittests/ready_test.pyimport warnings
 
 from contracts import contract, describe_type, describe_value
-from contracts.utils import deprecated
+from contracts.utils import deprecated, raise_wrapped, indent
 
 from blocks import SimpleBlackBox, Source, Sink
 
@@ -172,7 +172,6 @@ class BBSinkSeries(Sink):
         self._pump()
   
 
-
 class BBBBSeries(SimpleBlackBox):
     """ Implements series between two SimpleBlackBoxes """
 
@@ -184,7 +183,10 @@ class BBBBSeries(SimpleBlackBox):
         self.log_add_child(name2, b)
 
     def __repr__(self):
-        return 'BBBBSeries(%r, %r)' % (self.a, self.b)
+        s = _format_multiline(type(self).__name__, 
+                              self.log_child_name(self.a), self.a, 
+                              self.log_child_name(self.b), self.b)
+        return s
 
     @contract(names='list[>=2](str)')
     def set_names(self, names):
@@ -289,11 +291,13 @@ class BBBBSeries(SimpleBlackBox):
         check_reset(self, 'reset_once')
         try:
             return self.b.get(block=block, timeout=timeout)
-        except NeedInput:
+        except NeedInput as e:
             assert block == True
             self.status_b_need_input = True
             if self.status_a_need_input:
-                raise NeedInput()
+                raise_wrapped(NeedInput, e,
+                              'Both need input',
+                              a=self.a, b=self.b)
             else:
                 self._pump()
                 return self.get(block=block, timeout=timeout)
@@ -303,11 +307,9 @@ class BBBBSeries(SimpleBlackBox):
                 msg = 'Bug, cannot get NotReady if block is true.'
                 msg += '\n %s' % describe_value(self.b)
                 raise Exception(msg)
-            # self.info('b is not ready')
             raise
         except Finished:
             self.status_b_finished = True
-            # self.info('b is finished')
             raise
         
 class BBBBSeriesT(BBBBSeries, SimpleBlackBoxT):
@@ -315,6 +317,19 @@ class BBBBSeriesT(BBBBSeries, SimpleBlackBoxT):
 class BBBBSeriesTN(BBBBSeries, SimpleBlackBoxTN):
     pass
 
+
+def _format_multiline(s, name_a, a, name_b, b):
+    res = s 
+    maxlen = max(len(name_a), len(name_b))
+    name_a = ' '*(maxlen-len(name_a)) + name_a
+    name_b = ' '*(maxlen-len(name_b)) + name_b
+    res += '\n' + indent(a.__repr__(), ' |', '%s|' % name_a)
+    res += '\n' + indent(b.__repr__(), ' |', '%s|' % name_b)
+    return res
+    
+    
+    
+    
 
 
     
