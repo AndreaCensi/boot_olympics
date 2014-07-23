@@ -207,29 +207,27 @@ def interpolate_sequence(poses, max_theta_diff_deg):
     return inter
 
 
-@contract(robot_sys=SimpleBlackBox, n='int,>=1', returns='tuple(array|None, array)')
+@contract(robot_sys=SimpleBlackBox, n='int,>=1', returns='tuple(float, array|None, array)')
 def mean_observations(robot_sys, n, rest):
     """ Averages the robot's observations at the given place. """
     # XXX: only works for 1D?
     obss = []
     robot_pose = None
     
-    robot_sys.put((0.0, ('commands', rest)))
     while len(obss) < n:
+        print('getting')
         x = robot_sys.get(block=True)
         check_timed_named(x)
-        (_, (signal, value)) = x
+        (t, (signal, value)) = x
         if signal == 'observations':
             obss.append(value)
         if signal == 'robot_pose':
             robot_pose = value
-        robot_sys.put((0.0, ('commands', rest)))
+        print('putting')
+        robot_sys.put((t, ('commands', rest)))
                 
     mean = np.mean(obss, axis=0)
-#     if robot_pose is None:
-#         raise ValueError('No robot_pose signal found.')
-    
-    return robot_pose, mean
+    return t, robot_pose, mean
 
 
 @contract(poses='list[>=3](array[KxK])')

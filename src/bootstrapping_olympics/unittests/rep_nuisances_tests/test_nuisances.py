@@ -189,7 +189,9 @@ def check_left_inverse(stream_spec1, nuisance):
     
         value2b = nuisance.transform_value(value1b)
         try:
-            assert_allclose(value2, value2b)
+            rtol = 1e-5
+            atol = 1e-5
+            assert_allclose(value2, value2b, rtol=rtol, atol=atol)
         except AssertionError:
             logger.error('value2 = %s' % describe_value(value2))
             logger.error('value2b = %s' % describe_value(value2b))

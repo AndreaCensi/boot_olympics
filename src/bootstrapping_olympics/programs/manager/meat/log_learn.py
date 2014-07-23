@@ -113,7 +113,7 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
             try:
                 for obs in bb_pump_block_yields(source, learner):
                     check_timed_named(obs)
-                    (t, (_, _)) = obs
+                    #(t, (_, _)) = obs
                     
                     state.num_observations += 1
                     progress.obs.done += 1

@@ -121,7 +121,7 @@ def servoing_episode(robot,
         robot_sys.reset()
         
         rest = robot.get_spec().get_commands().get_default_value()
-        pose0, obs0 = mean_observations(robot_sys, rest=rest, n=10)
+        t, pose0, obs0 = mean_observations(robot_sys, rest=rest, n=10)
 
         cmd0 = robot.get_spec().get_commands().get_random_value()
         
@@ -145,8 +145,8 @@ def servoing_episode(robot,
 
     agent_sys = agent.get_servo_system()
     agent_sys.reset()
-    agent_sys.put((0.0, ('goal_observations', obs0)))
-    agent_sys.info('did you receive it?')
+    agent_sys.put((t, ('goal_observations', obs0)))
+#     agent_sys.info('did you receive it?')
     
     simstream = run_simulation_systems(robot_sys=robot_sys, 
                                     agent_sys=agent_sys, 

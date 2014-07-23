@@ -82,19 +82,22 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
 
         writer.reset()
         last_episode_timestamp = None
+        
+        
         for id_episode in id_episodes:
             logger.info('Simulating episode %s' % id_episode)
             
             delta = None
             if last_episode_timestamp is None:
                 delta = 0.0
+                
             for x in run_simulation(id_robot, robot, id_agent,
                                     agent, 100000, max_episode_len):
                 
                 check_timed_named(x)
                 timestamp, (signal, value) = x
 
-#                 print('run_simulation gave %.4f: %s' % (timestamp, signal))
+                print('run_simulation gave %.4f: %s' % (timestamp, signal))
                 if (delta is None) and (last_episode_timestamp is not None):
                     
                     if timestamp < last_episode_timestamp:
@@ -107,14 +110,16 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
                     
                 timestamp = timestamp + delta
                                 
-                if signal == 'observations':
-                    writer.put((timestamp, ('id_episode', id_episode)))
-                
                 if signal in ['observations', 'commands']:
                     writer.put((timestamp, (signal, value)))
                 else:
                     msg = 'Unknown signal %r.' % signal
                     raise ValueError(msg)
+
+                if signal == 'observations':
+                    print('putting id_episode at %s' % timestamp)
+                    writer.put((timestamp, ('id_episode', id_episode)))
+                
                 
                 if signal == 'observations':
                     if write_extra:

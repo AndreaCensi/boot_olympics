@@ -54,8 +54,8 @@ class Resample(RepresentationNuisance):
         # assert value.shape == self.shape_from
         from scipy.misc import imresize
         y = imresize(value, self.shape_to, mode='F')
-        y = np.array(y, dtype='float32')      
-        warnings.warn('Hardcoded float32')
+        y = np.array(y, dtype='float64')      
+        warnings.warn('Hardcoded float64')
         assert y.min() >= self.vmin
         assert y.max() <= self.vmax
         return y

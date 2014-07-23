@@ -5,7 +5,7 @@ from bootstrapping_olympics import (BasicRobot, BootSpec, EpisodeDesc,
     ExplorableRobot, StreamSpec)
 from comptests.results import Skipped
 from contracts import describe_type
-from contracts.utils import check_isinstance
+from contracts.utils import check_isinstance, raise_wrapped
 from numpy.ma.testutils import assert_not_equal
 from types import NoneType
 import yaml
@@ -67,16 +67,17 @@ def check_robot_observations_compliance(id_robot, robot): #@UnusedVariable
     
     try:
         res_ = stream.get(block=True)
-    except NeedInput:
-        pass
-    else:
-        msg = 'Expected it would raise NeedInput without any commands.'
-        msg += ' Actually got %r. ' % str(res_)
-        raise Exception(msg)
+    except NeedInput as e:
+        raise_wrapped(Exception, e, 
+                      'Robot must give first observations: NeedInput received',
+                      stream=stream)
     
+    check_timed_named(res_)
+    t, (sname, ob) = res_
+    assert sname == 'observations'
+
     rest = robot.get_spec().get_commands().get_default_value()
-    print(stream)
-    stream.put((3.0, ('commands', rest)))
+    stream.put((t, ('commands', rest)))
     
     res = stream.get(block=True)
     
