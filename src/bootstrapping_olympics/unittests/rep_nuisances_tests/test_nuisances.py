@@ -6,6 +6,7 @@ from bootstrapping_olympics.unittests import (for_all_nuisances,
 from bootstrapping_olympics.utils import assert_allclose, indent
 from comptests.results import Skipped
 from contracts.interface import describe_value
+from bootstrapping_olympics.interfaces.rep_nuisance import NuisanceNotLeftInvertible
 
 
 
@@ -143,7 +144,10 @@ def check_left_inverse(stream_spec1, nuisance):
         value2 = nuisance.transform_value(value1)
         stream_spec2.check_valid_value(value2)
     
-        nuisance_left_inv = nuisance.left_inverse()
+        try:
+            nuisance_left_inv = nuisance.left_inverse()
+        except NuisanceNotLeftInvertible:
+            return Skipped('NotLeftInvertibel')
         
         assert isinstance(nuisance_left_inv, RepresentationNuisance)
         

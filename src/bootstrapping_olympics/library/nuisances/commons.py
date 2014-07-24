@@ -20,8 +20,21 @@ def find_polytope_bounds_after_linear(streamels, A, streamels2):
     is_diagonal = (M == N) and allclose(np.diag(np.diagonal(A)), A)
 
     if is_diagonal:
-        streamels2['lower'] = np.dot(A, streamels['lower'])
-        streamels2['upper'] = np.dot(A, streamels['upper'])
+        n, _ =A.shape
+        for i in range(n):
+            a = A[i,i]
+            if a > 0:
+                l = streamels['lower'][i] * a 
+                u = streamels['upper'][i] * a
+            else:
+                u = streamels['lower'][i] * a
+                l = streamels['upper'][i] * a
+        
+            assert l <= u
+                
+            streamels2['lower'][i] = l
+            streamels2['upper'][i] = u
+
 
     else:  # TODO: do something smarter here
         norm = np.abs(A).sum()  # XXX
@@ -30,4 +43,9 @@ def find_polytope_bounds_after_linear(streamels, A, streamels2):
         B = max(lb, ub)
         streamels2['lower'] = -B * norm
         streamels2['upper'] = +B * norm
+        
+    
+    l = streamels2['lower']
+    u = streamels2['upper']
+    assert np.all(l <= u)
 

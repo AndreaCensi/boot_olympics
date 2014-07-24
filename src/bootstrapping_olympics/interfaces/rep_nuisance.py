@@ -12,9 +12,12 @@ import traceback
 __all__ = [
     'RepresentationNuisance',
     'NuisanceNotInvertible',
+    'NuisanceNotLeftInvertible',
 ]
 
 class NuisanceNotInvertible(ValueError):
+    pass
+class NuisanceNotLeftInvertible(ValueError):
     pass
 
 
