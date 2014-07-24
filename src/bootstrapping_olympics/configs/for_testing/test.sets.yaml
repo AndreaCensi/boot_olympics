@@ -1,0 +1,26 @@
+
+- id: test_set1
+  desc: 'Very small number of episodes (10) for testing purposes'
+  code:
+  - bootstrapping_olympics.batch_jobs1
+  - robots: [
+        random_1_6
+    ]
+    agents: [random_agent]
+    predict: {}
+    explore:
+        num_episodes: 2
+        num_episodes_videos: 1
+        explorer: random_agent 
+        max_episode_len: 5.0
+        episodes_per_tranche: 100
+        videos: [mp4sensels]
+    servo:
+        num_episodes: 2
+        num_episodes_videos: 2
+        max_episode_len: 5.0
+        displacement: 1.0
+        videos: [mp4sensels_plot]
+        episodes_per_tranche: 10
+    servonav:
+        num_episodes: 0

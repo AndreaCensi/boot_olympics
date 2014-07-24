@@ -1,6 +1,7 @@
 from bootstrapping_olympics import LearningState, logger
 from bootstrapping_olympics.utils import UserError, x_not_found
 from contracts import contract
+from bootstrapping_olympics.configuration.master import get_boot_config
 
 __all__ = [
     'load_agent_state', 
@@ -19,7 +20,7 @@ def load_agent_state(data_central, id_agent, id_robot,
     '''
     logger.info('Loading state %s/%s reset=%s ' % (id_agent,
                                                    id_robot, reset_state))
-    config = data_central.get_bo_config()
+    config = get_boot_config()
     agent = config.agents.instance(id_agent)  # @UndefinedVariable
 
     index = data_central.get_log_index()

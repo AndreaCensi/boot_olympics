@@ -161,7 +161,6 @@
   - boot_log2movie_sensels
   - width: 200
 
-
 - id: mp4sensels_plot
   desc: 'Shows only the sensels (as a plot).'
   code: 

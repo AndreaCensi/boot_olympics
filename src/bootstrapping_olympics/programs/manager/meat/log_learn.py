@@ -1,12 +1,13 @@
-from bootstrapping_olympics.programs.manager.meat import load_agent_state
 from blocks.composition import series
 from blocks.library import CheckSequence, IteratorSource
+from blocks.library.timed.checks import check_timed_named
 from blocks.pumps import bb_pump_block_yields
 from bootstrapping_olympics import LearningAgent, LearningConverged, logger
+from bootstrapping_olympics.configuration.master import get_boot_config
+from bootstrapping_olympics.programs.manager.meat import load_agent_state
 from contracts import contract
 from contracts.utils import check_isinstance
 import warnings
-from blocks.library.timed.checks import check_timed_named
 
 
 __all__ = [
@@ -31,7 +32,7 @@ def learn_log(data_central, id_agent, id_robot,
     
     logger.info('id_agent: %r\nepisodes:\n%r' % (id_agent, episodes))
 
-    bo_config = data_central.get_bo_config()
+    bo_config = get_boot_config()
 
     live_plugins = [bo_config.live_plugins.instance_smarter(x)[1] for x in live_plugins]
     from bootstrapping_olympics.library.live_plugins import CompmakeProgress

@@ -1,6 +1,4 @@
 from bootstrapping_olympics import get_boot_config
-from bootstrapping_olympics.interfaces.observations import ObsKeeper
-from bootstrapping_olympics.misc.interaction import iterate_robot_observations
 from procgraph import Block, IteratorGenerator
 
 

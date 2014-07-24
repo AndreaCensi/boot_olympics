@@ -7,6 +7,7 @@ from conf_tools import locate_files
 from conf_tools.utils import friendly_path
 from contracts import contract
 import traceback
+import warnings
 
 __all__ = ['LogIndex']
 
@@ -107,11 +108,11 @@ class LogIndex(object):
         for stream in self.get_streams_for_robot(id_robot):
             eps = stream.get_id_episodes()
             if id_episode in eps:
-
-                for obs in stream.read(read_extra=read_extra,
+                for x in stream.read(read_extra=read_extra,
                                        only_episodes=[id_episode]):
-                    assert obs['id_episode'].item() == id_episode
-                    yield obs
+                    #assert obs['id_episode'].item() == id_episode
+                    warnings.warn('need check')
+                    yield x
 
                 break
         else:

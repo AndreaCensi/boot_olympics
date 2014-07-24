@@ -1,42 +1,27 @@
-import os
-from pprint import pformat
-
-from bootstrapping_olympics import logger
-from bootstrapping_olympics.utils import (safe_makedirs, safe_symlink, UserError,
-    expand_string)
-from conf_tools import import_name, ConfToolsException
-from quickapp import iterate_context_names
-
-# from . import BatchConfigMaster
 from ..meat import DataCentral
-from .batch_config import BatchConfigMaster
+from bootstrapping_olympics import logger
+from bootstrapping_olympics.configuration.batch_config import BatchConfigMaster
+from bootstrapping_olympics.utils import safe_makedirs, safe_symlink
+from conf_tools import ConfToolsException, import_name
+from pprint import pformat
+from quickapp import iterate_context_names
+import os
 
 
 def batch_process_manager(context, data_central, which_sets):
-
+    
     batch_config = BatchConfigMaster()
     configs = data_central.get_dir_structure().get_config_directories()
     for config in configs:
         batch_config.load(config)
 
-    sets_available = batch_config.sets.keys()
+    sets_config =  batch_config.sets 
 
-    logger.info('Available: %r' % sets_available)
-    logger.info('Sets:      %r' % which_sets)
-    which_sets_int = expand_string(which_sets, options=sets_available)
-
-    if not which_sets_int:
-        msg = 'Specified sets %r not found.' % which_sets
-        msg += ' Available: %s' % sets_available
-        raise UserError(msg)
-
-    # logger.info('Expanded:  %r' % which_sets)
+    which_sets_int = sets_config.expand_names(which_sets) 
 
     for x in which_sets_int:
-        if not x in sets_available:
-            msg = 'Set %r not available.' % x
-            raise UserError(msg)
-
+        sets_config[x] 
+        
     if len(which_sets_int) == 1:
         combid = which_sets[0]
     else:
@@ -57,15 +42,9 @@ def batch_process_manager(context, data_central, which_sets):
     safe_symlink(os.path.join(root, 'logs'),
                  os.path.join(root_set, 'logs', 'original'))
 
-#     storage = data_central_set.get_dir_structure().get_storage_dir()
-#     compmake_storage = os.path.join(storage, 'compmake')
-#     logger.debug('Using storage directory %r.' % friendly_path(compmake_storage))
-#     use_filesystem(compmake_storage)
-
-    for c, id_set in iterate_context_names(context, which_sets):
-#         if len(which_sets) > 1:
-#             comp_prefix(id_set)
-
+    print('id_sets: %s' % which_sets_int)
+    for c, id_set in iterate_context_names(context, which_sets_int):
+        print('set %r'% id_set)
         try:
             spec = batch_config.sets[x]
             batch_set(c, data_central_set, id_set, spec)
@@ -73,14 +52,7 @@ def batch_process_manager(context, data_central, which_sets):
             msg = ('Bad configuration for the set %r with spec\n %s' % 
                    (id_set, pformat(spec)))
             logger.error(msg)
-            raise
-#
-#     if command:
-#         return batch_command(command)
-#     else:
-#         compmake_console()
-#         return 0
-
+            raise 
 
 def batch_set(context, data_central, id_set, spec):  # @UnusedVariable
     function_name = spec['code'][0]

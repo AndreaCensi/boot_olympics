@@ -4,6 +4,7 @@ from reprep import MIME_PDF, MIME_SVG, Report
 
 from .report_utils import save_report  # This creates a .pickle used by scripts
 from .servo.utils import get_vsim_from_robot
+from bootstrapping_olympics.library.robots.nuisance_robot import NuisanceRobot
 
 
 # def publish_report_robot(data_central, id_robot, save_pickle=False):
@@ -19,7 +20,7 @@ def report_robot_create(id_robot):
 def add_robot_info(report, id_robot):
     robot = get_conftools_robots().instance(id_robot)
     
-    if isinstance(robot, EquivRobot):
+    if isinstance(robot, NuisanceRobot):
         add_nuisances_info(robot, report)
     try: 
         vsim = get_vsim_from_robot(robot)

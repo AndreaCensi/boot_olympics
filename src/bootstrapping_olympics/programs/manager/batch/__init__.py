@@ -1,6 +1,6 @@
 ''' Utilities for creating parallel jobs using Compmake. '''
 
-from .batch_config import *
+from bootstrapping_olympics.configuration.batch_config import *
 from .batch_manager import *
 
 pdfs_first = ['pdff2sb',

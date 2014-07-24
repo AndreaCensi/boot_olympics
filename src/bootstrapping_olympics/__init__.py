@@ -2,8 +2,8 @@ __version__ = '1.3'
 
 import numpy as np
 from contracts import contract
-from comptests.registrar import jobs_registrar
-
+import os
+import warnings
 __docformat__ = 'restructuredtext'
 
 # ## Setup logging
@@ -46,19 +46,29 @@ from .misc import *
 from . import extra
 
 from .programs.manager.batch.batch_learn import batch_jobs1
-#
-# def get_comptests():
-#     # load unittests
-#     from . import unittests
-#     from comptests import get_comptests_app
-#     # Get the Quickapp for the boot_config
-#     app = get_comptests_app(get_boot_config())
-#     return [app]
-
+from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
+from bootstrapping_olympics.programs.manager.batch.batch_manager import batch_process_manager
 
 def jobs_comptests(context):
+    
     from . import unittests
-    return jobs_registrar(context, get_boot_config())
+    warnings.warn('disabled')
+    #j1 = jobs_registrar(context, get_boot_config())
+
+    from comptests.registrar import jobs_registrar
+    from quickapp import iterate_context_names
+
+    which = ["test_set1"]
+    for c, id_set in iterate_context_names(context, which, key='set'):
+        root = os.path.join(c.get_output_dir(), 'data_central')
+        if not os.path.exists(root):
+            os.makedirs(root)
+            os.makedirs(os.path.join(root, 'config'))
+        data_central = DataCentral(root)
+        c.comp_config_dynamic(batch_process_manager, data_central, which_sets=id_set)
+    
+    
+    
 
 
 

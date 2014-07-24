@@ -14,6 +14,7 @@ from contracts import contract
 from geometry import SE2_from_SE3, angle_from_SE2, translation_from_SE2
 import numpy as np
 import warnings
+from blocks.interface import Sink
 
 __all__ = ['task_servo']
 
@@ -77,6 +78,8 @@ def task_servo(data_central, id_agent, id_robot,
                                       id_agent=id_agent_servo,
                                       id_robot=id_robot) as writer:
             writer.reset()
+            
+            writer = WrapSeparateEpisodes(writer)
             counter = 0
             while bk.another_episode_todo():
                 episode = robot.new_episode()
@@ -88,6 +91,7 @@ def task_servo(data_central, id_agent, id_robot,
 
                 save_robot_state = counter < num_episodes_with_robot_state
 
+                writer.new_episode()
                 servoing_episode( robot=robot,  agent=agent,
                      writer=writer, id_episode=id_episode,
                      displacement=displacement,
@@ -95,8 +99,47 @@ def task_servo(data_central, id_agent, id_robot,
                      save_robot_state=save_robot_state,
                      max_tries=10000)
 
+
                 bk.episode_done()
                 counter += 1
+                
+class WrapSeparateEpisodes(Sink):
+    
+    def __init__(self, sink, min_diff=60.0):
+        self.sink = sink
+        self.min_diff = min_diff
+    
+    def reset(self):
+        self.sink.reset()
+        self.last_episode_final_timestamp = None
+        self.check_next = False
+        self.last_timestamp = None
+        
+    def new_episode(self):
+        self.last_episode_final_timestamp = self.last_timestamp
+        if self.last_timestamp is not None:
+            self.check_next = True
+        
+    def put(self, value, block=True, timeout=None):  # @UnusedVariable
+        check_timed_named(value)
+        timestamp, ob = value
+        
+        if self.check_next:
+            if timestamp < self.last_episode_final_timestamp:
+                self.delta = self.last_episode_final_timestamp - timestamp + self.min_diff
+                msg =( 'Due to simulation, sometimes episodes have '
+                       'overlapping timestamps.'
+                        'I will add a delta of at least '
+                        '%.4f seconds (delta = %.4f)' % (self.min_diff, self.delta))
+                logger.warn(msg)
+            else:
+                self.delta = 0
+            
+        self.sink.put((timestamp + self.delta, ob), block=block)
+                
+        self.last_timestamp = timestamp
+        
+                
 
 @contract(agent=ServoingAgent)
 def servoing_episode(robot,
@@ -135,14 +178,6 @@ def servoing_episode(robot,
         raise Exception(msg)
 
     current_pose = None
-    
-#     simstream = run_simulation(id_robot=id_robot, 
-#                    robot=robot, 
-#                    id_agent=id_servo_agent, 
-#                    agent=servo_agent, max_observations=100000,
-#                    max_time=max_episode_len)
-#     
-
 
     agent_sys = agent.get_servo_system()
     agent_sys.reset()
@@ -201,7 +236,6 @@ def servoing_episode(robot,
             writer.put((timestamp, ('observations', observations)))
             writer.put((timestamp, ('extra', extra)))
 
-
         if has_pose:
             if ((dist_t_m <= converged_dist_t_m) and
                 (dist_th_deg <= converged_dist_th_deg)):
@@ -243,7 +277,7 @@ def simulate_hold(cmd0, robot_sys, boot_spec, displacement):
                                 max_observations=100000, 
                                 max_time=displacement * 2,
                                 check_valid_values=True):
-        timestamp, (signal, value) = x
+        timestamp, (_, _) = x
         if t0 is None:
             t0 = timestamp
 
