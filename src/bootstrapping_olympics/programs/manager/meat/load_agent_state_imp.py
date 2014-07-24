@@ -1,7 +1,7 @@
-from bootstrapping_olympics import LearningState, logger
+from bootstrapping_olympics import LearningState, get_boot_config, logger
 from bootstrapping_olympics.utils import UserError, x_not_found
 from contracts import contract
-from bootstrapping_olympics.configuration.master import get_boot_config
+
 
 __all__ = [
     'load_agent_state', 
@@ -23,23 +23,26 @@ def load_agent_state(data_central, id_agent, id_robot,
     config = get_boot_config()
     agent = config.agents.instance(id_agent)  # @UndefinedVariable
 
-    index = data_central.get_log_index()
-    has_log = index.has_streams_for_robot(id_robot)
     has_instance = id_robot in config.robots 
-    
-    if has_log:
-        boot_spec = index.get_robot_spec(id_robot)
-    elif has_instance:
+       
+    if has_instance:
         robot = config.robots.instance(id_robot)
         boot_spec = robot.get_spec()
+    
     else:
-        msg = 'Cannot load agent state for %r ' % id_agent
-        msg += 'because I cannot find any streams for robot %r ' % id_robot
-        msg += 'and I need them to find the BootSpec. '
-        msg += 'Also I could not instance the robot.'
-        msg += x_not_found('robot', id_robot, index.list_robots())
-        raise UserError(msg)
+        index = data_central.get_log_index()
+        has_log = index.has_streams_for_robot(id_robot)
         
+        if has_log:
+            boot_spec = index.get_robot_spec(id_robot)
+        else:
+            msg = 'Cannot load agent state for %r ' % id_agent
+            msg += 'because I cannot find any streams for robot %r ' % id_robot
+            msg += 'and I need them to find the BootSpec. '
+            msg += 'Also I could not instance the robot.'
+            msg += x_not_found('robot', id_robot, index.list_robots())
+            raise UserError(msg)
+            
     agent.init(boot_spec)
 
     return load_agent_state_core(data_central, id_agent, agent, id_robot,
@@ -61,7 +64,8 @@ def load_agent_state_core(data_central, id_agent, agent, id_robot,
     else:
         if db.has_state(**key):
             logger.info('Using previous learned state.')
-            state = db.reload_state_for_agent(id_agent=id_agent, id_robot=id_robot,
+            state = db.reload_state_for_agent(id_agent=id_agent, 
+                                              id_robot=id_robot,
                                               agent=agent)
             return agent, state
         else:

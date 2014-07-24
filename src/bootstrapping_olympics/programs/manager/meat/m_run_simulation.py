@@ -1,14 +1,11 @@
-from blocks import NeedInput, NotReady
+from blocks import Finished, NeedInput, NotReady
 from blocks.composition import series
-from blocks import Finished
-from blocks.library import CheckSequence
+from blocks.library import CheckSequence, CheckSequenceTN
 from blocks.library.timed.checks import check_timed_named
-from bootstrapping_olympics import (ExplorableRobot, ExploringAgent, logger)
+from bootstrapping_olympics import ExplorableRobot, ExploringAgent, logger
 from contracts import contract
 from contracts.utils import check_isinstance
-import time
 import warnings
-from blocks.library.timed.check_sequence import CheckSequenceTN
 
 __all__ = ['run_simulation']
 

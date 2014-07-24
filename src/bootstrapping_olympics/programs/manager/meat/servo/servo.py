@@ -1,7 +1,7 @@
 
 from .bookkeeping import BookkeepingServo
-from blocks.library.simple.instantaneous import Instantaneous
-from blocks.library.timed.checks import check_timed_named
+from blocks import Sink, check_timed_named
+from blocks.library import Instantaneous
 from bootstrapping_olympics import LogsFormat, get_conftools_robots, logger
 from bootstrapping_olympics.interfaces.agent import ServoingAgent
 from bootstrapping_olympics.programs.manager.meat import load_agent_state
@@ -14,7 +14,9 @@ from contracts import contract
 from geometry import SE2_from_SE3, angle_from_SE2, translation_from_SE2
 import numpy as np
 import warnings
-from blocks.interface import Sink
+from bootstrapping_olympics.logs.log_index import index_directory
+import os
+
 
 __all__ = ['task_servo']
 
@@ -77,9 +79,10 @@ def task_servo(data_central, id_agent, id_robot,
                                       boot_spec=boot_spec,
                                       id_agent=id_agent_servo,
                                       id_robot=id_robot) as writer:
+            writer = WrapSeparateEpisodes(writer)
+
             writer.reset()
             
-            writer = WrapSeparateEpisodes(writer)
             counter = 0
             while bk.another_episode_todo():
                 episode = robot.new_episode()
@@ -102,7 +105,11 @@ def task_servo(data_central, id_agent, id_robot,
 
                 bk.episode_done()
                 counter += 1
-                
+        
+        reader = LogsFormat.get_reader_for(filename)
+        reader.index_file_cached(filename, ignore_cache=True)
+
+    
 class WrapSeparateEpisodes(Sink):
     
     def __init__(self, sink, min_diff=60.0):
@@ -114,16 +121,18 @@ class WrapSeparateEpisodes(Sink):
         self.last_episode_final_timestamp = None
         self.check_next = False
         self.last_timestamp = None
+        self.delta = 0
         
     def new_episode(self):
+        self.info('New episode ===== ')
         self.last_episode_final_timestamp = self.last_timestamp
         if self.last_timestamp is not None:
             self.check_next = True
         
     def put(self, value, block=True, timeout=None):  # @UnusedVariable
         check_timed_named(value)
-        timestamp, ob = value
-        
+        timestamp, (name, x) = value
+        self.info('Found: %.5f %r' % (timestamp, name))
         if self.check_next:
             if timestamp < self.last_episode_final_timestamp:
                 self.delta = self.last_episode_final_timestamp - timestamp + self.min_diff
@@ -131,11 +140,13 @@ class WrapSeparateEpisodes(Sink):
                        'overlapping timestamps.'
                         'I will add a delta of at least '
                         '%.4f seconds (delta = %.4f)' % (self.min_diff, self.delta))
-                logger.warn(msg)
+                self.info(msg)
             else:
                 self.delta = 0
-            
-        self.sink.put((timestamp + self.delta, ob), block=block)
+            self.check_next = False
+        timestamp2=  timestamp + self.delta
+        self.info('Putting: %.5f %r' % (timestamp2, name))
+        self.sink.put((timestamp2, (name, x)), block=block)
                 
         self.last_timestamp = timestamp
         
@@ -192,6 +203,7 @@ def servoing_episode(robot,
                                     max_observations=100000, 
                                     max_time=max_episode_len,
                                     check_valid_values=True)
+    counter = 0
     for x in simstream: 
         check_timed_named(x)
         timestamp, (signal, value) = x
@@ -244,6 +256,14 @@ def servoing_episode(robot,
         else:
             warnings.warn('TODO: write convergence criterion without pose information')
             pass
+        
+        counter += 1
+        
+    if counter < 10:
+        msg = 'Servo episode only gave %d steps.' % counter
+        raise ValueError(msg)
+    
+    print('Servoing episode lasted %d steps.' % counter)
 
 def pose_to_yaml(x):
     ''' Converts to yaml, or sets None. '''
@@ -286,20 +306,3 @@ def simulate_hold(cmd0, robot_sys, boot_spec, displacement):
     success = length > displacement * 0.99
     
     return success 
-#     
-#     t0 = timestamp()
-#     nsteps = 0
-#     while timestamp() < t0 + displacement:
-#         nsteps += 1
-#         source = BootOlympicsConstants.CMD_SOURCE_SERVO_DISPLACEMENT
-#         robot.set_commands(cmd0, source)
-#         if episode_ended():
-#             logger.debug('Collision after %d steps' % ntries)
-#             return False
-# 
-#     logger.debug('%d steps of simulation to displace by %s' % 
-#                 (nsteps, displacement))
-#     return True
-
-
-

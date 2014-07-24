@@ -83,6 +83,8 @@ def episode_summary(id_episode,
     num_observations = len(stream)
     if num_observations == 1:
         msg = 'Episode %r is too short.' % id_episode
+        timestamps = ['%.5f' % x for x in timestamps]
+        msg += '\n timestamps: %s episodes= %s' %(timestamps, episodes)
         raise Exception(msg)
     
     assert len(stream) >= 2

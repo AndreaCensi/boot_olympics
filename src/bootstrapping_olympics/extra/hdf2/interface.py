@@ -3,6 +3,7 @@ from .write import HDFLogWriter2
 from bootstrapping_olympics import LogsFormat, logger
 from contextlib import contextmanager
 from index import hdf_list_streams
+from contracts.utils import raise_wrapped
 
 __all__ = ['HDFLogsFormat2']
 
@@ -11,7 +12,11 @@ class HDFLogsFormat2(LogsFormat):
 
     def index_file(self, filename):
         ''' Returns a list of BootStream objects. '''
-        return hdf_list_streams(filename)
+        try:
+            return hdf_list_streams(filename)
+        except BaseException as e:
+            raise_wrapped(ValueError, e, 'Error while indexing file.',
+                          filename=filename)
 
     def read_stream(self, stream, read_extra=False, only_episodes=None,
                     check_valid_values=False):

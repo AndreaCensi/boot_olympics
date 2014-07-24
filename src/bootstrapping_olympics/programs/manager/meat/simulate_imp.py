@@ -8,6 +8,9 @@ from bootstrapping_olympics.programs.manager.meat.data_central import (
 from bootstrapping_olympics.utils import unique_timestamp_string
 from contracts import contract
 import numpy as np
+from bootstrapping_olympics.extra.hdf2.interface import HDFLogsFormat2
+from bootstrapping_olympics.logs.log_index import index_directory
+import os
 
 
 __all__ = [
@@ -131,5 +134,8 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
                      
         writer.end_input()
         logger.info('Peacefully done all episodes')
+
+    # XXX:
+    index_directory(os.path.dirname(filename))
 
     return id_episodes
