@@ -66,7 +66,7 @@ class RandomRobot(BasicRobot, ExplorableRobot):
                 check_timed_named(value, self)
                 (timestamp, (sname, _)) = value
                 
-                self.info('Seen %s %s' % (timestamp, sname))
+                #self.info('Seen %s %s' % (timestamp, sname))
                 if not sname in ['commands']:
                     msg = 'Unexpected signal %r.' % sname
                     raise ValueError(msg)

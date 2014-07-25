@@ -124,7 +124,7 @@ class WrapSeparateEpisodes(Sink):
         self.delta = 0
         
     def new_episode(self):
-        self.info('New episode ===== ')
+        #self.info('New episode ===== ')
         self.last_episode_final_timestamp = self.last_timestamp
         if self.last_timestamp is not None:
             self.check_next = True
@@ -132,7 +132,7 @@ class WrapSeparateEpisodes(Sink):
     def put(self, value, block=True, timeout=None):  # @UnusedVariable
         check_timed_named(value)
         timestamp, (name, x) = value
-        self.info('Found: %.5f %r' % (timestamp, name))
+        #self.info('Found: %.5f %r' % (timestamp, name))
         if self.check_next:
             if timestamp < self.last_episode_final_timestamp:
                 self.delta = self.last_episode_final_timestamp - timestamp + self.min_diff
@@ -146,7 +146,7 @@ class WrapSeparateEpisodes(Sink):
                 self.delta = 0
             self.check_next = False
         timestamp2=  timestamp + self.delta
-        self.info('Putting: %.5f %r' % (timestamp2, name))
+        #self.info('Putting: %.5f %r' % (timestamp2, name))
         self.sink.put((timestamp2, (name, x)), block=block)
                 
         self.last_timestamp = timestamp

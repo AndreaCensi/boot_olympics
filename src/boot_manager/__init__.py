@@ -1,7 +1,11 @@
-from conf_tools import GlobalConfig
-import os
+
+
+from .configuration import *
 
 def jobs_comptests(context):
+    from conf_tools import GlobalConfig
+    import os
+
     from . import unittests
     from comptests import jobs_registrar
 
@@ -13,7 +17,7 @@ def jobs_comptests(context):
     # load into bootstrapping_olympics
     from bootstrapping_olympics import get_boot_config
     # need to load it
-    from bootstrapping_olympics.configuration.batch_config import get_bootbatch_config
+    from boot_manager import get_bootbatch_config
 
     for d in configs:
         d = os.path.abspath(d)

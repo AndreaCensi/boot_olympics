@@ -1,6 +1,6 @@
 from ..meat import DataCentral
+from boot_manager import get_conftools_bootbatchsets
 from bootstrapping_olympics import logger
-from bootstrapping_olympics.configuration.batch_config import BatchConfigMaster
 from bootstrapping_olympics.utils import safe_makedirs, safe_symlink
 from conf_tools import ConfToolsException, import_name
 from pprint import pformat
@@ -9,13 +9,15 @@ import os
 
 
 def batch_process_manager(context, data_central, which_sets):
-    
-    batch_config = BatchConfigMaster()
-    configs = data_central.get_dir_structure().get_config_directories()
-    for config in configs:
-        batch_config.load(config)
-
-    sets_config =  batch_config.sets 
+#     
+#     batch_config = BatchConfigMaster()
+#     configs = data_central.get_dir_structure().get_config_directories()
+#     for config in configs:
+#         batch_config.load(config)
+# 
+#     
+    sets_config = get_conftools_bootbatchsets()
+#     sets_config =  batch_config.sets 
 
     which_sets_int = sets_config.expand_names(which_sets) 
 
@@ -46,7 +48,7 @@ def batch_process_manager(context, data_central, which_sets):
     for c, id_set in iterate_context_names(context, which_sets_int):
         print('set %r'% id_set)
         try:
-            spec = batch_config.sets[x]
+            spec = sets_config[x]
             batch_set(c, data_central_set, id_set, spec)
         except ConfToolsException:
             msg = ('Bad configuration for the set %r with spec\n %s' % 

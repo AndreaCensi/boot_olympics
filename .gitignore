@@ -13,3 +13,4 @@ out-*
 *.pgc
 .compmake_history.txt
 test_writing*h5
+out

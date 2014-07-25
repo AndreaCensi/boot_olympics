@@ -15,6 +15,12 @@ class DataCentral(object):
         # Important, it can be deserialized from somewhere else
         self.boot_root = boot_root
         self.root = os.path.realpath(boot_root)
+        if not os.path.exists(self.root):
+            try:
+                os.makedirs(self.root)
+            except:
+                if not os.path.exists(self.root):
+                    raise
         self.dir_structure = DirectoryStructure(self.root)
         self.states_db = None
         self.log_index = None

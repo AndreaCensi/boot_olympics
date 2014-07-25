@@ -6,4 +6,3 @@
 
 from .master import *
 
-from .batch_config import *
