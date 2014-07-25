@@ -1,9 +1,10 @@
 from .read import hdf_read
 from .write import HDFLogWriter2
 from bootstrapping_olympics import LogsFormat, logger
+from bootstrapping_olympics.utils import safe_write_tmp_filename
 from contextlib import contextmanager
-from index import hdf_list_streams
 from contracts.utils import raise_wrapped
+from .index import hdf_list_streams
 
 __all__ = ['HDFLogsFormat2']
 
@@ -54,5 +55,21 @@ class HDFLogsFormat2(LogsFormat):
             raise
         else:
             writer.close()
+
+    @contextmanager
+    def write_stream_and_check(self, filename, id_stream, boot_spec, id_agent, id_robot):
+        """ This writes to a temporary file and checks everything is ok. """
+        with safe_write_tmp_filename(filename, suffix_tmp='.tmp', suffix_old='.old') as tmp_filename:
+            with self.write_stream(filename=tmp_filename,
+                                              id_stream=id_stream,
+                                              boot_spec=boot_spec,
+                                              id_agent=id_agent,
+                                              id_robot=id_robot) as writer:
+                    yield writer        
+        
+            reader = LogsFormat.get_reader_for(filename)
+            reader.index_file_cached(tmp_filename, ignore_cache=True)
+        
+
 
 LogsFormat.formats['h5'] = HDFLogsFormat2()

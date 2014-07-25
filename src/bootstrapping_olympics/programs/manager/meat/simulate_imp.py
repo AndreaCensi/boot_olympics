@@ -1,16 +1,14 @@
 from .m_run_simulation import run_simulation
-from blocks import Sink
-from blocks.library.timed.checks import check_timed_named
+from blocks import check_timed_named
 from bootstrapping_olympics import (LogsFormat, get_conftools_agents, 
     get_conftools_robots, logger)
 from bootstrapping_olympics.programs.manager.meat.data_central import (
     DataCentral)
+from bootstrapping_olympics.programs.manager.meat.servo.servo import (
+    WrapSeparateEpisodes)
 from bootstrapping_olympics.utils import unique_timestamp_string
 from contracts import contract
 import numpy as np
-from bootstrapping_olympics.extra.hdf2.interface import HDFLogsFormat2
-from bootstrapping_olympics.logs.log_index import index_directory
-import os
 
 
 __all__ = [
@@ -75,43 +73,25 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
     if cumulative:
         raise NotImplementedError('cumulative not implemented')
       
-    with logs_format.write_stream(filename=filename,
-                                  id_stream=id_stream,
-                                  boot_spec=boot_spec,
-                                  id_agent=id_agent,
-                                  id_robot=id_robot) as writer:
-        
-        assert isinstance(writer, Sink)
-
+    with logs_format.write_stream_and_check(filename=filename,
+                                              id_stream=id_stream,
+                                              boot_spec=boot_spec,
+                                              id_agent=id_agent,
+                                              id_robot=id_robot) as writer:
+        writer = WrapSeparateEpisodes(writer)
         writer.reset()
-        last_episode_timestamp = None
-        
+
         for id_episode in id_episodes:
             logger.info('Simulating episode %s' % id_episode)
-            
-            # TODO: use WrapSeparateEpisodes
-            delta = None
-            if last_episode_timestamp is None:
-                delta = 0.0
-                
+             
+            count = 0
+            writer.new_episode()
             for x in run_simulation(id_robot, robot, id_agent,
                                     agent, 100000, max_episode_len):
-                
+                count += 1
                 check_timed_named(x)
                 timestamp, (signal, value) = x
-
-                print('run_simulation gave %.4f: %s' % (timestamp, signal))
-                if (delta is None) and (last_episode_timestamp is not None):
-                    
-                    if timestamp < last_episode_timestamp:
-                        delta = last_episode_timestamp - timestamp + 10.0
-                        msg = 'Due to simulation, sometimes episodes have overlapping timestamps.'
-                        msg += 'I will add a delta of at least 10 seconds (delta = %.4f)' % delta
-                        logger.warn(msg)
-                    else:
-                        delta = 0
-                    
-                timestamp = timestamp + delta
+ 
                                 
                 if signal in ['observations', 'commands']:
                     writer.put((timestamp, (signal, value)))
@@ -119,23 +99,23 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
                     msg = 'Unknown signal %r.' % signal
                     raise ValueError(msg)
 
-                if signal == 'observations':
-                    print('putting id_episode at %s' % timestamp)
+                if signal == 'observations': 
+                    # Put 'id_episode' after each observations
                     writer.put((timestamp, ('id_episode', id_episode)))
                 
                 if signal == 'observations':
+                    # Put 'extra', possibly empty, after each observations
                     if write_extra:
                         extra = dict(robot_state=robot.get_state())
                     else:
                         extra = {}
                     writer.put((timestamp, ('extra', extra)))
         
-            last_episode_timestamp = timestamp
-                     
+            if count < 5:
+                raise ValueError('Exploration only lasted %d steps.' % count)
+                             
         writer.end_input()
-        logger.info('Peacefully done all episodes')
 
-    # XXX:
-    index_directory(os.path.dirname(filename))
-
+    logger.info('Peacefully done all episodes')
+ 
     return id_episodes

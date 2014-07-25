@@ -12,10 +12,10 @@ from bootstrapping_olympics import (BasicAgent, BasicRobot, PredictingAgent,
 from bootstrapping_olympics.programs.manager.meat.data_central import (
     DataCentral)
 from compmake import Context
+from compmake.structures import Promise
 from conf_tools import SemanticMistake
 from contracts import contract
 from quickapp import iterate_context_names
-from compmake.structures import Promise
 
         
 def batch_jobs1(context, data_central, robots, agents,
@@ -31,6 +31,12 @@ def batch_jobs1(context, data_central, robots, agents,
         
     print('robots: %r ' % robots)
     print('agents: %r ' % agents)
+    
+    agent2instance = {}
+    for id_agent in agents:
+        agent2instance[id_agent] = context.comp_config(instance_agent, id_agent,
+                                                       job_id='instance-%s'%id_agent) 
+        
     for c, id_robot in iterate_context_names(context, robots, key='id_robot'):
         jobs_task_robot_report(c, id_robot=id_robot)
         robot = c.comp_config(instance_robot, id_robot)
@@ -42,12 +48,11 @@ def batch_jobs1(context, data_central, robots, agents,
         num_ep_expl=explore['num_episodes']
         explorer=explore['explorer']
         for c2, id_agent in iterate_context_names(c, agents, key='id_agent'):
-            agent = c2.comp_config(instance_agent, id_agent)
-            print('episode2job: %s ' % episode2job)
+            agent = agent2instance[id_agent]
             # hack: we don't want to resolve the references
             episode2jobid = dict([(episode, x.job_id)
                                   for episode, x in episode2job.items()])
-            context.comp_config_dynamic(jobs_agent_robot,
+            c2.comp_config_dynamic(jobs_agent_robot,
                              data_central=data_central,
                              id_agent=id_agent, id_robot=id_robot,
                              agent=agent, robot=robot,

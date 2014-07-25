@@ -2,9 +2,12 @@ from contextlib import contextmanager
 import os
 import warnings
 
-__version__ = '1.1'
+__version__ = '1.2'
 
-__all__ = ['safe_write']
+__all__ = [
+        'safe_write',
+        'safe_write_tmp_filename',
+]
 
 
 @contextmanager
@@ -12,11 +15,27 @@ def safe_write(filename, mode='wb', suffix_tmp='.tmp', suffix_old='.old'):
     """
         Also makes sure the directory is created.
     """
+    with safe_write_tmp_filename(filename, suffix_tmp=suffix_tmp, suffix_old=suffix_old) as filename_new:
+        with open(filename_new, mode) as f:
+            yield f
+
+
+@contextmanager
+def safe_write_tmp_filename(filename,  suffix_tmp='.tmp', suffix_old='.old'):
+    """
+        This yields a temporary filename, not a handle.
+    """
     
     dirname = os.path.dirname(filename)
     if not os.path.exists(dirname):
         if dirname != '':
-            os.makedirs(dirname)
+            try:
+                os.makedirs(dirname)
+            except:
+                if os.path.exists(dirname):
+                    pass # race condition
+                else:
+                    raise
 
     # TODO: use tmpfile 
     filename_new = filename + suffix_tmp
@@ -32,9 +51,9 @@ def safe_write(filename, mode='wb', suffix_tmp='.tmp', suffix_old='.old'):
         os.unlink(filename_old)
 
     try:
-        with open(filename_new, mode) as f:
-            yield f
+        yield filename_new
     except:
+        print('Error while cretating %s ' % filename_new)
         if os.path.exists(filename_new):
             try:
                 os.unlink(filename_new)
@@ -66,8 +85,3 @@ def safe_write(filename, mode='wb', suffix_tmp='.tmp', suffix_old='.old'):
         assert not os.path.exists(filename_old)
     
     warnings.warn('this was a race condition')
-#         
-#     if not os.path.exists(filename):
-#         msg = "Sorry, filename %r does not exists. Race conditions. It's a bug." % filename
-#         raise Exception(msg)
-#         

@@ -1,14 +1,12 @@
-from blocks.composition import series
+from blocks import bb_pump_block_yields, check_timed_named, series
 from blocks.library import CheckSequence, IteratorSource
-from blocks.library.timed.checks import check_timed_named
-from blocks.pumps import bb_pump_block_yields
-from bootstrapping_olympics import LearningAgent, LearningConverged, logger
-from bootstrapping_olympics.configuration.master import get_boot_config
+from bootstrapping_olympics import (LearningAgent, LearningConverged, 
+    get_boot_config, logger)
 from bootstrapping_olympics.programs.manager.meat import load_agent_state
+from compmake import progress as compmake_progress
 from contracts import contract
 from contracts.utils import check_isinstance
 import warnings
-
 
 __all__ = [
     'learn_log', 
@@ -98,14 +96,17 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
     for plugin in live_plugins:
         plugin.init(init)
  
-    for stream, to_learn in remain:
+    for i, (stream, to_learn) in enumerate(remain):
+        compmake_progress('stream', (i, len(remain)), stream)
 
-        
         # plugins
         for plugin in live_plugins:
             plugin.starting_stream(stream)
         
-        for id_episode in to_learn:
+        for j, id_episode in enumerate(to_learn):
+            compmake_progress('episode', (j, len(to_learn)), id_episode)
+            
+            
             # Let's reset the learner every time we start a new episode
             learner = agent.get_learner_as_sink()
             learner.reset()
@@ -113,14 +114,17 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
             source = BootStreamAsSource(stream, set(id_episode))
             source = series(source, CheckSequence())
             source.reset()
+            
             try:
                 for obs in bb_pump_block_yields(source, learner):
                     check_timed_named(obs)
-                    #(t, (_, _)) = obs
+                    
+                    # TODO: get length of episode
+                    # compmake_progress('t', (obs[0], None))
                     
                     state.num_observations += 1
                     progress.obs.done += 1
-
+                    
                     # Update plugins
                     up = dict(agent=agent, robot=None, obs=obs,
                               progress=progress,
@@ -131,7 +135,7 @@ def learn_log_base(data_central, id_agent, agent_state, id_robot, episodes,
             except LearningConverged as e:
                 print('Obtained learning converged: %s' % e)
 
-            state.id_episodes.update(set(id_episode))
+            state.id_episodes.add(id_episode)
             progress.eps.done += 1
 
     for plugin in live_plugins:

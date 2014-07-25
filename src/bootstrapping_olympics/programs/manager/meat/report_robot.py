@@ -1,10 +1,10 @@
+from .report_utils import save_report # This creates a .pickle used by scripts
+from .servo.utils import get_vsim_from_robot
 from bootstrapping_olympics import get_conftools_robots
-from bootstrapping_olympics.library.robots import EquivRobot
+from bootstrapping_olympics.library.robots import NuisanceRobot
+from contracts import contract
 from reprep import MIME_PDF, MIME_SVG, Report
 
-from .report_utils import save_report  # This creates a .pickle used by scripts
-from .servo.utils import get_vsim_from_robot
-from bootstrapping_olympics.library.robots.nuisance_robot import NuisanceRobot
 
 
 # def publish_report_robot(data_central, id_robot, save_pickle=False):
@@ -31,12 +31,15 @@ def add_robot_info(report, id_robot):
         add_vehicle_info(vsim, report)
     
     
+@contract(robot=NuisanceRobot)
 def add_nuisances_info(robot, report):
-    sec = report.section('nuisances')
-    obs, cmd = robot.get_nuisances()
-
-    sec.data('observations', obs)
-    sec.data('commands', cmd)
+    nuisance = robot.nuisance
+    with report.subsection('nuisances') as sub:
+        pass
+#     obs, cmd = robot.get_nuisances()
+# 
+#     sec.data('observations', obs)
+#     sec.data('commands', cmd)
      
      
 def add_vehicle_info(vsim, report):

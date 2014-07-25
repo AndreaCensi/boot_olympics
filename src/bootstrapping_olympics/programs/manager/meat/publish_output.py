@@ -6,10 +6,7 @@ from bootstrapping_olympics.programs.manager.meat.data_central import (
     DataCentral)
 from contracts import contract
 from reprep import Report
-import os
-
-
-
+import os 
 
 
 __all__ = [

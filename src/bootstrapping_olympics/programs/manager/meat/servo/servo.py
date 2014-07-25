@@ -14,8 +14,6 @@ from contracts import contract
 from geometry import SE2_from_SE3, angle_from_SE2, translation_from_SE2
 import numpy as np
 import warnings
-from bootstrapping_olympics.logs.log_index import index_directory
-import os
 
 
 __all__ = ['task_servo']
@@ -74,11 +72,11 @@ def task_servo(data_central, id_agent, id_robot,
                      interval_print=interval_print)
 
     if bk.another_episode_todo():
-        with logs_format.write_stream(filename=filename,
-                                      id_stream=id_stream,
-                                      boot_spec=boot_spec,
-                                      id_agent=id_agent_servo,
-                                      id_robot=id_robot) as writer:
+        with logs_format.write_stream_and_check(filename=filename,
+                                              id_stream=id_stream,
+                                              boot_spec=boot_spec,
+                                              id_agent=id_agent_servo,
+                                              id_robot=id_robot) as writer:
             writer = WrapSeparateEpisodes(writer)
 
             writer.reset()
@@ -105,6 +103,8 @@ def task_servo(data_central, id_agent, id_robot,
 
                 bk.episode_done()
                 counter += 1
+            
+            writer.end_input()
         
         reader = LogsFormat.get_reader_for(filename)
         reader.index_file_cached(filename, ignore_cache=True)
@@ -142,6 +142,7 @@ class WrapSeparateEpisodes(Sink):
                         '%.4f seconds (delta = %.4f)' % (self.min_diff, self.delta))
                 self.info(msg)
             else:
+                self.info('Looks like new episode timestamp is fine.')
                 self.delta = 0
             self.check_next = False
         timestamp2=  timestamp + self.delta
@@ -217,7 +218,8 @@ def servoing_episode(robot,
             extra = {}
     
             sensels_list = observations.tolist()
-            extra['servoing_base'] = dict(goal=obs0.tolist(), current=sensels_list)
+            extra['servoing_base'] = dict(goal=obs0.tolist(), 
+                                          current=sensels_list)
     
             has_pose = current_pose is not None
         
@@ -247,6 +249,8 @@ def servoing_episode(robot,
             writer.put((timestamp, ('id_episode', id_episode)))
             writer.put((timestamp, ('observations', observations)))
             writer.put((timestamp, ('extra', extra)))
+        else:
+            print('Unknown signal %r.' % signal)
 
         if has_pose:
             if ((dist_t_m <= converged_dist_t_m) and

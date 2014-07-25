@@ -31,14 +31,19 @@ class SimpleRNCCmd(RepresentationNuisanceCausalSimpleInst):
     @contract(spec=BootSpec, returns=BootSpec)
     def transform_spec(self, spec):
         self.spec = spec
-        cmd = spec.get_commands()
+        self.cmd = spec.get_commands()
         obs = spec.get_observations()
-        cmd2 = self.t.transform_spec(cmd)
-        self.t_inv = self.t.left_inverse()
-        self.log_add_child('t_inv', self.t_inv)
-        cmdb = self.t_inv.transform_spec(cmd2)
-        assert cmd == cmdb
-        return BootSpec(obs, cmd2)
+        self.cmd2 = self.t.transform_spec(self.cmd)
+        return BootSpec(obs, self.cmd2)
+
+    def _get_t_inv_(self):
+        """ Creates the inverse only when it is necessary. """
+        if self.t_inv is None:
+            self.t_inv = self.t.left_inverse()
+            self.log_add_child('t_inv', self.t_inv)
+            cmdb = self.t_inv.transform_spec(self.cmd2)
+            assert self.cmd== cmdb
+        return self.t_inv
 
     def get_g(self):
         self._rnccmd_check_inited()
@@ -46,8 +51,8 @@ class SimpleRNCCmd(RepresentationNuisanceCausalSimpleInst):
 
     def get_g_conj(self):
         self._rnccmd_check_inited()
-        return self.t_inv.transform_value
-
+        t_inv = self._get_t_inv()
+        return t_inv.transform_value
     def get_h(self):
         self._rnccmd_check_inited()
         return lambda x: x

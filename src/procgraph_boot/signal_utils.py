@@ -13,6 +13,8 @@ def extract_commands(bd):
 
 
 @simple_block
-def extract_from_extra(bd, fieldname=REQUIRED):
-    extra = bd['extra'].item()
+def extract_from_extra(extra, fieldname=REQUIRED):
+    if not fieldname in extra:
+        msg = 'No %r field in %s.' % (fieldname, list(extra))
+        raise ValueError(msg)
     return extra[fieldname]

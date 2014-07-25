@@ -32,13 +32,20 @@ class SimpleRNCObs(RepresentationNuisanceCausalSimpleInst):
     def transform_spec(self, spec):
         self.spec = spec
         cmd = spec.get_commands()
-        obs = spec.get_observations()
-        obs2 = self.t.transform_spec(obs)
-        self.t_inv = self.t.left_inverse()
-        self.log_add_child('t_inv', self.t_inv)
-        obsb = self.t_inv.transform_spec(obs2)
-        assert obs == obsb
-        return BootSpec(obs2, cmd)
+        self.obs = spec.get_observations()
+        self.obs2 = self.t.transform_spec(self.obs)
+        return BootSpec(self.obs2, cmd)
+
+    def _get_t_inv_(self):
+        """ Creates the inverse only when it is necessary. """
+        if self.t_inv is None:
+            self.t_inv = self.t.left_inverse()
+            self.log_add_child('t_inv', self.t_inv)
+            obsb = self.t_inv.transform_spec(self.obs2)
+            assert self.obs == obsb
+        return self.t_inv
+
+
 
     def get_h(self):
         self._check_inited()
@@ -46,7 +53,8 @@ class SimpleRNCObs(RepresentationNuisanceCausalSimpleInst):
 
     def get_h_conj(self):
         self._check_inited()
-        return self.t_inv.transform_value
+        t_inv = self._get_t_inv()
+        return t_inv.transform_value
 
     def get_g(self):
         self._check_inited()

@@ -53,9 +53,9 @@ def jobs_comptests(context):
     
     from . import unittests
     warnings.warn('disabled')
-    #j1 = jobs_registrar(context, get_boot_config())
+    from comptests import jobs_registrar
+    jobs_registrar(context, get_boot_config())
 
-    from comptests.registrar import jobs_registrar
     from quickapp import iterate_context_names
 
     which = ["test_set1"]

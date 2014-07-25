@@ -216,7 +216,6 @@ def mean_observations(robot_sys, n, rest):
     robot_pose = None
     
     while len(obss) < n:
-        print('getting')
         x = robot_sys.get(block=True)
         check_timed_named(x)
         (t, (signal, value)) = x
@@ -224,7 +223,6 @@ def mean_observations(robot_sys, n, rest):
             obss.append(value)
         if signal == 'robot_pose':
             robot_pose = value
-        print('putting')
         robot_sys.put((t, ('commands', rest)))
                 
     mean = np.mean(obss, axis=0)

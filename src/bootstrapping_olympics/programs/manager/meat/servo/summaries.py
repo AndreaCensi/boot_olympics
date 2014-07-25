@@ -1,5 +1,6 @@
 from bootstrapping_olympics import logger
 import numpy as np
+from blocks import check_timed_named
 
 
 def servo_stats_summaries(data_central, id_agent, id_robot, id_episodes=None):
@@ -29,10 +30,16 @@ def servo_stats_summary(data_central, id_agent, id_robot, id_episode):  # @Unuse
     poses = []
     dist_xy = []
     dist_th = []
-    for observations in \
-        log_index.read_robot_episode(id_robot, id_episode,
+    nextra = 0
+    for x in log_index.read_robot_episode(id_robot, id_episode,
                                      read_extra=True):
-        extra = observations['extra'].item()
+        check_timed_named(x)
+        (t, (signal, value)) = x
+        
+        if signal != 'extra':
+            continue
+        
+        extra = value
 
         servoing = extra.get('servoing', None)
         if servoing is None:
@@ -58,7 +65,12 @@ def servo_stats_summary(data_central, id_agent, id_robot, id_episode):  # @Unuse
         err_L2 = np.linalg.norm(obs0 - obsK)
 
         errors.append(err_L2)
-        timestamps.append(observations['timestamp'])
+        timestamps.append(t)
+        
+        nextra+=1
+    if nextra == 0:
+        msg = 'Only found %d extra objects' % nextra
+        raise Exception(msg)
 # last['time_from_episode_start'] = observations['time_from_episode_start']
 
     initial_distance = np.linalg.norm(translation_from_SE2(pose1))

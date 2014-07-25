@@ -214,8 +214,11 @@ class BBBBSeries(SimpleBlackBox):
     def put(self, value, block=True, timeout=None):
         check_reset(self, 'reset_once')
 
-        assert not self.status_a_finished
-
+        if self.status_a_finished:
+            msg = ('TRying to put while %r is already finished.' 
+                   % self.log_child_name(self.a))
+            self.error(msg)
+            return
         
         #msg = 'putting into %r value = %s.' % (self.log_child_name(self.a), describe_value(value))
         #self.debug(msg)

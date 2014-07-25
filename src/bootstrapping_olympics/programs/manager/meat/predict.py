@@ -1,4 +1,5 @@
 from .report_utils import save_report
+from blocks import check_timed_named
 from bootstrapping_olympics import PredictorAgentInterface
 from bootstrapping_olympics.programs.manager.meat import load_agent_state
 from bootstrapping_olympics.utils import PredictionStats
@@ -300,18 +301,26 @@ def predict_all_streams(streams, predictor, interval_min, interval_max,
 
 
 def get_subs_same_u(stream, skip_initial=5):
+    raise NotImplementedError('to do')
+
     current_u = None
     current_episode = None
     seq = []
     counter = 0
-    for obs in stream:
+    for x in stream:
         counter += 1
         if counter < skip_initial:
             continue
-        commands = obs['commands']
+
+        check_timed_named(x)
+        (t, (signal, value)) = x
+        if signal == 'id_episode':
+            current_episode = value
+        elif signal == 'commands':
+            commands = value
+            
         if current_u is None:
             current_u = commands
-            current_episode = obs['id_episode']
             seq = [obs]
         else:
             if allclose(current_u, commands) and (obs['id_episode'] == current_episode):

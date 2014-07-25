@@ -138,7 +138,7 @@ class Route(WithQueue, SimpleBlackBoxTN):
 
     def _pump_one(self, i, b):
         if self.finished[i]: 
-            return
+            return []
         translate = self.routing[i][2]
         new_obs = []
         while True:

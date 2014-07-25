@@ -4,8 +4,9 @@ from blocks.library import CheckSequence, CheckSequenceTN
 from blocks.library.timed.checks import check_timed_named
 from bootstrapping_olympics import ExplorableRobot, ExploringAgent, logger
 from contracts import contract
-from contracts.utils import check_isinstance
+from contracts.utils import check_isinstance, raise_wrapped
 import warnings
+from cmath import e
 
 __all__ = ['run_simulation']
 
@@ -89,16 +90,16 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
     last_y_timestamp = None
     num_default_given = 0
     while counter < max_observations:
-        print('counter: %d' % counter)
+        #print('counter: %d' % counter)
         try:
-            print('getting robot')
+            #print('getting robot')
             x = robot_sys.get(block=True)
             
             check_timed_named(x)
             t, (signal, v) = x
             check_isinstance(t, float)
             
-            print('<- robot  t = %.5f %s' % (t, signal))
+            #print('<- robot  t = %.5f %s' % (t, signal))
             
             if signal == 'observations':
                 obs = v
@@ -111,7 +112,7 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
         
                 yield t, ('observations', obs)        
                 last_y_timestamp = t
-                print('-> agent  t = %.5f' % t)
+                #print('-> agent  t = %.5f' % t)
                 agent_sys.put((t, ('observations', obs)), block=True)
         
             else:
@@ -121,12 +122,14 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
             if t0 is None:
                 t0 = t
         
-        except NeedInput:
+        except NeedInput as e:
             if counter == 0:
                 msg = 'Robot must provide first observations'
                 msg += ' so we do not need to make up timestamp.'
-                raise ValueError(msg)
-            print('counter= %d robot needs input' % counter)
+                raise_wrapped(ValueError, e, msg, counter=counter)
+            
+            warnings.warn('This needs to be changed for more realistic robots.')
+            raise_wrapped(ValueError, e, 'robot needs input', counter=counter)
         except NotReady:
             assert False, 'Hey, cannot obtain NotReady when block is True'
         except Finished:
@@ -140,7 +143,7 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
                 x = agent_sys.get(block=True)
                 check_timed_named(x)
                 tu, (signal, commands) = x
-                print('<- agent: %.5f %s' % (tu, signal))
+                #print('<- agent: %.5f %s' % (tu, signal))
                 if signal != 'commands':
                     msg = 'Invalid signal %r from agent.' % signal
                     raise ValueError(msg)
@@ -183,12 +186,11 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
                     raise Exception(msg)
             
             yield tu, ('commands', commands)
-            print('-> robot %.5f %s' % (tu, 'commands'))
+            #print('-> robot %.5f %s' % (tu, 'commands'))
             robot_sys.put((tu, ('commands', commands)), block=True)
             last_u_timestamp = tu
         
             break
-        
         
         # We want to end after the agent gave a command so that one 
         # observation is ready            
@@ -199,28 +201,6 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
             break
 
         counter += 1 
-
-
-#                     
-#                 # logger.info('putting into robots')
-#                 tu = t
-#                 if t == last_u_timestamp:
-#                     msg = ('At counter = %d, repeated timestamp for commands %s' % (counter, t))
-#                     if num_default_given:
-#                         logger.error(msg)
-#                         logger.error('Just ignoring.')
-#                         logger.error('This is because we needed to put n = %d default commands.' % num_default_given)
-#                     else:
-#                         raise Exception(msg)
-#                 else:
-#                     yield tu, ('commands', commands)
-#                 last_u_timestamp = t
-#                 robot_sys.put((tu, ('commands', commands)), block=True)
-#         
-#                 counter += 1 
-#                     
-#                      
-#                 break
 
         if check_valid_values:
             cmd_spec.check_valid_value(commands)
