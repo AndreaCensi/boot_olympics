@@ -1,8 +1,7 @@
-import numpy as np
-from streamels.exceptions import UnsupportedSpec
-from bootstrapping_olympics.configuration.master import get_conftools_robots,\
-    get_conftools_agents
+from bootstrapping_olympics import get_conftools_agents, get_conftools_robots
 from contracts import contract
+from streamels.exceptions import UnsupportedSpec
+import numpy as np
 
 def get_tranches(ids, episodes_per_tranche=10):
     """ Returns a list of list """

@@ -76,42 +76,14 @@ def jobs_parallel_learning(context, data_central, id_agent, id_robot, episodes,
 #                              job_id='merge-%d' % i) 
 #     return agent_state
 
-@contract(context=CompmakeContext, agents='list[>=1]', returns=Promise)
-def jobs_merging_recursive(context, agents):
-    """ merges hierarchically """
-    n = len(agents)
-    if n == 1:
-        return agents[0]
-    
-    half = n / 2
-    a1 = agents[0:half]
-    a2 = agents[half:]
-    assert len(a1) > 0
-    assert len(a2) > 0
-    
-    m1 = jobs_merging_recursive(context, a1)
-    m2 = jobs_merging_recursive(context, a2)
-    return context.comp(merge_agents, m1, m2)
-      
-    
-def merge_agents(as1, as2):
-    agent1, state1 = as1
-    agent2, state2 = as2
-    print('merging agent 1: %s obs' % state1.num_observations)
-    print('merging agent 2: %s obs' % state2.num_observations)
-    agent1.merge(agent2)
-    state1.merge(state2)
-    print('res: %s obs' % state1.num_observations)
-    return agent1, state1
-
-
-@contract(data_central=DataCentral, id_agent='str', id_robot='str')
-def save_state(data_central, id_agent, id_robot, agent_state):
-    agent, state = agent_state
-    state.agent_state = agent.get_state()
-    db = data_central.get_agent_state_db() 
-    db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
-    return agent_state
+# 
+# @contract(data_central=DataCentral, id_agent='str', id_robot='str')
+# def save_state(data_central, id_agent, id_robot, agent_state):
+#     agent, state = agent_state
+#     state.agent_state = agent.get_state()
+#     db = data_central.get_agent_state_db() 
+#     db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)
+#     return agent_state
 
 
 @contract(returns='list(list(str))')

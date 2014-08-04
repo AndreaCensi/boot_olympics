@@ -1,7 +1,10 @@
 from conf_tools import ConfigMaster, ObjectSpec
 from contracts import contract
 
-__all__ = ['get_bootbatch_config', 'get_conftools_bootbatchsets']
+__all__ = [
+    'get_bootbatch_config', 
+    'get_conftools_bootbatchsets',
+]
 
 class BatchConfigMaster(ConfigMaster):
     def __init__(self):

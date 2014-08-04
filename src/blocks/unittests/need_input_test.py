@@ -1,9 +1,8 @@
 
-from blocks import NeedInput, Finished
-from blocks.composition import series
+from .blocks_testing_utils import BlocksTest
+from blocks import Finished, NeedInput, series
 from blocks.library import Identity
 
-from .blocks_testing_utils import BlocksTest
 
 
 class NeedInputTest(BlocksTest):

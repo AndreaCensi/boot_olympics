@@ -91,52 +91,53 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
     num_default_given = 0
     while counter < max_observations:
         #print('counter: %d' % counter)
-        try:
-            #print('getting robot')
-            x = robot_sys.get(block=True)
+        while True: # loop until NeedInput
             
-            check_timed_named(x)
-            t, (signal, v) = x
-            check_isinstance(t, float)
+            try:
+                x = robot_sys.get(block=True)
+                
+                check_timed_named(x)
+                t, (signal, v) = x
+                
+                if signal == 'observations':
+                    obs = v
+                    if check_valid_values:
+                        obs_spec.check_valid_value(obs)
+                        
+                    if last_y_timestamp == t:
+                        msg = 'robot gave repeated observations %s' % t
+                        raise ValueError(msg)
             
-            #print('<- robot  t = %.5f %s' % (t, signal))
+                    yield t, ('observations', obs)        
+                    last_y_timestamp = t
+                    #print('-> agent  t = %.5f' % t)
+                    agent_sys.put((t, ('observations', obs)), block=True)
             
-            if signal == 'observations':
-                obs = v
-                if check_valid_values:
-                    obs_spec.check_valid_value(obs)
-                    
-                if last_y_timestamp == t:
-                    msg = 'robot gave repeated observations %s' % t
-                    raise ValueError(msg)
-        
-                yield t, ('observations', obs)        
-                last_y_timestamp = t
-                #print('-> agent  t = %.5f' % t)
-                agent_sys.put((t, ('observations', obs)), block=True)
-        
-            else:
-                msg = 'Invalid signal %r from robot.' % (signal)
-                raise ValueError(msg)
+                else:
+                    other_pass_through = ['robot_pose']
+                    if signal in other_pass_through:
+                        # yield but do not send agent
+                        yield (t, (signal, v))
+                    else:
+                        msg = 'Invalid signal %r from robot.' % (signal)
+                        raise ValueError(msg)
+                
+                if t0 is None:
+                    t0 = t
             
-            if t0 is None:
-                t0 = t
-        
-        except NeedInput as e:
-            if counter == 0:
-                msg = 'Robot must provide first observations'
-                msg += ' so we do not need to make up timestamp.'
-                raise_wrapped(ValueError, e, msg, counter=counter)
-            
-            warnings.warn('This needs to be changed for more realistic robots.')
-            raise_wrapped(ValueError, e, 'robot needs input', counter=counter)
-        except NotReady:
-            assert False, 'Hey, cannot obtain NotReady when block is True'
-        except Finished:
-            logger.info('Episode ended at %s due to obs.episode_end.'
-                         % counter)
-            break
-            
+            except NeedInput as e:
+                if counter == 0:
+                    msg = 'Robot must provide first observations'
+                    msg += ' so we do not need to make up timestamp.'
+                    raise_wrapped(ValueError, e, msg, counter=counter)
+                break
+            except NotReady:
+                assert False, 'Hey, cannot obtain NotReady when block is True'
+            except Finished:
+                logger.info('Episode ended at %s due to obs.episode_end.'
+                             % counter)
+                break
+            counter += 1
         
         while True:
             try:

@@ -39,12 +39,9 @@ class BootConfigMaster(ConfigMaster):
 
         
         from bootstrapping_olympics import RepresentationNuisanceCausal
-        from bootstrapping_olympics import RepresentationNuisance
-        
+        from bootstrapping_olympics import RepresentationNuisance        
         from bootstrapping_olympics import BasicAgent
         from bootstrapping_olympics import BasicRobot
-
-        from bootstrapping_olympics import LivePlugin
  
         self.robots = self.add_class_generic('robots', '*.robots.yaml', BasicRobot)
 
@@ -55,9 +52,6 @@ class BootConfigMaster(ConfigMaster):
                                                 '*.nuisances_causal.yaml', RepresentationNuisanceCausal)
 
         self.videos = self.add_class('videos', '*.videos.yaml', check_valid_videos_config)
-
-        self.live_plugins = self.add_class_generic('live_plugins',
-                                                   '*.live_plugins.yaml', LivePlugin)
 
     def get_default_dir(self):
         from pkg_resources import resource_filename  # @UnresolvedImport

@@ -1,11 +1,9 @@
 from bootstrapping_olympics import(BasicAgent, ExploringAgent,
     PredictingAgent, ServoingAgent, ServoAgentInterface, PredictorAgentInterface,
     LearningAgent)
-from blocks.interface import Sink, SimpleBlackBox
-from blocks.library import Instantaneous
-from blocks.library.timed.checks import check_timed_named
+from blocks import SimpleBlackBox, Sink, check_timed_named
+from blocks.library import Instantaneous, WithQueue
 from contracts import contract
-from blocks.library.simple.with_queue import WithQueue
 
 
 __all__ = [
@@ -45,7 +43,6 @@ class RandomAgent(BasicAgent, LearningAgent, PredictingAgent,
             
         return RandomAgentExplorer(self.boot_spec) 
             
-        
     def get_learner_as_sink(self):
         
         class RandomAgentLearner(Sink):
@@ -59,6 +56,9 @@ class RandomAgent(BasicAgent, LearningAgent, PredictingAgent,
                     raise ValueError(msg)
                 
         return RandomAgentLearner()
+    
+    def merge(self, other):  # @UnusedVariable
+        pass
     
     @contract(returns=SimpleBlackBox)
     def get_servo_system(self):

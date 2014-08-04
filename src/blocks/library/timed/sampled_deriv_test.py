@@ -1,7 +1,5 @@
-from blocks.library import SampledDeriv
-
-from .blocks_testing_utils import BlocksTest
-from blocks.library.timed.sampled_deriv import SampledDerivInst
+from blocks.unittests import BlocksTest
+from .sampled_deriv import SampledDerivInst, SampledDeriv
 
 
 class SampledDerivTest(BlocksTest):

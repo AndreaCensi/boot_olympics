@@ -1,10 +1,15 @@
 from .batch_video import jobs_add_videos
+from .constants import default_expl_videos
 from .utils import episode_id_exploration, get_tranches
-from bootstrapping_olympics.programs.manager.batch import default_expl_videos
+from bootstrapping_olympics.programs.manager.meat.data_central import (
+    DataCentral)
 from bootstrapping_olympics.programs.manager.meat.simulate_imp import (
     simulate_agent_robot)
-from conf_tools.exceptions import SemanticMistake
+from conf_tools import SemanticMistake
 from contracts import contract
+from rawlogs import RawLog
+from rawlogs_hdflog import HDFRawLog
+from rawlogs.library import RemoveSignals
 
 __all__ = ['jobs_tasks_explore']
 
@@ -12,11 +17,11 @@ __all__ = ['jobs_tasks_explore']
 @contract(returns='dict(str:isinstance(Promise))')
 def jobs_tasks_explore(context,  data_central,
                         id_robot, explorer,
-                            num_episodes,
-                            episodes_per_tranche=10,
-                            num_episodes_videos=1,
-                            videos=default_expl_videos,
-                            max_episode_len=10):
+                        num_episodes,
+                        episodes_per_tranche=10,
+                        num_episodes_videos=1,
+                        videos=default_expl_videos,
+                        max_episode_len=10):
     """ Returns the episodes id """
 
     if num_episodes_videos > num_episodes:
@@ -50,14 +55,17 @@ def jobs_tasks_explore(context,  data_central,
                          id_episodes=id_episodes,
                          cumulative=False,
                          write_extra=write_extra,
-                         job_id='explore-%s-%s-%sof%s' % 
-                                (id_robot, explorer, t + 1,
+                         job_id='explore-%sof%s' % 
+                                ( t + 1,
                                  len(episodes_tranches)))
 
         tranches.append(tranche)
 
         for id_episode in id_episodes:
-            episode2job[id_episode] = tranche
+            rawlog = context.comp(rawlog_from_episode, data_central=data_central,
+                                  id_robot=id_robot, id_episode=id_episode,
+                                  extra_dep=[tranche])
+            episode2job[id_episode] = rawlog
 
     jobs_add_videos(context=context, data_central=data_central,
                     id_agent=explorer, id_robot=id_robot,
@@ -67,3 +75,45 @@ def jobs_tasks_explore(context,  data_central,
 
     return episode2job
 
+from bootstrapping_olympics import logger
+
+@contract(returns=RawLog, data_central=DataCentral, id_robot='str', id_episode=str)
+def rawlog_from_episode(data_central, id_robot, id_episode):
+    index = data_central.get_log_index()
+    nstreams = 0
+    for stream in index.get_streams_for_robot(id_robot):
+        nstreams += 1
+        eps = stream.get_id_episodes()
+        if id_episode in eps:
+            filename = stream.get_filename()
+            logger.error('Need to limit to this episode.')
+            log = HDFRawLog(filename)
+            # the "boot_info" signal has timestamp 0 which confuses the rest
+            log2 = RemoveSignals(log, ['boot_info'])
+            return log2
+    else:
+        msg = 'Could not find episode %r in %d streams.' %(id_episode, nstreams)
+        raise ValueError(msg)
+
+#     
+# class BootStreamEpisodeAsRawlog(IteratorSource):
+#     
+#     def __init__(self, data_central, id_robot, id_episode):
+#         self.data_central = data_central
+#         self.id_robot = id_robot
+#         self.id_episode = id_episode
+#         
+#     
+#  
+# class BootStreamAsSource(IteratorSource):
+# 
+#     def __init__(self, stream, to_learn):
+#         self.stream = stream
+#         self.to_learn = to_learn
+#  
+#     def get_iterator(self):
+#         for x in self.stream.read(only_episodes=self.to_learn):
+#             check_timed_named(x)
+#             (_, (signal, _)) = x
+#             yield x #obs['timestamp'], obs
+#             

@@ -7,7 +7,6 @@ import geometry # for geometry contracts @UnusedImport
 
 __all__ = [
    'EpisodeDesc', 
-#    'RobotObservations',
    'BasicRobot',
    'ExplorableRobot', 
    'RobotInterface',
@@ -26,52 +25,6 @@ class EpisodeDesc(object):
     def __str__(self):
         return "EpisodeDesc(%s,%s)" % (self.id_episode, self.id_environment)
 
-# 
-# class RobotObservations(object):
-#     ''' Structure that must be returned by get_observations(). '''
-#     
-#     @contract(timestamp='number',
-#               observations='array',
-#               commands='array',
-#               commands_source='str',
-#               episode_end='bool',
-#               robot_pose='None|array[4x4]',
-#               extra='dict')
-#     def __init__(self, timestamp, observations, commands, commands_source,
-#                         episode_end, robot_pose, extra={}):
-#         '''
-#             Initializes the structure.    
-#         
-#             - ``episode_end`` should indicate whether the episode ended
-#               due to, e.g., user intervention or collision
-#               (commands not accepted anymore).
-#             - ``robot_pose`` should be either None or a 4x4 Numpy matrix 
-#               representing an element of SE(3). This is used for tasks such as servoing,
-#               where we need to know the pose of the robot for assessing performance.
-#             - ``extra`` is application-specific; it will be serialized in yaml.
-#               
-#         '''
-#         self.timestamp = timestamp
-#         self.observations = observations
-#         self.commands = commands
-#         self.commands_source = commands_source
-#         self.episode_end = episode_end
-#         self.robot_pose = robot_pose
-#         self.extra = extra
-#         
-#     def __repr__(self):
-#         return 'RobotObservations(t=%s,obs=...,cmd=%s)' % (self.timestamp, self.commands)
-#         
-#     # Constant to return if the observations are not ready yet
-#     class NotReady(Exception):
-#         pass
-# 
-#     class Timeout(Exception):
-#         pass
-#     
-#     class Finished(Exception):
-#         pass
-    
     
 # new_contract('RobotObservations', RobotObservations)
 
@@ -147,15 +100,6 @@ class ExplorableRobot():
         """ 
            
         """
-#         from bootstrapping_olympics.interfaces.robot_utils import RobotAsBlackBox3
-#         return RobotAsBlackBox3(self)
-    
-#     @abstractmethod
-#     @contract(commands='array', commands_source='str', returns='None')
-#     def set_commands(self, commands, commands_source):  # @UnusedVariable
-#         ''' Send the given commands. '''
-#         assert False
-
 
     # XXX: not sure
     @contract(returns='None|dict')

@@ -13,6 +13,23 @@
         range: [-1,+1]
         default: [0]
 
+
+- id: random_1_6_rp
+  desc: 'random robot, with "robot_pose" signal.'
+  code:
+  - bootstrapping_olympics.library.robots.RandomRobot
+  - boot_spec:
+      observations:
+        shape: [6]
+        format: C
+        range: [0,1]
+      commands:
+        shape: [1]
+        format: C
+        range: [-1,+1]
+        default: [0]
+    use_robot_pose: true
+
 - id: test_nid1_random_1_6
   desc: random robot through an identity nuisance
   code:

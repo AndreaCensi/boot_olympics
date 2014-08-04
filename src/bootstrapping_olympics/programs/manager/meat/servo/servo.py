@@ -100,7 +100,6 @@ def task_servo(data_central, id_agent, id_robot,
                      save_robot_state=save_robot_state,
                      max_tries=10000)
 
-
                 bk.episode_done()
                 counter += 1
             
@@ -151,7 +150,8 @@ class WrapSeparateEpisodes(Sink):
                 
         self.last_timestamp = timestamp
         
-                
+    def end_input(self):
+        self.sink.end_input()
 
 @contract(agent=ServoingAgent)
 def servoing_episode(robot,
@@ -205,6 +205,8 @@ def servoing_episode(robot,
                                     max_time=max_episode_len,
                                     check_valid_values=True)
     counter = 0
+    has_pose = False
+    warnings.warn('todo: make servoing a different signal')
     for x in simstream: 
         check_timed_named(x)
         timestamp, (signal, value) = x
@@ -224,7 +226,15 @@ def servoing_episode(robot,
             has_pose = current_pose is not None
         
             if has_pose:
-                # Add extra pose information
+                
+                if pose0 is None:
+                    msg = 'Robot giving pose information but no pose0 obtained?'
+                    raise ValueError(msg)
+
+                if pose1 is None:
+                    msg = 'Robot giving pose information but no pose1 obtained?'
+                    raise ValueError(msg)
+# Add extra pose information
     
                 extra['servoing_poses'] = dict(goal=pose_to_yaml(pose0),
                                                current=pose_to_yaml(current_pose))

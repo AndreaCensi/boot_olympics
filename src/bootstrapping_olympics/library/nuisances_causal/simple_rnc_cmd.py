@@ -36,7 +36,7 @@ class SimpleRNCCmd(RepresentationNuisanceCausalSimpleInst):
         self.cmd2 = self.t.transform_spec(self.cmd)
         return BootSpec(obs, self.cmd2)
 
-    def _get_t_inv_(self):
+    def _get_t_inv(self):
         """ Creates the inverse only when it is necessary. """
         if self.t_inv is None:
             self.t_inv = self.t.left_inverse()

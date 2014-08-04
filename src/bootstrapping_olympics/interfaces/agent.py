@@ -5,8 +5,6 @@ from decent_logs import WithInternalLog
 from reprep import Report, ReportInterface
 
 
-
-
 __all__ = [
     'BasicAgent',
     # subclasses that also do something
@@ -14,8 +12,7 @@ __all__ = [
     'PredictingAgent',
     'LearningAgent',
     'ServoingAgent',
-
-
+    
     'ServoAgentInterface',
     'PredictorAgentInterface',
 
@@ -154,9 +151,7 @@ class LearningAgent():
             The Sink's "put" command might result in LearningConverged
             to signal that the learning has converged and no more data is necessary. 
         """
-
     # Parallel
-
     def merge(self, other):  # @UnusedVariable
         msg = 'Capability merge() not implemented for %s.' % (type(self))
         raise NotImplementedError(msg)

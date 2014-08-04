@@ -1,12 +1,11 @@
-from bootstrapping_olympics import (
-    NuisanceNotInvertible, RepresentationNuisance, StreamSpec, UnsupportedSpec, 
-    logger)
+from bootstrapping_olympics import (NuisanceNotInvertible, 
+    NuisanceNotLeftInvertible, RepresentationNuisance, StreamSpec, 
+    UnsupportedSpec, logger)
 from bootstrapping_olympics.unittests import (for_all_nuisances, 
     for_all_robot_nuisance_pairs)
 from bootstrapping_olympics.utils import assert_allclose, indent
-from comptests.results import Skipped
-from contracts.interface import describe_value
-from bootstrapping_olympics.interfaces.rep_nuisance import NuisanceNotLeftInvertible
+from comptests import Skipped
+from contracts import describe_value
 
 
 

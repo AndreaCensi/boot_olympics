@@ -1,8 +1,6 @@
 from .with_queue import WithQueue
 from contracts import describe_value
 
-
-
 __all__ = [
     'Info',
     'InfoT',
@@ -21,8 +19,6 @@ class Info(WithQueue):
     def put_noblock(self, value):
         self.info('%s: %s' % (self.prefix, describe_value(value, 200)))        
         self.append(value)
-
-
 
 
 class InfoT(WithQueue):

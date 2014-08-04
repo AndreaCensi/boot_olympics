@@ -62,15 +62,16 @@ class CollectSignals(WithQueue):
         Note that Collect() waits for the next timestamp t_{k+1} to
         release the signals at t_{k}. 
         
-        CollectSignals is given the set of signals to wait for 
+        Instead CollectSignals() is given the set of signals to wait for 
         so it will trigger at t_{k}.
     
     """
 
-    @contract(signals='set(str)')
-    def __init__(self, signals):
+    @contract(signals='seq(str)')
+    def __init__(self, signals, error_if_incomplete=False):
         WithQueue.__init__(self)
-        self.signals = signals
+        self.signals = set(signals)
+        self.error_if_incomplete = error_if_incomplete
 
     def __str__(self):
         return 'CollectSignals()'
@@ -104,6 +105,12 @@ class CollectSignals(WithQueue):
     def _flush(self):
         if self.last:
 #             self.info('sending %s %s' % (self.last_t, set(self.last)))
+            got =  set(self.last)
+            expected = set(self.signals)
+            if got != expected: 
+                if self.error_if_incomplete:
+                    msg = 'Incomplete set of signals: %s, expected %s.' % (got, expected)
+                    raise ValueError(msg) 
             self.append((self.last_t, self.last))
             self.last = {}
 

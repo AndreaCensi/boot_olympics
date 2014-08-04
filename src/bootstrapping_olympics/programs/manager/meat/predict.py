@@ -296,8 +296,6 @@ def predict_all_streams(streams, predictor, interval_min, interval_max,
 #                 if expected != found:
 #                     msg = 'Want shape %s, got %s.' % (expected, found)
 #                     raise Exception(msg)
-            
-
 
 
 def get_subs_same_u(stream, skip_initial=5):

@@ -1,12 +1,13 @@
+from .batch_video import jobs_add_videos
+from .constants import default_servonav_videos
+from .utils import episode_id_servonav, get_tranches
+from bootstrapping_olympics.programs.manager.meat.data_central import (
+    DataCentral)
+from bootstrapping_olympics.programs.manager.meat.servonav.task import (
+    task_servonav)
+from compmake import Context
+from conf_tools import SemanticMistake
 from contracts import contract
-from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
-from bootstrapping_olympics.programs.manager.batch import default_servonav_videos
-from conf_tools.exceptions import SemanticMistake
-from bootstrapping_olympics.programs.manager.batch.utils import episode_id_servonav,\
-    get_tranches
-from bootstrapping_olympics.programs.manager.meat.servonav.task import task_servonav
-from bootstrapping_olympics.programs.manager.batch.batch_video import jobs_add_videos
-from compmake.context import Context
 
 __all__ = ['jobs_tasks_servonav']
 
@@ -50,8 +51,7 @@ def jobs_tasks_servonav(context, data_central, id_agent, id_robot,
          interval_print=5,
          fail_if_not_working=fail_if_not_working,
          num_episodes_with_robot_state=num_episodes_with_robot_state,
-#          job_id='servonav-%s-%s-%sof%s' % (id_robot, id_agent, st + 1, len(episodes_tranches)),
-         job_id='servonav-%sof%s' % (st + 1, len(episodes_tranches)),
+         job_id='servonav-tr%sof%s' % (st + 1, len(episodes_tranches)),
          extra_dep=agent_has_learned)
 
         all_tranches.append(tranche)

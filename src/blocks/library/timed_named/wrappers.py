@@ -1,11 +1,8 @@
-from blocks import Finished, NeedInput, NotReady
+from blocks import (Finished, NeedInput, NotReady, SimpleBlackBox, 
+    SimpleBlackBoxT, SimpleBlackBoxTN)
 from blocks.library import WithQueue
-from blocks.library.timed.checks import check_timed, check_timed_named
-from contracts.utils import describe_value
-from contracts.interface import describe_type
-from blocks.interface import SimpleBlackBoxT, SimpleBlackBoxTN, SimpleBlackBox
-from contracts import contract
-
+from contracts import contract, describe_type, describe_value
+from blocks.library.timed.checks import check_timed_named, check_timed
 
 
 __all__ = [ 
@@ -82,8 +79,9 @@ class WrapTimedNamed(WithQueue, SimpleBlackBoxTN):
                 assert False  # block == True
             except NeedInput:
                 break
-            except Finished:  # XXX
+            except Finished:
                 self._finished = True 
+                break
 
 class WrapTMfromT(WithQueue, SimpleBlackBoxTN):
     """ 
@@ -150,10 +148,10 @@ class WrapTMfromT(WithQueue, SimpleBlackBoxTN):
                 self.append(value2)
             except NotReady:
                 break
-            except Finished:  # XXX
+            except Finished:
                 self._finished = True
+                break
             except NeedInput:
-                # XXX
                 break
 
 

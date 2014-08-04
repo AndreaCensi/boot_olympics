@@ -1,6 +1,6 @@
 from .batch_video import jobs_add_videos
+from .constants import default_servo_videos
 from .utils import episode_id_servoing, get_tranches
-from bootstrapping_olympics.programs.manager.batch import default_servo_videos
 from bootstrapping_olympics.programs.manager.meat.data_central import (
     DataCentral)
 from bootstrapping_olympics.programs.manager.meat.servo.report import (
@@ -51,8 +51,7 @@ def jobs_tasks_servo(context, data_central, id_agent, id_robot,
                                      displacement=displacement,
                                      interval_print=5,
                                      num_episodes_with_robot_state=num_episodes_with_robot_state,
-         job_id='servo-%s-%s-%sof%s' % (id_robot, id_agent, st + 1,
-                                         len(episodes_tranches)),
+         job_id='servo-tr%sof%s' % (st + 1, len(episodes_tranches)),
          extra_dep=agent_has_learned)
     
         all_tranches.append(tranche)
@@ -61,8 +60,7 @@ def jobs_tasks_servo(context, data_central, id_agent, id_robot,
             episode2job[id_episode] = tranche
 
         for id_episode in id_episodes:
-            job_id = ('servo-%s-%s-%s-summary' % 
-                      (id_robot, id_agent, id_episode))
+            job_id = ('servo-%s-summary' % (id_episode))
             summary = context.comp_config(servo_stats_summary,
                                         data_central, id_agent,
                                         id_robot, id_episode,
@@ -72,7 +70,7 @@ def jobs_tasks_servo(context, data_central, id_agent, id_robot,
     
     context.comp_config(servo_stats_report, data_central, id_agent,
          id_robot, summaries,
-         job_id='report-servo-%s-%s' % (id_robot, id_agent))
+         job_id='report-servo_stats')
     
     # TODO: create partial summaries
     ntot = len(summaries)
@@ -86,7 +84,7 @@ def jobs_tasks_servo(context, data_central, id_agent, id_robot,
         context.comp_config(servo_stats_report, data_central, id_agent,
                            id_robot, psummaries,
                            phase='servo_stats-partial%d' % i,
-            job_id='report-servo-%s-%s-partial%d' % (id_robot, id_agent, i))
+            job_id='report-servo-partial%d' % ( i))
     
     jobs_add_videos(context=context,
                     data_central=data_central,

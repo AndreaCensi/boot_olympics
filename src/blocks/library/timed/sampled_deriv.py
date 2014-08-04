@@ -1,10 +1,13 @@
 from blocks import SimpleBlackBoxT
 from blocks.composition import BBBBSeriesT
 from blocks.library.simple import InfoT, Instantaneous, LastNSamplesT
+from contracts import contract
 import numpy as np
 
-
-__all__ = ['SampledDeriv']
+__all__ = [
+    'SampledDeriv',
+    'SampledDerivInst',
+]
 
 
 def SampledDeriv():
@@ -35,19 +38,21 @@ class ForwardDiff(Instantaneous, SimpleBlackBoxT):
         
         Assumes that the input is a list of 3 elements. 
     """
+    
+    @contract(partial=bool)
     def __init__(self, partial):
         self.partial = partial
         Instantaneous.__init__(self)
-        
-    def reset(self):
-        Instantaneous.reset(self)
-        
-
+    
+    @contract(value='list(tuple(float, float|array))')
     def transform_value(self, value):
         assert len(value) in [1,2,3]
         
         if len(value) < 3 and not self.partial:
             raise ValueError(value)
+            
+        for x in value:
+            self._check_single(x)
             
         if len(value) == 1:
             return self.deriv1(value)
@@ -55,6 +60,10 @@ class ForwardDiff(Instantaneous, SimpleBlackBoxT):
             return self.deriv2(value)
         if len(value) == 3:
             return self.deriv3(value)
+        
+    @contract(tx='tuple(float, float)')
+    def _check_single(self, tx):
+        pass
         
     def deriv1(self, value):
         # TODO

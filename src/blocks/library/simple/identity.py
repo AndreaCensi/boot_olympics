@@ -1,10 +1,9 @@
-from blocks.library.simple.with_queue import WithQueue
-from blocks.library.simple.instantaneous import Instantaneous
+from .instantaneous import Instantaneous
 
+__all__ = [
+    'Identity',
+]
 
-__all__ = ['Identity']
-
-    
 class Identity(Instantaneous):
 
     def transform_value(self, value):

@@ -48,7 +48,7 @@ class HDFLogWriter2(Sink):
         
         self.num_put[signal] += 1
         
-        if signal in ['observations', 'commands']:
+        if signal in ['observations', 'commands', 'robot_pose']:
             # TODO: check spec
             check_isinstance(ob, np.ndarray)
             self.writer.log_signal(timestamp, signal, ob)

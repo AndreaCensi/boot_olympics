@@ -1,13 +1,13 @@
 
 - id: test_set1
-  desc: 'Very small number of episodes (10) for testing purposes'
+  desc: 'Random robot/agent, no fancy learning.'
   code:
   - bootstrapping_olympics.batch_jobs1
-  - robots: [
-        random_1_6
-    ]
-    agents: [random_agent]
-    predict: {}
+  - robots: 
+    - random_1_6
+    - random_1_6_rp # this gives also robot pose
+    agents: 
+    - random_agent
     explore:
         num_episodes: 2
         num_episodes_videos: 1
@@ -15,6 +15,11 @@
         max_episode_len: 5.0
         episodes_per_tranche: 100
         videos: [mp4sensels]
+    learning: # default parameters: no fancy stuff
+        max_slice_len: 500.0
+        parallel_hint: false
+        more_phases: false
+        episodes_per_tranche: 1
     servo:
         num_episodes: 2
         num_episodes_videos: 2
@@ -22,5 +27,38 @@
         displacement: 1.0
         videos: [mp4sensels_plot]
         episodes_per_tranche: 10
-    servonav:
+    servonav: # XXX: currently disabled
         num_episodes: 0
+    predict: {} # XXX: currently disabled
+
+
+- id: test_set2_parallel
+  desc: 'Random robot/agent, with parallel learning turned on.'
+  code:
+  - bootstrapping_olympics.batch_jobs1
+  - robots: 
+    - random_1_6
+    agents: 
+    - random_agent
+    explore:
+        num_episodes: 2
+        num_episodes_videos: 1
+        explorer: random_agent 
+        max_episode_len: 5.0
+        episodes_per_tranche: 100
+        videos: [mp4sensels]
+    learning: 
+        max_slice_len: 500.0
+        parallel_hint: true
+        more_phases: true
+        episodes_per_tranche: 1
+    servo:
+        num_episodes: 2
+        num_episodes_videos: 2
+        max_episode_len: 5.0
+        displacement: 1.0
+        videos: [mp4sensels_plot]
+        episodes_per_tranche: 10
+    servonav: # XXX: currently disabled
+        num_episodes: 0
+    predict: {} # XXX: currently disabled

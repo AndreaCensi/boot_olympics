@@ -32,9 +32,10 @@ def servo_stats_summary(data_central, id_agent, id_robot, id_episode):  # @Unuse
     dist_th = []
     nextra = 0
     for x in log_index.read_robot_episode(id_robot, id_episode,
-                                     read_extra=True):
+                                          read_extra=True):
         check_timed_named(x)
         (t, (signal, value)) = x
+        print('read %.4f: %s' % (t, signal))
         
         if signal != 'extra':
             continue
@@ -43,9 +44,10 @@ def servo_stats_summary(data_central, id_agent, id_robot, id_episode):  # @Unuse
 
         servoing = extra.get('servoing', None)
         if servoing is None:
-            logger.error('Warning, no "servoing" in episode %r.' % 
-                          id_episode)
-            break
+            msg = 'Warning, no "servoing" field in episode %r.' % id_episode
+            msg += ' Other extra keys: %s' % list(extra)
+            msg += ' This might mean the robot did not give a robot_pose signal.'
+            raise ValueError(msg)
 
         obs0 = np.array(servoing['obs0'])
         pose0 = SE2_from_SE3(SE3.from_yaml(servoing['pose0']))
@@ -68,6 +70,7 @@ def servo_stats_summary(data_central, id_agent, id_robot, id_episode):  # @Unuse
         timestamps.append(t)
         
         nextra+=1
+        
     if nextra == 0:
         msg = 'Only found %d extra objects' % nextra
         raise Exception(msg)

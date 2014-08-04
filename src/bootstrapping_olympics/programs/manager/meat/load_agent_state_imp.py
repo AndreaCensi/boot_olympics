@@ -28,7 +28,7 @@ def load_agent_state(data_central, id_agent, id_robot,
     if has_instance:
         robot = config.robots.instance(id_robot)
         boot_spec = robot.get_spec()
-    
+
     else:
         index = data_central.get_log_index()
         has_log = index.has_streams_for_robot(id_robot)

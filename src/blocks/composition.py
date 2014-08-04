@@ -215,7 +215,7 @@ class BBBBSeries(SimpleBlackBox):
         check_reset(self, 'reset_once')
 
         if self.status_a_finished:
-            msg = ('TRying to put while %r is already finished.' 
+            msg = ('Trying to put while %r is already finished.' 
                    % self.log_child_name(self.a))
             self.error(msg)
             return
@@ -263,29 +263,24 @@ class BBBBSeries(SimpleBlackBox):
                 self.error(msg)
                 raise
 
-            try:
-                self.b.put(x, block=True)
-            except BaseException:
-                msg = 'Error while trying to put() into %r.' % self.log_child_name(self.b)
-                msg += '\n a = %s' % describe_value(self.b)
-                msg += '\n of type %s' % describe_type(self.b)
-                msg += '\n value = %s' % describe_value(x)
-
-                self.error(msg)
-                raise
-
-            self.status_b_need_input = True
-            num += 1
-
-#     def log_get_short_status(self):
-#         if not 'reset_once' in self.__dict__:
-#             return 'no reset'
-#         return '%s:%s%s; %s:%s%s' % (self.log_child_name(self.a),
-#                                          ' ni' if self.status_a_need_input else '',
-#                                        ' f' if self.status_a_finished else '',
-#                                        self.log_child_name(self.b),
-#                                         ' ni' if self.status_b_need_input else '',
-#                                        ' f' if self.status_b_finished else '')
+            if not self.status_b_finished:
+                
+                try:
+                    self.b.put(x, block=True)
+                except BaseException:
+                    msg = 'Error while trying to put() into %r.' % self.log_child_name(self.b)
+                    msg += '\n a = %s' % describe_value(self.b)
+                    msg += '\n of type %s' % describe_type(self.b)
+                    msg += '\n value = %s' % describe_value(x)
+    
+                    self.error(msg)
+                    raise
+    
+                self.status_b_need_input = True
+                num += 1
+            else:
+                self.error('Message lost: not pumping into b because finished.')
+ 
 
     def get(self, block=True, timeout=None):
         check_reset(self, 'reset_once')

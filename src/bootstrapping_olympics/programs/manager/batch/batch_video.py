@@ -1,4 +1,4 @@
-from bootstrapping_olympics.configuration.master import get_boot_config
+from bootstrapping_olympics.configuration import get_boot_config
 from bootstrapping_olympics.programs.manager.meat.data_central import (
     DataCentral)
 from bootstrapping_olympics.programs.manager.meat.video import create_video

@@ -45,30 +45,19 @@ from .misc import *
 # Try to load extra components (ROS, HDF, etc.)
 from . import extra
 
-from .programs.manager.batch.batch_learn import batch_jobs1
+from .programs.manager.batch.main import batch_jobs1
 from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
-from bootstrapping_olympics.programs.manager.batch.batch_manager import batch_process_manager
+from bootstrapping_olympics.programs.manager.batch.main import batch_process_manager
 
 def jobs_comptests(context):
+    # default is loaded 
+    # from conf_tools import GlobalConfig
+    # GlobalConfig.global_load_dirs(['bootstrapping_olympics.configs'])
     
     from . import unittests
-    warnings.warn('disabled')
+    
     from comptests import jobs_registrar
     jobs_registrar(context, get_boot_config())
-
-    from quickapp import iterate_context_names
-
-    which = ["test_set1"]
-    for c, id_set in iterate_context_names(context, which, key='set'):
-        root = os.path.join(c.get_output_dir(), 'data_central')
-        if not os.path.exists(root):
-            os.makedirs(root)
-            os.makedirs(os.path.join(root, 'config'))
-        data_central = DataCentral(root)
-        c.comp_config_dynamic(batch_process_manager, data_central, which_sets=id_set)
-    
-    
-    
 
 
 

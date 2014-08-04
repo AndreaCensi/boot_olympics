@@ -214,16 +214,15 @@ def mean_observations(robot_sys, n, rest):
     # XXX: only works for 1D?
     obss = []
     robot_pose = None
-    
     while len(obss) < n:
         x = robot_sys.get(block=True)
         check_timed_named(x)
         (t, (signal, value)) = x
         if signal == 'observations':
             obss.append(value)
+            robot_sys.put((t, ('commands', rest)))
         if signal == 'robot_pose':
             robot_pose = value
-        robot_sys.put((t, ('commands', rest)))
                 
     mean = np.mean(obss, axis=0)
     return t, robot_pose, mean

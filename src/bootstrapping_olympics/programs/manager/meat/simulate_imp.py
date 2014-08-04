@@ -92,8 +92,9 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
                 check_timed_named(x)
                 timestamp, (signal, value) = x
  
-                                
-                if signal in ['observations', 'commands']:
+                log_signals = ['observations', 'commands', 'robot_pose']
+                            
+                if signal in log_signals:
                     writer.put((timestamp, (signal, value)))
                 else:
                     msg = 'Unknown signal %r.' % signal

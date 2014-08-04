@@ -1,10 +1,9 @@
-from blocks.composition import series
-from blocks.library import FromData, Identity, WithQueue, ToData
-from blocks.pumps import source_read_all_block
-import numpy as np
-
 from .blocks_testing_utils import BlocksTest
+from blocks import series
+from blocks.library import FromData, Identity, ToData, WithQueue
+from blocks.pumps import source_read_all_block
 from blocks.utils import check_reset
+import numpy as np
 
 
 class SuperSample(WithQueue):

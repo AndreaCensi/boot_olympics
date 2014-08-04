@@ -24,10 +24,10 @@ class CmdLearnLog(BOM.get_sub()):
                           help="Publish debug information every N cycles.")
         params.add_flag("once",
                           help="Just plot the published information and exit.")
-        params.add_int("interval_save",   default=300,
-                          help="Interval for saving state (seconds) [%default]")
-        params.add_int("interval_print",  default=5,
-                          help="Interval for printing stats (seconds) [%default]")
+#         params.add_int("interval_save",   default=300,
+#                           help="Interval for saving state (seconds) [%default]")
+#         params.add_int("interval_print",  default=5,
+#                           help="Interval for printing stats (seconds) [%default]")
         params.add_flag("dontsave", 
                           help="Do not save the state of the agent.")
 
@@ -43,14 +43,17 @@ class CmdLearnLog(BOM.get_sub()):
         if options.publish is  None and not options.once:
             msg = 'Not creating any report; pass -p <interval> or --once to do it.'
             self.info(msg)
-
+            
+        self.error('Implement publish()')
+              
         learn_log(data_central=data_central,
                   id_agent=options.agent,
                   id_robot=options.robot,
                   reset=options.reset,
-                  publish_interval=options.publish,
-                  publish_once=options.once,
-                  interval_save=options.interval_save,
-                  interval_print=options.interval_print,
+#                   publish_interval=options.publish,
+#                   publish_once=options.once,
+#                   interval_save=options.interval_save,
+#                   interval_print=options.interval_print,
                   save_state=not(options.dontsave),
-                  live_plugins=options.plugin)
+#                   live_plugins=options.plugin,
+                  )

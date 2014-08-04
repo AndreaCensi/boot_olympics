@@ -1,10 +1,6 @@
-from blocks.library import Identity
-
 from .blocks_testing_utils import BlocksTest
-from blocks.library.simple.with_queue import WithQueue
-from blocks.composition import series
-from blocks.exceptions import NeedInput
-from blocks.library.timed_named.route import Route
+from blocks import NeedInput, series
+from blocks.library import Identity, Route, WithQueue
 
 
 class Prepared(WithQueue):

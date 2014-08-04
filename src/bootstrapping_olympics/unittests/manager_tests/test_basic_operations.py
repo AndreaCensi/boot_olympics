@@ -9,7 +9,7 @@ from comptests import PartiallySkipped, Skipped
 from contracts.utils import describe_type
 import os
 from bootstrapping_olympics.utils.dates import unique_timestamp_string
-from bootstrapping_olympics.programs.manager.meat.log_learn import find_episodes_to_learn
+# from bootstrapping_olympics.programs.manager.meat.log_learn import find_episodes_to_learn
 
 
 @for_all_pairs
@@ -88,13 +88,13 @@ def check_basic_ops(id_agent, agent, id_robot, robot):  # @UnusedVariable
 
         parts_skipped = []
         
-        etl = find_episodes_to_learn(log_index, id_robot,
-                                                 episodes_to_learn=None,
-                                                 episodes_learned=None)
-        tot = 0
-        for  (_,  episodes_to_learn) in etl[0]:
-            tot += len(episodes_to_learn)
-        assert tot == 4
+#         etl = find_episodes_to_learn(log_index, id_robot,
+#                                                  episodes_to_learn=None,
+#                                                  episodes_learned=None)
+#         tot = 0
+#         for  (_,  episodes_to_learn) in etl[0]:
+#             tot += len(episodes_to_learn)
+#         assert tot == 4
 
         
         if not isinstance(agent, LearningAgent):

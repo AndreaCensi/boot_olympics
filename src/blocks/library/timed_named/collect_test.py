@@ -1,9 +1,7 @@
 
 from blocks import NeedInput
 from blocks.library import Collect, CollectSignals
-
-from .blocks_testing_utils import BlocksTest
-
+from blocks.unittests import BlocksTest
 
 class CollectTest(BlocksTest):
 

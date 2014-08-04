@@ -1,14 +1,14 @@
-from unittest.case import TestCase
-
-from contracts import contract
-from contracts.utils import indent
-
 from blocks import SimpleBlackBox, series
 from blocks.library import FromData
 from blocks.pumps import source_read_all_block
+from contracts import contract
+from contracts.utils import indent
+from unittest.case import TestCase
 
 
-__all__ = ['BlocksTest']
+__all__ = [
+    'BlocksTest',
+]
 
 
 class BlocksTest(TestCase):
