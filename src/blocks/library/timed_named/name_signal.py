@@ -1,5 +1,5 @@
 from blocks.library.simple import Instantaneous
-from blocks.library.timed.checks import check_timed_named, check_timed
+from blocks.library.timed.checks import check_timed, check_timed_named
 
 
 __all__ = ['NameSignal']

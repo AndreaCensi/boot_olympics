@@ -1,6 +1,5 @@
 from .exceptions import Finished, Full, NeedInput, NotReady
-from .interface import (SimpleBlackBox, SimpleBlackBoxT, SimpleBlackBoxTN, Sink, 
-    Source)
+from .interface import BlackBox, BlackBoxT, BlackBoxTN, Sink, Source
 from .pumps import bb_pump
 from .utils import check_reset
 from contracts import contract, describe_type, describe_value
@@ -32,21 +31,21 @@ def series(*args):
         assert False
 
 
-@contract(a='isinstance(SimpleBlackBox)|isinstance(Source)',
-          b='isinstance(SimpleBlackBox)|isinstance(Sink)')
+@contract(a='isinstance(BlackBox)|isinstance(Source)',
+          b='isinstance(BlackBox)|isinstance(Sink)')
 def series_two(a, b, name1=None, name2=None):
-    if isinstance(a, SimpleBlackBoxTN) and isinstance(b, SimpleBlackBox):
+    if isinstance(a, BlackBoxTN) and isinstance(b, BlackBox):
         return BBBBSeriesTN(a, b, name1, name2)
     
-    if isinstance(a, SimpleBlackBoxT) and isinstance(b, SimpleBlackBox):
+    if isinstance(a, BlackBoxT) and isinstance(b, BlackBox):
         return BBBBSeriesT(a, b, name1, name2)
     
-    if isinstance(a, SimpleBlackBox) and isinstance(b, SimpleBlackBox):
+    if isinstance(a, BlackBox) and isinstance(b, BlackBox):
         return BBBBSeries(a, b, name1, name2)
     
-    if isinstance(a, Source) and isinstance(b, SimpleBlackBox):
+    if isinstance(a, Source) and isinstance(b, BlackBox):
         return SourceBBSeries(a, b, name1, name2)
-    if isinstance(a, SimpleBlackBox) and isinstance(b, Sink):
+    if isinstance(a, BlackBox) and isinstance(b, Sink):
         return BBSinkSeries(a, b, name1, name2)
 
     msg = 'Cannot find proper interconnection'
@@ -57,9 +56,9 @@ def series_two(a, b, name1=None, name2=None):
 
 
 class SourceBBSeries(Source):
-    """ Implements series between a Source and a SimpleBlackBox """
+    """ Implements series between a Source and a BlackBox """
 
-    @contract(a=Source, b=SimpleBlackBox)
+    @contract(a=Source, b=BlackBox)
     def __init__(self, a, b, name1=None, name2=None):
         self.a = a
         self.b = b
@@ -124,9 +123,9 @@ class SourceBBSeries(Source):
 
 
 class BBSinkSeries(Sink):
-    """ Implements series between a Source and a SimpleBlackBox """
+    """ Implements series between a Source and a BlackBox """
 
-    @contract(a=SimpleBlackBox, b=Sink)
+    @contract(a=BlackBox, b=Sink)
     def __init__(self, a, b, name1='bb', name2='sink'):
         self.a = a
         self.b = b
@@ -169,10 +168,10 @@ class BBSinkSeries(Sink):
         self._pump()
   
 
-class BBBBSeries(SimpleBlackBox):
-    """ Implements series between two SimpleBlackBoxes """
+class BBBBSeries(BlackBox):
+    """ Implements series between two BlackBoxes """
 
-    @contract(a=SimpleBlackBox, b=SimpleBlackBox)
+    @contract(a=BlackBox, b=BlackBox)
     def __init__(self, a, b, name1='bb1', name2='bb2'):
         self.a = a
         self.b = b
@@ -307,9 +306,10 @@ class BBBBSeries(SimpleBlackBox):
             self.status_b_finished = True
             raise
         
-class BBBBSeriesT(BBBBSeries, SimpleBlackBoxT):
+class BBBBSeriesT(BBBBSeries, BlackBoxT):
     pass
-class BBBBSeriesTN(BBBBSeries, SimpleBlackBoxTN):
+
+class BBBBSeriesTN(BBBBSeries, BlackBoxTN):
     pass
 
 

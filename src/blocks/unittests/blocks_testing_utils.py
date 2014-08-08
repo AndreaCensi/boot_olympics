@@ -48,6 +48,8 @@ class BlocksTest(TestCase):
 #             raise
     
     def display_signal(self, x):
+        if len(x) == 0:
+            print(' (empty sequence) ')
         for v in x:
             print(str(v))
 #

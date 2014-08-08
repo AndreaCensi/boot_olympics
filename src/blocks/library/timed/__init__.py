@@ -1,3 +1,4 @@
+from .checks import *
 from .check_sequence import *
 from .delay import *
 from .check_sequence import *

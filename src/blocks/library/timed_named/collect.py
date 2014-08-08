@@ -67,11 +67,18 @@ class CollectSignals(WithQueue):
     
     """
 
-    @contract(signals='seq(str)')
-    def __init__(self, signals, error_if_incomplete=False):
+    @contract(signals='seq(str)|set(str)')
+    def __init__(self, signals, 
+                 error_if_incomplete=False,
+                 ignore_if_incomplete=False):
         WithQueue.__init__(self)
         self.signals = set(signals)
         self.error_if_incomplete = error_if_incomplete
+        self.ignore_if_incomplete = ignore_if_incomplete
+
+        if error_if_incomplete and ignore_if_incomplete:
+            msg = 'Invalid config.'
+            raise ValueError(msg)
 
     def __str__(self):
         return 'CollectSignals()'
@@ -84,7 +91,7 @@ class CollectSignals(WithQueue):
     def put_noblock(self, value):
         check_reset(self, 'last')
         t, (s, x) = value
-#         self.info('seeing %s %s' % (t, s))
+        # self.info('seeing %s %s' % (t, s))
 
         if self.last_t is not None:
             if t > self.last_t and self.last:
@@ -104,13 +111,20 @@ class CollectSignals(WithQueue):
 
     def _flush(self):
         if self.last:
-#             self.info('sending %s %s' % (self.last_t, set(self.last)))
+            #  self.info('sending %s %s' % (self.last_t, set(self.last)))
             got =  set(self.last)
             expected = set(self.signals)
             if got != expected: 
                 if self.error_if_incomplete:
                     msg = 'Incomplete set of signals: %s, expected %s.' % (got, expected)
-                    raise ValueError(msg) 
+                    raise ValueError(msg)
+                
+                if self.ignore_if_incomplete:
+                    self.info('ignoring incomplete (%s instead of %s)'
+                              % (got, expected))
+                    self.last = {}
+                    return
+                 
             self.append((self.last_t, self.last))
             self.last = {}
 

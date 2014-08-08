@@ -1,13 +1,22 @@
 from abc import abstractmethod
-
 from contracts import ContractsMeta, contract
-
 from decent_logs import WithInternalLog
 
 
 __all__ = [
     'Sink',
     'Source',
+    'BlackBox',
+    # TODO:
+    # 'SinkT',
+    # 'SinkTN',
+    # 'BlackBoxC', # causal
+    # 'BlackBoxCT', # causal
+    # 'BlackBoxCTN', # causal
+    
+    'BlackBoxT',
+    'BlackBoxTN',
+    
     'SimpleBlackBox',
     'SimpleBlackBoxT',
     'SimpleBlackBoxTN',
@@ -64,7 +73,7 @@ class Source(WithInternalLog):
     
 
 
-class SimpleBlackBox(Sink, Source):
+class BlackBox(Sink, Source):
     """ 
         A generic interface for event-based dynamical systems. 
         
@@ -163,10 +172,14 @@ class SimpleBlackBox(Sink, Source):
                     
     """
 
-class SimpleBlackBoxT(SimpleBlackBox):
+class BlackBoxT(BlackBox):
     """ Data are of the form (t, value) """
     
 
-class SimpleBlackBoxTN(SimpleBlackBoxT):
+class BlackBoxTN(BlackBoxT):
     """ Data are of the form (t, (signal, value)) """
     
+
+SimpleBlackBox = BlackBox
+SimpleBlackBoxTN = BlackBoxTN
+SimpleBlackBoxT = BlackBoxT

@@ -61,12 +61,8 @@ class BasicAgent(WithInternalLog):
     ----------------------
     
     Implement the function ``publish()`` to output information, such
-    as graphs, statistics, etc. The function is given an instance of the 
-    class Publisher, whose implementation is hidden.
-    
-    During a ROS simulation, Publisher will be a ROSPublisher that 
-    will publish the data as ROS topics which can be subscribed by RViz.
-    
+    as graphs, statistics, etc. The function is given
+    an instance reprep.Report.
     During offline learning, the data will be written to HTML files.
 
     """

@@ -6,9 +6,7 @@ from contracts import contract, describe_type, describe_value
 import warnings
 from contracts.interface import describe_value_multiline
 from contracts.utils import indent
-
-
-
+ 
 
 
 __all__ = ['Route']
@@ -19,7 +17,7 @@ class Route(WithQueue, SimpleBlackBoxTN):
         Routes signals among children according to user-defined rules.
          
     """
-    @contract(routing='list(tuple(dict, isinstance(SimpleBlackBox), dict))',
+    @contract(routing='list(tuple(dict, isinstance(BlackBox), dict))',
               suppress='seq(str)')
     def __init__(self, routing, suppress=[]):
         """
@@ -36,12 +34,9 @@ class Route(WithQueue, SimpleBlackBoxTN):
             
         self.suppress = suppress
 
-#     def __repr__(self):
-#         cont = '|'.join([str(b)for b in self.boxes])
-#         return 'Route(%s)' % cont
-
-
     def __repr__(self):
+        if not hasattr(self, 'suppress'):
+            return 'Route(not-initialized)'
         
         s = 'Route'
         for i , (f, b, t) in enumerate(self.routing):
