@@ -1,0 +1,8 @@
+PyYAML
+PyContracts
+ConfTools
+RepRep
+compmake
+comptests
+SystemCmd
+hdflog

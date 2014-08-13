@@ -3,7 +3,10 @@ from contracts import contract
 from blocks.utils import check_reset
 
 
-__all__ = ['Collect', 'CollectSignals']
+__all__ = [
+    'Collect', 
+    'CollectSignals',
+]
 
 
 class Collect(WithQueue):

@@ -146,6 +146,11 @@ class TwoLevelAgent(MultiLevelBase, LearningAgent, ExploringAgent, ServoingAgent
     def get_servo(self):
         # TODO: implement
         raise NotImplementedError(type(self))
+    
+    @contract(returns=SimpleBlackBox)
+    def get_servo_system(self):
+        # TODO: check that we have converged
+        raise NotImplementedError(type(self))
 
     def merge(self, other):  # @UnusedVariable
         if self.phase == 0:

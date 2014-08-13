@@ -1,6 +1,6 @@
 from blocks import SimpleBlackBoxT
 from blocks.composition import BBBBSeriesT
-from blocks.library.simple import InfoT, Instantaneous, LastNSamplesT
+from blocks.library.simple import Instantaneous, LastNSamplesT
 from contracts import contract
 import numpy as np
 
@@ -13,14 +13,22 @@ __all__ = [
 def SampledDeriv():
     """ Warning: not instantaneous --- see SampledDerivPartial. """
     from blocks.composition import series
-    S = series(InfoT('sampledinfo'), LastNSamplesT(3, send_partial=False), ForwardDiff(partial=False),
-               InfoT('afterfdiff'))
-    S.set_names(['info', 'last3', 'fdiff', 'afterfdiff'])
+    S = series(
+        #InfoT('sampledinfo'), 
+        LastNSamplesT(3, send_partial=False), 
+        ForwardDiff(partial=False),
+        #InfoT('afterfdiff'),
+    )
+    S.set_names(['last3', 'fdiff'])
+    # S.set_names(['info', 'last3', 'fdiff', 'afterfdiff'])
     return S
 
 def SampledDerivInst():
-    from blocks.composition import series
-    S = series(LastNSamplesT(2, send_partial=True), ForwardDiff(partial=True))
+    from blocks import series
+    S = series(
+        LastNSamplesT(2, send_partial=True), 
+        ForwardDiff(partial=True),
+    )
     return S
     
 
@@ -61,7 +69,7 @@ class ForwardDiff(Instantaneous, SimpleBlackBoxT):
         if len(value) == 3:
             return self.deriv3(value)
         
-    @contract(tx='tuple(float, float)')
+    @contract(tx='tuple(float, float|array)')
     def _check_single(self, tx):
         pass
         
