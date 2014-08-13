@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 version = "1.0"
 
-description = """"""
+description = """Basic Bootstrapping code."""
 
 long_description = description
 
@@ -44,27 +44,18 @@ setup(name='BootOlympics',
 
       entry_points={
          'console_scripts': [
-           'boot_olympics_print_config = '
-                'bootstrapping_olympics.programs.print_config:main',
-#           'boot_olympics_create_launch_agent_robot = '
-#                'bootstrapping_olympics.ros_scripts.create_launch_agent_robot:main',
-#            'boot_olympics_create_launch_all = '
-#                'bootstrapping_olympics.ros_scripts.create_launch_all:main',
-            'boot_olympics_gui = '
-                'boot_gui.boot_gui:main',
             'boot_olympics_manager = '
                 'bootstrapping_olympics.programs.manager:manager_main',
             'bom = '
                 'bootstrapping_olympics.programs.manager:manager_main',
-            'boot_olympics_hdf2bag = '
-                'bootstrapping_olympics.programs.hdf2bag.main:main',
-            'boot_olympics_rosbag2h5 = '
-                'bootstrapping_olympics.programs.rosbag2h5.main:main',
-            'boot_olympics_hdf2matlab = '
-                'bootstrapping_olympics.programs.hdf2matlab:hdf2matlab_main'
+            # 'boot_olympics_hdf2bag = '
+            #     'bootstrapping_olympics.programs.hdf2bag.main:main',
+            # 'boot_olympics_rosbag2h5 = '
+            #     'bootstrapping_olympics.programs.rosbag2h5.main:main',
+            # 'boot_olympics_hdf2matlab = '
+            #     'bootstrapping_olympics.programs.hdf2matlab:hdf2matlab_main'
 
         ]
-      },
-      test_suite='nose.collector'
+      }
 )
 
