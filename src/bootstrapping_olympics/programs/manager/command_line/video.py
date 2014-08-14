@@ -8,8 +8,9 @@ class CmdVideo(BOM.get_sub()):
 
     def define_program_options(self, params):
         params.add_string('robot', short='-r')
+        params.add_string('agent', short='-a')
         params.add_string('episode', short="-e", help="Episode ID", default="")
-        params.add_string('model', short="-m", default='boot_log2movie',
+        params.add_string('model', short="-m", default='boot_log2movie_sensels',
                       help="Procgraph model used for visualization. ")
 
 

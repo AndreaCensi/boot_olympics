@@ -34,10 +34,11 @@ class Sink(WithInternalLog):
     @contract(block='bool', value='*', timeout='None|>=0')
     def put(self, value, block=True, timeout=None):
         """ 
-            Raises Full if the object cannot take it
+            Raises Full if the object cannot take it temporarily
             and block is False.
             
             :raise: Full
+            :raise: Finished 
         """
 
     def end_input(self):

@@ -3,11 +3,13 @@ from bootstrapping_olympics import logger
 # TODO: move away
 # TODO: make sure that the log has extra robot_state
 
-__all__ = ['create_video']
+__all__ = [
+    'create_video',
+]
 
 
 def create_video(data_central, id_robot, id_agent,
-                 model='boot_log2movie',
+                 model='boot_log2movie_sensels',
                  model_params={},  # {'plotter.zoom': 2},
                  suffix='',
                  id_episode=''):

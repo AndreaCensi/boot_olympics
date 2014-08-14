@@ -66,7 +66,6 @@ class DirectoryStructure(object):
         ''' Returns a directory where intermediate results can be placed. '''
         return os.path.join(self.root, DirectoryStructure.DIR_STORAGE)
 
-
     def add_log_directory(self, dirname):
         """ Adds a log directory in addition to ROOT/logs """
         self.extra_log_dirs.append(dirname)

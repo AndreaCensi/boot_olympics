@@ -53,7 +53,7 @@ def safe_write_tmp_filename(filename,  suffix_tmp='.tmp', suffix_old='.old'):
     try:
         yield filename_new
     except:
-        print('Error while cretating %s ' % filename_new)
+        #print('Error while cretating %s ' % filename_new)
         if os.path.exists(filename_new):
             try:
                 os.unlink(filename_new)

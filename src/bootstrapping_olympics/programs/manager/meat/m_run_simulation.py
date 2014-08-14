@@ -2,11 +2,12 @@ from blocks import (
     CheckSequence, CheckSequenceTN, Finished, NeedInput, NotReady, check_timed_named, 
     series)
 from bootstrapping_olympics import ExplorableRobot, ExploringAgent, logger
-from contracts import contract
-from contracts.utils import check_isinstance, raise_wrapped
+from contracts import check_isinstance, contract, raise_wrapped
 import warnings
 
-__all__ = ['run_simulation']
+__all__ = [
+    'run_simulation',
+]
 
 
 @contract(id_robot='str', id_agent='str',
@@ -89,6 +90,7 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
     num_default_given = 0
     while counter < max_observations:
         #print('counter: %d' % counter)
+        finished = False
         while True: # loop until NeedInput
             
             try:
@@ -134,8 +136,11 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
             except Finished:
                 logger.info('Episode ended at %s due to obs.episode_end.'
                              % counter)
+                finished = True
                 break
             counter += 1
+        if finished:
+            break
         
         while True:
             try:

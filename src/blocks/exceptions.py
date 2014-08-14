@@ -6,11 +6,16 @@ __all__ = [
    'Finished',
    'NeedInput',
    'NeedComputation',
+   'Exhausted',
 ]
 
 class Full(Queue.Full):
     pass
 
+
+class Exhausted(Queue.Full):
+    pass
+    
 class NotReady(Queue.Empty):
     pass
 

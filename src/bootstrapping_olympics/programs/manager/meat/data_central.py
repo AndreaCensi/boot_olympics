@@ -1,10 +1,10 @@
 from .directory_structure import DirectoryStructure
-from bootstrapping_olympics import (LearningStateDB, LogIndex, get_boot_config,
+from bootstrapping_olympics import (LearningStateDB, LogIndex, get_boot_config, 
     logger)
 from bootstrapping_olympics.utils import expand_environment
+from conf_tools.master import GlobalConfig
 from conf_tools.utils import friendly_path
 import os
-from conf_tools.master import GlobalConfig
 
 __all__ = ['DataCentral']
 
@@ -44,7 +44,6 @@ class DataCentral(object):
                     logger.info(msg)  
                 else:
                     GlobalConfig.global_load_dir(dirname)
-#                     self.bo_config.load(dirname)
         return self.bo_config
 
     def get_log_index(self, ignore_cache=False):
