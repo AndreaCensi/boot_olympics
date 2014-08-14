@@ -38,8 +38,10 @@ setup(name='BootOlympics',
       extras_require={},
 
       setup_requires=['nose>=1.0'],
-      tests_require=['nose>=1.0', 'rudolf', 'nose-progressive', 'nose-cov',
-                     'comptests'],
+      tests_require=['nose>=1.0', 'rudolf', 
+          'nose-progressive', 'nose-cov',
+          'comptests',
+      ],
 
       entry_points={
          'console_scripts': [
