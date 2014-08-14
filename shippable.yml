@@ -15,6 +15,3 @@ script:
   - nosetests boot_olympics
   - comptests boot_olympics
   
-notifications:
-  email:
-   - censi@mit.edu
