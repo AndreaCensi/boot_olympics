@@ -1,20 +1,18 @@
-from blocks import bb_pump_block_yields, check_timed_named, series
-from blocks.library import CheckSequence
-from bootstrapping_olympics import (LearningAgent, LearningConverged)
-from contracts import contract
-from contracts.utils import check_isinstance
-from blocks.interface import Source
-from bootstrapping_olympics.programs.manager.meat.load_agent_state_imp import load_agent_state
-import warnings
-from aer import logger
-from bootstrapping_olympics.programs.manager.batch.batch_explore import rawlog_from_episode
-from streamels.boot_spec import BootSpec
-from rawlogs.interface.rawlog import RawLog
+from blocks import (CheckSequence, IteratorSource, Source, bb_pump_block_yields, 
+    check_timed_named, series)
+from bootstrapping_olympics import (LearningAgent, LearningConverged, 
+    get_conftools_agents, get_conftools_robots)
 from bootstrapping_olympics.agent_states.learning_state import LearningState
-from bootstrapping_olympics.configuration import get_conftools_robots,\
-    get_conftools_agents
-from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
-from blocks.library.simple.iterator_source import IteratorSource
+from bootstrapping_olympics.programs.manager.batch.batch_explore import (
+    rawlog_from_episode)
+from bootstrapping_olympics.programs.manager.meat.data_central import (
+    DataCentral)
+from bootstrapping_olympics.programs.manager.meat.load_agent_state_imp import (
+    load_agent_state)
+from contracts import check_isinstance, contract
+from rawlogs import RawLog
+from streamels import BootSpec
+import warnings
 
 __all__ = [
            'learn_log',
@@ -31,7 +29,6 @@ def learn_log(data_central, id_agent, id_robot,
               parallel_hint=None):
     ''' If episodes is not None, it is a list of episodes id to learn. '''
      
-    logger.info('id_agent: %r\nepisodes:\n%r' % (id_agent, episodes))
      
     warnings.warn('add publish_interval plugins')
      
@@ -43,7 +40,7 @@ def learn_log(data_central, id_agent, id_robot,
     check_isinstance(agent0, LearningAgent)
      
     if parallel_hint is not None:
-        logger.info('setting parallel hint: %r' % str(parallel_hint))
+        #logger.info('setting parallel hint: %r' % str(parallel_hint))
         agent0.parallel_process_hint(*parallel_hint)
      
     boot_spec = get_robot_boot_spec(data_central, id_robot)
@@ -60,7 +57,7 @@ def learn_log(data_central, id_agent, id_robot,
  
     # Saving agent state
     if save_state:
-        logger.debug('Saving state (end of streams)')
+        #logger.debug('Saving state (end of streams)')
         state.agent_state = agent.get_state()
         db = data_central.get_agent_state_db()
         db.set_state(state=state, id_robot=id_robot, id_agent=id_agent)

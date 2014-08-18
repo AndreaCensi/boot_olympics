@@ -9,6 +9,7 @@ __all__ = [
    'get_conftools_robots',
    'get_conftools_nuisances',
    'get_conftools_nuisances_causal',
+   'get_conftools_videos',
 ]
 
 
@@ -23,6 +24,10 @@ def get_conftools_robots():
 @contract(returns=ObjectSpec)
 def get_conftools_nuisances():
     return get_boot_config().nuisances
+
+@contract(returns=ObjectSpec)
+def get_conftools_videos():
+    return get_boot_config().videos
 
 @contract(returns=ObjectSpec)
 def get_conftools_nuisances_causal():

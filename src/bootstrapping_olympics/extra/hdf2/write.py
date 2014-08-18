@@ -1,12 +1,10 @@
 from . import tables
-from blocks import Sink
-from blocks.library.timed.checks import check_timed_named
-from blocks.utils import check_reset
+from blocks import Sink, check_reset, check_timed_named
 from bootstrapping_olympics import BootSpec
 from bootstrapping_olympics.utils import (make_sure_dir_exists, 
     warn_good_filename, warn_good_identifier, yaml_dump)
 from collections import defaultdict
-from contracts.utils import check_isinstance
+from contracts import check_isinstance
 from hdflog import PGHDFLogWriter
 import numpy as np
 import warnings
@@ -15,6 +13,9 @@ import warnings
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 
+__all__ = [
+    'HDFLogWriter2',       
+]
 
 class HDFLogWriter2(Sink):
 
@@ -31,6 +32,8 @@ class HDFLogWriter2(Sink):
         
         self.num_put = defaultdict(lambda: 0)
         
+        self.warned_about = set()
+                
     def reset(self):
         self.writer = PGHDFLogWriter(self.filename, compress=True, 
                                      complevel=9, complib='zlib')
@@ -58,8 +61,14 @@ class HDFLogWriter2(Sink):
             # this gets dumped to yaml and compressed
             self.writer.log_compressed_yaml(timestamp, signal, ob)
         else:
-            msg = 'Unknown logging signal %r.' % signal
-            raise ValueError(msg) 
+            if not signal in self.warned_about:
+                msg=  'Logging signal %r is unknown, logging as array.' % signal
+                msg += '\n %s %s' % (ob.shape, ob.dtype)
+                self.warn(msg)
+                self.warned_about.add(signal)
+            self.writer.log_signal(timestamp, signal, ob)
+#             msg = 'Unknown logging signal %r.' % signal
+#             raise ValueError(msg) 
         
     def end_input(self):
         check_reset(self, 'writer')
@@ -86,7 +95,7 @@ class HDFLogWriter2(Sink):
             msg = 'No messages seen.'
             raise Exception(msg)
         if not 'id_episode' in self.num_put:
-            msg = 'Did not lot any id_episode: %s' % dict(**self.num_put)
+            msg = 'Did not log any id_episode: %s' % dict(**self.num_put)
             raise Exception(msg)
             
         self.writer.finish() 

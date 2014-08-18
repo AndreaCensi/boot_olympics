@@ -1,6 +1,8 @@
 from .configuration import *
 
-
+from bootstrapping_olympics.programs.manager.meat import *
+from bootstrapping_olympics.logs import *
+from bootstrapping_olympics.agent_states import *
 
 def jobs_comptests(context):
     from conf_tools import GlobalConfig

@@ -84,4 +84,3 @@ def safe_write_tmp_filename(filename,  suffix_tmp='.tmp', suffix_old='.old'):
         assert not os.path.exists(filename_new)
         assert not os.path.exists(filename_old)
     
-    warnings.warn('this was a race condition')

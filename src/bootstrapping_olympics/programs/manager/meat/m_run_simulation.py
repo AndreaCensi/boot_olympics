@@ -10,8 +10,11 @@ __all__ = [
 ]
 
 
-@contract(id_robot='str', id_agent='str',
-          robot=ExplorableRobot, agent=ExploringAgent, max_observations='>=1',
+@contract(id_robot='str', 
+          id_agent='str',
+          robot=ExplorableRobot, 
+          agent=ExploringAgent, 
+          max_observations='>=1',
           max_time='>0')
 def run_simulation(id_robot, robot, id_agent, agent, max_observations,
                    max_time,
@@ -99,7 +102,7 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
                 check_timed_named(x)
                 t, (signal, v) = x
                 
-                if signal == 'observations':
+                if signal in ['observations']:
                     obs = v
                     if check_valid_values:
                         obs_spec.check_valid_value(obs)
@@ -112,9 +115,12 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
                     last_y_timestamp = t
                     #print('-> agent  t = %.5f' % t)
                     agent_sys.put((t, ('observations', obs)), block=True)
-            
+                elif signal in ['events']:
+                    yield t, ('events', v)
+                    agent_sys.put((t, ('events', obs)), block=True)
                 else:
-                    other_pass_through = ['robot_pose']
+                    other_pass_through = ['robot_pose', 'robot_vel',
+                                          'theta', 'omega', 'events', 'frames']
                     if signal in other_pass_through:
                         # yield but do not send agent
                         yield (t, (signal, v))
@@ -181,18 +187,20 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
                 assert tu >= last_u_timestamp
                     
             if tu == last_u_timestamp:
-                msg = ('At counter = %d, repeated timestamp for commands %s' % (counter, t))
+                msg = ('At counter = %d, repeated timestamp for commands %.12f' % (counter, t))
                 if num_default_given:
                     logger.error(msg)
                     logger.error('Just ignoring.')
                     logger.error('This is because we needed to put n = %d default commands.' % num_default_given)
                 else:
-                    raise Exception(msg)
-            
-            yield tu, ('commands', commands)
+                    #raise Exception(msg)
+                    logger.error(msg)
+                    pass
+            else:
+                yield tu, ('commands', commands)
             #print('-> robot %.5f %s' % (tu, 'commands'))
-            robot_sys.put((tu, ('commands', commands)), block=True)
-            last_u_timestamp = tu
+                robot_sys.put((tu, ('commands', commands)), block=True)
+                last_u_timestamp = tu
         
             break
         
