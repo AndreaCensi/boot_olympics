@@ -37,17 +37,8 @@ from .constants import *
 from streamels import StreamSpec, BootSpec, UnsupportedSpec
 
 from .interfaces import *
-from .agent_states import *
-from .logs import *
 from .configuration import *
-from .misc import *
-
-# Try to load extra components (ROS, HDF, etc.)
-from . import extra
-
-from .programs.manager.batch.main import batch_jobs1
-from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
-from bootstrapping_olympics.programs.manager.batch.main import batch_process_manager
+from . import library
 
 def jobs_comptests(context):
     # default is loaded 

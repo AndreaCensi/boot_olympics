@@ -1,8 +1,13 @@
-from .configuration import *
 
-from bootstrapping_olympics.programs.manager.meat import *
-from bootstrapping_olympics.logs import *
-from bootstrapping_olympics.agent_states import *
+import logging
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+    
+from .configuration import *
+from .logs import *
+from . import hdf_support
+from .programs import *
+
 
 def jobs_comptests(context):
     from conf_tools import GlobalConfig

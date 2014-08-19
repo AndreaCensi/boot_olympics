@@ -22,15 +22,13 @@ class Instantaneous(WithQueue):
     def put_noblock(self, value):
         try:
             value2 = self.transform_value(value)
-        except BaseException as e:
-#             raise_wrapped(type(e), e, 
-#
+        except BaseException:
+            # raise_wrapped(type(e), e, 
             msg =  'Error while calling user method transform_value().' 
             msg += '\n   this block: %s' %  describe_value(self)
             msg += '\n  of type %s' %  describe_type(self)
             msg += '\n  value: %s' %  describe_value(value)
             msg += '\n  of type %s' %  describe_type(value)
-
             self.error(msg)
             raise
         self.append(value2)

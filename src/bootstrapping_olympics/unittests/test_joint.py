@@ -1,6 +1,6 @@
-from StringIO import StringIO
+from io import BytesIO
 from bootstrapping_olympics import ExploringAgent, UnsupportedSpec
-from bootstrapping_olympics.programs.manager import run_simulation
+
 from bootstrapping_olympics.unittests import for_all_pairs
 from comptests import Skipped
 import cPickle as pickle
@@ -25,7 +25,9 @@ def check_small_simulation(id_agent, agent, id_robot, robot):
         agent.init(robot.get_spec())
     except UnsupportedSpec:
         return Skipped('UnsupportedSpec')
-    
+
+    from boot_manager.meat.m_run_simulation import run_simulation
+
     for _ in run_simulation(id_robot=id_robot,
                             robot=robot,
                             id_agent=id_agent,
@@ -39,7 +41,7 @@ def check_small_simulation(id_agent, agent, id_robot, robot):
 
 
 def check_pickable(x, desc):
-    s = StringIO()
+    s = BytesIO()
     try:
         pickle.dump(x, s, pickle.HIGHEST_PROTOCOL)
     except:
@@ -72,6 +74,7 @@ def check_publish(id_agent, agent, id_robot, robot):
     publisher = Report()
     agent.publish(publisher)
 
+    from boot_manager.meat.m_run_simulation import run_simulation
     for _ in run_simulation(id_robot=id_robot,
                             robot=robot,
                             id_agent=id_agent,

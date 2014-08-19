@@ -1,7 +1,4 @@
 from .generation import for_all_sets, for_all_sets_dynamic
-from bootstrapping_olympics.programs.manager.batch.main import batch_set
-from bootstrapping_olympics.programs.manager.meat.data_central import (
-    DataCentral)
 import os
 
 @for_all_sets
@@ -42,7 +39,9 @@ def check_set_run(context, id_set, bootset):
         del params['explore_modulus']
 
     out = os.path.join(context.get_output_dir(), 'data_central')
+    from boot_manager import DataCentral
     data_central = DataCentral(out)
+    from boot_manager.programs.manager.batch.main import batch_set
     batch_set(context, data_central, id_set, bootset)
     
     

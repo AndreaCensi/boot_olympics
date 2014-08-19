@@ -46,9 +46,9 @@ setup(name='BootOlympics',
       entry_points={
          'console_scripts': [
             'boot_olympics_manager = '
-                'bootstrapping_olympics.programs.manager:manager_main',
+                'boot_manager.programs.manager:manager_main',
             'bom = '
-                'bootstrapping_olympics.programs.manager:manager_main',
+                'boot_manager.programs.manager:manager_main',
             # 'boot_olympics_hdf2bag = '
             #     'bootstrapping_olympics.programs.hdf2bag.main:main',
             # 'boot_olympics_rosbag2h5 = '
