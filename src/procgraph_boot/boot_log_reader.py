@@ -21,7 +21,7 @@ class BOLogReader(IteratorGenerator):
     Block.config('read_extra', 'Load the extra information.', default=True)
 
     def init_iterator(self):
-        from bootstrapping_olympics.logs import LogIndex
+        from boot_manager import LogIndex
         index = LogIndex()
         index.index(self.config.logdir)
 

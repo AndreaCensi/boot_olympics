@@ -83,8 +83,10 @@ def simulate_agent_robot(data_central, id_agent, id_robot,
              
             count = 0
             writer.new_episode()
-            for x in run_simulation(id_robot, robot, id_agent,
-                                    agent, 100000, max_episode_len):
+            for x in run_simulation(robot=robot,
+                                    agent=agent, 
+                                    max_observations=100000,
+                                    max_time=max_episode_len):
                 count += 1
                 check_timed_named(x)
                 timestamp, (signal, value) = x

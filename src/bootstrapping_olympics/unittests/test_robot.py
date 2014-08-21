@@ -1,11 +1,9 @@
 from .tests_generation import for_all_robots
-from blocks import NeedInput, SimpleBlackBox
-from blocks.library.timed.checks import check_timed_named
+from blocks import NeedInput, SimpleBlackBox, check_timed_named
 from bootstrapping_olympics import (BasicRobot, BootSpec, EpisodeDesc, 
     ExplorableRobot, StreamSpec)
-from comptests.results import Skipped
-from contracts import describe_type
-from contracts.utils import check_isinstance, raise_wrapped
+from comptests import Skipped
+from contracts import check_isinstance, describe_type, raise_wrapped
 from numpy.ma.testutils import assert_not_equal
 from types import NoneType
 import yaml
@@ -73,7 +71,7 @@ def check_robot_observations_compliance(id_robot, robot): #@UnusedVariable
                       stream=stream)
     
     check_timed_named(res_)
-    t, (sname, ob) = res_
+    t, (sname, _) = res_
     assert sname == 'observations'
 
     rest = robot.get_spec().get_commands().get_default_value()

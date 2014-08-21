@@ -1,11 +1,8 @@
-from io import BytesIO
 from bootstrapping_olympics import ExploringAgent, UnsupportedSpec
-
 from bootstrapping_olympics.unittests import for_all_pairs
 from comptests import Skipped
+from io import BytesIO
 import cPickle as pickle
-
-
 
 @for_all_pairs
 def check_agent_init(id_agent, agent, id_robot, robot):  # @UnusedVariable
@@ -28,9 +25,7 @@ def check_small_simulation(id_agent, agent, id_robot, robot):
 
     from boot_manager.meat.m_run_simulation import run_simulation
 
-    for _ in run_simulation(id_robot=id_robot,
-                            robot=robot,
-                            id_agent=id_agent,
+    for _ in run_simulation(robot=robot,
                             agent=agent,
                             max_observations=3, 
                             max_time=100):
@@ -75,11 +70,10 @@ def check_publish(id_agent, agent, id_robot, robot):
     agent.publish(publisher)
 
     from boot_manager.meat.m_run_simulation import run_simulation
-    for _ in run_simulation(id_robot=id_robot,
-                            robot=robot,
-                            id_agent=id_agent,
+    for _ in run_simulation(robot=robot,
                             agent=agent,
-                            max_observations=10, max_time=100):
+                            max_observations=10,
+                             max_time=100):
         pass
 
     # and after

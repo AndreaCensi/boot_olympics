@@ -10,13 +10,12 @@ __all__ = [
 ]
 
 
-@contract(id_robot='str', 
-          id_agent='str',
-          robot=ExplorableRobot, 
+@contract(robot=ExplorableRobot, 
           agent=ExploringAgent, 
           max_observations='>=1',
           max_time='>0')
-def run_simulation(id_robot, robot, id_agent, agent, max_observations,
+def run_simulation(robot, agent, 
+                   max_observations,
                    max_time,
                    check_valid_values=True):
     ''' 

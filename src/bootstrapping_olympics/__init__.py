@@ -40,6 +40,11 @@ from .interfaces import *
 from .configuration import *
 from . import library
 
+# Legacy reasons
+def batch_jobs1(*args, **kwargs):
+    from boot_manager.programs.manager.batch.main import batch_jobs1 as orig
+    return orig(*args, **kwargs)
+
 def jobs_comptests(context):
     # default is loaded 
     # from conf_tools import GlobalConfig

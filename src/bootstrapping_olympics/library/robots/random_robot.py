@@ -1,11 +1,10 @@
-from blocks import SimpleBlackBox, SimpleBlackBoxTN
-from blocks.library import WithQueue
-from blocks.library.timed.checks import check_timed_named
+from blocks import (SimpleBlackBox, SimpleBlackBoxTN, WithQueue, 
+    check_timed_named)
 from bootstrapping_olympics import (
     BasicRobot, BootSpec, Constants, EpisodeDesc, ExplorableRobot)
 from bootstrapping_olympics.utils import unique_timestamp_string
 from contracts import contract
-from geometry.poses import SE2_from_rotation_translation, SE3_from_SE2
+from geometry import SE2_from_rotation_translation, SE3_from_SE2
 import numpy  as np
 import time
 
@@ -85,9 +84,7 @@ class RandomRobot(BasicRobot, ExplorableRobot):
                     msg = ('Commands received at %.5f but current timestamp is %.5f. ' 
                            % (timestamp, self.random_robot.timestamp))
                     raise ValueError(msg)
-                    
-                
-        
+                     
                 self.random_robot.timestamp += self.random_robot.dt
                 
                 self._enqueue()

@@ -1,11 +1,10 @@
 from .astar_algo import astar, node2children_grid
-from blocks.interface import SimpleBlackBox
-from blocks.library.timed.checks import check_timed_named
+from blocks import SimpleBlackBox
+from blocks  import check_timed_named
 from contracts import contract, describe_type
 from geometry import SE2, SE2_from_SE3, SE3, angle_from_SE2
 import itertools
 import numpy as np
-from blocks.exceptions import NeedInput
 
 
 @contract(resolution='float,>0')

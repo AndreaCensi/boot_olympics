@@ -11,7 +11,7 @@ __all__ = ['jobs_learning']
             
 @contract(simepisode2job='dict(str:isinstance(Promise))', 
           episodes_per_tranche='int,>=1',
-          max_slice_len='float,>0',
+          max_slice_len='(int|float),>0',
           parallel_hint='bool',
           more_phases='bool',
           boot_spec=BootSpec,
@@ -28,6 +28,7 @@ def jobs_learning(context,
                   save_pickle=False):
     """ simepisode[id_episode] must be a promise to a Rawlog. """
 
+    max_slice_len = float(max_slice_len)
     if parallel_hint:
         logger.error('parallel_hint hint not implemented yet.')
     

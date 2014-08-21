@@ -1,1 +1,1 @@
-from streamels.utils.np_comparisons import *
+from streamels.utils.np_comparisons import *  # @UnusedWildImport

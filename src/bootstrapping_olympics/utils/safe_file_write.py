@@ -1,6 +1,5 @@
 from contextlib import contextmanager
 import os
-import warnings
 
 __version__ = '1.2'
 
