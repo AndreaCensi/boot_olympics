@@ -14,7 +14,7 @@ def check_agent_init(id_agent, agent, id_robot, robot):  # @UnusedVariable
 
 
 @for_all_pairs
-def check_small_simulation(id_agent, agent, id_robot, robot):
+def check_small_simulation(id_agent, agent, id_robot, robot):  # @UnusedVariable
     if not isinstance(agent, ExploringAgent):
         return Skipped('agent not ExploringAgent')
 
@@ -52,7 +52,7 @@ def check_pickable(x, desc):
 
 
 @for_all_pairs
-def check_publish(id_agent, agent, id_robot, robot):
+def check_publish(id_agent, agent, id_robot, robot):  # @UnusedVariable
     if not isinstance(agent, ExploringAgent):
         return Skipped('agent not ExploringAgent')
 

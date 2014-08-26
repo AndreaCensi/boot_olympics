@@ -2,14 +2,15 @@ from blocks import Finished, NeedInput, NotReady, SimpleBlackBoxTN
 from blocks.library import WithQueue
 from blocks.library.timed.checks import check_timed_named
 from blocks.utils import check_reset
-from contracts import contract, describe_type, describe_value
+from contracts import (contract, describe_type, describe_value, 
+    describe_value_multiline, indent)
 import warnings
-from contracts.interface import describe_value_multiline
-from contracts.utils import indent
  
 
 
-__all__ = ['Route']
+__all__ = [
+    'Route'
+]
 
 
 class Route(WithQueue, SimpleBlackBoxTN):

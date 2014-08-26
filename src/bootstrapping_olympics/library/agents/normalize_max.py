@@ -1,17 +1,15 @@
 from .multilevel_agent import MultiLevelBase
-from blocks.library import Identity, Instantaneous, Route
+from blocks import Sink, check_timed_named
 from bootstrapping_olympics import (LearningAgent, NuisanceNotInvertible, 
-    RepresentationNuisanceCausal, UnsupportedSpec)
+    RepresentationNuisanceCausalSimpleInst, UnsupportedSpec)
 from contracts import contract
 from streamels import BootSpec, StreamSpec, make_streamels_float
 import numpy as np
-import warnings
-from blocks.interface import Sink
-from blocks.library.timed.checks import check_timed_named
 
 
-
-__all__ = ['ObsNormalizeMax']
+__all__ = [
+    'ObsNormalizeMax',
+]
 
 
 class ObsNormalizeMax(LearningAgent, MultiLevelBase):
@@ -88,7 +86,7 @@ class ObsNormalizeMax(LearningAgent, MultiLevelBase):
             pylab.plot(self.y_max_abs, '.')
 
 
-class NormalizeMin(RepresentationNuisanceCausal):
+class NormalizeMin(RepresentationNuisanceCausalSimpleInst):
 
     def __init__(self, y_max_abs):
         self.y_max_abs = y_max_abs
@@ -103,43 +101,49 @@ class NormalizeMin(RepresentationNuisanceCausal):
                              cmd_spec=spec.get_commands())
         return boot_spec
 
-    def get_G(self):
-        return Identity()
+    def get_g(self):
+        return lambda x: x
 
-    def get_G_conj(self):
-        return Identity()
+    def get_g_conj(self):
+        return lambda x: x
 
-    def get_H(self):
-        # H must receive 'observations' and 'commands'
+    def get_h(self):
         s = 1.0 / self.y_max_abs
         s[self.y_max_abs == 0] = 0
-        H0 = Rescale(s)
-        return  Route([({'observations':'observations'}, H0,
-                     {'observations':'observations'})])
+        def rescale(x):
+            return x *s
+        return rescale
 
-    def get_H_conj(self):
-        warnings.warn('check nan')
-        Hconj0 = Rescale(self.y_max_abs)
-        return  Route([({'observations':'observations'}, Hconj0,
-                     {'observations':'observations'})])
-
-
-class Rescale(Instantaneous):
+    def get_h_conj(self):
+        v = self.y_max_abs
+        def rescale(x):
+            return x * v
+        return rescale
     
-    @contract(scale='array[N]')
-    def __init__(self, scale):
-        Instantaneous.__init__(self)
-        self.scale = scale
-
-    @contract(value='tuple(float, tuple(str, array[N]))')
-    def transform_value(self, value):
-        t, (name, x) = value
-        if not x.shape == self.scale.shape:
-            msg = 'Invalid shape: %s != %s' % (x.shape, self.scale.shape)
-            raise ValueError(msg)
-        res = x * self.scale
-
-        return(t, (name, res))
+    
+# 
+#         warnings.warn('check nan')
+#         Hconj0 = Rescale(self.y_max_abs)
+#         return  Route([({'observations':'observations'}, Hconj0,
+#                      {'observations':'observations'})])
+# 
+# 
+# class Rescale(Instantaneous):
+#     
+#     @contract(scale='array[N]')
+#     def __init__(self, scale):
+#         Instantaneous.__init__(self)
+#         self.scale = scale
+# 
+#     @contract(value='tuple(float, tuple(str, array[N]))')
+#     def transform_value(self, value):
+#         t, (name, x) = value
+#         if not x.shape == self.scale.shape:
+#             msg = 'Invalid shape: %s != %s' % (x.shape, self.scale.shape)
+#             raise ValueError(msg)
+#         res = x * self.scale
+# 
+#         return(t, (name, res))
 
 
 

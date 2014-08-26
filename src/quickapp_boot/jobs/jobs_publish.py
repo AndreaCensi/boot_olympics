@@ -2,8 +2,8 @@ from contracts import contract
 from quickapp import CompmakeContext
 from quickapp_boot.utils import iterate_context_agents, iterate_context_robots
 from quickapp_boot import RM_AGENT_LEARN
-from bootstrapping_olympics.programs.manager.meat.publish_output import get_agent_report
-from bootstrapping_olympics.programs.manager.meat.data_central import DataCentral
+from boot_manager import DataCentral
+from boot_manager.meat.publish_output import get_agent_report
 
     
 @contract(context=CompmakeContext, boot_root='str', agents='list(str)', id_robot='str')

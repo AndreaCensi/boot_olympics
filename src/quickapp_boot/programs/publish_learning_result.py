@@ -1,6 +1,6 @@
-from bootstrapping_olympics.programs.manager import DataCentral
-from bootstrapping_olympics.programs.manager.meat.publish_output import (
-    get_agent_report)
+
+from boot_manager import DataCentral
+from boot_manager.meat.publish_output import get_agent_report
 from quickapp import QuickApp
 
 __all__ = ['PublishLearningResult', 'jobs_publish_learn_report']

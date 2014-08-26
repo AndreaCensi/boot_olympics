@@ -13,7 +13,6 @@ import yaml
 def check_robot_type(id_robot, robot): #@UnusedVariable
     assert isinstance(robot, BasicRobot)
 
-
 @for_all_robots
 def check_robot_spec(id_robot, robot): #@UnusedVariable
     cascade_spec = robot.get_spec()
@@ -70,24 +69,27 @@ def check_robot_observations_compliance(id_robot, robot): #@UnusedVariable
                       'Robot must give first observations: NeedInput received',
                       stream=stream)
     
+    # first one must be "observations"
     check_timed_named(res_)
-    t, (sname, _) = res_
+    t, (sname, obs) = res_
     assert sname == 'observations'
+
+    obs_spec = robot.get_spec().get_observations()
+    obs_spec.check_valid_value(obs)
+
 
     rest = robot.get_spec().get_commands().get_default_value()
     stream.put((t, ('commands', rest)))
     
-    res = stream.get(block=True)
+#     res = stream.get(block=True)
+#     
+#     check_timed_named(res)
+#     t, (signal, obs) = res  # @UnusedVariable
+#     
+#     if not signal == 'observations':
+#         msg = 'Expected "observations", got %r.' % signal
+#         raise Exception(msg)
     
-    check_timed_named(res)
-    t, (signal, obs) = res  # @UnusedVariable
-    
-    if not signal == 'observations':
-        msg = 'Expected "observations", got %r.' % signal
-        raise Exception(msg)
-    
-    obs_spec = robot.get_spec().get_observations()
-    obs_spec.check_valid_value(obs)
     
     
 @for_all_robots

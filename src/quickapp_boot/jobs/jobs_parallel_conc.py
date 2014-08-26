@@ -1,11 +1,10 @@
-from .jobs_parallel import save_state
-from bootstrapping_olympics.programs.manager import DataCentral
-from bootstrapping_olympics.programs.manager.meat.publish_output import (
-    get_agentstate_report)
+
+from boot_manager import DataCentral
+from boot_manager.meat.publish_output import get_agentstate_report
+from boot_manager.programs.manager.batch.main import save_state
 from contracts import contract
 from quickapp import CompmakeContext, iterate_context_names
 from quickapp_boot import RM_EPISODE_READY
-from quickapp_boot.jobs.jobs_parallel import jobs_merging_recursive
 from quickapp_boot.programs import LearnLogNoSaveHint
 
 __all__ = ['jobs_parallel_learning_concurrent', 'get_agentstate_report']

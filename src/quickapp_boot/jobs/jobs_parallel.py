@@ -1,12 +1,13 @@
 from contracts import contract
 
-from bootstrapping_olympics.programs.manager import (DataCentral,
-    get_agentstate_report)
+from boot_manager import (DataCentral)
 from compmake import Promise
 import numpy as np
 from quickapp import CompmakeContext, iterate_context_names
 from quickapp_boot import RM_EPISODE_READY
 from quickapp_boot.programs import LearnLogNoSave
+from boot_manager.meat.publish_output import get_agentstate_report
+from boot_manager.programs.manager.batch.main import save_state
 
 
 __all__ = ['jobs_parallel_learning']

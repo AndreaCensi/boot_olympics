@@ -1,13 +1,10 @@
-from blocks import   SimpleBlackBox, Sink, Source
-from blocks.composition import series
-from blocks.library import Identity, Route, WrapTMfromT
+from blocks import (Identity, Route, SimpleBlackBox, SimpleBlackBoxT, 
+    SimpleBlackBoxTN, Sink, Source, WrapTMfromT, series)
+from blocks.library.loops import loopit
 from bootstrapping_olympics import (RepresentationNuisance, 
     RepresentationNuisanceCausal, get_conftools_nuisances, 
     get_conftools_nuisances_causal)
-from contracts import contract
-from contracts.utils import check_isinstance
-from blocks import SimpleBlackBoxT, SimpleBlackBoxTN
-from blocks.library.loops import loopit
+from contracts import check_isinstance, contract
 
 
 
@@ -77,7 +74,16 @@ def wrap_agent_learner(learner, rnc):
     #  u -> G* --+-----> u'  
     #            V          => learner
     #  y -----> |L| ---> y'
-    
+    conv = wrap_agent_learner_converter(rnc)
+    res = series(conv, learner)
+    res.set_names(['conv', 'learner'])
+    return res
+
+def wrap_agent_learner_converter(rnc):
+    # 
+    #  u -> G* --+-----> u'  
+    #            V          => learner
+    #  y -----> |L| ---> y'
     Gc = rnc.get_G_conj()
     L = rnc.get_L()
     
@@ -89,11 +95,9 @@ def wrap_agent_learner(learner, rnc):
             'commands':'commands'}, L, {'observations':'observations'}),
           ({'commands':'commands'}, Identity(), {'commands': 'commands'})])
     r2.set_names(['L', 'Id'])
-    
-    res = series(r1, r2, learner)
-    res.set_names(['r1','r2','learner'])
+    res = series(r1, r2)
+    res.set_names(['r1', 'r2'])
     return res
-
 
 @contract(nuisances='list(str|code_spec|isinstance(RepresentationNuisance)'
                           '|isinstance(RepresentationNuisanceCausal))',
@@ -169,9 +173,6 @@ def wrap_robot_exploration(R, nuisance):
 def wrap_robot_passive_stream(source, nuisance):
     raise NotImplementedError()
         
-
-
-
 
 # class BootExpand(WithQueue):
 # 

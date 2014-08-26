@@ -1,4 +1,4 @@
-from bootstrapping_olympics.programs.manager import DataCentral, learn_log
+from boot_manager import DataCentral
 from quickapp import QuickApp
 
 __all__ = ['LearnLog']

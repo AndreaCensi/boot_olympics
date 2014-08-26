@@ -1,10 +1,8 @@
-from blocks import SimpleBlackBoxT, SimpleBlackBoxTN
-from blocks.composition import series
-from blocks.library import Identity, Route
-from blocks.library.timed_named.wrappers import WrapTMfromT
-from bootstrapping_olympics import RepresentationNuisanceCausal
-from contracts import contract
-from contracts.utils import check_isinstance
+from blocks import (Identity, Route, SimpleBlackBoxT, SimpleBlackBoxTN, 
+    WrapTMfromT, series)
+from bootstrapping_olympics import (RepresentationNuisanceCausal, 
+    RepresentationNuisanceCausalIdentity)
+from contracts import check_isinstance, contract
 from streamels import BootSpec
 import warnings
 
@@ -19,6 +17,8 @@ __all__ = [
           rs='seq(isinstance(RepresentationNuisanceCausal))')
 def series_rnc(*rs):
     """ Returns the composition nuisances. """
+    if len(rs) == 0:
+        return RepresentationNuisanceCausalIdentity()
     if len(rs) == 1:
         one = rs[0]
         check_isinstance(one, RepresentationNuisanceCausal)

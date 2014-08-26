@@ -3,6 +3,7 @@ import numpy as np
 from bootstrapping_olympics import NuisanceNotInvertible
 from bootstrapping_olympics.library.nuisances import GenericScalar
 from bootstrapping_olympics.interfaces.rep_nuisance import NuisanceNotLeftInvertible
+from bootstrapping_olympics.library.nuisances.identity import Identity
 
 
 __all__ = ['Gaussian']
@@ -22,6 +23,9 @@ class Gaussian(GenericScalar):
 
     def left_inverse(self):
         raise NuisanceNotLeftInvertible() 
+    
+    def left_inverse_approx(self):
+        return Identity()
 
     def transform01(self, values01):
         noise = np.random.randn(*values01.shape) * self.sigma

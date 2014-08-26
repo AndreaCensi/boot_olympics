@@ -4,6 +4,7 @@ from contracts import contract
 from types import NoneType
 import time
 import warnings
+from contracts.utils import raise_wrapped
 
 
 
@@ -61,18 +62,24 @@ def bb_pump_block(a, b):
 @contract(a=Source, b=Sink)
 def bb_pump_block_yields(a, b):
     """ Pumps from a to b until it is finished; yields each object. """
-    while True:
-        try:
-            # print('%s: reading' % num)
-            x = a.get(block=True)
-            # print('%s: read %s' % (num, describe_value(x)))
-        except  NotReady:
-            continue
-        except  Finished:
-            break
-        yield x
-        b.put(x, block=True)
-
+    try:
+        while True:
+            try:
+                # print('%s: reading' % num)
+                x = a.get(block=True, timeout=None)
+                # print('%s: read %s' % (num, describe_value(x)))
+            except NotReady:
+                continue
+            except Finished:
+                break
+            yield x
+            b.put(x, block=True, timeout=None)
+    except BaseException as e:
+        raise_wrapped(Exception, e, 
+                      'exception while bb_pump_block_yields()',
+                      a=a,b=b)
+        
+        
 def bb_get_block_poll_sleep(bb, timeout, sleep):
     t0 = time.time()
     while True:

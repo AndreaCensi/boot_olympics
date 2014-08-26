@@ -15,10 +15,14 @@ class BlocksTest(TestCase):
 
     @contract(bbox=SimpleBlackBox, data=list, expected=list)
     def check_bbox_results(self, bbox, data, expected):
+        res = self.get_bbox_results(bbox, data)
+        self.assert_same_seq(res, expected)
+
+    def get_bbox_results(self, bbox, data):
         s = series(FromData(data), bbox)
         s.reset()
         res = source_read_all_block(s)
-        self.assert_same_seq(res, expected)
+        return res
 
     def assert_same_seq(self, a, b):
 

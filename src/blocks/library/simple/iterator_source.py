@@ -1,15 +1,13 @@
 from abc import abstractmethod
+from blocks import Finished, Source
+from contracts import contract, describe_type, indent
+from types import GeneratorType
 import string
 import traceback
-from types import GeneratorType
 
-from contracts import contract, describe_type
-from contracts.utils import indent
-
-from blocks import Finished, Source
-
-
-__all__ = ['IteratorSource']
+__all__ = [
+    'IteratorSource',
+]
 
 
 class IteratorSource(Source):
@@ -35,5 +33,5 @@ class IteratorSource(Source):
             msg += '    of type: %s\n' % describe_type(self.iterator)
             msg += 'because of this error:\n'
             msg += indent(string.strip('%s\n%s' % (e, traceback.format_exc(e))), '| ')
-            self.info(msg)
+            self.error(msg)
             raise

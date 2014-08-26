@@ -1,5 +1,4 @@
-from bootstrapping_olympics.programs.manager import DataCentral
-from bootstrapping_olympics.programs.manager.meat.log_learn import learn_log
+from boot_manager import DataCentral
 from quickapp import QuickApp
 
 __all__ = ['LearnLogNoSave']

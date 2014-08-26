@@ -94,7 +94,7 @@ class CollectSignals(WithQueue):
     def put_noblock(self, value):
         check_reset(self, 'last')
         t, (s, x) = value
-        # self.info('seeing %s %s' % (t, s))
+        #self.info('seeing %s %s' % (t, s))
 
         if self.last_t is not None:
             if t > self.last_t and self.last:
@@ -103,14 +103,17 @@ class CollectSignals(WithQueue):
                 self._flush()
 
         assert not s in self.last
-        self.last[s] = x
-
-        self.last_t = t
+        if not s in self.signals:
+            self.warn('Ignoring extra signal %r not in %r.' % 
+                      (s, self.signals))
+        else:
+            self.last[s] = x
+            self.last_t = t
 
         if set(self.last.keys()) == self.signals:
             self._flush()
 
-        # self.info('cur: %s %s ' % (self.last_t, self.last))
+        #self.info('cur: %s %s ' % (self.last_t, self.last))
 
     def _flush(self):
         if self.last:

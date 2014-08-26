@@ -7,7 +7,9 @@ from blocks.utils import check_reset
 from blocks.exceptions import NeedInput
 
 
-__all__ = ['Split']
+__all__ = [
+    'Split',
+]
 
 
 class Split(WithQueue):

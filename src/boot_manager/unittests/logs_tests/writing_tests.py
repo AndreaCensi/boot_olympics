@@ -41,9 +41,9 @@ def check_logs_writing(id_agent, agent, id_robot, robot):
                                   id_robot=id_robot) as writer:
 
         writer.reset()                    
-        for x in run_simulation(id_robot=id_robot,
+        for x in run_simulation(
                                            robot=robot,
-                                           id_agent=id_agent,
+                                           
                                            agent=agent,
                                            max_observations=3, max_time=1000,
                                            check_valid_values=True):

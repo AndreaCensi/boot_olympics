@@ -9,8 +9,6 @@ from hdflog import PGHDFLogWriter
 import numpy as np
 import warnings
 
-
-
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 
 __all__ = [
@@ -19,7 +17,8 @@ __all__ = [
 
 class HDFLogWriter2(Sink):
 
-    def __init__(self, filename, id_stream, boot_spec, id_agent, id_robot):
+    def __init__(self, filename, id_stream, boot_spec, 
+                 id_agent, id_robot):
         warn_good_filename(filename)
         warn_good_identifier(id_stream)
         make_sure_dir_exists(filename)
@@ -38,7 +37,6 @@ class HDFLogWriter2(Sink):
         self.writer = PGHDFLogWriter(self.filename, compress=True, 
                                      complevel=9, complib='zlib')
         
-        
         self.write_info()
 
     def put(self, value, block=True, timeout=None):  # @UnusedVariable
@@ -46,8 +44,6 @@ class HDFLogWriter2(Sink):
         
         check_timed_named(value)
         timestamp, (signal, ob) = value
-        
-        #self.info('received %s %s' % (timestamp, signal))
         
         self.num_put[signal] += 1
         
@@ -62,13 +58,12 @@ class HDFLogWriter2(Sink):
             self.writer.log_compressed_yaml(timestamp, signal, ob)
         else:
             if not signal in self.warned_about:
-                msg=  'Logging signal %r is unknown, logging as array.' % signal
-                msg += '\n %s %s' % (ob.shape, ob.dtype)
+                msg =  ('Logging signal %r is unknown, logging as array.' 
+                        % signal)
+                msg += ' Shape: %s Dtype: %s' % (ob.shape, ob.dtype)
                 self.warn(msg)
                 self.warned_about.add(signal)
             self.writer.log_signal(timestamp, signal, ob)
-#             msg = 'Unknown logging signal %r.' % signal
-#             raise ValueError(msg) 
         
     def end_input(self):
         check_reset(self, 'writer')

@@ -41,13 +41,26 @@ class RepresentationNuisance(WithInternalLog):
     @abstractmethod
     def left_inverse(self):
         """ 
-            Returns the left inverse representation nuisance.
+            Returns the left inverse representation nuisance
+            or raises NuisanceNotInvertible.
+
+            Note that this needs to be called after transform_spec().
+            Defaults to calling left_inverse().
+            
+             :raise NuisanceNotInvertible: The nuisance is not left-invertible.
+            
+        """
+        return self.inverse()
+
+    def left_inverse_approx(self):
+        """ 
             It should always return something -- cannot 
             raise NuisanceNotInvertible.
             
-            Note that this needs to be called after transform_spec().
-            Defaults to calling left_inverse().
+            The property is that the result will be the correct type
+            but not necessarily a left inverse.
         """
+        return self.left_inverse()
 
     @contract(stream_spec=StreamSpec, returns=StreamSpec)
     def transform_spec(self, stream_spec):

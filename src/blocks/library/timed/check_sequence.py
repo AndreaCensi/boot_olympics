@@ -1,5 +1,5 @@
 from .checks import check_timed_format
-from blocks.interface import SimpleBlackBoxT, SimpleBlackBoxTN
+from blocks import SimpleBlackBoxT, SimpleBlackBoxTN
 from blocks.library import WithQueue
 from blocks.library.timed.checks import check_timed_named
 from collections import defaultdict
@@ -35,11 +35,13 @@ class CheckSequence(SimpleBlackBoxT, WithQueue):
         self.append(value)
 
 
-
-
 class CheckSequenceTN(SimpleBlackBoxTN, WithQueue):
-    """ Checks that the timestamps are ordered 
-        Each signal should be strictly incremental. """
+    """ 
+        Checks that the timestamps are ordered,
+        for named sequences.
+        
+        Each signal should be strictly incremental. 
+    """
 
     def __init__(self):
         WithQueue.__init__(self)
@@ -58,7 +60,6 @@ class CheckSequenceTN(SimpleBlackBoxTN, WithQueue):
                 msg = 'Found timestamps in wrong order for signal %r.' % s
                 msg += '\n last: %.5f cur: %.5f' % (last, t)
                 raise ValueError(msg)
-            
             
         self.last[s] = t
 

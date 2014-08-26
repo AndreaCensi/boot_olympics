@@ -13,7 +13,7 @@ import warnings
 
 
 __all__ = [
-           'learn_log',
+    'learn_log',
     'learn_log_source',
 ]
   
@@ -92,7 +92,8 @@ def learn_log_base(data_central, id_agent,
                    episodes, boot_spec):
     for id_episode in episodes:
         rawlog = rawlog_from_episode(data_central, id_robot, id_episode)
-        agent_state = learn_rawlog(rawlog, id_agent, boot_spec, id_episode)
+        agent_state = learn_rawlog2(rawlog, agent_state, id_episode)
+#         agent_state = learn_rawlog(rawlog, id_agent, boot_spec, id_episode)
     return agent_state
 
 
@@ -116,16 +117,24 @@ def rawlog_from_episode(data_central, id_robot, id_episode):
         raise ValueError(msg)
 
 
-@contract(rawlog=RawLog, id_agent='str', boot_spec=BootSpec,
-          id_episode=str)
-def learn_rawlog(rawlog, id_agent, boot_spec, id_episode):
-    agent = get_conftools_agents().instance(id_agent)  
-    agent.init(boot_spec)
-    state = LearningState(id_robot='<unnamed>', id_agent=id_agent)
-    agent_state0 = agent, state
+@contract(rawlog=RawLog,agent_state0='tuple[2]', id_episode='str')
+def learn_rawlog2(rawlog, agent_state0, id_episode):
+    agent_state0
     source = source_from_rawlog(rawlog)
     agent_state = learn_log_source(agent_state0, source, id_episode)
     return agent_state
+
+# @contract(rawlog=RawLog, id_agent='str', boot_spec=BootSpec,
+#           id_episode=str)
+# def learn_rawlog(rawlog, id_agent, boot_spec, id_episode):
+#     agent = get_conftools_agents().instance(id_agent)  
+#     agent.init(boot_spec)
+#     # XXX
+#     state = LearningState(id_robot='unnamedrobot', id_agent=id_agent)
+#     agent_state0 = agent, state
+#     source = source_from_rawlog(rawlog)
+#     agent_state = learn_log_source(agent_state0, source, id_episode)
+#     return agent_state
     
 @contract(rawlog=RawLog, returns=Source)
 def source_from_rawlog(rawlog):

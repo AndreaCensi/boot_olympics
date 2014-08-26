@@ -1,6 +1,6 @@
 from blocks import SimpleBlackBox
-from bootstrapping_olympics import (EpisodeDesc, RobotInterface, 
-    get_conftools_robots)
+from bootstrapping_olympics import (BasicRobot, EpisodeDesc, ExplorableRobot, 
+    PassiveRobotInterface, get_conftools_robots)
 from contracts import contract
 from streamels import BootSpec
 
@@ -10,7 +10,7 @@ __all__ = [
 ]
 
 
-class NuisanceRobot(RobotInterface):
+class NuisanceRobot(BasicRobot, PassiveRobotInterface, ExplorableRobot):
     """ A robot filtered through the nuisance. """
     
     @contract(nuisances='list(str|code_spec|isinstance(RepresentationNuisanceCausal)'
@@ -39,20 +39,12 @@ class NuisanceRobot(RobotInterface):
         return self.robot.new_episode()
     
     @contract(returns=SimpleBlackBox)
-    def get_active_stream(self):
-        
+    def get_active_stream(self):  
         stream = self.robot.get_active_stream()
         from bootstrapping_olympics.library.agents.nuisance_agent_actions \
             import wrap_robot_exploration
         return wrap_robot_exploration(stream, self.nuisance)
-     
-    # deprecated    
-    def get_observations(self):
-        raise Exception('Using old API with set_commands().')
-    
-    # deprecated        
-    def set_commands(self, commands, commands_source):  # @UnusedVariable
-        raise Exception('Using old API with set_commands().')
+
 
     @contract(returns='None|dict')
     def get_state(self):

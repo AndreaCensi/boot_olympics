@@ -49,9 +49,15 @@ class InstantaneousTF(Instantaneous, SimpleBlackBoxT):
     """ Instantaneous transform with given function. """
 
     def __init__(self, func):
+        if not hasattr(func, '__call__'):
+            msg = 'func is not callable: %s' % describe_value(func)
+            raise ValueError(msg)
         WithQueue.__init__(self)
         self.func = func
 
+    def __str__(self):
+        return 'InstantaneousTF(func=%s)' % self.func
+    
     def transform_value(self, value):
         from blocks.library.timed.checks import check_timed
         from blocks.library.timed.checks import check_timed_named

@@ -1,4 +1,5 @@
-from bootstrapping_olympics import NuisanceNotInvertible, RepresentationNuisance
+from bootstrapping_olympics import (NuisanceNotInvertible, 
+    NuisanceNotLeftInvertible, RepresentationNuisance)
 from contracts import contract
 from numpy.testing.utils import assert_allclose
 from streamels import (check_streamels_2D, check_streamels_continuous, 
@@ -7,7 +8,10 @@ import numpy as np
 import warnings
 
 
-__all__ = ['Resample', 'scipy_image_resample']
+__all__ = [
+    'Resample', 
+    'scipy_image_resample',
+]
 
 
 class Resample(RepresentationNuisance):
@@ -23,6 +27,10 @@ class Resample(RepresentationNuisance):
         raise NuisanceNotInvertible()
 
     def left_inverse(self):
+        # we don't have a reversible implementation
+        raise NuisanceNotLeftInvertible()
+        
+    def left_inverse_approx(self):
         return Resample(self.shape_from, be_liberal=False)
 
     def transform_streamels(self, streamels):

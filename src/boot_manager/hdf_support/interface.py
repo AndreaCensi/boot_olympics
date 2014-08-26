@@ -67,8 +67,8 @@ class HDFLogsFormat2(LogsFormat):
                                               id_robot=id_robot) as writer:
                     yield writer        
         
-            reader = LogsFormat.get_reader_for(filename)
-            reader.index_file_cached(tmp_filename, ignore_cache=True)
+        reader = LogsFormat.get_reader_for(filename)
+        reader.index_file_cached(filename, ignore_cache=True)
         
 
 

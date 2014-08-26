@@ -1,6 +1,4 @@
 from bootstrapping_olympics import get_conftools_robots
-from bootstrapping_olympics.programs.manager.meat.simulate import (
-    simulate_agent_robot)
 from quickapp import ResourceManager
 from quickapp.report_manager import basename_from_key
 from quickapp_boot import RM_EPISODE_READY

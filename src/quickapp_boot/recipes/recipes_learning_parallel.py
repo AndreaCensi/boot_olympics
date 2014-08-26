@@ -1,4 +1,4 @@
-from bootstrapping_olympics.programs.manager import DataCentral
+from boot_manager import DataCentral
 from contracts import contract
 from quickapp import CompmakeContext, ResourceManager
 from quickapp_boot import RM_AGENT_LEARN

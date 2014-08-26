@@ -1,8 +1,10 @@
 from blocks import (
     CheckSequence, CheckSequenceTN, Finished, NeedInput, NotReady, check_timed_named, 
     series)
+from blocks.exceptions import NeedComputation
 from bootstrapping_olympics import ExplorableRobot, ExploringAgent, logger
 from contracts import check_isinstance, contract, raise_wrapped
+import numpy as np
 import warnings
 
 __all__ = [
@@ -217,3 +219,122 @@ def run_simulation_systems(robot_sys, agent_sys, boot_spec, max_observations, ma
             cmd_spec.check_valid_value(commands)
 
  
+class WrapSys():
+    """ Wraps a system, keeps tracks of first/last timestamp. """
+    def __init__(self, system):
+        self.system = system
+        self.last_timestamp = None
+        self.first_timestamp = None
+        self._num_data = 0
+        
+    def num_data(self):
+        return self._num_data
+        
+    def time_from_start(self):
+        if self.last_timestamp is None:
+            raise ValueError('no observations yet')
+        return self.last_timestamp - self.first_timestamp
+    
+    def get_all_available(self):
+        data, finished = get_all_output_available(self.system)
+        self._num_data += len(data)
+        if data and self.first_timestamp is None:
+            self.first_timestamp = data[0][0]
+        if data:
+            self.last_timestamp = data[-1][0]
+        return data, finished
+
+def run_simulation_systems_multiple(
+        robot_sys, agent_sys, boot_spec, max_observations, max_time,
+                           check_valid_values):
+    """ 
+        This is written taking into account that robot and
+        agents might be outputing more than one signal.
+        
+        Raises and exception if during one iteration
+        neither one produces data.
+    """
+    
+    wrap_robot = WrapSys(robot_sys)
+    wrap_agent = WrapSys(agent_sys)
+
+    counter = 0  
+    
+    while counter < max_observations:
+#         print('counter: %5d  nrobot: %5d  nagent: %5d'
+#               % (counter, wrap_robot.num_data(),
+#                  wrap_agent.num_data()))
+        from_robot, robot_finished = wrap_robot.get_all_available()
+        if counter == 0 and not from_robot:
+            msg = 'Robot should provide something at the beginning'
+            raise Exception(msg)
+        
+        for x in from_robot:
+            yield x
+
+        if robot_finished:
+            print('robot finished')
+            break
+        
+        if wrap_robot.time_from_start() > max_time:
+            logger.info('Episode ended at %s for time limit %s > %s ' % 
+                         (counter, wrap_robot.time_from_start(), max_time))
+            break
+
+        for x in from_robot:
+            agent_sys.put(x, block=True)
+        
+        from_agent, agent_finished = wrap_agent.get_all_available()
+        
+        for x in from_agent:
+            yield x
+            
+        if agent_finished:
+            print('agent finished')
+            break
+        
+        if len(from_robot) == 0 and len(from_agent) == 0:
+            msg = 'We are at an empasse.'
+            raise Exception(msg)
+        
+        if True:
+            #print('obtained %d commands from agent' % len(from_agent))
+            commands = [(t, (signal, x)) 
+                        for (t, (signal, x)) in from_agent
+                        if signal == 'commands']
+            if len(commands) > 1:    
+                #print('only putting one')
+                pass
+                
+            if commands:
+                us = np.array([u for (t, (_, u)) in commands])
+                u_average = np.mean(us, axis=0)
+                #print us.shape, u_average.shape
+                assert u_average.shape == us[0].shape
+                t_last = commands[-1][0]
+                robot_sys.put((t_last, ('commands', u_average)), block=True)
+                
+        else:
+            for x in from_agent:
+                robot_sys.put(x, block=True)
+        
+        counter += 1 
+
+def get_all_output_available(system):
+    res = []
+    finished = False
+    while True: # loop until NeedInput        
+        try:
+            x = system.get(block=True)  
+            check_timed_named(x)
+            res.append(x)
+        except NeedInput:
+            break
+        except NeedComputation:
+            continue
+        except NotReady:
+            assert False, 'Hey, cannot obtain NotReady when block is True'
+        except Finished:
+            finished = True
+            break
+    return res, finished

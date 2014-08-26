@@ -4,12 +4,14 @@ from blocks.library import InstantaneousTF, WrapTMfromT
 from contracts import ContractsMeta, contract
 from decent_logs import WithInternalLog
 from streamels import BootSpec
+from blocks.library.simple.identity import Identity
 
 
 __all__ = [
     'RepresentationNuisanceCausal',
     'RepresentationNuisanceCausalSimple',
     'RepresentationNuisanceCausalSimpleInst',
+    'RepresentationNuisanceCausalIdentity',
 ]
 
 
@@ -132,10 +134,43 @@ class RepresentationNuisanceCausalSimpleInst(RepresentationNuisanceCausalSimple)
     
     @contract(returns=SimpleBlackBoxT)
     def get_G(self):
-        return InstantaneousTF(self.get_g())
+        try:
+            g = self.get_g()
+            G = InstantaneousTF(g)
+            return G
+        except:
+            self.error('error in  %s:get_G()' % type(self).__name__)
+            raise
+        
+        
     
     @contract(returns=SimpleBlackBoxT)
     def get_G_conj(self):
         return InstantaneousTF(self.get_g_conj())
+    
+    
+
+
+class RepresentationNuisanceCausalIdentity(RepresentationNuisanceCausalSimpleInst):
+    """ Further special case where G and H are implemented by 
+        some instantaneous functions get_h and get_g. """
+        
+    def get_g(self):
+        return lambda x: x
+
+    def get_g_conj(self):
+        return lambda x: x
+
+    def get_h(self):
+        return lambda x: x
+        
+    def get_h_conj(self):
+        return lambda x: x
+
+    def inverse(self):
+        return RepresentationNuisanceCausalIdentity()
+    
+    def transform_spec(self, spec):
+        return spec
     
     

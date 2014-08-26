@@ -55,9 +55,9 @@ class BasicRobot(WithInternalLog):
             into an element of se3 corresponding to a velocity.
         """
         
-    
+     
 class PassiveRobotInterface():
-    
+     
 #     @contract(returns=Source)
 #     def get_passive_stream(self):
 #         """ 
