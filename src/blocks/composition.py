@@ -68,6 +68,12 @@ class SourceBBSeries(Source):
     def __str__(self):
         return 'SourceBBSeries(%s,%s)' % (self.a, self.b)
 
+    def __repr__(self):
+        s = _format_multiline(type(self).__name__, 
+                              self.log_child_name(self.a), self.a, 
+                              self.log_child_name(self.b), self.b)
+        return s
+    
     @contract(names='list[>=2](str)')
     def set_names(self, names):
         if len(names) == 2:
@@ -132,6 +138,11 @@ class BBSinkSeries(Sink):
         self.log_add_child(name1, a)
         self.log_add_child(name2, b)
 
+    def __repr__(self):
+        s = _format_multiline(type(self).__name__, 
+                              self.log_child_name(self.a), self.a, 
+                              self.log_child_name(self.b), self.b)
+        return s
 
     @contract(names='list[>=2](str)')
     def set_names(self, names):

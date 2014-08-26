@@ -3,8 +3,7 @@ from abc import abstractmethod
 from blocks import SimpleBlackBox, Sink
 from bootstrapping_olympics import (BasicAgent, ExploringAgent, LearningAgent, 
     RepresentationNuisanceCausal, ServoingAgent, get_conftools_agents)
-from contracts import contract, describe_value
-from contracts.utils import check_isinstance, describe_type
+from contracts import check_isinstance, contract, describe_type, describe_value
 
 
 __all__ = [
@@ -116,18 +115,17 @@ class TwoLevelAgent(MultiLevelBase, LearningAgent, ExploringAgent, ServoingAgent
         if self.phase == 0:
             return self.first.get_learner_as_sink()
         elif self.phase == 1:
-
             if not isinstance(self.second, LearningAgent):
                 msg = ('second agent is not a LearningAgent (%s).' % 
                        describe_type(self.second))
                 raise NotImplementedError(msg)
-            
             
             transform = self.first.get_transform()
             assert isinstance(transform, RepresentationNuisanceCausal)
             boot_spec2 = transform.transform_spec(self.boot_spec)
             self.second.init(boot_spec2)
             learner = self.second.get_learner_as_sink()
+            self.info('wrapping learner %s' % learner)
             return wrap_agent_learner(learner, transform)
 
     @contract(returns=SimpleBlackBox)
