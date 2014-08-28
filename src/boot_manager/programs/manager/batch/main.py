@@ -157,7 +157,7 @@ def jobs_agent_robot(context, data_central, id_agent, agent, id_robot, robot,
                                       parallel_hint = learning['parallel_hint'],
                                       more_phases = learning['more_phases'],
                                       publish_progress=False,
-                                      save_pickle=True)
+                                      )
     
     agent_has_learned = context.comp(save_state, 
                                      data_central=data_central,

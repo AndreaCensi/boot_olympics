@@ -9,7 +9,9 @@ from conf_tools import SemanticMistake
 from contracts import contract
 
 
-__all__ = ['jobs_tasks_servo']
+__all__ = [
+    'jobs_tasks_servo',
+]
 
 @contract(context=Context, data_central=DataCentral, id_agent='str', id_robot='str')
 def jobs_tasks_servo(context, data_central, id_agent, id_robot,
