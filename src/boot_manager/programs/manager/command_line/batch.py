@@ -1,8 +1,8 @@
+from .main import BOM
+from boot_manager.programs.manager.batch import batch_process_manager
 from quickapp import QuickApp
 
-from ..batch import batch_process_manager
-from .main import BOM
-
+__all__ = []
 
 class CmdBatch(QuickApp, BOM.get_sub()):
     """ Batch learning experiments """

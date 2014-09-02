@@ -67,7 +67,9 @@ def task_servonav(data_central, id_agent, id_robot,
 
     with logs_format.write_stream(filename=filename,
                                   id_stream=id_stream,
-                                  boot_spec=boot_spec) as writer:
+                                  boot_spec=boot_spec,
+                                  id_agent=id_agent_servo,
+                                  id_robot=id_robot) as writer:
         counter = 0
         while bk.another_episode_todo():
             episode = robot.new_episode()

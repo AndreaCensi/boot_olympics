@@ -38,8 +38,8 @@ class BagLogWriter():
             logger.error('No data given for writing; deleting tmp file.')
             self.bag.close()
             os.unlink(self.tmp_filename)
-        else:
-            self.bag.close()
             if os.path.exists(self.filename):
                 os.unlink(self.filename)
+        else:
+            self.bag.close()
             os.rename(self.tmp_filename, self.filename)

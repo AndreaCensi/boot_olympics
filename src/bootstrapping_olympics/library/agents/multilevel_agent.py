@@ -77,10 +77,10 @@ class TwoLevelAgent(MultiLevelBase, LearningAgent, ExploringAgent, ServoingAgent
 
     def publish(self, r):
         r.text('phase', self.phase)
-        with r.subsection('first') as sub:
-            self.first.publish(sub)
         with r.subsection('second') as sub:
             self.second.publish(sub)
+        with r.subsection('first') as sub:
+            self.first.publish(sub)
 
     def process_observations(self, bd):
         raise ValueError('BUG: Should not have got here; should use learner_system')

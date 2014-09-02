@@ -3,14 +3,13 @@ from .constants import default_servonav_videos
 from .utils import episode_id_servonav, get_tranches
 from boot_manager import DataCentral
 from boot_manager.meat.servonav.task import task_servonav
-from compmake import Context
 from conf_tools import SemanticMistake
 from contracts import contract
 
 __all__ = ['jobs_tasks_servonav']
 
 
-@contract(context=Context, data_central=DataCentral, id_agent='str', id_robot='str')
+@contract( data_central=DataCentral, id_agent='str', id_robot='str')
 def jobs_tasks_servonav(context, data_central, id_agent, id_robot,
                              num_episodes,
                              agent_has_learned,

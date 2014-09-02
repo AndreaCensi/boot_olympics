@@ -101,6 +101,7 @@ def learn_log_base(data_central, id_agent,
 @contract(returns=RawLog, data_central=DataCentral, id_robot='str', id_episode=str)
 def rawlog_from_episode(data_central, id_robot, id_episode):
     index = data_central.get_log_index()
+    index.reindex()
     nstreams = 0
     for stream in index.get_streams_for_robot(id_robot):
         nstreams += 1

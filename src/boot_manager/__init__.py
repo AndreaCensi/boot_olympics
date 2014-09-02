@@ -11,7 +11,11 @@ from .programs import *
 
 def jobs_comptests(context):
     from conf_tools import GlobalConfig
-    GlobalConfig.global_load_dirs(['boot_manager.configs'])
+    config_dirs = [
+        'bootstrapping_olympics.configs',
+        'boot_manager.configs',
+    ]
+    GlobalConfig.global_load_dirs(config_dirs)
         
     from . import unittests
     from comptests import jobs_registrar

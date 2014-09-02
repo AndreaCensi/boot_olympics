@@ -13,7 +13,7 @@ __all__ = [
     'jobs_tasks_servo',
 ]
 
-@contract(context=Context, data_central=DataCentral, id_agent='str', id_robot='str')
+@contract( data_central=DataCentral, id_agent='str', id_robot='str')
 def jobs_tasks_servo(context, data_central, id_agent, id_robot,
                      num_episodes, agent_has_learned,
                      num_episodes_videos=0,

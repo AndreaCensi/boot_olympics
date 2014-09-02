@@ -156,7 +156,7 @@ def jobs_learning_one_phase(context,  agent_state0,
     return agent_state
     
 
-@contract(context=Context, 
+@contract(
           logs='dict(str:isinstance(RawLog))',
           max_slice_len='float,>0',
           agent_state0='tuple[2]')
@@ -197,7 +197,7 @@ def get_log_tranches(logs, tranche_length_sec):
     return res
 
 
-@contract(context=Context, agents='list[>=1](isinstance(Promise))',
+@contract( agents='list[>=1](isinstance(Promise))',
           returns=Promise)
 def merge_agents_recursive(context, agents):
     """ merges hierarchically """

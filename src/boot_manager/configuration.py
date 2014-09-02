@@ -13,7 +13,7 @@ class BatchConfigMaster(ConfigMaster):
 
     def get_default_dir(self):
         from pkg_resources import resource_filename  # @UnresolvedImport
-        return resource_filename("bootstrapping_olympics", "configs")
+        return "boot_manager.configs"
 
 get_bootbatch_config = BatchConfigMaster.get_singleton
 

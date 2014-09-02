@@ -1,6 +1,7 @@
 from .main import BOM
 from bootstrapping_olympics.utils import unique_timestamp_string
 
+__all__ = []
 
 class CmdSimulate(BOM.get_sub()):
     '''Simulate the interaction of an agent and a robot. '''

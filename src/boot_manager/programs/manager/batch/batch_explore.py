@@ -7,7 +7,9 @@ from conf_tools import SemanticMistake
 from contracts import contract
 
 
-__all__ = ['jobs_tasks_explore']
+__all__ = [
+    'jobs_tasks_explore',
+]
 
 
 @contract(returns='dict(str:isinstance(Promise))')

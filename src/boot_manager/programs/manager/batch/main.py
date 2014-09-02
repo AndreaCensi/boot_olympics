@@ -10,13 +10,19 @@ from boot_manager.meat.log_learn import get_robot_boot_spec
 from bootstrapping_olympics import (BasicAgent, BasicRobot, PredictingAgent, 
     ServoingAgent, logger)
 from bootstrapping_olympics.utils import safe_makedirs, safe_symlink
-from compmake import Context, Promise
+from compmake import Promise
 from conf_tools import ConfToolsException, SemanticMistake, import_name
 from contracts import contract
 from pprint import pformat
 from quickapp import iterate_context_names
 import os
 
+__all__ = [
+    'batch_jobs1',
+    'batch_process_manager',
+    'batch_set',
+    'save_state',
+]
 
 def batch_process_manager(context, data_central, which_sets): 
     sets_config = get_conftools_bootbatchsets() 
@@ -36,11 +42,6 @@ def batch_process_manager(context, data_central, which_sets):
     root_set = os.path.join(data_central.root, 'sets', combid)
     safe_makedirs(root_set)
     data_central_set = DataCentral(root_set)
-
-    # add symbolic links to logs and config
-#     main_config = os.path.realpath(os.path.join(root, 'config'))
-#     set_config = os.path.join(root_set, 'config')
-#     safe_symlink(main_config, set_config) 
 
     safe_makedirs(os.path.join(root_set, 'logs'))
     safe_symlink(os.path.join(root, 'logs'),
@@ -63,8 +64,6 @@ def batch_set(context, data_central, id_set, spec):  # @UnusedVariable
     args = spec['code'][1]
     function = import_name(function_name)
     function(context=context, data_central=data_central, **args)
-
-
 
 
         
@@ -96,7 +95,6 @@ def batch_jobs1(context, data_central, robots, agents,
                                          id_robot=id_robot, 
                                          **explore)
     
-        explorer=explore['explorer']
         for c2, id_agent in iterate_context_names(c, agents, key='id_agent'):
             agent = agent2instance[id_agent]
             # hack: we don't want to resolve the references
@@ -106,7 +104,6 @@ def batch_jobs1(context, data_central, robots, agents,
                              data_central=data_central,
                              id_agent=id_agent, id_robot=id_robot,
                              agent=agent, robot=robot,
-                             explorer=explorer, 
                              simepisode2jobid=episode2jobid,
                              # Tasks params
                              servo=servo, 
@@ -117,13 +114,13 @@ def batch_jobs1(context, data_central, robots, agents,
 
 
     
-@contract(context=Context,  data_central=DataCentral, 
+@contract(data_central=DataCentral, 
           id_agent=str, agent=BasicAgent,
           id_robot=str, robot=BasicRobot, 
           simepisode2jobid='dict(str:str)',
           servo='None|dict', servonav='None|dict', predict='None|dict')
 def jobs_agent_robot(context, data_central, id_agent, agent, id_robot, robot,
-                     explorer, simepisode2jobid,
+                     simepisode2jobid,
                      learning=None,
                      servo=None, servonav=None, predict=None):
 

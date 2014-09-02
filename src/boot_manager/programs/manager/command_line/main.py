@@ -1,4 +1,3 @@
-
 from boot_manager import DataCentral, DirectoryStructure, LogsFormat
 from bootstrapping_olympics import BootOlympicsConstants
 from conf_tools import GlobalConfig
@@ -7,6 +6,10 @@ import contracts
 import numpy as np
 import os
 
+__all__ = [
+    'manager_main', 
+    'BOM',
+]
 
 
 class BOM(QuickMultiCmdApp):

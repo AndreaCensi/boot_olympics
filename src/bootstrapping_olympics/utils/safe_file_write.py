@@ -60,22 +60,22 @@ def safe_write_tmp_filename(filename,  suffix_tmp='.tmp', suffix_old='.old'):
                 pass
         raise
 
-    try:
-        # TODO: make all of this robust to race conditions
-        # for now, we just make sure that the file exists in the 
-        # end
-        if os.path.exists(filename):
-            # if we have an old version
-            os.rename(filename, filename_old)
-            os.rename(filename_new, filename)
-            
-            os.unlink(filename_old)
-        else:
-            # no previous file, just rename
-            os.rename(filename_new, filename)
-    except OSError:
-        # for example, somebody already 
-        pass
+#     try:
+#         # TODO: make all of this robust to race conditions
+#         # for now, we just make sure that the file exists in the 
+#         # end
+#         if os.path.exists(filename):
+#             # if we have an old version
+#             os.rename(filename, filename_old)
+#             os.rename(filename_new, filename)
+#             
+#             os.unlink(filename_old)
+#         else:
+#             # no previous file, just rename
+#     except OSError:
+#         # for example, somebody already 
+#         pass
+    os.rename(filename_new, filename)
     
     if False:
         # TODO FIXME make sure this works in concurrent 

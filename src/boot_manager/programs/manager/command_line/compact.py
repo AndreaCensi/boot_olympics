@@ -2,6 +2,8 @@ from .main import BOM
 from boot_manager import LogsFormat, logger
 import os
 
+__all__ = []
+
 class CmdCompact(BOM.get_sub()):
     ''' Compacts the logs into the given directory. '''
     
@@ -65,7 +67,9 @@ def write_robot(index, id_robot, output_dir, skip_existing=True):
     logs_format = LogsFormat.get_reader_for(filename)
     with logs_format.write_stream(filename=filename,
                                   id_stream=id_stream,
-                                  boot_spec=boot_spec) as writer:
+                                  boot_spec=boot_spec,
+                                  id_agent=id_agent,
+                                  id_robot=id_robot) as writer:
         for stream in streams:
             logger.info('- reading stream %s' % stream)
             for observations in stream.read(read_extra=False):

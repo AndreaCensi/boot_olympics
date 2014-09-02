@@ -2,6 +2,7 @@ from bootstrapping_olympics import logger
 
 from .main import BOM
 
+__all__ = []
 
 class CmdCleanStates(BOM.get_sub()):
     ''' Cleans agents states. '''

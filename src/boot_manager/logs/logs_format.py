@@ -59,7 +59,7 @@ class LogsFormat(object):
         ''' Yields observations from the stream. '''
 
     @abstractmethod
-    def write_stream(self, filename, id_stream, boot_spec):
+    def write_stream(self, filename, id_stream, boot_spec, id_agent, id_robot):
         ''' Yields a writer object (interface TBD). '''
 
     @staticmethod
