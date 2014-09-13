@@ -14,7 +14,7 @@
 #     Block.config('id_robot', dtype='str')
 #     Block.config('id_rawlog', 'Rawlog description (used as id_episode)',
 #                  dtype='str')
-#     Block.config('rawlog', 'Rawlog instance', dtype='isinstance(Rawlog)')
+#     Block.config('rawlog', 'Rawlog instance', dtype='isinstance(RawLog)')
 #     Block.output('boot_observations')
 # 
 #     def init_iterator(self):

@@ -31,7 +31,7 @@ __all__ = [
           max_slice_len='(int|float),>0',
           parallel_hint='bool',
           more_phases='bool',
-          boot_spec=BootSpec,
+#         boot_spec=BootSpec,
           returns=Promise)
 def jobs_learning(context, 
                   boot_spec, 
@@ -43,7 +43,7 @@ def jobs_learning(context,
                   more_phases, # if True, do more phases
                   publish_progress=False,
                   ):
-    """ simepisode[id_episode] must be a promise to a Rawlog. """
+    """ simepisode[id_episode] must be a promise to a RawLog. """
 
     max_slice_len = float(max_slice_len)
     if parallel_hint:
@@ -78,7 +78,7 @@ def agent_supports_phases(id_agent):
 def jobs_learning_phases(context, phase, agent_state0,
                          learn_function, learn_params):
     c = context.child('ph%d' % phase)
-    agent_state1 = c.comp_dynamic(learn_function, agent_state0=agent_state0, **learn_params)
+    agent_state1 = c.comp_config_dynamic(learn_function, agent_state0=agent_state0, **learn_params)
     return context.comp_config_dynamic(phase_check_need_another,
                                    agent_state1, 
                                    agent_state_job_id=agent_state1.job_id,
@@ -168,9 +168,9 @@ def jobs_learning_logs(context, agent_state0,
         check_isinstance(id_episode, str)
         check_isinstance(rawlog, RawLog)
     
-    tranches = get_log_tranches(logs, max_slice_len)
+    parts = get_log_tranches(logs, max_slice_len)
     agent_states = []
-    for id_part, part in tranches.items():
+    for id_part, part in parts.items():
         agent_state = context.comp_config(learn_rawlog2, 
                                           rawlog=part,
                                           agent_state0=agent_state0,
@@ -188,9 +188,9 @@ def jobs_learning_logs(context, agent_state0,
 def get_log_tranches(logs, tranche_length_sec):
     res = {}
     for id_log, log in logs.items():
-        print('Computing for %s / %s (length: %s)' % 
-              (id_log, log, tranche_length_sec))
         parts = get_log_parts(log, tranche_length_sec)
+        print('Computing for %s / %s. Slice len: %s. n: %s' % 
+              (id_log, log, tranche_length_sec, len(parts)))
         for id_part, part in parts.items():
             name = '%s-%s' % (id_log, id_part)
             res[name] = part
