@@ -1,7 +1,9 @@
+from . import logger, safe_write
+from contracts import describe_type
 import cPickle as pickle
-from . import safe_write, logger
-from compmake.utils.describe import describe_type
 
+
+__all__ = ['safe_pickle_dump', 'safe_pickle_load']
 
 def safe_pickle_dump(value, filename, protocol=pickle.HIGHEST_PROTOCOL):
     # TODO: add debug
