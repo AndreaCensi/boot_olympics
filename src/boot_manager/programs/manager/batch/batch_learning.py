@@ -6,7 +6,6 @@ from compmake import Context, Promise
 from contracts import check_isinstance, contract
 from rawlogs import RawLog
 from rawlogs.library import get_log_parts
-from streamels import BootSpec
 import warnings
 
 
