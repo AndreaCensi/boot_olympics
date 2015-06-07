@@ -20,12 +20,13 @@ def warn_long_time(max_wall_time, what, logger=None):
     duration = time.time() - start
     duration_clock = time.clock() - start_clock
     if duration > max_wall_time:
-        msg = ('Operation %s took %.3f wall time (clock: %.3f)' % 
-               (what, duration, duration_clock))
+        msg = ('Operation took %.5f wall time (clock: %.5f) %s' %
+               (duration, duration_clock, what))
         if more_info:
             msg += '\nMore info: %s' % more_info
         logger.info(msg)
         
+
 
 @contextmanager
 def warn_long_time2(max_wall_time, what=None, logger=None):

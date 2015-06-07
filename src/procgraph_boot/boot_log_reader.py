@@ -1,7 +1,9 @@
 from blocks import check_timed_named
 from procgraph import Block, IteratorGenerator
 
+
 __all__ = ['BOLogReader']
+
 
 class BOLogReader(IteratorGenerator):
     '''
