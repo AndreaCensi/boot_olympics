@@ -78,7 +78,7 @@ def friendly_filesize(filename):
     if size > 1e6:
         return '%.1fMB' % (size / 1e6)
     if size > 1e3:
-        return '%.1fKB' % (size / 1e6)
+        return '%.1fKB' % (size / 1e3)
     return  '%.1fb' % (size)
         
         
