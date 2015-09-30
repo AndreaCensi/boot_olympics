@@ -28,7 +28,7 @@ class Sink(WithInternalLog):
 
     @abstractmethod
     def reset(self):
-        """ Resets the sink.   You must call reset() at least once before put()."""
+        """ Resets the sink. You must call reset() at least once before put()."""
 
     @abstractmethod
     @contract(block='bool', value='*', timeout='None|>=0')
@@ -71,6 +71,10 @@ class Source(WithInternalLog):
             :raise Finished: finished: no more output will come
             
         """
+
+    def end_output(self):
+        # TODO: not implemented anywhere
+        pass
     
 
 
